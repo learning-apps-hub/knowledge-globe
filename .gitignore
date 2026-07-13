@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+
+# Environment variables — never commit
+.env
+
+# Database — runtime state
+data/
+*.db
+*.db-shm
+*.db-wal
+
+# Editor
+*.code-workspace
+.claude/
+
+# macOS metadata
+._*
+.DS_Store
