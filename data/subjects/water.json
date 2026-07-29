@@ -1,0 +1,294 @@
+{
+  "id": "water",
+  "title": "Water",
+  "summary": "Where it comes from, the forms it takes, and what it does for life and human society.",
+  "angles": [
+    { "id": "origins", "label": "Origins & Science", "color": "#3B82F6" },
+    { "id": "ecological", "label": "Ecological Role", "color": "#22C55E" },
+    { "id": "human", "label": "Human Use & Society", "color": "#F59E0B" },
+    { "id": "power", "label": "Power & Conflict", "color": "#EF4444" },
+    { "id": "culture", "label": "Culture & Meaning", "color": "#A855F7" }
+  ],
+  "nodes": [
+    {
+      "id": "water",
+      "keyword": "Water",
+      "summary": "The subject root — an overview node with no single claim of its own.",
+      "angle_tags": [],
+      "parent": null,
+      "sources": []
+    },
+
+    {
+      "id": "origins-formation",
+      "keyword": "How it formed",
+      "summary": "Water arrived from space and outgassed from Earth's own interior — two sources, not one.",
+      "angle_tags": ["origins"],
+      "parent": "water",
+      "sources": []
+    },
+    {
+      "id": "forms-states",
+      "keyword": "Forms it takes",
+      "summary": "Solid, liquid, vapor — and the phase changes between them drive weather and climate.",
+      "angle_tags": ["origins", "ecological"],
+      "parent": "water",
+      "sources": []
+    },
+    {
+      "id": "ecological-role",
+      "keyword": "Life depends on it",
+      "summary": "Every known biological process runs on water as solvent, medium, or reactant.",
+      "angle_tags": ["ecological"],
+      "parent": "water",
+      "sources": []
+    },
+    {
+      "id": "human-use",
+      "keyword": "What we use it for",
+      "summary": "Drinking, growing food, making power, running industry — human society is built on reliable access.",
+      "angle_tags": ["human"],
+      "parent": "water",
+      "sources": []
+    },
+    {
+      "id": "power-conflict",
+      "keyword": "Who controls it",
+      "summary": "Scarcity and shared rivers turn water into a source of leverage and conflict between people and states.",
+      "angle_tags": ["power", "human"],
+      "parent": "water",
+      "sources": []
+    },
+    {
+      "id": "culture-meaning",
+      "keyword": "What it means to us",
+      "summary": "Water carries ritual and symbolic weight across nearly every human culture and religion.",
+      "angle_tags": ["culture"],
+      "parent": "water",
+      "sources": []
+    },
+
+    {
+      "id": "origins-cosmic",
+      "keyword": "Water is older than Earth",
+      "summary": "Water ice existed in the cloud of gas and dust that formed the solar system; comets and water-rich asteroids delivered much of it to the young Earth.",
+      "angle_tags": ["origins"],
+      "parent": "origins-formation",
+      "sources": [
+        { "title": "NASA — Where did Earth's water come from?", "url": "https://science.nasa.gov/solar-system/where-did-earths-water-come-from/" }
+      ]
+    },
+    {
+      "id": "origins-outgassing",
+      "keyword": "Earth's own interior",
+      "summary": "Volcanic outgassing released water vapor trapped in the young planet's rock, which condensed as the surface cooled.",
+      "angle_tags": ["origins"],
+      "parent": "origins-formation",
+      "sources": [
+        { "title": "USGS — The Water Cycle", "url": "https://www.usgs.gov/special-topics/water-science-school/science/water-cycle" }
+      ]
+    },
+
+    {
+      "id": "forms-molecule",
+      "keyword": "A bent, lopsided molecule",
+      "summary": "Water's asymmetric shape leaves it electrically polar, which is the root cause of nearly every unusual property it has.",
+      "angle_tags": ["origins"],
+      "parent": "forms-states",
+      "sources": [
+        { "title": "USGS — Water Science School: Water Properties", "url": "https://www.usgs.gov/special-topics/water-science-school/science/water-density" }
+      ]
+    },
+    {
+      "id": "forms-solvent",
+      "keyword": "The universal solvent",
+      "summary": "Polarity lets water dissolve more substances than any other common liquid — which is why it carries nutrients, minerals and pollutants alike.",
+      "angle_tags": ["origins", "ecological"],
+      "parent": "forms-states",
+      "sources": [
+        { "title": "USGS — Water, the Universal Solvent", "url": "https://www.usgs.gov/special-topics/water-science-school/science/water-universal-solvent" }
+      ]
+    },
+    {
+      "id": "forms-ice-floats",
+      "keyword": "Ice floats",
+      "summary": "Water is one of very few substances less dense as a solid than a liquid — so lakes freeze from the top down and life survives beneath.",
+      "angle_tags": ["origins", "ecological"],
+      "parent": "forms-states",
+      "sources": []
+    },
+    {
+      "id": "forms-cycle",
+      "keyword": "The water cycle",
+      "summary": "Evaporation, transport, condensation and precipitation move water continuously between ocean, air and land.",
+      "angle_tags": ["origins", "ecological"],
+      "parent": "forms-states",
+      "sources": [
+        { "title": "USGS — The Water Cycle", "url": "https://www.usgs.gov/special-topics/water-science-school/science/water-cycle" }
+      ]
+    },
+
+    {
+      "id": "eco-cell",
+      "keyword": "The medium of the cell",
+      "summary": "Cells are mostly water; it is the solvent every metabolic reaction runs in and a reactant in many of them.",
+      "angle_tags": ["ecological"],
+      "parent": "ecological-role",
+      "sources": []
+    },
+    {
+      "id": "eco-habitat",
+      "keyword": "Freshwater habitats",
+      "summary": "Rivers, lakes and wetlands hold a disproportionate share of biodiversity relative to the tiny fraction of Earth's water they contain.",
+      "angle_tags": ["ecological"],
+      "parent": "ecological-role",
+      "sources": [
+        { "title": "UNEP — Freshwater ecosystems", "url": "https://www.unep.org/explore-topics/water" }
+      ]
+    },
+    {
+      "id": "eco-climate",
+      "keyword": "It moves the climate",
+      "summary": "Oceans store and redistribute heat, and water vapor is the atmosphere's strongest greenhouse gas — water is the climate system's working fluid.",
+      "angle_tags": ["ecological", "origins"],
+      "parent": "ecological-role",
+      "sources": [
+        { "title": "NOAA — Ocean and climate", "url": "https://www.noaa.gov/education/resource-collections/climate" }
+      ]
+    },
+
+    {
+      "id": "human-drinking",
+      "keyword": "Drinking water & sanitation",
+      "summary": "Safe drinking water and sanitation are the single largest historical driver of falling mortality; billions still lack reliable access.",
+      "angle_tags": ["human"],
+      "parent": "human-use",
+      "sources": [
+        { "title": "WHO — Drinking-water fact sheet", "url": "https://www.who.int/news-room/fact-sheets/detail/drinking-water" }
+      ]
+    },
+    {
+      "id": "human-agriculture",
+      "keyword": "Agriculture takes most of it",
+      "summary": "Irrigation accounts for roughly 70% of global freshwater withdrawals — food is where most water actually goes.",
+      "angle_tags": ["human", "ecological"],
+      "parent": "human-use",
+      "sources": [
+        { "title": "FAO — AQUASTAT water use", "url": "https://www.fao.org/aquastat/en/overview/methodology/water-use" }
+      ]
+    },
+    {
+      "id": "human-energy",
+      "keyword": "Water makes power",
+      "summary": "Hydroelectric dams, and the cooling water that thermal and nuclear plants depend on, tie the energy system directly to water availability.",
+      "angle_tags": ["human", "power"],
+      "parent": "human-use",
+      "sources": [
+        { "title": "IEA — Water-energy nexus", "url": "https://www.iea.org/reports/water-energy-nexus" }
+      ]
+    },
+    {
+      "id": "human-transport",
+      "keyword": "Rivers and sea routes",
+      "summary": "Navigable water was the cheapest way to move goods for most of history, and still carries the large majority of world trade by volume.",
+      "angle_tags": ["human"],
+      "parent": "human-use",
+      "sources": []
+    },
+    {
+      "id": "human-cities",
+      "keyword": "Cities grew where water was",
+      "summary": "Nearly every early urban civilization formed on a river system — settlement patterns are water patterns.",
+      "angle_tags": ["human", "culture"],
+      "parent": "human-use",
+      "sources": []
+    },
+
+    {
+      "id": "power-scarcity",
+      "keyword": "Scarcity",
+      "summary": "Demand growth, depletion of aquifers and shifting rainfall are pushing more regions into chronic water stress.",
+      "angle_tags": ["power", "ecological"],
+      "parent": "power-conflict",
+      "sources": [
+        { "title": "UN Water — Water scarcity", "url": "https://www.unwater.org/water-facts/water-scarcity" }
+      ]
+    },
+    {
+      "id": "power-transboundary",
+      "keyword": "Shared rivers, divided states",
+      "summary": "Most large river basins cross a border, so upstream decisions about dams and diversions become foreign policy.",
+      "angle_tags": ["power"],
+      "parent": "power-conflict",
+      "sources": [
+        { "title": "UN Water — Transboundary waters", "url": "https://www.unwater.org/water-facts/transboundary-waters" }
+      ]
+    },
+    {
+      "id": "power-rights",
+      "keyword": "Who owns water",
+      "summary": "Water rights regimes — riparian, prior appropriation, customary, market-traded — decide who gets water when there isn't enough for everyone.",
+      "angle_tags": ["power", "human"],
+      "parent": "power-conflict",
+      "sources": []
+    },
+    {
+      "id": "power-infrastructure",
+      "keyword": "Infrastructure as leverage",
+      "summary": "A dam is both an engineering object and a lever: it stores, withholds and releases on someone's schedule.",
+      "angle_tags": ["power"],
+      "parent": "power-conflict",
+      "sources": []
+    },
+
+    {
+      "id": "culture-ritual",
+      "keyword": "Purification and ritual",
+      "summary": "Washing, immersion and blessing with water appear independently across religions as the standard grammar of purification.",
+      "angle_tags": ["culture"],
+      "parent": "culture-meaning",
+      "sources": []
+    },
+    {
+      "id": "culture-sacred-places",
+      "keyword": "Sacred waters",
+      "summary": "Specific rivers, springs and wells are treated as holy or living entities — some now hold legal personhood.",
+      "angle_tags": ["culture"],
+      "parent": "culture-meaning",
+      "sources": []
+    },
+    {
+      "id": "culture-metaphor",
+      "keyword": "Water as metaphor",
+      "summary": "Flow, depth, currents, drowning, source — water supplies a large share of the metaphors humans use for time, emotion and change.",
+      "angle_tags": ["culture"],
+      "parent": "culture-meaning",
+      "sources": []
+    }
+  ],
+  "edges": [
+    { "from": "forms-molecule", "to": "forms-solvent", "type": "causes", "label": "polarity is what makes it dissolve so much" },
+    { "from": "forms-molecule", "to": "forms-ice-floats", "type": "causes", "label": "hydrogen bonding opens the lattice as it freezes" },
+    { "from": "forms-states", "to": "ecological-role", "type": "enables", "label": "phase changes drive the water cycle life relies on" },
+    { "from": "forms-solvent", "to": "eco-cell", "type": "enables", "label": "solvent properties make cellular chemistry possible" },
+    { "from": "forms-cycle", "to": "human-agriculture", "type": "enables", "label": "rainfall patterns decide what can be farmed where" },
+    { "from": "forms-ice-floats", "to": "eco-habitat", "type": "enables", "label": "surface ice lets life survive frozen winters" },
+
+    { "from": "eco-climate", "to": "forms-cycle", "type": "correlates-with", "label": "warming shifts where and how hard it rains" },
+    { "from": "eco-habitat", "to": "human-agriculture", "type": "conflicts-with", "label": "irrigation withdrawals shrink the habitats they draw from" },
+
+    { "from": "human-use", "to": "power-conflict", "type": "causes", "label": "competing demand creates scarcity" },
+    { "from": "human-drinking", "to": "human-cities", "type": "depends-on", "label": "urban density is capped by deliverable safe water" },
+    { "from": "human-transport", "to": "human-cities", "type": "precedes", "label": "trade routes came first, cities grew on them" },
+    { "from": "human-agriculture", "to": "power-scarcity", "type": "causes", "label": "70% of withdrawals means agriculture sets the scarcity baseline" },
+    { "from": "human-energy", "to": "power-infrastructure", "type": "depends-on", "label": "hydropower is built out of exactly the assets that confer leverage" },
+
+    { "from": "power-scarcity", "to": "power-transboundary", "type": "causes", "label": "shared rivers under stress become flashpoints" },
+    { "from": "power-infrastructure", "to": "power-transboundary", "type": "enables", "label": "upstream storage turns geography into bargaining power" },
+    { "from": "power-rights", "to": "power-scarcity", "type": "correlates-with", "label": "allocation rules decide who feels scarcity first" },
+
+    { "from": "ecological-role", "to": "culture-meaning", "type": "correlates-with", "label": "life-giving role echoed in ritual across cultures" },
+    { "from": "culture-sacred-places", "to": "power-rights", "type": "conflicts-with", "label": "sacred-river claims collide with extraction rights" },
+    { "from": "human-cities", "to": "culture-sacred-places", "type": "precedes", "label": "settlement on a river preceded its sanctification" }
+  ]
+}

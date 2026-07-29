@@ -5,6 +5,7 @@ Smoke test — Knowledge Globe
 Verifies the app starts and key endpoints respond.
 Run from project root: python3 tests/smoke_test.py
 """
+import json
 import subprocess
 import time
 import urllib.request
@@ -84,7 +85,28 @@ try:
         check("GET / → 200", status == 200, f"got {status}")
         check("GET / returns HTML", isinstance(body, bytes) and b"<html" in body.lower())
 
-        # TODO: add project-specific endpoint checks here
+        print("\n--- API ---")
+        status, body = get("/api/subjects")
+        check("GET /api/subjects → 200", status == 200, f"got {status}")
+        listing = json.loads(body) if status == 200 else []
+        check("subject list is non-empty", bool(listing))
+        check("water is seeded", any(s["id"] == "water" for s in listing))
+
+        status, body = get("/api/subjects/water")
+        check("GET /api/subjects/water → 200", status == 200, f"got {status}")
+        subject = json.loads(body) if status == 200 else {}
+        check("subject has nodes", len(subject.get("nodes", [])) > 0)
+        check("subject has edges", len(subject.get("edges", [])) > 0)
+        check("zoom_level derived on every node",
+              all("zoom_level" in n for n in subject.get("nodes", [])))
+        check("root node is zoom level 0",
+              any(n["zoom_level"] == 0 for n in subject.get("nodes", [])))
+
+        print("\n--- Input validation ---")
+        status, _ = get("/api/subjects/nope")
+        check("unknown subject → 404", status == 404, f"got {status}")
+        status, _ = get("/api/subjects/..%2f..%2fetc%2fpasswd")
+        check("path traversal → 404", status == 404, f"got {status}")
 
 finally:
     if proc:

@@ -10,7 +10,8 @@ venv/
 .env
 
 # Database — runtime state
-data/
+# NOTE: data/ is deliberately NOT ignored — subject maps are curated content
+# that ships with the app (DESIGN_v0.1.md §3), not runtime state.
 *.db
 *.db-shm
 *.db-wal
