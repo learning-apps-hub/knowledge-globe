@@ -13,7 +13,7 @@ import urllib.error
 import sys
 import os
 
-PORT = 8110
+PORT = int(os.environ.get("PORT", 8110))
 START_CMD = ["python3", "run.py"]
 PROJ_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -84,6 +84,13 @@ try:
         status, body = get("/")
         check("GET / → 200", status == 200, f"got {status}")
         check("GET / returns HTML", isinstance(body, bytes) and b"<html" in body.lower())
+        check("GET / includes 3D viewer",
+              isinstance(body, bytes) and b"three.module.min.js" in body)
+
+        status, body = get("/static/vendor/three.module.min.js")
+        check("GET Three.js asset → 200", status == 200, f"got {status}")
+        check("Three.js asset is JavaScript",
+              isinstance(body, bytes) and b"WebGLRenderer" in body)
 
         print("\n--- API ---")
         status, body = get("/api/subjects")
@@ -107,6 +114,8 @@ try:
         check("unknown subject → 404", status == 404, f"got {status}")
         status, _ = get("/api/subjects/..%2f..%2fetc%2fpasswd")
         check("path traversal → 404", status == 404, f"got {status}")
+        status, _ = get("/static/../server.py")
+        check("static path traversal → 404", status == 404, f"got {status}")
 
 finally:
     if proc:

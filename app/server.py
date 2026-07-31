@@ -1,5 +1,6 @@
 """Read-only HTTP API + viewer for Knowledge Globe (DESIGN_v0.1.md §4)."""
 import json
+import mimetypes
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
@@ -16,6 +17,8 @@ class Handler(BaseHTTPRequestHandler):
 
         if path == "/":
             return self._send_viewer()
+        if path.startswith("/static/"):
+            return self._send_static(path[len("/static/"):])
         if path == "/api/subjects":
             return self._send_json(200, subjects.list_subjects())
         if path.startswith("/api/subjects/"):
@@ -33,6 +36,22 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _send_static(self, relative_path):
+        """Serve versioned frontend assets without exposing arbitrary files."""
+        target = os.path.realpath(os.path.join(STATIC_DIR, relative_path))
+        static_root = os.path.realpath(STATIC_DIR) + os.sep
+        if not target.startswith(static_root) or not os.path.isfile(target):
+            return self._send_json(404, {"error": "not found"})
+        with open(target, "rb") as fh:
+            body = fh.read()
+        content_type = mimetypes.guess_type(target)[0] or "application/octet-stream"
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "public, max-age=86400")
         self.end_headers()
         self.wfile.write(body)
 

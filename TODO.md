@@ -2,19 +2,23 @@
 
 ## Blocked on review
 
-- [ ] **IRIS — visual language.** v0.1 ships deliberately plain. Node card
-      design, angle color coding, zoom transition, and whether to vendor D3
-      for a richer layout (DESIGN_v0.1.md §6) are all open.
+- [ ] **Owner — visual review of the 3D redesign.** Open the dev build on
+      port 8111 and check desktop/mobile layout, drag/zoom feel, and reading
+      comfort before release.
+- [ ] **IRIS — visual language.** Review the implemented 3D direction:
+      luminous knowledge globe, depth-aware pins, angle lenses, and layered
+      reading panel. Three.js is vendored; D3 is no longer relevant.
 - [ ] **PAX — decomposition sanity-check.** Is 5 angles / 3 zoom levels the
       right granularity? Review the seeded `data/subjects/water.json`, not the
       design-doc excerpt.
 
 ## v0.1 follow-ups
 
-- [ ] Verify the viewer in a real browser — built without one available;
-      layout, edge hover labels, and zoom transitions are unconfirmed.
-- [ ] Fill out the water map's thinner branches (culture and power nodes are
-      light on sources).
+- [x] Replace the flat SVG viewer with a rotatable, zoomable 3D globe.
+- [x] Enrich every water node with layered, age-friendly reading content.
+- [x] Add or strengthen sources for the thinner culture and power branches.
+- [ ] Complete Owner visual review in a real browser; automated checks verify
+      routes and JavaScript syntax but cannot judge rendered polish.
 - [ ] Decide what to show when a node's relations point off-screen — currently
       only edges between visible nodes are drawn; the rest appear in the detail
       panel but have no on-canvas hint.

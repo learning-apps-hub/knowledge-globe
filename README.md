@@ -1,8 +1,9 @@
 # Knowledge Globe
 
-A map of a subject, not an archive of it. Pick a subject, see its big picture,
-zoom into any facet, and view the whole thing through different angles —
-science, ecology, human use, power, culture.
+A living, zoomable world of connected ideas. Pick a subject, turn the 3D globe,
+open a topic pin, and travel from a one-sentence overview into deeper
+explanations, memorable facts, questions, definitions, relationships, and
+source links.
 
 Knowledge stays at the source. A node holds a keyword, a short curated
 summary, and links out. It never stores the source's content.
@@ -14,8 +15,15 @@ python3 run.py
 ```
 
 Then open `http://localhost:8110/`. No dependencies — Python standard library
-only. `PORT` and `HOST` can be overridden via environment or a `.env` file
-(see `.env.example`).
+only. The 3D engine is vendored with the app, so the core experience does not
+depend on a CDN. `PORT` and `HOST` can be overridden via environment or a
+`.env` file (see `.env.example`).
+
+The reserved development port is `8111`:
+
+```bash
+PORT=8111 python3 run.py
+```
 
 ## Layout
 
@@ -24,7 +32,8 @@ only. `PORT` and `HOST` can be overridden via environment or a `.env` file
 | `run.py` | Entry point; validates every subject map, then serves |
 | `app/server.py` | Read-only HTTP API + viewer |
 | `app/subjects.py` | Subject loading, zoom-level derivation, validation |
-| `app/static/index.html` | The viewer (single file, inline CSS+JS) |
+| `app/static/index.html` | The responsive 3D viewer (inline CSS + app logic) |
+| `app/static/vendor/` | Vendored Three.js module and its MIT licence |
 | `data/subjects/*.json` | Curated subject maps — one file per subject |
 | `tests/smoke_test.py` | End-to-end smoke test |
 
@@ -37,6 +46,18 @@ only. `PORT` and `HOST` can be overridden via environment or a `.env` file
 | `GET /api/subjects/<id>` | Full subject map, `zoom_level` derived |
 
 Read-only. Curation happens by editing the JSON directly.
+
+The viewer includes:
+
+- a WebGL sphere with atmosphere, stars, relationship arcs, and depth-aware
+  HTML topic pins;
+- drag and touch rotation, scroll/pinch-style zoom, reset controls, subject
+  search, a random discovery action, and keyboard focus states;
+- angle lenses that highlight science, ecology, society, power, or culture;
+- a responsive reading panel that works as a desktop column or mobile sheet;
+- progressive content fields (`key_fact`, `explainer`, `why_it_matters`,
+  `wonder`, and optional `glossary`) while retaining the original concise
+  `summary`.
 
 ## Subject map format
 
@@ -60,11 +81,11 @@ startup with a specific message rather than breaking the viewer at runtime.
 ## Tests
 
 ```bash
-python3 tests/smoke_test.py
+PORT=8112 python3 tests/smoke_test.py
 ```
 
-Starts the server, exercises the routes, and checks the traversal guard.
-Requires port 8110 to be free.
+Starts a temporary server, exercises the API, viewer, vendored 3D asset, and
+path-traversal guards. The chosen port must be free.
 
 Full design rationale lives in the vault:
 `AI Projects/knowledge-globe/working files/DESIGN_v0.1.md`.

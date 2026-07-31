@@ -2,154 +2,908 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Knowledge Globe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07131b">
+<meta name="description" content="Explore big ideas as a living, zoomable world of connected knowledge.">
+<title>Knowledge Globe — See how everything connects</title>
 <style>
+  @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap");
+
   :root {
-    --bg: #0f1419;
-    --panel: #171e26;
-    --line: #2a3441;
-    --ink: #e6edf3;
-    --ink-dim: #8b98a5;
-    --focus-ring: #4b5b6e;
+    color-scheme: dark;
+    --night: #061017;
+    --night-2: #091820;
+    --glass: rgba(9, 23, 31, .78);
+    --glass-strong: rgba(10, 25, 34, .94);
+    --line: rgba(190, 225, 235, .14);
+    --line-strong: rgba(190, 225, 235, .28);
+    --ink: #f3f7f7;
+    --ink-soft: #b7c9ce;
+    --ink-dim: #789098;
+    --aqua: #55e4d1;
+    --aqua-2: #1daea6;
+    --gold: #ffd57a;
+    --panel-width: 390px;
+    --rail-width: 274px;
+    --top-height: 72px;
+    --shadow: 0 22px 70px rgba(0, 0, 0, .38);
   }
+
   * { box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
   body {
-    margin: 0; height: 100vh; display: flex; flex-direction: column;
-    background: var(--bg); color: var(--ink);
-    font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+    margin: 0;
+    background: var(--night);
+    color: var(--ink);
+    font: 14px/1.55 "DM Sans", system-ui, sans-serif;
+  }
+  button, select, input { font: inherit; }
+  button, select { color: inherit; }
+  button { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 2px solid var(--aqua); outline-offset: 3px; }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
-  header {
-    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-    padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--panel);
-  }
-  header h1 { font-size: 15px; font-weight: 600; margin: 0; letter-spacing: .01em; }
-  select {
-    background: var(--bg); color: var(--ink); border: 1px solid var(--line);
-    border-radius: 6px; padding: 5px 8px; font: inherit;
-  }
-
-  #angles { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
-  .chip {
-    border: 1px solid var(--line); background: transparent; color: var(--ink-dim);
-    border-radius: 999px; padding: 4px 11px; font-size: 12px; cursor: pointer;
-    display: flex; align-items: center; gap: 6px; font-family: inherit;
-  }
-  .chip .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
-  .chip[aria-pressed="true"] { color: var(--ink); border-color: currentColor; }
-
-  #crumbs {
-    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-    padding: 8px 16px; border-bottom: 1px solid var(--line); font-size: 12px;
-    color: var(--ink-dim); min-height: 33px;
-  }
-  #crumbs button {
-    background: none; border: none; color: var(--ink-dim); cursor: pointer;
-    font: inherit; padding: 2px 4px; border-radius: 4px;
-  }
-  #crumbs button:hover { color: var(--ink); background: var(--panel); }
-  #crumbs .sep { opacity: .5; }
-
-  main { flex: 1; display: flex; min-height: 0; }
-  #canvas-wrap { flex: 1; min-width: 0; position: relative; }
-  svg { width: 100%; height: 100%; display: block; }
-
-  .node-card {
-    height: 100%; padding: 8px 10px; border-radius: 10px;
-    background: var(--panel); border: 1px solid var(--line);
-    cursor: pointer; overflow: hidden;
-    transition: opacity .18s, border-color .18s, transform .18s;
-  }
-  .node-card:hover { transform: translateY(-1px); }
-  .node-card.focus { border-color: var(--focus-ring); background: #1d2732; }
-  .node-card.dimmed { opacity: .22; }
-  .node-card.selected { outline: 2px solid var(--ink); outline-offset: 1px; }
-  .node-kw {
-    font-weight: 600; font-size: 13px; line-height: 1.25; margin-bottom: 4px;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-  }
-  .node-sum {
-    font-size: 11px; color: var(--ink-dim); line-height: 1.35;
-    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-  }
-  .angle-bar { display: flex; gap: 3px; margin-bottom: 5px; }
-  .angle-bar i { width: 16px; height: 3px; border-radius: 2px; }
-  .kids-badge {
-    position: absolute; font-size: 10px; color: var(--ink-dim);
+  .app {
+    height: 100%;
+    display: grid;
+    grid-template-rows: var(--top-height) minmax(0, 1fr);
+    background:
+      radial-gradient(circle at 52% 45%, rgba(13, 78, 94, .18), transparent 36%),
+      linear-gradient(145deg, #061017 0%, #07151d 54%, #050c12 100%);
   }
 
-  .edge { fill: none; stroke-width: 1.4; opacity: .55; }
-  .edge.faded { opacity: .12; }
-  .edge-label {
-    font-size: 10px; fill: var(--ink); paint-order: stroke;
-    stroke: var(--bg); stroke-width: 3px; opacity: 0; pointer-events: none;
+  .topbar {
+    position: relative;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 22px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(5, 15, 21, .8);
+    backdrop-filter: blur(20px);
   }
-  .edge-hit { stroke: transparent; stroke-width: 14px; fill: none; cursor: help; }
-  .edge-hit:hover + .edge-label { opacity: 1; }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: max-content;
+  }
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(85, 228, 209, .42);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: inset 0 0 16px rgba(85, 228, 209, .18), 0 0 24px rgba(85, 228, 209, .08);
+  }
+  .brand-mark::before,
+  .brand-mark::after {
+    content: "";
+    position: absolute;
+    inset: 6px 3px;
+    border: 1px solid rgba(85, 228, 209, .66);
+    border-radius: 50%;
+  }
+  .brand-mark::after { inset: 3px 11px; }
+  .brand-title {
+    font: 700 15px/1 "Manrope", sans-serif;
+    letter-spacing: -.02em;
+  }
+  .brand-kicker {
+    display: block;
+    margin-top: 4px;
+    color: var(--ink-dim);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
 
-  aside {
-    width: 330px; flex: none; border-left: 1px solid var(--line);
-    background: var(--panel); padding: 16px; overflow-y: auto;
+  .subject-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 18px;
+    border-left: 1px solid var(--line);
   }
-  aside h2 { font-size: 15px; margin: 0 0 6px; line-height: 1.3; }
-  aside .meta { font-size: 11px; color: var(--ink-dim); margin-bottom: 12px; }
-  aside p.summary { font-size: 13px; margin: 0 0 16px; }
-  aside h3 {
-    font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
-    color: var(--ink-dim); margin: 16px 0 7px; font-weight: 600;
+  .subject-wrap label {
+    color: var(--ink-dim);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
   }
-  aside ul { list-style: none; padding: 0; margin: 0; }
-  aside li { margin-bottom: 7px; font-size: 12px; }
-  aside a { color: #7cb3ff; }
-  .rel-type {
-    display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 999px;
-    border: 1px solid var(--line); color: var(--ink-dim); margin-right: 5px;
+  #subject-picker {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    padding: 7px 24px 7px 4px;
+    font-weight: 600;
+    cursor: pointer;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--ink-soft) 50%),
+      linear-gradient(135deg, var(--ink-soft) 50%, transparent 50%);
+    background-position: calc(100% - 8px) 50%, calc(100% - 4px) 50%;
+    background-size: 4px 4px, 4px 4px;
+    background-repeat: no-repeat;
   }
-  .rel-target {
-    background: none; border: none; color: var(--ink); cursor: pointer;
-    font: inherit; padding: 0; text-align: left; text-decoration: underline;
-    text-decoration-color: var(--line);
-  }
-  .empty { color: var(--ink-dim); font-size: 12px; }
 
-  #legend {
-    position: absolute; left: 14px; bottom: 14px; background: rgba(23,30,38,.92);
-    border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; font-size: 11px;
+  .search {
+    position: relative;
+    width: min(390px, 34vw);
+    margin-left: auto;
   }
-  #legend div { display: flex; align-items: center; gap: 7px; margin-bottom: 3px; color: var(--ink-dim); }
-  #legend div:last-child { margin-bottom: 0; }
-  #legend svg { width: 26px; height: 8px; }
+  .search::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    border: 1.5px solid var(--ink-dim);
+    border-radius: 50%;
+    transform: translateY(-58%);
+  }
+  .search::after {
+    content: "";
+    position: absolute;
+    left: 24px;
+    top: 53%;
+    width: 6px;
+    height: 1.5px;
+    background: var(--ink-dim);
+    transform: rotate(45deg);
+    transform-origin: left center;
+  }
+  #search-input {
+    width: 100%;
+    height: 40px;
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, .045);
+    color: var(--ink);
+    padding: 0 42px;
+    transition: border-color .2s, background .2s;
+  }
+  #search-input::placeholder { color: var(--ink-dim); }
+  #search-input:focus {
+    outline: none;
+    border-color: rgba(85, 228, 209, .48);
+    background: rgba(255, 255, 255, .07);
+  }
+  .search-key {
+    position: absolute;
+    right: 11px;
+    top: 9px;
+    padding: 2px 6px;
+    color: var(--ink-dim);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    font-size: 10px;
+  }
+  .search-results {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    right: 0;
+    display: none;
+    max-height: 350px;
+    overflow: auto;
+    padding: 7px;
+    border: 1px solid var(--line-strong);
+    border-radius: 13px;
+    background: var(--glass-strong);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(20px);
+  }
+  .search-results.open { display: block; }
+  .search-result {
+    display: block;
+    width: 100%;
+    padding: 10px 11px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+  }
+  .search-result:hover,
+  .search-result.active { background: rgba(255, 255, 255, .07); }
+  .search-result strong { display: block; font-size: 13px; }
+  .search-result span { color: var(--ink-dim); font-size: 11px; }
+
+  .top-action {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .035);
+    padding: 9px 12px;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .top-action:hover { border-color: var(--line-strong); color: var(--ink); }
+
+  .workspace {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: var(--rail-width) minmax(340px, 1fr) var(--panel-width);
+  }
+
+  .rail {
+    position: relative;
+    z-index: 12;
+    overflow-y: auto;
+    padding: 24px 18px 20px;
+    border-right: 1px solid var(--line);
+    background: linear-gradient(90deg, rgba(6, 17, 23, .94), rgba(6, 17, 23, .72));
+    scrollbar-width: thin;
+  }
+  .section-label {
+    margin: 0 0 11px;
+    color: var(--ink-dim);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+  }
+  .overview-card {
+    margin-bottom: 24px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background:
+      radial-gradient(circle at 100% 0, rgba(85, 228, 209, .11), transparent 52%),
+      rgba(255, 255, 255, .028);
+  }
+  .overview-card h2 {
+    margin: 0 0 7px;
+    font: 700 23px/1.1 "Manrope", sans-serif;
+    letter-spacing: -.035em;
+  }
+  .overview-card p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .overview-stats {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+  .overview-stats div { flex: 1; }
+  .overview-stats strong {
+    display: block;
+    font: 700 16px/1 "Manrope", sans-serif;
+  }
+  .overview-stats span { color: var(--ink-dim); font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
+
+  .angle-list {
+    display: grid;
+    gap: 5px;
+    margin-bottom: 24px;
+  }
+  .angle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 38px;
+    padding: 7px 9px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--ink-soft);
+    text-align: left;
+    cursor: pointer;
+  }
+  .angle:hover { background: rgba(255, 255, 255, .04); }
+  .angle[aria-pressed="true"] {
+    border-color: color-mix(in srgb, var(--angle-color) 46%, transparent);
+    background: color-mix(in srgb, var(--angle-color) 11%, transparent);
+    color: var(--ink);
+  }
+  .angle-dot {
+    width: 7px;
+    height: 7px;
+    margin-right: 10px;
+    border-radius: 50%;
+    background: var(--angle-color);
+    box-shadow: 0 0 10px var(--angle-color);
+  }
+  .angle-count {
+    margin-left: auto;
+    color: var(--ink-dim);
+    font-size: 10px;
+  }
+
+  .place-list { display: grid; gap: 5px; }
+  .place {
+    position: relative;
+    width: 100%;
+    padding: 10px 10px 10px 27px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--ink-soft);
+    text-align: left;
+    cursor: pointer;
+  }
+  .place::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 15px;
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--place-color, var(--aqua));
+    border-radius: 50%;
+  }
+  .place:hover { background: rgba(255, 255, 255, .04); color: var(--ink); }
+  .place.selected {
+    border-color: var(--line);
+    background: rgba(255, 255, 255, .06);
+    color: var(--ink);
+  }
+  .place strong { display: block; font-size: 12px; font-weight: 600; }
+  .place small { display: block; margin-top: 2px; color: var(--ink-dim); font-size: 10px; }
+
+  .globe-stage {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    cursor: grab;
+    touch-action: none;
+    isolation: isolate;
+  }
+  .globe-stage.dragging { cursor: grabbing; }
+  .globe-stage::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(26, 121, 134, .12), transparent 42%),
+      radial-gradient(circle at 20% 80%, rgba(39, 72, 100, .1), transparent 34%);
+  }
+  #globe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .globe-fallback {
+    position: absolute;
+    inset: 30% 18%;
+    display: none;
+    place-items: center;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+
+  .crumbs {
+    position: absolute;
+    z-index: 8;
+    top: 19px;
+    left: 22px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+    pointer-events: none;
+  }
+  .crumbs button {
+    overflow: hidden;
+    max-width: 190px;
+    padding: 5px 8px;
+    border: 0;
+    border-radius: 7px;
+    background: rgba(6, 17, 23, .46);
+    color: var(--ink-soft);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    pointer-events: auto;
+    backdrop-filter: blur(8px);
+  }
+  .crumbs button:last-of-type { color: var(--ink); }
+  .crumb-sep { color: var(--ink-dim); font-size: 11px; }
+
+  .level-readout {
+    position: absolute;
+    z-index: 7;
+    top: 58px;
+    left: 29px;
+    color: var(--ink-dim);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .level-readout strong { color: var(--aqua); }
+
+  .node-pins {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+  }
+  .pin {
+    --pin-color: var(--aqua);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    max-width: 170px;
+    padding: 7px 10px 7px 8px;
+    border: 1px solid rgba(221, 248, 246, .3);
+    border-radius: 999px;
+    background: rgba(6, 18, 24, .84);
+    color: var(--ink);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .3);
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    transition: opacity .18s, border-color .18s, filter .18s;
+    pointer-events: auto;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+  }
+  .pin.visible { opacity: 1; }
+  .pin.dimmed { opacity: .17; filter: grayscale(.8); }
+  .pin.selected {
+    border-color: var(--pin-color);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--pin-color) 18%, transparent), 0 10px 30px rgba(0, 0, 0, .42);
+  }
+  .pin-orb {
+    width: 9px;
+    height: 9px;
+    flex: none;
+    border: 2px solid rgba(255, 255, 255, .75);
+    border-radius: 50%;
+    background: var(--pin-color);
+    box-shadow: 0 0 12px var(--pin-color);
+  }
+  .pin-label {
+    overflow: hidden;
+    font-size: 11px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .globe-toolbar {
+    position: absolute;
+    z-index: 9;
+    right: 18px;
+    top: 20px;
+    display: grid;
+    gap: 7px;
+  }
+  .tool-button {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: rgba(7, 19, 26, .74);
+    color: var(--ink-soft);
+    font-size: 18px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+  }
+  .tool-button:hover { border-color: var(--line-strong); color: var(--ink); }
+  .tool-button.reset { font-size: 12px; }
+
+  .globe-hint {
+    position: absolute;
+    z-index: 7;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 8px 13px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(6, 17, 23, .66);
+    color: var(--ink-dim);
+    font-size: 10px;
+    white-space: nowrap;
+    pointer-events: none;
+    backdrop-filter: blur(10px);
+  }
+  .globe-hint span { color: var(--ink-soft); }
+
+  .detail {
+    position: relative;
+    z-index: 15;
+    overflow-y: auto;
+    border-left: 1px solid var(--line);
+    background:
+      linear-gradient(180deg, rgba(13, 32, 41, .98), rgba(7, 20, 27, .98));
+    scrollbar-width: thin;
+  }
+  .detail-inner { min-height: 100%; padding: 27px 28px 38px; }
+  .detail-topline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .detail-kicker {
+    color: var(--aqua);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .verified {
+    margin-left: auto;
+    color: var(--ink-dim);
+    font-size: 9px;
+  }
+  .detail h1 {
+    margin: 0;
+    font: 700 clamp(25px, 2.4vw, 34px)/1.08 "Manrope", sans-serif;
+    letter-spacing: -.045em;
+  }
+  .angle-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 12px;
+  }
+  .angle-tag {
+    padding: 3px 7px;
+    border: 1px solid color-mix(in srgb, var(--tag-color) 38%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--tag-color) 9%, transparent);
+    color: color-mix(in srgb, var(--tag-color) 82%, white);
+    font-size: 9px;
+    font-weight: 600;
+  }
+  .lede {
+    margin: 17px 0 0;
+    color: #d9e7e8;
+    font-size: 16px;
+    line-height: 1.52;
+  }
+  .fact-card {
+    margin: 22px 0;
+    padding: 16px 17px;
+    border: 1px solid rgba(85, 228, 209, .23);
+    border-radius: 13px;
+    background:
+      linear-gradient(130deg, rgba(85, 228, 209, .11), rgba(85, 228, 209, .025));
+  }
+  .fact-card span,
+  .story-section h2,
+  .sources h2 {
+    display: block;
+    margin: 0 0 6px;
+    color: var(--ink-dim);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .fact-card strong {
+    display: block;
+    color: var(--gold);
+    font: 600 16px/1.35 "Manrope", sans-serif;
+  }
+  .story-section {
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+  }
+  .story-section p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 13px;
+    line-height: 1.68;
+  }
+  .story-section.wonder p {
+    padding-left: 14px;
+    border-left: 2px solid var(--aqua-2);
+    color: #d7e3e5;
+    font-style: italic;
+  }
+  .glossary { display: grid; gap: 6px; }
+  .glossary details {
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, .025);
+  }
+  .glossary summary {
+    padding: 9px 11px;
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .glossary details p { padding: 0 11px 10px; font-size: 11px; }
+  .zoom-deeper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 6px 0 20px;
+    padding: 13px 14px;
+    border: 1px solid rgba(85, 228, 209, .33);
+    border-radius: 11px;
+    background: rgba(85, 228, 209, .09);
+    color: #c9fffa;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .zoom-deeper:hover { background: rgba(85, 228, 209, .14); }
+  .zoom-deeper span { font-size: 17px; }
+  .relations { display: grid; gap: 7px; }
+  .relation {
+    width: 100%;
+    padding: 10px 11px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, .025);
+    color: var(--ink-soft);
+    text-align: left;
+    cursor: pointer;
+  }
+  .relation:hover { border-color: var(--line-strong); }
+  .relation-type { display: block; margin-bottom: 2px; color: var(--rel-color); font-size: 9px; text-transform: uppercase; }
+  .relation strong { font-size: 11px; }
+  .relation small { display: block; margin-top: 3px; color: var(--ink-dim); font-size: 10px; }
+  .sources {
+    margin-top: 10px;
+    padding-top: 19px;
+    border-top: 1px solid var(--line);
+  }
+  .sources a {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 8px 0;
+    color: var(--ink-soft);
+    font-size: 11px;
+    text-decoration: none;
+  }
+  .sources a:hover { color: var(--aqua); }
+  .source-index {
+    width: 19px;
+    height: 19px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--ink-dim);
+    font-size: 8px;
+  }
+  .empty { color: var(--ink-dim); font-size: 11px; }
+
+  .mobile-explore { display: none; }
+
+  .loading {
+    position: fixed;
+    z-index: 100;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: var(--night);
+    transition: opacity .5s, visibility .5s;
+  }
+  .loading.done { opacity: 0; visibility: hidden; }
+  .loading-globe {
+    width: 64px;
+    height: 64px;
+    border: 1px solid rgba(85, 228, 209, .34);
+    border-radius: 50%;
+    position: relative;
+    animation: breathe 1.7s ease-in-out infinite;
+    box-shadow: inset 0 0 24px rgba(85, 228, 209, .16);
+  }
+  .loading-globe::before {
+    content: "";
+    position: absolute;
+    inset: 8px 3px;
+    border: 1px solid rgba(85, 228, 209, .46);
+    border-radius: 50%;
+  }
+  .loading p {
+    margin: 15px 0 0;
+    color: var(--ink-dim);
+    font-size: 10px;
+    letter-spacing: .13em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  @keyframes breathe { 50% { transform: scale(1.07); opacity: .7; } }
+
+  @media (max-width: 1120px) {
+    :root { --rail-width: 236px; --panel-width: 350px; }
+    .overview-card { padding: 13px; }
+    .detail-inner { padding-inline: 22px; }
+  }
+
+  @media (max-width: 900px) {
+    :root { --top-height: 64px; }
+    .workspace { grid-template-columns: minmax(0, 1fr) 350px; }
+    .rail { display: none; }
+    .brand-kicker, .subject-wrap label, .search-key { display: none; }
+    .brand-title { font-size: 13px; }
+    .topbar { gap: 12px; padding-inline: 14px; }
+    .subject-wrap { padding-left: 12px; }
+    .search { width: auto; flex: 1; }
+    .mobile-explore {
+      position: absolute;
+      z-index: 9;
+      left: 18px;
+      bottom: 18px;
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(7, 19, 26, .82);
+      padding: 9px 12px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+    .globe-hint { bottom: 18px; }
+  }
+
+  @media (max-width: 680px) {
+    :root { --top-height: 60px; }
+    .app { height: 100dvh; }
+    .workspace { display: block; position: relative; }
+    .globe-stage { height: 100%; }
+    .detail {
+      position: absolute;
+      inset: auto 0 0;
+      max-height: 62%;
+      border-top: 1px solid var(--line-strong);
+      border-left: 0;
+      border-radius: 22px 22px 0 0;
+      box-shadow: 0 -25px 60px rgba(0, 0, 0, .35);
+      transform: translateY(calc(100% - 104px));
+      transition: transform .34s ease;
+    }
+    .detail.open { transform: translateY(0); }
+    .detail::before {
+      content: "";
+      position: sticky;
+      z-index: 2;
+      top: 9px;
+      display: block;
+      width: 38px;
+      height: 4px;
+      margin: 9px auto -8px;
+      border-radius: 999px;
+      background: var(--line-strong);
+    }
+    .detail-inner { padding: 25px 21px 35px; }
+    .detail h1 { font-size: 24px; }
+    .lede { display: -webkit-box; font-size: 13px; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .detail.open .lede { display: block; }
+    .top-action, .brand-title, .subject-wrap { display: none; }
+    .brand { width: 36px; }
+    .search { margin-left: 0; }
+    .search-results { position: fixed; top: 55px; left: 10px; right: 10px; }
+    .crumbs { left: 12px; top: 12px; right: 54px; }
+    .crumbs button { max-width: 110px; font-size: 11px; }
+    .level-readout { left: 19px; top: 49px; }
+    .globe-toolbar { right: 12px; top: 12px; }
+    .tool-button { width: 34px; height: 34px; }
+    .globe-hint { display: none; }
+    .mobile-explore { display: none; }
+    .pin { max-width: 125px; padding: 6px 8px 6px 7px; }
+    .pin-label { font-size: 9px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
 </style>
 </head>
 <body>
-
-<header>
-  <h1>Knowledge Globe</h1>
-  <select id="subject-picker" aria-label="Subject"></select>
-  <div id="angles" role="group" aria-label="Angles"></div>
-</header>
-
-<nav id="crumbs" aria-label="Breadcrumb"></nav>
-
-<main>
-  <div id="canvas-wrap">
-    <svg id="canvas" role="img" aria-label="Subject map"></svg>
-    <div id="legend"></div>
+<div class="loading" id="loading" role="status" aria-live="polite">
+  <div>
+    <div class="loading-globe" aria-hidden="true"></div>
+    <p>Preparing the world</p>
   </div>
-  <aside id="detail"></aside>
-</main>
+</div>
 
-<script>
+<div class="app">
+  <header class="topbar">
+    <div class="brand" aria-label="Knowledge Globe">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <div>
+        <div class="brand-title">Knowledge Globe</div>
+        <span class="brand-kicker">See how everything connects</span>
+      </div>
+    </div>
+
+    <div class="subject-wrap">
+      <label for="subject-picker">World</label>
+      <select id="subject-picker" aria-label="Choose a subject"></select>
+    </div>
+
+    <div class="search">
+      <label class="sr-only" for="search-input">Search this world</label>
+      <input id="search-input" type="search" autocomplete="off" placeholder="Search this world…" aria-expanded="false" aria-controls="search-results">
+      <span class="search-key" aria-hidden="true">/</span>
+      <div class="search-results" id="search-results" role="listbox"></div>
+    </div>
+
+    <button class="top-action" id="surprise-button" type="button">Surprise me</button>
+  </header>
+
+  <main class="workspace">
+    <aside class="rail" aria-label="Explore the subject">
+      <p class="section-label">You are exploring</p>
+      <section class="overview-card" id="overview-card"></section>
+
+      <p class="section-label">View through a lens</p>
+      <div class="angle-list" id="angle-list" role="group" aria-label="Knowledge lenses"></div>
+
+      <p class="section-label">Explore this level</p>
+      <div class="place-list" id="place-list"></div>
+    </aside>
+
+    <section class="globe-stage" id="globe-stage" aria-label="Interactive 3D knowledge globe">
+      <canvas id="globe"></canvas>
+      <div class="globe-fallback" id="globe-fallback">
+        <p>The 3D view is unavailable in this browser. You can still explore every topic from the reading panel.</p>
+      </div>
+      <nav class="crumbs" id="crumbs" aria-label="Current knowledge path"></nav>
+      <div class="level-readout" id="level-readout"></div>
+      <div class="node-pins" id="node-pins"></div>
+      <div class="globe-toolbar" aria-label="Globe controls">
+        <button class="tool-button" id="zoom-in" type="button" aria-label="Zoom in">+</button>
+        <button class="tool-button" id="zoom-out" type="button" aria-label="Zoom out">−</button>
+        <button class="tool-button reset" id="reset-view" type="button" aria-label="Reset globe view">Reset</button>
+      </div>
+      <div class="globe-hint" aria-hidden="true">
+        <span>Drag</span> to turn
+        <span>Scroll</span> to zoom
+        <span>Select a pin</span> to learn
+      </div>
+      <button class="mobile-explore" id="mobile-explore" type="button">Explore topics</button>
+    </section>
+
+    <article class="detail" id="detail" aria-live="polite"></article>
+  </main>
+</div>
+
+<script type="module">
+import * as THREE from "/static/vendor/three.module.min.js";
+
 const EDGE_STYLE = {
-  "causes":          { color: "#EF4444", dash: "" },
-  "enables":         { color: "#22C55E", dash: "" },
-  "depends-on":      { color: "#3B82F6", dash: "5 3" },
-  "conflicts-with":  { color: "#F97316", dash: "2 3" },
-  "precedes":        { color: "#A855F7", dash: "8 4" },
-  "correlates-with": { color: "#64748B", dash: "1 4" },
+  "causes":          { color: "#ff746c", label: "causes" },
+  "enables":         { color: "#65e696", label: "makes possible" },
+  "depends-on":      { color: "#64a8ff", label: "depends on" },
+  "conflicts-with":  { color: "#ffad5d", label: "competes with" },
+  "precedes":        { color: "#bd86ff", label: "comes before" },
+  "correlates-with": { color: "#8da4af", label: "changes alongside" },
 };
-const CARD_W = 168, CARD_H = 92;
 
 const state = {
   subject: null,
@@ -158,82 +912,441 @@ const state = {
   focusId: null,
   selectedId: null,
   activeAngle: null,
+  markerVectors: new Map(),
+  pointer: null,
+  moved: false,
+  cameraDistance: 4.25,
+  cameraTarget: 4.25,
+  autoRotate: true,
+  reducedMotion: matchMedia("(prefers-reduced-motion: reduce)").matches,
 };
 
 const $ = (id) => document.getElementById(id);
-const svgEl = (tag, attrs) => {
-  const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
-  for (const [k, v] of Object.entries(attrs || {})) el.setAttribute(k, v);
-  return el;
-};
+const stage = $("globe-stage");
+let scene, camera, renderer, globeGroup, planet, atmosphere, starfield, arcGroup;
+let lastFrame = performance.now();
+
+function angle(id) {
+  return state.subject?.angles.find((item) => item.id === id);
+}
+
+function nodeColor(node) {
+  return angle((node.angle_tags || [])[0])?.color || "#55e4d1";
+}
+
+function isDimmed(node) {
+  return state.activeAngle && !(node.angle_tags || []).includes(state.activeAngle);
+}
+
+function currentNodes() {
+  return state.childrenOf.get(state.focusId) || [];
+}
 
 async function boot() {
-  const list = await (await fetch("/api/subjects")).json();
+  const list = await fetchJSON("/api/subjects");
   const picker = $("subject-picker");
-  picker.innerHTML = "";
-  for (const s of list) {
-    const opt = document.createElement("option");
-    opt.value = s.id;
-    opt.textContent = s.title;
-    picker.append(opt);
-  }
-  picker.onchange = () => loadSubject(picker.value);
-  drawLegend();
+  picker.replaceChildren(...list.map((subject) => {
+    const option = document.createElement("option");
+    option.value = subject.id;
+    option.textContent = subject.title;
+    return option;
+  }));
+  picker.addEventListener("change", () => loadSubject(picker.value));
+  bindUI();
+  initGlobe();
   if (list.length) await loadSubject(list[0].id);
-  addEventListener("resize", render);
+  $("loading").classList.add("done");
+}
+
+async function fetchJSON(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Could not load ${url}`);
+  return response.json();
 }
 
 async function loadSubject(id) {
-  state.subject = await (await fetch("/api/subjects/" + encodeURIComponent(id))).json();
-  state.byId = new Map(state.subject.nodes.map((n) => [n.id, n]));
+  state.subject = await fetchJSON("/api/subjects/" + encodeURIComponent(id));
+  state.byId = new Map(state.subject.nodes.map((node) => [node.id, node]));
   state.childrenOf = new Map();
-  for (const n of state.subject.nodes) {
-    if (n.parent === null) continue;
-    if (!state.childrenOf.has(n.parent)) state.childrenOf.set(n.parent, []);
-    state.childrenOf.get(n.parent).push(n);
+  for (const node of state.subject.nodes) {
+    if (node.parent === null) continue;
+    if (!state.childrenOf.has(node.parent)) state.childrenOf.set(node.parent, []);
+    state.childrenOf.get(node.parent).push(node);
   }
-  const root = state.subject.nodes.find((n) => n.parent === null);
+  const root = state.subject.nodes.find((node) => node.parent === null);
   state.focusId = root.id;
   state.selectedId = root.id;
   state.activeAngle = null;
-  drawAngles();
-  render();
+  state.cameraTarget = 4.25;
+  drawStaticUI();
+  rebuildLevel();
+  selectNode(root.id, false);
 }
 
-function drawAngles() {
-  const box = $("angles");
-  box.innerHTML = "";
-  for (const angle of state.subject.angles) {
-    const chip = document.createElement("button");
-    chip.className = "chip";
-    chip.style.color = angle.color;
-    chip.setAttribute("aria-pressed", "false");
-    chip.innerHTML = `<span class="dot"></span>${angle.label}`;
-    chip.onclick = () => {
-      state.activeAngle = state.activeAngle === angle.id ? null : angle.id;
-      drawAngleStates();
-      render();
-    };
-    chip.dataset.angle = angle.id;
-    box.append(chip);
+function bindUI() {
+  $("zoom-in").addEventListener("click", () => changeZoom(-.42));
+  $("zoom-out").addEventListener("click", () => changeZoom(.42));
+  $("reset-view").addEventListener("click", resetView);
+  $("surprise-button").addEventListener("click", surpriseMe);
+  $("mobile-explore").addEventListener("click", () => {
+    const nodes = currentNodes();
+    if (nodes.length) selectNode(nodes[0].id);
+  });
+
+  stage.addEventListener("wheel", (event) => {
+    event.preventDefault();
+    state.autoRotate = false;
+    changeZoom(event.deltaY * .0028);
+  }, { passive: false });
+
+  stage.addEventListener("pointerdown", (event) => {
+    if (event.target.closest("button")) return;
+    state.pointer = { x: event.clientX, y: event.clientY };
+    state.moved = false;
+    state.autoRotate = false;
+    stage.classList.add("dragging");
+    stage.setPointerCapture(event.pointerId);
+  });
+  stage.addEventListener("pointermove", (event) => {
+    if (!state.pointer) return;
+    const dx = event.clientX - state.pointer.x;
+    const dy = event.clientY - state.pointer.y;
+    if (Math.abs(dx) + Math.abs(dy) > 2) state.moved = true;
+    globeGroup.rotation.y += dx * .006;
+    globeGroup.rotation.x = THREE.MathUtils.clamp(globeGroup.rotation.x + dy * .004, -.65, .65);
+    state.pointer = { x: event.clientX, y: event.clientY };
+  });
+  const endDrag = () => {
+    state.pointer = null;
+    stage.classList.remove("dragging");
+  };
+  stage.addEventListener("pointerup", endDrag);
+  stage.addEventListener("pointercancel", endDrag);
+
+  const detail = $("detail");
+  detail.addEventListener("click", (event) => {
+    if (innerWidth <= 680 && event.target === detail) detail.classList.toggle("open");
+  });
+
+  setupSearch();
+  addEventListener("resize", resizeGlobe);
+  addEventListener("keydown", (event) => {
+    if (event.key === "/" && document.activeElement !== $("search-input")) {
+      event.preventDefault();
+      $("search-input").focus();
+    }
+    if (event.key === "Escape") closeSearch();
+  });
+}
+
+function initGlobe() {
+  try {
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(37, 1, .1, 100);
+    camera.position.z = state.cameraDistance;
+    renderer = new THREE.WebGLRenderer({
+      canvas: $("globe"),
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+    globeGroup = new THREE.Group();
+    scene.add(globeGroup);
+
+    const planetMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uDeep: { value: new THREE.Color("#052f46") },
+        uShallow: { value: new THREE.Color("#0b7f8e") },
+        uGlow: { value: new THREE.Color("#55e4d1") },
+      },
+      vertexShader: `
+        varying vec3 vNormal;
+        varying vec3 vWorld;
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          vNormal = normalize(normalMatrix * normal);
+          vec4 world = modelMatrix * vec4(position, 1.0);
+          vWorld = world.xyz;
+          gl_Position = projectionMatrix * viewMatrix * world;
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        uniform vec3 uDeep;
+        uniform vec3 uShallow;
+        uniform vec3 uGlow;
+        varying vec3 vNormal;
+        varying vec3 vWorld;
+        varying vec2 vUv;
+
+        float lines(float value, float count, float width) {
+          float wave = abs(sin(value * 3.14159265 * count));
+          return 1.0 - smoothstep(0.0, width, wave);
+        }
+
+        void main() {
+          vec3 lightDir = normalize(vec3(-0.7, 0.65, 1.1));
+          float light = max(dot(vNormal, lightDir), 0.0);
+          float fresnel = pow(1.0 - max(dot(vNormal, vec3(0.0, 0.0, 1.0)), 0.0), 2.5);
+          float current = sin(vUv.y * 50.0 + sin(vUv.x * 19.0 + uTime * 0.08) * 2.2) * .5 + .5;
+          float meridian = lines(vUv.x, 18.0, .055);
+          float parallel = lines(vUv.y, 9.0, .055);
+          float grid = max(meridian, parallel) * .09;
+          vec3 color = mix(uDeep, uShallow, light * .72 + current * .09);
+          color += uGlow * (fresnel * .25 + grid);
+          color *= .44 + light * .76;
+          gl_FragColor = vec4(color, 1.0);
+        }
+      `,
+    });
+    planet = new THREE.Mesh(new THREE.SphereGeometry(1, 96, 96), planetMaterial);
+    globeGroup.add(planet);
+
+    const wire = new THREE.Mesh(
+      new THREE.SphereGeometry(1.006, 36, 18),
+      new THREE.MeshBasicMaterial({
+        color: "#8cece0",
+        transparent: true,
+        opacity: .045,
+        wireframe: true,
+      })
+    );
+    globeGroup.add(wire);
+
+    atmosphere = new THREE.Mesh(
+      new THREE.SphereGeometry(1.09, 64, 64),
+      new THREE.ShaderMaterial({
+        transparent: true,
+        side: THREE.BackSide,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        vertexShader: `
+          varying vec3 vNormal;
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vNormal;
+          void main() {
+            float intensity = pow(0.72 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.0);
+            gl_FragColor = vec4(0.22, 0.87, 0.86, 1.0) * intensity;
+          }
+        `,
+      })
+    );
+    scene.add(atmosphere);
+
+    starfield = createStars();
+    scene.add(starfield);
+    arcGroup = new THREE.Group();
+    globeGroup.add(arcGroup);
+    resizeGlobe();
+    renderer.setAnimationLoop(animate);
+  } catch (error) {
+    console.error(error);
+    $("globe-fallback").style.display = "grid";
   }
 }
 
-function drawAngleStates() {
-  for (const chip of $("angles").children) {
-    chip.setAttribute("aria-pressed", String(chip.dataset.angle === state.activeAngle));
+function createStars() {
+  const count = 950;
+  const positions = new Float32Array(count * 3);
+  for (let i = 0; i < count; i += 1) {
+    const radius = 9 + Math.random() * 20;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+    positions[i * 3 + 1] = radius * Math.cos(phi);
+    positions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  return new THREE.Points(
+    geometry,
+    new THREE.PointsMaterial({ color: "#d7f2f2", size: .018, transparent: true, opacity: .7 })
+  );
+}
+
+function resizeGlobe() {
+  if (!renderer) return;
+  const rect = stage.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  renderer.setSize(rect.width, rect.height, false);
+  camera.aspect = rect.width / rect.height;
+  camera.updateProjectionMatrix();
+}
+
+function animate(now) {
+  const dt = Math.min((now - lastFrame) / 1000, .05);
+  lastFrame = now;
+  if (state.autoRotate && !state.reducedMotion) globeGroup.rotation.y += dt * .055;
+  state.cameraDistance += (state.cameraTarget - state.cameraDistance) * Math.min(1, dt * 7);
+  camera.position.z = state.cameraDistance;
+  planet.material.uniforms.uTime.value = now / 1000;
+  starfield.rotation.y += dt * .002;
+  updatePins();
+  renderer.render(scene, camera);
+}
+
+function changeZoom(delta) {
+  state.cameraTarget = THREE.MathUtils.clamp(state.cameraTarget + delta, 2.45, 5.8);
+}
+
+function resetView() {
+  state.autoRotate = !state.reducedMotion;
+  state.cameraTarget = state.byId.get(state.focusId)?.zoom_level ? 3.1 : 4.25;
+  globeGroup.rotation.set(.12, -.35, 0);
+}
+
+function markerVector(index, total) {
+  if (total === 1) return new THREE.Vector3(0, .2, 1).normalize();
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  const y = 1 - (index / Math.max(1, total - 1)) * 1.65;
+  const radius = Math.sqrt(Math.max(0, 1 - y * y));
+  const theta = golden * index - .5;
+  return new THREE.Vector3(Math.cos(theta) * radius, y, Math.sin(theta) * radius).normalize();
+}
+
+function rebuildLevel() {
+  if (!globeGroup) return;
+  const nodes = currentNodes();
+  state.markerVectors.clear();
+  nodes.forEach((node, index) => state.markerVectors.set(node.id, markerVector(index, nodes.length)));
+  drawPins(nodes);
+  drawPlaces(nodes);
+  drawArcs(nodes);
+  drawCrumbs();
+  const focus = state.byId.get(state.focusId);
+  $("level-readout").innerHTML = `Depth <strong>${focus.zoom_level + 1}</strong> · ${nodes.length || "final"} ${nodes.length === 1 ? "path" : "paths"}`;
+}
+
+function drawPins(nodes) {
+  const box = $("node-pins");
+  box.replaceChildren(...nodes.map((node) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "pin";
+    button.dataset.id = node.id;
+    button.style.setProperty("--pin-color", nodeColor(node));
+    button.setAttribute("aria-label", `Open ${node.keyword}`);
+    button.innerHTML = `<span class="pin-orb"></span><span class="pin-label"></span>`;
+    button.querySelector(".pin-label").textContent = node.keyword;
+    button.addEventListener("click", () => selectNode(node.id));
+    return button;
+  }));
+  updatePinStates();
+}
+
+function updatePins() {
+  if (!renderer || !state.markerVectors.size) return;
+  const rect = renderer.domElement.getBoundingClientRect();
+  globeGroup.updateMatrixWorld();
+  for (const pin of $("node-pins").children) {
+    const local = state.markerVectors.get(pin.dataset.id);
+    if (!local) continue;
+    const world = local.clone().multiplyScalar(1.08).applyMatrix4(globeGroup.matrixWorld);
+    const visible = world.z > .08;
+    const screen = world.clone().project(camera);
+    const x = (screen.x * .5 + .5) * rect.width;
+    const y = (-screen.y * .5 + .5) * rect.height;
+    pin.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) scale(${THREE.MathUtils.clamp(5 / state.cameraDistance, .86, 1.2)})`;
+    pin.classList.toggle("visible", visible);
+    pin.tabIndex = visible ? 0 : -1;
   }
 }
 
-function drawLegend() {
-  $("legend").innerHTML = Object.entries(EDGE_STYLE).map(([type, s]) => `
-    <div><svg viewBox="0 0 26 8"><line x1="1" y1="4" x2="25" y2="4"
-      stroke="${s.color}" stroke-width="2" stroke-dasharray="${s.dash}"/></svg>${type}</div>`).join("");
+function drawArcs(nodes) {
+  while (arcGroup.children.length) {
+    const child = arcGroup.children.pop();
+    child.geometry.dispose();
+    child.material.dispose();
+  }
+  const ids = new Set(nodes.map((node) => node.id));
+  const edges = state.subject.edges.filter((edge) => ids.has(edge.from) && ids.has(edge.to));
+  for (const edge of edges) {
+    const from = state.markerVectors.get(edge.from).clone().multiplyScalar(1.02);
+    const to = state.markerVectors.get(edge.to).clone().multiplyScalar(1.02);
+    const middle = from.clone().add(to).normalize().multiplyScalar(1.28);
+    const curve = new THREE.QuadraticBezierCurve3(from, middle, to);
+    const geometry = new THREE.BufferGeometry().setFromPoints(curve.getPoints(45));
+    const material = new THREE.LineBasicMaterial({
+      color: EDGE_STYLE[edge.type]?.color || "#8da4af",
+      transparent: true,
+      opacity: .42,
+    });
+    arcGroup.add(new THREE.Line(geometry, material));
+  }
 }
 
-const angleColor = (id) => (state.subject.angles.find((a) => a.id === id) || {}).color || "#666";
-const isDimmed = (node) =>
-  state.activeAngle !== null && !(node.angle_tags || []).includes(state.activeAngle);
+function drawStaticUI() {
+  const subject = state.subject;
+  $("overview-card").innerHTML = `
+    <h2></h2>
+    <p></p>
+    <div class="overview-stats">
+      <div><strong>${subject.nodes.length}</strong><span>discoveries</span></div>
+      <div><strong>${Math.max(...subject.nodes.map((node) => node.zoom_level)) + 1}</strong><span>depths</span></div>
+      <div><strong>${subject.edges.length}</strong><span>links</span></div>
+    </div>`;
+  $("overview-card").querySelector("h2").textContent = subject.title;
+  $("overview-card").querySelector("p").textContent = subject.summary;
+
+  const angleList = $("angle-list");
+  angleList.replaceChildren(...subject.angles.map((item) => {
+    const count = subject.nodes.filter((node) => node.angle_tags.includes(item.id)).length;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "angle";
+    button.dataset.angle = item.id;
+    button.style.setProperty("--angle-color", item.color);
+    button.setAttribute("aria-pressed", "false");
+    button.innerHTML = `<span class="angle-dot"></span><span></span><span class="angle-count">${count}</span>`;
+    button.children[1].textContent = item.label;
+    button.addEventListener("click", () => {
+      state.activeAngle = state.activeAngle === item.id ? null : item.id;
+      updateAngleStates();
+      updatePinStates();
+      drawPlaces(currentNodes());
+    });
+    return button;
+  }));
+}
+
+function updateAngleStates() {
+  for (const button of $("angle-list").children) {
+    button.setAttribute("aria-pressed", String(button.dataset.angle === state.activeAngle));
+  }
+}
+
+function updatePinStates() {
+  for (const pin of $("node-pins").children) {
+    const node = state.byId.get(pin.dataset.id);
+    pin.classList.toggle("selected", pin.dataset.id === state.selectedId);
+    pin.classList.toggle("dimmed", Boolean(isDimmed(node)));
+  }
+}
+
+function drawPlaces(nodes) {
+  const sorted = [...nodes].sort((a, b) => Number(isDimmed(a)) - Number(isDimmed(b)));
+  $("place-list").replaceChildren(...sorted.map((node) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "place" + (node.id === state.selectedId ? " selected" : "");
+    button.style.setProperty("--place-color", nodeColor(node));
+    const childCount = (state.childrenOf.get(node.id) || []).length;
+    button.innerHTML = `<strong></strong><small>${childCount ? `${childCount} paths inside` : "A closer look"}</small>`;
+    button.querySelector("strong").textContent = node.keyword;
+    button.addEventListener("click", () => selectNode(node.id));
+    return button;
+  }));
+}
 
 function ancestry(id) {
   const chain = [];
@@ -245,219 +1358,206 @@ function ancestry(id) {
   return chain;
 }
 
-function render() {
-  drawCrumbs();
-  drawCanvas();
-  drawDetail();
-}
-
 function drawCrumbs() {
   const box = $("crumbs");
-  box.innerHTML = "";
   const chain = ancestry(state.focusId);
-  chain.forEach((node, i) => {
-    if (i) {
-      const sep = document.createElement("span");
-      sep.className = "sep";
-      sep.textContent = "›";
-      box.append(sep);
+  box.replaceChildren();
+  chain.forEach((node, index) => {
+    if (index) {
+      const separator = document.createElement("span");
+      separator.className = "crumb-sep";
+      separator.textContent = "›";
+      box.append(separator);
     }
-    const btn = document.createElement("button");
-    btn.textContent = node.keyword;
-    if (i === chain.length - 1) btn.style.color = "var(--ink)";
-    btn.onclick = () => { state.focusId = node.id; state.selectedId = node.id; render(); };
-    box.append(btn);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = node.keyword;
+    button.addEventListener("click", () => enterNode(node.id));
+    box.append(button);
   });
 }
 
-function drawCanvas() {
-  const svg = $("canvas");
-  const wrap = $("canvas-wrap");
-  const W = wrap.clientWidth, H = wrap.clientHeight;
-  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-  svg.innerHTML = "";
+function selectNode(id, openMobile = true) {
+  state.selectedId = id;
+  updatePinStates();
+  drawPlaces(currentNodes());
+  drawDetail(state.byId.get(id));
+  if (openMobile && innerWidth <= 680) $("detail").classList.add("open");
+}
 
-  const focus = state.byId.get(state.focusId);
-  const kids = state.childrenOf.get(focus.id) || [];
-  const cx = W / 2, cy = H / 2;
-  const rx = Math.max(140, W / 2 - CARD_W / 2 - 24);
-  const ry = Math.max(110, H / 2 - CARD_H / 2 - 24);
-
-  const positions = new Map([[focus.id, { x: cx, y: cy }]]);
-  kids.forEach((kid, i) => {
-    const angle = (i / kids.length) * Math.PI * 2 - Math.PI / 2;
-    positions.set(kid.id, {
-      x: cx + Math.cos(angle) * rx,
-      y: cy + Math.sin(angle) * ry,
-    });
-  });
-
-  const edgeLayer = svgEl("g");
-  const nodeLayer = svgEl("g");
-  svg.append(edgeLayer, nodeLayer);
-
-  for (const edge of state.subject.edges) {
-    const a = positions.get(edge.from), b = positions.get(edge.to);
-    if (!a || !b) continue;
-    const style = EDGE_STYLE[edge.type] || { color: "#666", dash: "" };
-    const faded =
-      state.activeAngle !== null &&
-      (isDimmed(state.byId.get(edge.from)) || isDimmed(state.byId.get(edge.to)));
-    const attrs = { x1: a.x, y1: a.y, x2: b.x, y2: b.y };
-    edgeLayer.append(svgEl("line", {
-      ...attrs, class: "edge" + (faded ? " faded" : ""),
-      stroke: style.color, "stroke-dasharray": style.dash,
-    }));
-    const hit = svgEl("line", { ...attrs, class: "edge-hit" });
-    const tip = svgEl("title");
-    tip.textContent = edge.label ? `${edge.type}: ${edge.label}` : edge.type;
-    hit.append(tip);
-    const label = svgEl("text", {
-      class: "edge-label", x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 - 5,
-      "text-anchor": "middle",
-    });
-    label.textContent = edge.label || edge.type;
-    edgeLayer.append(hit, label);
+function enterNode(id) {
+  const node = state.byId.get(id);
+  if (!node) return;
+  state.focusId = id;
+  state.selectedId = id;
+  state.activeAngle = null;
+  state.cameraTarget = node.zoom_level === 0 ? 4.25 : 3.05;
+  updateAngleStates();
+  if (!state.reducedMotion) {
+    globeGroup.rotation.set(.1, -.45, 0);
+    state.autoRotate = true;
   }
-
-  for (const [id, pos] of positions) {
-    nodeLayer.append(nodeCard(state.byId.get(id), pos, id === focus.id));
-  }
+  rebuildLevel();
+  drawDetail(node);
 }
 
-function nodeCard(node, pos, isFocus) {
-  const w = isFocus ? CARD_W + 26 : CARD_W;
-  const fo = svgEl("foreignObject", {
-    x: pos.x - w / 2, y: pos.y - CARD_H / 2, width: w, height: CARD_H,
-  });
-  const card = document.createElement("div");
-  card.className = "node-card"
-    + (isFocus ? " focus" : "")
-    + (isDimmed(node) ? " dimmed" : "")
-    + (node.id === state.selectedId ? " selected" : "");
-  card.innerHTML = `
-    <div class="angle-bar">${(node.angle_tags || [])
-      .map((t) => `<i style="background:${angleColor(t)}"></i>`).join("")}</div>
-    <div class="node-kw"></div>
-    <div class="node-sum"></div>`;
-  card.querySelector(".node-kw").textContent = node.keyword;
-  card.querySelector(".node-sum").textContent = node.summary || "";
-  card.onclick = () => {
-    state.selectedId = node.id;
-    if ((state.childrenOf.get(node.id) || []).length && node.id !== state.focusId) {
-      state.focusId = node.id;
-    }
-    render();
-  };
-  fo.append(card);
-  return fo;
-}
-
-function drawDetail() {
-  const node = state.byId.get(state.selectedId);
+function drawDetail(node) {
   const kids = state.childrenOf.get(node.id) || [];
-  const rels = state.subject.edges
-    .filter((e) => e.from === node.id || e.to === node.id)
-    .map((e) => {
-      const otherId = e.from === node.id ? e.to : e.from;
-      return { type: e.type, label: e.label, outgoing: e.from === node.id, other: state.byId.get(otherId) };
+  const tags = (node.angle_tags || []).map((id) => angle(id)).filter(Boolean);
+  const relations = state.subject.edges
+    .filter((edge) => edge.from === node.id || edge.to === node.id)
+    .slice(0, 4)
+    .map((edge) => {
+      const otherId = edge.from === node.id ? edge.to : edge.from;
+      return { edge, other: state.byId.get(otherId), outgoing: edge.from === node.id };
     });
-  const angles = (node.angle_tags || [])
-    .map((t) => (state.subject.angles.find((a) => a.id === t) || {}).label)
-    .filter(Boolean);
-
+  const glossary = node.glossary || [];
+  const sources = node.sources || [];
   const box = $("detail");
-  box.innerHTML = "";
-  const h2 = document.createElement("h2");
-  h2.textContent = node.keyword;
-  const meta = document.createElement("div");
-  meta.className = "meta";
-  meta.textContent = `zoom level ${node.zoom_level}`
-    + (angles.length ? " · " + angles.join(" · ") : "");
-  const summary = document.createElement("p");
-  summary.className = "summary";
-  summary.textContent = node.summary || "";
-  box.append(h2, meta, summary);
+  box.innerHTML = `
+    <div class="detail-inner">
+      <div class="detail-topline">
+        <span class="detail-kicker">${node.zoom_level === 0 ? "The big picture" : `Depth ${node.zoom_level + 1}`}</span>
+        <span class="verified">${sources.length ? "Source-checked" : "Overview"}</span>
+      </div>
+      <h1></h1>
+      <div class="angle-tags"></div>
+      <p class="lede"></p>
+      ${node.key_fact ? `<div class="fact-card"><span>One remarkable fact</span><strong></strong></div>` : ""}
+      ${node.explainer ? `<section class="story-section"><h2>Look closer</h2><p class="explainer"></p></section>` : ""}
+      ${node.why_it_matters ? `<section class="story-section"><h2>Why it matters</h2><p class="why"></p></section>` : ""}
+      ${node.wonder ? `<section class="story-section wonder"><h2>Keep wondering</h2><p class="wonder-text"></p></section>` : ""}
+      ${glossary.length ? `<section class="story-section"><h2>Words worth knowing</h2><div class="glossary"></div></section>` : ""}
+      ${kids.length && node.id !== state.focusId ? `<button class="zoom-deeper" type="button">Zoom into ${kids.length} ${kids.length === 1 ? "path" : "paths"} <span>→</span></button>` : ""}
+      ${relations.length ? `<section class="story-section"><h2>Connections</h2><div class="relations"></div></section>` : ""}
+      <section class="sources"><h2>Sources & further reading</h2><div class="source-list"></div></section>
+    </div>`;
+  box.querySelector("h1").textContent = node.keyword;
+  box.querySelector(".lede").textContent = node.summary || "";
+  if (node.key_fact) box.querySelector(".fact-card strong").textContent = node.key_fact;
+  if (node.explainer) box.querySelector(".explainer").textContent = node.explainer;
+  if (node.why_it_matters) box.querySelector(".why").textContent = node.why_it_matters;
+  if (node.wonder) box.querySelector(".wonder-text").textContent = node.wonder;
 
-  if (kids.length) {
-    box.append(sectionTitle("Zoom into"));
-    const ul = document.createElement("ul");
-    for (const kid of kids) {
-      const li = document.createElement("li");
-      const btn = document.createElement("button");
-      btn.className = "rel-target";
-      btn.textContent = kid.keyword;
-      btn.onclick = () => { state.focusId = kid.id; state.selectedId = kid.id; render(); };
-      li.append(btn);
-      ul.append(li);
-    }
-    box.append(ul);
+  const tagBox = box.querySelector(".angle-tags");
+  tagBox.replaceChildren(...tags.map((item) => {
+    const tag = document.createElement("span");
+    tag.className = "angle-tag";
+    tag.style.setProperty("--tag-color", item.color);
+    tag.textContent = item.label;
+    return tag;
+  }));
+
+  if (kids.length && node.id !== state.focusId) {
+    box.querySelector(".zoom-deeper").addEventListener("click", () => enterNode(node.id));
   }
 
-  box.append(sectionTitle("Relations"));
-  if (rels.length) {
-    const ul = document.createElement("ul");
-    for (const rel of rels) {
-      const li = document.createElement("li");
-      const tag = document.createElement("span");
-      tag.className = "rel-type";
-      tag.textContent = rel.outgoing ? rel.type : "← " + rel.type;
-      tag.style.color = (EDGE_STYLE[rel.type] || {}).color || "";
-      const btn = document.createElement("button");
-      btn.className = "rel-target";
-      btn.textContent = rel.other.keyword;
-      btn.onclick = () => {
-        state.selectedId = rel.other.id;
-        state.focusId = rel.other.parent === null ? rel.other.id : rel.other.parent;
-        render();
-      };
-      li.append(tag, btn);
-      if (rel.label) {
-        const note = document.createElement("div");
-        note.className = "empty";
-        note.textContent = rel.label;
-        li.append(note);
-      }
-      ul.append(li);
-    }
-    box.append(ul);
+  if (glossary.length) {
+    const glossaryBox = box.querySelector(".glossary");
+    glossaryBox.replaceChildren(...glossary.map((item) => {
+      const details = document.createElement("details");
+      const summary = document.createElement("summary");
+      const p = document.createElement("p");
+      summary.textContent = item.term;
+      p.textContent = item.definition;
+      details.append(summary, p);
+      return details;
+    }));
+  }
+
+  if (relations.length) {
+    const relBox = box.querySelector(".relations");
+    relBox.replaceChildren(...relations.map(({ edge, other, outgoing }) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "relation";
+      button.style.setProperty("--rel-color", EDGE_STYLE[edge.type]?.color || "#8da4af");
+      const relationLabel = outgoing ? EDGE_STYLE[edge.type]?.label : `is ${EDGE_STYLE[edge.type]?.label || edge.type} by`;
+      button.innerHTML = `<span class="relation-type"></span><strong></strong>${edge.label ? "<small></small>" : ""}`;
+      button.querySelector(".relation-type").textContent = relationLabel;
+      button.querySelector("strong").textContent = other.keyword;
+      if (edge.label) button.querySelector("small").textContent = edge.label;
+      button.addEventListener("click", () => revealNode(other.id));
+      return button;
+    }));
+  }
+
+  const sourceList = box.querySelector(".source-list");
+  if (sources.length) {
+    sourceList.replaceChildren(...sources.map((source, index) => {
+      const link = document.createElement("a");
+      link.href = source.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.innerHTML = `<span class="source-index">${index + 1}</span><span></span>`;
+      link.lastElementChild.textContent = source.title;
+      return link;
+    }));
   } else {
-    box.append(emptyNote("No typed relations on this node."));
-  }
-
-  box.append(sectionTitle("Sources"));
-  if ((node.sources || []).length) {
-    const ul = document.createElement("ul");
-    for (const src of node.sources) {
-      const li = document.createElement("li");
-      const a = document.createElement("a");
-      a.href = src.url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      a.textContent = src.title;
-      li.append(a);
-      ul.append(li);
-    }
-    box.append(ul);
-  } else {
-    box.append(emptyNote("No sources — organizational node."));
+    sourceList.innerHTML = `<p class="empty">This overview gathers the sourced paths below it.</p>`;
   }
 }
 
-function sectionTitle(text) {
-  const h3 = document.createElement("h3");
-  h3.textContent = text;
-  return h3;
+function revealNode(id) {
+  const node = state.byId.get(id);
+  const parent = node.parent === null ? node.id : node.parent;
+  state.focusId = parent;
+  rebuildLevel();
+  selectNode(id);
 }
 
-function emptyNote(text) {
-  const p = document.createElement("p");
-  p.className = "empty";
-  p.textContent = text;
-  return p;
+function surpriseMe() {
+  const candidates = state.subject.nodes.filter((node) => node.parent !== null && (node.sources || []).length);
+  const node = candidates[Math.floor(Math.random() * candidates.length)];
+  revealNode(node.id);
+  state.cameraTarget = 2.85;
+  globeGroup.rotation.y += 1.7;
 }
 
-boot();
+function setupSearch() {
+  const input = $("search-input");
+  const results = $("search-results");
+  input.addEventListener("input", () => {
+    const query = input.value.trim().toLowerCase();
+    if (!query || !state.subject) return closeSearch();
+    const matches = state.subject.nodes.filter((node) =>
+      `${node.keyword} ${node.summary} ${node.explainer || ""}`.toLowerCase().includes(query)
+    ).slice(0, 8);
+    results.replaceChildren(...matches.map((node) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "search-result";
+      button.setAttribute("role", "option");
+      button.innerHTML = "<strong></strong><span></span>";
+      button.querySelector("strong").textContent = node.keyword;
+      button.querySelector("span").textContent = node.summary;
+      button.addEventListener("click", () => {
+        revealNode(node.id);
+        input.value = "";
+        closeSearch();
+      });
+      return button;
+    }));
+    results.classList.add("open");
+    input.setAttribute("aria-expanded", "true");
+  });
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeSearch();
+  });
+  document.addEventListener("pointerdown", (event) => {
+    if (!event.target.closest(".search")) closeSearch();
+  });
+}
+
+function closeSearch() {
+  $("search-results").classList.remove("open");
+  $("search-input").setAttribute("aria-expanded", "false");
+}
+
+boot().catch((error) => {
+  console.error(error);
+  $("loading").querySelector("p").textContent = "This world could not be loaded";
+});
 </script>
 </body>
 </html>

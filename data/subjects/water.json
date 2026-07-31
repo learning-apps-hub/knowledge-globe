@@ -1,7 +1,8 @@
 {
   "id": "water",
   "title": "Water",
-  "summary": "Where it comes from, the forms it takes, and what it does for life and human society.",
+  "summary": "Follow water from ancient space dust to living cells, cities, climate, power, and culture.",
+  "content_reviewed": "2026-07-31",
   "angles": [
     { "id": "origins", "label": "Origins & Science", "color": "#3B82F6" },
     { "id": "ecological", "label": "Ecological Role", "color": "#22C55E" },
@@ -13,75 +14,135 @@
     {
       "id": "water",
       "keyword": "Water",
-      "summary": "The subject root — an overview node with no single claim of its own.",
+      "summary": "One small molecule connects the history of Earth, every known living thing, and nearly every human society.",
+      "key_fact": "Oceans hold about 96.5% of all the water on Earth.",
+      "explainer": "Water is always moving and changing form. It travels through air, rock, soil, oceans, organisms, pipes, farms, and factories. That makes it more than a substance: it is a system that links the planet together.",
+      "why_it_matters": "To understand water is to understand where life can exist, how weather works, why cities grow where they do, and why sharing a river can become a question of fairness or power.",
+      "wonder": "The water in your glass has been through countless places before you. Where might it go next?",
+      "glossary": [
+        { "term": "Water cycle", "definition": "The continuous movement of water through the ocean, atmosphere, land, and living things." },
+        { "term": "Freshwater", "definition": "Water with very little dissolved salt, found in ice, groundwater, rivers, lakes, and the atmosphere." }
+      ],
       "angle_tags": [],
       "parent": null,
-      "sources": []
+      "sources": [
+        { "title": "USGS — How much water is there on Earth?", "url": "https://www.usgs.gov/water-science-school/science/how-much-water-there-earth" }
+      ]
     },
 
     {
       "id": "origins-formation",
       "keyword": "How it formed",
-      "summary": "Water arrived from space and outgassed from Earth's own interior — two sources, not one.",
+      "summary": "Earth's water probably came from a mixture of water-rich rock, gases released from its interior, and early impacts.",
+      "key_fact": "Scientists still debate how much each source contributed.",
+      "explainer": "The young Earth was hot and violent. Water-bearing minerals were built into its rocky ingredients, volcanoes released water vapor, and some asteroids and perhaps comets added more. As the surface cooled, vapor could condense and remain liquid.",
+      "why_it_matters": "Tracing Earth's water helps scientists ask whether rocky planets elsewhere might also develop oceans.",
+      "wonder": "If a young planet receives water, what else must happen before it can keep an ocean?",
       "angle_tags": ["origins"],
       "parent": "water",
-      "sources": []
+      "sources": [
+        { "title": "NASA — Comet water and Earth's oceans", "url": "https://science.nasa.gov/solar-system/comets/nasa-led-team-links-comet-water-to-earths-oceans/" }
+      ]
     },
     {
       "id": "forms-states",
       "keyword": "Forms it takes",
       "summary": "Solid, liquid, vapor — and the phase changes between them drive weather and climate.",
+      "key_fact": "On Earth, water naturally appears as ice, liquid, and vapor.",
+      "explainer": "Adding or removing heat rearranges water molecules. Melting, freezing, evaporation, condensation, and sublimation move energy as well as water, powering clouds, storms, snow, and ocean–atmosphere exchange.",
+      "why_it_matters": "Water's ability to change state within Earth's normal temperature range makes the planet unusually dynamic and habitable.",
+      "wonder": "Why does sweating cool you even though the water starts warm?",
       "angle_tags": ["origins", "ecological"],
       "parent": "water",
-      "sources": []
+      "sources": [
+        { "title": "USGS — The water cycle", "url": "https://www.usgs.gov/special-topics/water-science-school/science/water-cycle" }
+      ]
     },
     {
       "id": "ecological-role",
       "keyword": "Life depends on it",
-      "summary": "Every known biological process runs on water as solvent, medium, or reactant.",
+      "summary": "Every known organism needs water, whether it lives in an ocean, a desert, or inside another cell.",
+      "key_fact": "Scientists search for water when they search for life beyond Earth.",
+      "explainer": "Water dissolves and transports many of the molecules cells need. It also takes part in chemical reactions, helps regulate temperature, and creates habitats from tiny droplets to entire oceans.",
+      "why_it_matters": "When water becomes too scarce, polluted, hot, or salty, whole food webs can change.",
+      "wonder": "Could life based on a different liquid exist somewhere else?",
       "angle_tags": ["ecological"],
       "parent": "water",
-      "sources": []
+      "sources": [
+        { "title": "NASA Astrobiology — Follow the water", "url": "https://astrobiology.nasa.gov/education/alp/water-so-important-for-life/" }
+      ]
     },
     {
       "id": "human-use",
       "keyword": "What we use it for",
-      "summary": "Drinking, growing food, making power, running industry — human society is built on reliable access.",
+      "summary": "We drink water, grow food with it, use it to make goods and energy, and depend on it to keep communities healthy.",
+      "key_fact": "Agriculture accounts for about 70% of freshwater withdrawals worldwide.",
+      "explainer": "Household taps are only one part of the story. Much more water is used out of sight: irrigating crops, cooling power plants, processing materials, cleaning equipment, and producing the things people buy.",
+      "why_it_matters": "Saving water is not only about shorter showers. Choices about food, energy, infrastructure, and industry can have much larger effects.",
+      "wonder": "How much water was used to make your breakfast?",
       "angle_tags": ["human"],
       "parent": "water",
-      "sources": []
+      "sources": [
+        { "title": "FAO AQUASTAT — Water use", "url": "https://www.fao.org/aquastat/en/overview/methodology/water-use" }
+      ]
     },
     {
       "id": "power-conflict",
       "keyword": "Who controls it",
-      "summary": "Scarcity and shared rivers turn water into a source of leverage and conflict between people and states.",
+      "summary": "Water can be shared, traded, protected, withheld, or polluted — so access is shaped by rules and power as well as rainfall.",
+      "key_fact": "153 countries share at least one river basin, lake basin, or aquifer with a neighbour.",
+      "explainer": "A river ignores political borders. Decisions upstream can change water quantity, timing, or quality downstream. Conflict is possible, but treaties, shared monitoring, and joint management can turn the same connection into cooperation.",
+      "why_it_matters": "Fair water governance determines whose farms, homes, ecosystems, and industries are protected when supplies run short.",
+      "wonder": "What would a fair agreement between an upstream and downstream community look like?",
       "angle_tags": ["power", "human"],
       "parent": "water",
-      "sources": []
+      "sources": [
+        { "title": "UN-Water — Transboundary waters", "url": "https://www.unwater.org/water-facts/transboundary-waters" }
+      ]
     },
     {
       "id": "culture-meaning",
       "keyword": "What it means to us",
-      "summary": "Water carries ritual and symbolic weight across nearly every human culture and religion.",
+      "summary": "Across many cultures, water appears in stories, ceremonies, art, and ideas about life, danger, change, and renewal.",
+      "key_fact": "The same river can be an ecosystem, a livelihood, an ancestor, and a sacred place at once.",
+      "explainer": "People do not experience water only as chemistry. Communities build meanings around rain, springs, wells, floods, oceans, and rivers. Those meanings differ, and they can influence how a place is cared for or governed.",
+      "why_it_matters": "Good decisions about water need to understand cultural relationships as well as engineering and economics.",
+      "wonder": "Which body of water feels important to you, and why?",
       "angle_tags": ["culture"],
       "parent": "water",
-      "sources": []
+      "sources": [
+        { "title": "UNESCO — Water and intangible cultural heritage", "url": "https://ich.unesco.org/en/dive&display=constellation#underwater" }
+      ]
     },
 
     {
       "id": "origins-cosmic",
       "keyword": "Water is older than Earth",
-      "summary": "Water ice existed in the cloud of gas and dust that formed the solar system; comets and water-rich asteroids delivered much of it to the young Earth.",
+      "summary": "Some of the ingredients in Earth's water formed in the cold cloud of gas and dust that existed before the planets.",
+      "key_fact": "The solar system formed about 4.6 billion years ago, but some water-bearing material is older.",
+      "explainer": "Hydrogen and oxygen can combine into water in extremely cold space. Ice coated dust grains in the cloud that became our solar system. Some of that ancient material was later built into asteroids, comets, and planets.",
+      "why_it_matters": "A glass of water links everyday life to events that happened before Earth existed.",
+      "wonder": "How can scientists use different forms of hydrogen as a fingerprint for water's history?",
+      "glossary": [
+        { "term": "Isotope", "definition": "A version of an element with the same number of protons but a different number of neutrons." }
+      ],
       "angle_tags": ["origins"],
       "parent": "origins-formation",
       "sources": [
-        { "title": "NASA — Where did Earth's water come from?", "url": "https://science.nasa.gov/solar-system/where-did-earths-water-come-from/" }
+        { "title": "NASA — A nebular origin of Earth's water", "url": "https://astrobiology.nasa.gov/news/a-nebular-origin-of-earths-water/" }
       ]
     },
     {
       "id": "origins-outgassing",
       "keyword": "Earth's own interior",
       "summary": "Volcanic outgassing released water vapor trapped in the young planet's rock, which condensed as the surface cooled.",
+      "key_fact": "Volcanoes still release water vapor today.",
+      "explainer": "Rock inside Earth contains hydrogen and oxygen in minerals and melted material. As magma rises and pressure falls, gases escape. On the cooling young Earth, released water vapor could condense into rain and collect at the surface.",
+      "why_it_matters": "A planet's geology can help move water between its deep interior, atmosphere, and surface.",
+      "wonder": "How much water may still be stored deep inside Earth?",
+      "glossary": [
+        { "term": "Outgassing", "definition": "The release of gases that were dissolved or trapped inside rock or magma." }
+      ],
       "angle_tags": ["origins"],
       "parent": "origins-formation",
       "sources": [
@@ -93,6 +154,14 @@
       "id": "forms-molecule",
       "keyword": "A bent, lopsided molecule",
       "summary": "Water's asymmetric shape leaves it electrically polar, which is the root cause of nearly every unusual property it has.",
+      "key_fact": "A water molecule is bent at an angle of about 104.5°.",
+      "explainer": "Oxygen pulls shared electrons more strongly than hydrogen does. Because the molecule is bent, its oxygen side becomes slightly negative and its hydrogen side slightly positive. Nearby water molecules therefore attract one another.",
+      "why_it_matters": "This tiny imbalance helps explain water's surface tension, high boiling point, ability to dissolve substances, and unusual behaviour when it freezes.",
+      "wonder": "How can the shape of something too small to see affect an entire ocean?",
+      "glossary": [
+        { "term": "Polar molecule", "definition": "A molecule whose electrical charge is unevenly distributed." },
+        { "term": "Hydrogen bond", "definition": "A weak attraction between a slightly positive hydrogen atom and a nearby electronegative atom." }
+      ],
       "angle_tags": ["origins"],
       "parent": "forms-states",
       "sources": [
@@ -102,7 +171,15 @@
     {
       "id": "forms-solvent",
       "keyword": "The universal solvent",
-      "summary": "Polarity lets water dissolve more substances than any other common liquid — which is why it carries nutrients, minerals and pollutants alike.",
+      "summary": "Water dissolves an unusually wide range of substances, so it can carry useful nutrients and harmful pollutants alike.",
+      "key_fact": "“Universal solvent” is a nickname — water does not dissolve everything.",
+      "explainer": "The positive and negative sides of water molecules surround ions and other polar molecules, pulling them into solution. Oils and many non-polar materials resist that pull, which is why oil separates from water.",
+      "why_it_matters": "Water's solvent power makes blood, soil water, rivers, and oceans effective transport systems, but it also lets contamination spread.",
+      "wonder": "Why does salt disappear in water while cooking oil forms droplets?",
+      "glossary": [
+        { "term": "Solvent", "definition": "A substance that dissolves another substance to form a solution." },
+        { "term": "Ion", "definition": "An atom or molecule with a positive or negative electrical charge." }
+      ],
       "angle_tags": ["origins", "ecological"],
       "parent": "forms-states",
       "sources": [
@@ -113,14 +190,32 @@
       "id": "forms-ice-floats",
       "keyword": "Ice floats",
       "summary": "Water is one of very few substances less dense as a solid than a liquid — so lakes freeze from the top down and life survives beneath.",
+      "key_fact": "Liquid water is densest at about 4°C, not at its freezing point.",
+      "explainer": "As water freezes, hydrogen bonds hold the molecules in an open crystal pattern. The same molecules now occupy more space, lowering the density. Less-dense ice stays above the liquid.",
+      "why_it_matters": "Floating ice forms an insulating lid. If ice sank, lakes could freeze far more completely and seasonal freshwater habitats would be very different.",
+      "wonder": "What would winter lakes look like if frozen water sank?",
+      "glossary": [
+        { "term": "Density", "definition": "How much mass is packed into a given volume." }
+      ],
       "angle_tags": ["origins", "ecological"],
       "parent": "forms-states",
-      "sources": []
+      "sources": [
+        { "title": "USGS — Water density", "url": "https://www.usgs.gov/special-topics/water-science-school/science/water-density" }
+      ]
     },
     {
       "id": "forms-cycle",
       "keyword": "The water cycle",
-      "summary": "Evaporation, transport, condensation and precipitation move water continuously between ocean, air and land.",
+      "summary": "Water continuously moves among ocean, air, land, ice, groundwater, and living things.",
+      "key_fact": "The water cycle has no true starting point.",
+      "explainer": "Sunlight drives evaporation, gravity pulls rain and rivers downhill, plants release water vapour, and soil and rock store or channel water underground. A molecule may move quickly through a cloud or remain in deep groundwater for a very long time.",
+      "why_it_matters": "Floods, droughts, drinking supplies, farming, ecosystems, and climate all depend on where water is stored and how quickly it moves.",
+      "wonder": "How long might one water molecule stay in a glacier, cloud, or aquifer?",
+      "glossary": [
+        { "term": "Evaporation", "definition": "The change from liquid water to water vapour." },
+        { "term": "Precipitation", "definition": "Water falling from the atmosphere as rain, snow, sleet, or hail." },
+        { "term": "Aquifer", "definition": "A layer of rock or sediment that stores and transmits groundwater." }
+      ],
       "angle_tags": ["origins", "ecological"],
       "parent": "forms-states",
       "sources": [
@@ -131,36 +226,67 @@
     {
       "id": "eco-cell",
       "keyword": "The medium of the cell",
-      "summary": "Cells are mostly water; it is the solvent every metabolic reaction runs in and a reactant in many of them.",
+      "summary": "Inside cells, water is the busy medium in which molecules move, meet, fold, separate, and react.",
+      "key_fact": "The proportion of water varies by organism, tissue, age, and condition — there is no single percentage for all life.",
+      "explainer": "Cell membranes hold a watery interior apart from the environment. Dissolved salts, sugars, proteins, and many other molecules move through it. Water also participates directly in reactions such as photosynthesis and the breaking apart of large molecules.",
+      "why_it_matters": "Too little, too much, or the wrong balance of water and dissolved ions can stop cells from working.",
+      "wonder": "How does a cell control water when individual molecules pass in and out constantly?",
+      "glossary": [
+        { "term": "Metabolism", "definition": "The connected chemical reactions that keep an organism alive." },
+        { "term": "Osmosis", "definition": "The movement of water across a membrane toward the side with more dissolved particles." }
+      ],
       "angle_tags": ["ecological"],
       "parent": "ecological-role",
-      "sources": []
+      "sources": [
+        { "title": "OpenStax Biology — Water", "url": "https://openstax.org/books/biology-2e/pages/2-2-water" }
+      ]
     },
     {
       "id": "eco-habitat",
       "keyword": "Freshwater habitats",
-      "summary": "Rivers, lakes and wetlands hold a disproportionate share of biodiversity relative to the tiny fraction of Earth's water they contain.",
+      "summary": "Rivers, lakes, springs, and wetlands occupy little of Earth yet support a remarkably rich variety of life.",
+      "key_fact": "Freshwater habitats contain about 0.01% of the world's water but support nearly 6% of described species.",
+      "explainer": "A fast mountain stream, a deep lake, a seasonal pool, and a marsh are all freshwater habitats, but each has different oxygen, light, flow, temperature, and chemistry. Species evolve for these local conditions.",
+      "why_it_matters": "Pollution, dams, drainage, invasive species, and heavy withdrawals can change small freshwater habitats quickly.",
+      "wonder": "How can two parts of the same river create homes for completely different species?",
+      "glossary": [
+        { "term": "Biodiversity", "definition": "The variety of living things, including diversity within species, between species, and among ecosystems." }
+      ],
       "angle_tags": ["ecological"],
       "parent": "ecological-role",
       "sources": [
-        { "title": "UNEP — Freshwater ecosystems", "url": "https://www.unep.org/explore-topics/water" }
+        { "title": "UNEP — Signs of progress on freshwater protection", "url": "https://www.unep.org/news-and-stories/story/signs-progress-freshwater-protection" }
       ]
     },
     {
       "id": "eco-climate",
       "keyword": "It moves the climate",
-      "summary": "Oceans store and redistribute heat, and water vapor is the atmosphere's strongest greenhouse gas — water is the climate system's working fluid.",
+      "summary": "Oceans store and move heat, while water vapour, clouds, snow, and ice shape Earth's energy balance.",
+      "key_fact": "Water vapour is a powerful greenhouse gas, but it mainly amplifies warming driven by carbon dioxide and other influences.",
+      "explainer": "Oceans absorb heat and currents redistribute it. Evaporation transfers energy into the atmosphere; condensation releases that energy into clouds and storms. Snow and ice reflect sunlight, while water vapour traps heat.",
+      "why_it_matters": "As the climate warms, water moves differently: heavy rain can intensify, snow and ice decline, drought patterns shift, and warmer air can hold more moisture.",
+      "wonder": "Why can a warmer world bring both heavier downpours and worse droughts?",
+      "glossary": [
+        { "term": "Climate feedback", "definition": "A process that strengthens or weakens an initial climate change." }
+      ],
       "angle_tags": ["ecological", "origins"],
       "parent": "ecological-role",
       "sources": [
-        { "title": "NOAA — Ocean and climate", "url": "https://www.noaa.gov/education/resource-collections/climate" }
+        { "title": "NOAA Climate.gov — Global warming FAQs", "url": "https://www.climate.gov/news-features/understanding-climate/global-warming-frequently-asked-questions" }
       ]
     },
 
     {
       "id": "human-drinking",
       "keyword": "Drinking water & sanitation",
-      "summary": "Safe drinking water and sanitation are the single largest historical driver of falling mortality; billions still lack reliable access.",
+      "summary": "Safe water, toilets, drainage, and hygiene prevent disease and make dense communities healthier.",
+      "key_fact": "In 2022, 2.2 billion people still lacked safely managed drinking-water services.",
+      "explainer": "“Safely managed” means an improved water source is on the premises, available when needed, and free from specified contamination. A safe system must protect water from the source all the way to the person using it.",
+      "why_it_matters": "Contaminated water can transmit cholera, diarrhoea, dysentery, typhoid, and polio. Time spent collecting water also affects safety, work, and education.",
+      "wonder": "What hidden steps happen between rain falling and clean water reaching a tap?",
+      "glossary": [
+        { "term": "Sanitation", "definition": "Systems and practices that safely manage human waste and keep it away from people and water supplies." }
+      ],
       "angle_tags": ["human"],
       "parent": "human-use",
       "sources": [
@@ -170,7 +296,15 @@
     {
       "id": "human-agriculture",
       "keyword": "Agriculture takes most of it",
-      "summary": "Irrigation accounts for roughly 70% of global freshwater withdrawals — food is where most water actually goes.",
+      "summary": "Growing crops and raising animals account for the largest share of global freshwater withdrawals.",
+      "key_fact": "FAO estimates agriculture's global share of freshwater withdrawals at about 69%.",
+      "explainer": "Rain feeds much of the world's farmland. Irrigation adds water from rivers, reservoirs, or aquifers when rainfall is not enough or arrives at the wrong time. Some of that water returns to the system; some evaporates or becomes part of crops.",
+      "why_it_matters": "Efficient irrigation, healthier soils, crop choices, and less food loss can all reduce pressure on rivers and groundwater.",
+      "wonder": "Should a dry region grow water-hungry crops for export?",
+      "glossary": [
+        { "term": "Withdrawal", "definition": "Water removed from a river, lake, aquifer, or other source for human use." },
+        { "term": "Irrigation", "definition": "The artificial application of water to crops or soil." }
+      ],
       "angle_tags": ["human", "ecological"],
       "parent": "human-use",
       "sources": [
@@ -181,6 +315,13 @@
       "id": "human-energy",
       "keyword": "Water makes power",
       "summary": "Hydroelectric dams, and the cooling water that thermal and nuclear plants depend on, tie the energy system directly to water availability.",
+      "key_fact": "Energy supply depends on water — and pumping, treating, and heating water depends on energy.",
+      "explainer": "Hydropower uses moving water directly. Coal, gas, nuclear, geothermal, and some solar plants may use water for cooling or steam. Extracting fuels and making biofuels can also require water.",
+      "why_it_matters": "A drought or heatwave can constrain both water supplies and electricity production, especially when rivers are low or too warm for safe cooling.",
+      "wonder": "Which sources of electricity use the least water over their whole life cycle?",
+      "glossary": [
+        { "term": "Water–energy nexus", "definition": "The two-way dependence between water systems and energy systems." }
+      ],
       "angle_tags": ["human", "power"],
       "parent": "human-use",
       "sources": [
@@ -190,24 +331,46 @@
     {
       "id": "human-transport",
       "keyword": "Rivers and sea routes",
-      "summary": "Navigable water was the cheapest way to move goods for most of history, and still carries the large majority of world trade by volume.",
+      "summary": "Rivers, canals, and sea lanes have connected producers, ports, cities, and cultures for thousands of years.",
+      "key_fact": "Maritime transport carries more than 80% of international trade in goods by volume.",
+      "explainer": "Floating heavy cargo usually takes less energy than moving it over land. Natural rivers and coastlines therefore shaped early trade, while canals and modern ports reshaped the routes that followed.",
+      "why_it_matters": "When a canal, river, strait, or port is blocked, the effects can travel through supply chains around the world.",
+      "wonder": "Why are so many of the world's largest cities also ports?",
       "angle_tags": ["human"],
       "parent": "human-use",
-      "sources": []
+      "sources": [
+        { "title": "UNCTAD — Review of Maritime Transport", "url": "https://unctad.org/topic/transport-and-trade-logistics/review-of-maritime-transport" }
+      ]
     },
     {
       "id": "human-cities",
       "keyword": "Cities grew where water was",
-      "summary": "Nearly every early urban civilization formed on a river system — settlement patterns are water patterns.",
+      "summary": "Many early cities grew beside rivers, springs, lakes, or coasts that supplied water, food, transport, and fertile land.",
+      "key_fact": "Water helps a city grow, but too much can bring floods, erosion, and disease.",
+      "explainer": "A reliable supply supports drinking, cooking, farming, craft, and trade. Yet cities must also carry wastewater away, manage stormwater, and protect themselves from flooding. Urban water history is a story of both opportunity and risk.",
+      "why_it_matters": "Modern cities still reveal old water choices in their street plans, reservoirs, buried streams, canals, and unequal access to services.",
+      "wonder": "What waterway or water system made your nearest city possible?",
+      "glossary": [
+        { "term": "Watershed", "definition": "An area of land where all water drains toward the same river, lake, or other outlet." }
+      ],
       "angle_tags": ["human", "culture"],
       "parent": "human-use",
-      "sources": []
+      "sources": [
+        { "title": "UN-Habitat — Water and sanitation", "url": "https://unhabitat.org/topic/water-and-sanitation" }
+      ]
     },
 
     {
       "id": "power-scarcity",
       "keyword": "Scarcity",
-      "summary": "Demand growth, depletion of aquifers and shifting rainfall are pushing more regions into chronic water stress.",
+      "summary": "Water scarcity can come from too little water, unsafe water, weak infrastructure, high demand, or unfair access.",
+      "key_fact": "A place is considered water-stressed when it withdraws 25% or more of its renewable freshwater resources.",
+      "explainer": "Scarcity is not simply a dry-climate problem. A rainy region can face shortages if pollution makes water unsafe or if pipes and institutions fail. A dry region can sometimes manage limited supplies well.",
+      "why_it_matters": "Scarcity does not affect everyone equally. Poor and marginalised communities often face the highest costs and the fewest alternatives.",
+      "wonder": "When water is scarce, which needs should come first — and who should decide?",
+      "glossary": [
+        { "term": "Water stress", "definition": "Pressure on water resources when withdrawals are high compared with renewable supplies." }
+      ],
       "angle_tags": ["power", "ecological"],
       "parent": "power-conflict",
       "sources": [
@@ -217,7 +380,14 @@
     {
       "id": "power-transboundary",
       "keyword": "Shared rivers, divided states",
-      "summary": "Most large river basins cross a border, so upstream decisions about dams and diversions become foreign policy.",
+      "summary": "Rivers, lakes, and aquifers cross borders, so one country's choices can change another country's water.",
+      "key_fact": "Transboundary waters account for about 60% of the world's freshwater flows.",
+      "explainer": "Upstream storage, pollution, or irrigation can alter how much water arrives downstream and when it arrives. Shared data, basin organisations, and treaties help neighbours plan together.",
+      "why_it_matters": "Cooperation can reduce risk, protect ecosystems, and create benefits in food and energy that no country could secure alone.",
+      "wonder": "How should countries share a river when drought leaves less than usual?",
+      "glossary": [
+        { "term": "Transboundary water", "definition": "A river, lake, or aquifer shared by two or more countries." }
+      ],
       "angle_tags": ["power"],
       "parent": "power-conflict",
       "sources": [
@@ -227,43 +397,82 @@
     {
       "id": "power-rights",
       "keyword": "Who owns water",
-      "summary": "Water rights regimes — riparian, prior appropriation, customary, market-traded — decide who gets water when there isn't enough for everyone.",
+      "summary": "Laws and customs decide who may take water, how much, for what purpose, and what must remain for others and for nature.",
+      "key_fact": "There is no single worldwide system of water rights.",
+      "explainer": "Some rules connect rights to nearby land; others prioritise earlier users, government permits, community customs, or basic human needs. Rights to use water are often different from owning the water itself.",
+      "why_it_matters": "Rules written in wet years can become unfair or impossible in drought, especially when historic claims exclude communities or ecosystems.",
+      "wonder": "Can water be treated as both a human right and an economic good?",
+      "glossary": [
+        { "term": "Water right", "definition": "A legal or customary entitlement to access or use water under stated conditions." }
+      ],
       "angle_tags": ["power", "human"],
       "parent": "power-conflict",
-      "sources": []
+      "sources": [
+        { "title": "FAOLEX — Water law database", "url": "https://www.fao.org/faolex/en/" }
+      ]
     },
     {
       "id": "power-infrastructure",
       "keyword": "Infrastructure as leverage",
-      "summary": "A dam is both an engineering object and a lever: it stores, withholds and releases on someone's schedule.",
+      "summary": "Dams, canals, pumps, treatment plants, and pipes determine where water can move, when it arrives, and who can reach it.",
+      "key_fact": "Infrastructure can reduce risk and create new risks at the same time.",
+      "explainer": "A reservoir can store water for droughts, control some floods, and make electricity. It can also displace communities, interrupt fish migration, trap sediment, and give its operator control over downstream flows.",
+      "why_it_matters": "Engineering choices distribute benefits, costs, and decision-making power for decades.",
+      "wonder": "Who should have a voice before a major dam or diversion is built?",
       "angle_tags": ["power"],
       "parent": "power-conflict",
-      "sources": []
+      "sources": [
+        { "title": "UNEP — Dams and development", "url": "https://www.unep.org/resources/report/dams-and-development-relevant-practices-improved-decision-making" }
+      ]
     },
 
     {
       "id": "culture-ritual",
       "keyword": "Purification and ritual",
-      "summary": "Washing, immersion and blessing with water appear independently across religions as the standard grammar of purification.",
+      "summary": "Many religious and cultural traditions use washing, immersion, sprinkling, or pouring to mark cleansing, transition, belonging, or blessing.",
+      "key_fact": "Similar actions can carry very different meanings in different traditions.",
+      "explainer": "Water may be used before prayer, during initiation, at birth, in healing, or in care for the dead. It is important not to flatten these practices into one universal meaning: each belongs to a particular history and community.",
+      "why_it_matters": "Respectful understanding begins by noticing both shared human patterns and real cultural differences.",
+      "wonder": "Why might a physical act such as washing become a symbol for an inner change?",
       "angle_tags": ["culture"],
       "parent": "culture-meaning",
-      "sources": []
+      "sources": [
+        { "title": "Harvard Pluralism Project — Religion and water", "url": "https://pluralism.org/religion-and-water" }
+      ]
     },
     {
       "id": "culture-sacred-places",
       "keyword": "Sacred waters",
-      "summary": "Specific rivers, springs and wells are treated as holy or living entities — some now hold legal personhood.",
+      "summary": "Some communities relate to particular rivers, springs, lakes, and wells as sacred places, ancestors, or living beings.",
+      "key_fact": "In New Zealand law, Te Awa Tupua — the Whanganui River system — is recognised as a legal person.",
+      "explainer": "Sacred relationships can involve pilgrimage, ceremony, origin stories, obligations of care, and identity. Modern legal systems are beginning in some places to recognise long-standing Indigenous relationships with rivers.",
+      "why_it_matters": "A waterway can hold ecological, economic, legal, and spiritual value at the same time; decisions that recognise only one dimension may miss what is at stake.",
+      "wonder": "What changes when a legal system treats a river as a subject with interests rather than only as property?",
+      "glossary": [
+        { "term": "Legal person", "definition": "An entity the law recognises as able to hold rights and duties, even though it is not a human being." }
+      ],
       "angle_tags": ["culture"],
       "parent": "culture-meaning",
-      "sources": []
+      "sources": [
+        { "title": "New Zealand Legislation — Te Awa Tupua Act 2017", "url": "https://www.legislation.govt.nz/act/public/2017/0007/latest/whole.html" }
+      ]
     },
     {
       "id": "culture-metaphor",
       "keyword": "Water as metaphor",
-      "summary": "Flow, depth, currents, drowning, source — water supplies a large share of the metaphors humans use for time, emotion and change.",
+      "summary": "People borrow the language of water to describe time, emotion, memory, crowds, risk, and change.",
+      "key_fact": "We speak of deep thought, flowing time, waves of feeling, and being flooded with information.",
+      "explainer": "Metaphors let an experience we can see or feel — a current, a drop, a flood — give shape to something abstract. Different languages and traditions build different patterns from water.",
+      "why_it_matters": "Metaphors are not just decoration. They guide attention and can influence how people imagine a problem and its possible solutions.",
+      "wonder": "How would your idea of time change if you pictured it as a tide instead of a river?",
+      "glossary": [
+        { "term": "Metaphor", "definition": "A way of understanding one thing in terms of another without claiming they are literally the same." }
+      ],
       "angle_tags": ["culture"],
       "parent": "culture-meaning",
-      "sources": []
+      "sources": [
+        { "title": "Stanford Encyclopedia of Philosophy — Metaphor", "url": "https://plato.stanford.edu/entries/metaphor/" }
+      ]
     }
   ],
   "edges": [
@@ -278,17 +487,17 @@
     { "from": "eco-habitat", "to": "human-agriculture", "type": "conflicts-with", "label": "irrigation withdrawals shrink the habitats they draw from" },
 
     { "from": "human-use", "to": "power-conflict", "type": "causes", "label": "competing demand creates scarcity" },
-    { "from": "human-drinking", "to": "human-cities", "type": "depends-on", "label": "urban density is capped by deliverable safe water" },
+    { "from": "human-drinking", "to": "human-cities", "type": "depends-on", "label": "large urban populations depend on reliable safe water and sanitation" },
     { "from": "human-transport", "to": "human-cities", "type": "precedes", "label": "trade routes came first, cities grew on them" },
     { "from": "human-agriculture", "to": "power-scarcity", "type": "causes", "label": "70% of withdrawals means agriculture sets the scarcity baseline" },
     { "from": "human-energy", "to": "power-infrastructure", "type": "depends-on", "label": "hydropower is built out of exactly the assets that confer leverage" },
 
-    { "from": "power-scarcity", "to": "power-transboundary", "type": "causes", "label": "shared rivers under stress become flashpoints" },
+    { "from": "power-scarcity", "to": "power-transboundary", "type": "causes", "label": "stress raises the stakes for both cooperation and dispute" },
     { "from": "power-infrastructure", "to": "power-transboundary", "type": "enables", "label": "upstream storage turns geography into bargaining power" },
     { "from": "power-rights", "to": "power-scarcity", "type": "correlates-with", "label": "allocation rules decide who feels scarcity first" },
 
-    { "from": "ecological-role", "to": "culture-meaning", "type": "correlates-with", "label": "life-giving role echoed in ritual across cultures" },
-    { "from": "culture-sacred-places", "to": "power-rights", "type": "conflicts-with", "label": "sacred-river claims collide with extraction rights" },
-    { "from": "human-cities", "to": "culture-sacred-places", "type": "precedes", "label": "settlement on a river preceded its sanctification" }
+    { "from": "ecological-role", "to": "culture-meaning", "type": "correlates-with", "label": "water's life-giving role helps shape meaning and ritual" },
+    { "from": "culture-sacred-places", "to": "power-rights", "type": "conflicts-with", "label": "sacred relationships can conflict with extraction claims" },
+    { "from": "human-cities", "to": "culture-sacred-places", "type": "correlates-with", "label": "urban life and cultural meaning often grow around the same waters" }
   ]
 }
