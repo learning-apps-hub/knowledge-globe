@@ -91,6 +91,13 @@ try:
         check("GET Three.js asset → 200", status == 200, f"got {status}")
         check("Three.js asset is JavaScript",
               isinstance(body, bytes) and b"WebGLRenderer" in body)
+        check("Three.js module declares its core dependency",
+              isinstance(body, bytes) and b'from"./three.core.min.js"' in body)
+
+        status, body = get("/static/vendor/three.core.min.js")
+        check("GET Three.js core asset → 200", status == 200, f"got {status}")
+        check("Three.js core asset is JavaScript",
+              isinstance(body, bytes) and b"REVISION" in body)
 
         print("\n--- API ---")
         status, body = get("/api/subjects")

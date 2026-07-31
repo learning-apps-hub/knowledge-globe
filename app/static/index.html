@@ -737,6 +737,18 @@
     text-align: center;
     text-transform: uppercase;
   }
+  .loading button {
+    display: none;
+    margin: 15px auto 0;
+    padding: 8px 13px;
+    border: 1px solid var(--line-strong);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, .06);
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .loading.failed button { display: block; }
+  .loading.failed .loading-globe { animation: none; opacity: .45; }
   @keyframes breathe { 50% { transform: scale(1.07); opacity: .7; } }
 
   @media (max-width: 1120px) {
@@ -828,6 +840,7 @@
   <div>
     <div class="loading-globe" aria-hidden="true"></div>
     <p>Preparing the world</p>
+    <button type="button" onclick="location.reload()">Try again</button>
   </div>
 </div>
 
@@ -893,6 +906,14 @@
   </main>
 </div>
 
+<script>
+window.__kgBootWatch = setTimeout(function () {
+  const loading = document.getElementById("loading");
+  if (!loading || loading.classList.contains("done")) return;
+  loading.classList.add("failed");
+  loading.querySelector("p").textContent = "The 3D world could not start";
+}, 8000);
+</script>
 <script type="module">
 import * as THREE from "/static/vendor/three.module.min.js";
 
@@ -955,6 +976,7 @@ async function boot() {
   bindUI();
   initGlobe();
   if (list.length) await loadSubject(list[0].id);
+  clearTimeout(window.__kgBootWatch);
   $("loading").classList.add("done");
 }
 
@@ -1556,6 +1578,8 @@ function closeSearch() {
 
 boot().catch((error) => {
   console.error(error);
+  clearTimeout(window.__kgBootWatch);
+  $("loading").classList.add("failed");
   $("loading").querySelector("p").textContent = "This world could not be loaded";
 });
 </script>
