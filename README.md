@@ -25,6 +25,10 @@ The reserved development port is `8111`:
 PORT=8111 python3 run.py
 ```
 
+`8110` is the local default, `8111` is the persistent development preview,
+and `8112` is used by the smoke suite. This repository does not currently
+define a production deployment or production port.
+
 ## Layout
 
 | Path | What |
@@ -53,6 +57,9 @@ The viewer includes:
   HTML topic pins;
 - drag and touch rotation, scroll/pinch-style zoom, reset controls, subject
   search, a random discovery action, and keyboard focus states;
+- compact, shape-neutral topic pins. Selecting one greys the others and turns
+  the globe to centre it in 0.2 seconds; selecting pauses rotation, while a
+  click on the globe surface resumes the slow orbit;
 - angle lenses that highlight science, ecology, society, power, or culture;
 - subject-specific exploration controls: Singapore Oceanarium follows its
   official Animal Type, Natural Habitat, and Zone filters instead of showing
@@ -69,8 +76,9 @@ The viewer includes:
 - a subject-aware projected globe surface. The Oceanarium theme adds animated
   underwater caustics, expanding ripples, moving wave shadows, drifting
   particles, fish silhouettes, and reef forms. Animation honours the device's
-  reduced-motion preference. Animal pins use photo thumbnails, with 34 verified
-  official profile images and licensed Commons fallbacks for the remaining nine.
+  reduced-motion preference. Full profile photography remains in the reading
+  panel, with 34 verified official images and licensed Commons fallbacks for
+  the remaining nine.
 
 The Singapore Oceanarium subject contains all 43 entries currently shown on
 the official Animals A–Z page. Every profile records animal type, natural

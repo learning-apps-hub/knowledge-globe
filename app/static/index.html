@@ -484,9 +484,9 @@
     top: 0;
     display: flex;
     align-items: center;
-    gap: 7px;
-    max-width: 170px;
-    padding: 7px 10px 7px 8px;
+    gap: 5px;
+    max-width: 132px;
+    padding: 5px 8px;
     border: 1px solid rgba(221, 248, 246, .3);
     border-radius: 999px;
     background: rgba(6, 18, 24, .84);
@@ -501,32 +501,29 @@
   }
   .pin.visible { opacity: 1; }
   .pin.dimmed { opacity: .17; filter: grayscale(.8); }
+  .pin.visible.unselected {
+    border-color: rgba(142, 158, 164, .2);
+    color: #829197;
+    filter: grayscale(1);
+    opacity: .3;
+  }
   .pin.selected {
+    z-index: 2;
     border-color: var(--pin-color);
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--pin-color) 18%, transparent), 0 10px 30px rgba(0, 0, 0, .42);
   }
-  .pin.animal-pin { padding: 4px 10px 4px 4px; }
-  .pin-photo {
-    width: 32px;
-    height: 32px;
-    flex: none;
-    border: 1px solid rgba(255, 255, 255, .22);
-    border-radius: 50%;
-    object-fit: cover;
-    background: rgba(255, 255, 255, .06);
-  }
   .pin-orb {
-    width: 9px;
-    height: 9px;
+    width: 6px;
+    height: 6px;
     flex: none;
-    border: 2px solid rgba(255, 255, 255, .75);
+    border: 1px solid rgba(255, 255, 255, .72);
     border-radius: 50%;
     background: var(--pin-color);
     box-shadow: 0 0 12px var(--pin-color);
   }
   .pin-label {
     overflow: hidden;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -968,7 +965,7 @@
     .tool-button { width: 34px; height: 34px; }
     .globe-hint { display: none; }
     .mobile-explore { display: none; }
-    .pin { max-width: 125px; padding: 6px 8px 6px 7px; }
+    .pin { max-width: 108px; padding: 5px 7px; }
     .pin-label { font-size: 9px; }
   }
 
@@ -1101,6 +1098,7 @@ const state = {
   cameraDistance: 4.25,
   cameraTarget: 4.25,
   autoRotate: true,
+  rotationTween: null,
   reducedMotion: matchMedia("(prefers-reduced-motion: reduce)").matches,
 };
 
@@ -1198,6 +1196,8 @@ async function loadSubject(id) {
   state.activeAngle = null;
   state.animalFilters = { type: "", habitat: "", zone: "" };
   state.animalBrowseMode = isOceanarium();
+  state.autoRotate = !state.reducedMotion;
+  state.rotationTween = null;
   state.cameraTarget = 4.25;
   applySubjectTheme();
   drawStaticUI();
@@ -1226,6 +1226,7 @@ function bindUI() {
     state.pointer = { x: event.clientX, y: event.clientY };
     state.moved = false;
     state.autoRotate = false;
+    state.rotationTween = null;
     stage.classList.add("dragging");
     stage.setPointerCapture(event.pointerId);
   });
@@ -1238,9 +1239,11 @@ function bindUI() {
     globeGroup.rotation.x = THREE.MathUtils.clamp(globeGroup.rotation.x + dy * .004, -.65, .65);
     state.pointer = { x: event.clientX, y: event.clientY };
   });
-  const endDrag = () => {
+  const endDrag = (event) => {
+    const shouldResume = Boolean(state.pointer && !state.moved && event.type === "pointerup");
     state.pointer = null;
     stage.classList.remove("dragging");
+    if (shouldResume) state.autoRotate = !state.reducedMotion;
   };
   stage.addEventListener("pointerup", endDrag);
   stage.addEventListener("pointercancel", endDrag);
@@ -1351,6 +1354,12 @@ function initGlobe() {
           return ring * sin(age * 3.14159265);
         }
 
+        vec2 waterWarp(vec2 uv, float time) {
+          float xFlow = sin(uv.y * 34.0 + time * .52) + sin((uv.x + uv.y) * 23.0 - time * .31);
+          float yFlow = cos(uv.x * 29.0 - time * .39) + sin((uv.x - uv.y) * 19.0 + time * .27);
+          return vec2(xFlow, yFlow) * .0042;
+        }
+
         void main() {
           vec3 lightDir = normalize(vec3(-0.7, 0.65, 1.1));
           float light = max(dot(vNormal, lightDir), 0.0);
@@ -1359,20 +1368,23 @@ function initGlobe() {
           float meridian = lines(vUv.x, 18.0, .055);
           float parallel = lines(vUv.y, 9.0, .055);
           float grid = max(meridian, parallel) * .09;
+          vec2 refraction = waterWarp(vUv, uTime) * uOceanarium;
+          vec2 waterUv = vUv + refraction;
           vec2 themeUv = vec2(
-            fract(vUv.x + uTime * mix(.0015, .006, uOceanarium)),
-            clamp(vUv.y + sin(vUv.x * 28.0 + uTime * .34) * .005 * uOceanarium, 0.0, 1.0)
+            fract(waterUv.x + uTime * mix(.0015, .006, uOceanarium)),
+            clamp(waterUv.y + sin(vUv.x * 28.0 + uTime * .34) * .005 * uOceanarium, 0.0, 1.0)
           );
           vec3 theme = texture2D(uThemeMap, themeUv).rgb;
-          float caustics = causticField(vUv, uTime) * uOceanarium;
+          float caustics = causticField(waterUv, uTime) * uOceanarium;
           float ripples = (
-            rippleRing(vUv, vec2(.27, .24), uTime * .052) +
-            rippleRing(vUv, vec2(.73, .42), uTime * .041 + .47)
+            rippleRing(waterUv, vec2(.27, .24), uTime * .052) +
+            rippleRing(waterUv, vec2(.73, .42), uTime * .041 + .47)
           ) * uOceanarium;
           float waveShadow = (sin(vUv.y * 86.0 + uTime * 1.15 + sin(vUv.x * 31.0) * 2.0) * .5 + .5) * uOceanarium;
+          float refractedLight = (sin((waterUv.x * 41.0 + waterUv.y * 37.0) - uTime * .48) * .5 + .5) * uOceanarium;
           vec3 color = mix(uDeep, uShallow, light * .72 + current * .09);
-          color = mix(color, theme, .48);
-          color += uGlow * (fresnel * .25 + grid + caustics * .18 + ripples * .22);
+          color = mix(color, theme, mix(.48, .57, uOceanarium));
+          color += uGlow * (fresnel * .25 + grid + caustics * .2 + ripples * .2 + refractedLight * .035);
           color *= 1.0 - waveShadow * .045;
           color *= .44 + light * .76;
           gl_FragColor = vec4(color, 1.0);
@@ -1545,7 +1557,14 @@ function resizeGlobe() {
 function animate(now) {
   const dt = Math.min((now - lastFrame) / 1000, .05);
   lastFrame = now;
-  if (state.autoRotate && !state.reducedMotion) globeGroup.rotation.y += dt * .055;
+  if (state.rotationTween) {
+    const progress = Math.min(1, (now - state.rotationTween.started) / state.rotationTween.duration);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    globeGroup.quaternion.slerpQuaternions(state.rotationTween.from, state.rotationTween.to, eased);
+    if (progress === 1) state.rotationTween = null;
+  } else if (state.autoRotate && !state.reducedMotion) {
+    globeGroup.rotation.y += dt * .055;
+  }
   state.cameraDistance += (state.cameraTarget - state.cameraDistance) * Math.min(1, dt * 7);
   camera.position.z = state.cameraDistance;
   planet.material.uniforms.uTime.value = state.reducedMotion ? 0 : now / 1000;
@@ -1560,8 +1579,30 @@ function changeZoom(delta) {
 
 function resetView() {
   state.autoRotate = !state.reducedMotion;
+  state.rotationTween = null;
   state.cameraTarget = state.byId.get(state.focusId)?.zoom_level ? 3.1 : 4.25;
   globeGroup.rotation.set(.12, -.35, 0);
+}
+
+function centerPin(id) {
+  const marker = state.markerVectors.get(id);
+  if (!marker || !globeGroup) return;
+  const target = new THREE.Quaternion().setFromUnitVectors(
+    marker.clone().normalize(),
+    new THREE.Vector3(0, 0, 1)
+  );
+  state.autoRotate = false;
+  if (state.reducedMotion) {
+    globeGroup.quaternion.copy(target);
+    state.rotationTween = null;
+    return;
+  }
+  state.rotationTween = {
+    from: globeGroup.quaternion.clone(),
+    to: target,
+    started: performance.now(),
+    duration: 200,
+  };
 }
 
 function markerVector(index, total) {
@@ -1598,32 +1639,16 @@ function drawPins(nodes) {
   box.replaceChildren(...nodes.map((node) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = `pin${node.animal ? " animal-pin" : ""}`;
+    button.className = "pin";
     button.dataset.id = node.id;
     button.style.setProperty("--pin-color", nodeColor(node));
     button.setAttribute("aria-label", `Open ${node.keyword}`);
-    button.innerHTML = node.animal
-      ? `<img class="pin-photo" alt=""><span class="pin-label"></span>`
-      : `<span class="pin-orb"></span><span class="pin-label"></span>`;
+    button.innerHTML = `<span class="pin-orb"></span><span class="pin-label"></span>`;
     button.querySelector(".pin-label").textContent = node.keyword;
     button.addEventListener("click", () => selectNode(node.id));
-    if (node.animal) loadPinVisual(node, button);
     return button;
   }));
   updatePinStates();
-}
-
-async function loadPinVisual(node, pin) {
-  try {
-    const visual = node.visual && typeof node.visual === "object"
-      ? node.visual
-      : await findCommonsVisual(node);
-    if (!pin.isConnected || !visual?.src) return;
-    const img = pin.querySelector(".pin-photo");
-    img.src = visual.src;
-  } catch (error) {
-    pin.querySelector(".pin-photo")?.remove();
-  }
 }
 
 function updatePins() {
@@ -1778,9 +1803,11 @@ function updateAngleStates() {
 }
 
 function updatePinStates() {
+  const hasSelectedPin = state.markerVectors.has(state.selectedId);
   for (const pin of $("node-pins").children) {
     const node = state.byId.get(pin.dataset.id);
     pin.classList.toggle("selected", pin.dataset.id === state.selectedId);
+    pin.classList.toggle("unselected", hasSelectedPin && pin.dataset.id !== state.selectedId);
     pin.classList.toggle("dimmed", Boolean(isDimmed(node)));
   }
 }
@@ -1839,6 +1866,7 @@ function drawCrumbs() {
 
 function selectNode(id, openMobile = true) {
   state.selectedId = id;
+  if (state.markerVectors.has(id)) centerPin(id);
   updatePinStates();
   drawPlaces(currentNodes());
   drawDetail(state.byId.get(id));

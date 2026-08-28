@@ -155,15 +155,24 @@ try:
               b'$("browse-label").hidden = oceanarium' in viewer and
               b'$("place-list").hidden = oceanarium' in viewer and
               b"state.animalBrowseMode = isOceanarium()" in viewer)
-        check("viewer supports animal photos on globe pins",
-              b"pin-photo" in viewer and b"loadPinVisual" in viewer)
+        check("viewer uses compact shape-neutral globe pins",
+              b"pin-photo" not in viewer and b"loadPinVisual" not in viewer and
+              b'<span class="pin-orb"></span>' in viewer)
+        check("selected pin centres in a 0.2 second turn",
+              all(term in viewer for term in
+                  (b"function centerPin", b"rotationTween",
+                   b"duration: 200", b'slerpQuaternions')))
+        check("selection greys peers and globe click resumes rotation",
+              b'pin.classList.toggle("unselected"' in viewer and
+              b"shouldResume" in viewer and
+              b"state.autoRotate = !state.reducedMotion" in viewer)
         check("viewer supports a resizable reading drawer",
               b"resizingPanel" in viewer and b"--panel-width" in viewer)
         check("viewer projects a subject theme on the globe",
               b"uThemeMap" in viewer and b"createSubjectTexture" in viewer)
         check("Oceanarium surface has accessible water animation",
               all(term in viewer for term in
-                  (b"causticField", b"rippleRing", b"waveShadow",
+                  (b"causticField", b"rippleRing", b"waterWarp", b"waveShadow",
                    b"state.reducedMotion ? 0")))
 
         print("\n--- Input validation ---")
