@@ -57,7 +57,10 @@ The viewer includes:
 - a responsive reading panel that works as a desktop column or mobile sheet;
 - progressive content fields (`key_fact`, `explainer`, `why_it_matters`,
   `wonder`, and optional `glossary`) while retaining the original concise
-  `summary`.
+  `summary`;
+- contextual real photographs and diagrams from Wikimedia Commons, loaded on
+  demand with creator and licence attribution. Visual lookup is resilient: the
+  sourced text remains available if the network or media provider is offline.
 
 ## Subject map format
 
@@ -73,6 +76,11 @@ list of `nodes`, and a flat list of typed `edges`.
 - **Edges** are the web on top of the tree, drawn from a fixed vocabulary:
   `causes`, `enables`, `depends-on`, `conflicts-with`, `precedes`,
   `correlates-with`. They may cross angles and zoom levels freely.
+- **Visuals** default to an openly licensed Wikimedia Commons search based on
+  the node and subject names. Set `visual_query_suffix` on a subject or
+  `visual_query` on a node to make that search precise; set `visual: false` only
+  when an image would be misleading. Optional `visual_alt` and
+  `visual_caption` override retrieved metadata.
 
 Adding a subject means dropping a new file in `data/subjects/`. It appears in
 the picker automatically; no viewer change needed. Malformed maps fail at

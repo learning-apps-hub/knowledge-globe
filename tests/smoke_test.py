@@ -105,6 +105,8 @@ try:
         listing = json.loads(body) if status == 200 else []
         check("subject list is non-empty", bool(listing))
         check("water is seeded", any(s["id"] == "water" for s in listing))
+        check("Singapore Oceanarium is seeded",
+              any(s["id"] == "singapore-oceanarium" for s in listing))
 
         status, body = get("/api/subjects/water")
         check("GET /api/subjects/water → 200", status == 200, f"got {status}")
@@ -115,6 +117,19 @@ try:
               all("zoom_level" in n for n in subject.get("nodes", [])))
         check("root node is zoom level 0",
               any(n["zoom_level"] == 0 for n in subject.get("nodes", [])))
+
+        status, body = get("/api/subjects/singapore-oceanarium")
+        check("GET /api/subjects/singapore-oceanarium → 200",
+              status == 200, f"got {status}")
+        oceanarium = json.loads(body) if status == 200 else {}
+        oceanarium_nodes = oceanarium.get("nodes", [])
+        check("Oceanarium has a habitat-to-animal hierarchy",
+              len(oceanarium_nodes) >= 60 and
+              max((n.get("zoom_level", 0) for n in oceanarium_nodes), default=0) >= 3)
+        check("Oceanarium animal content is source-checked",
+              all(n.get("sources") for n in oceanarium_nodes))
+        check("viewer includes licensed visual lookup",
+              b"Wikimedia Commons" in get("/")[1])
 
         print("\n--- Input validation ---")
         status, _ = get("/api/subjects/nope")

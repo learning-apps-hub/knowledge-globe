@@ -588,6 +588,59 @@
     font-size: 16px;
     line-height: 1.52;
   }
+  .node-visual {
+    position: relative;
+    min-height: 190px;
+    margin: 20px 0 2px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background:
+      radial-gradient(circle at 72% 18%, rgba(85, 228, 209, .18), transparent 34%),
+      linear-gradient(145deg, rgba(13, 55, 68, .95), rgba(5, 19, 27, .98));
+  }
+  .node-visual img {
+    display: block;
+    width: 100%;
+    height: clamp(190px, 24vw, 290px);
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .node-visual.ready img { opacity: 1; }
+  .visual-loading {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    color: var(--ink-dim);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .node-visual.ready .visual-loading { display: none; }
+  .visual-caption {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 34px 12px 10px;
+    background: linear-gradient(transparent, rgba(2, 10, 15, .9));
+    color: #dbe8e9;
+    font-size: 10px;
+    line-height: 1.4;
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .node-visual.ready .visual-caption { opacity: 1; }
+  .visual-credit {
+    display: block;
+    margin-top: 4px;
+    color: #a8bcbe;
+  }
+  .visual-credit a { color: #8cece0; text-decoration: none; }
+  .node-visual.failed { min-height: 86px; }
+  .node-visual.failed .visual-loading { color: var(--ink-dim); text-transform: none; }
   .fact-card {
     margin: 22px 0;
     padding: 16px 17px;
@@ -941,6 +994,8 @@ const state = {
   autoRotate: true,
   reducedMotion: matchMedia("(prefers-reduced-motion: reduce)").matches,
 };
+
+const visualCache = new Map();
 
 const $ = (id) => document.getElementById(id);
 const stage = $("globe-stage");
@@ -1436,6 +1491,7 @@ function drawDetail(node) {
   const glossary = node.glossary || [];
   const sources = node.sources || [];
   const box = $("detail");
+  box.dataset.nodeId = node.id;
   box.innerHTML = `
     <div class="detail-inner">
       <div class="detail-topline">
@@ -1445,6 +1501,11 @@ function drawDetail(node) {
       <h1></h1>
       <div class="angle-tags"></div>
       <p class="lede"></p>
+      <figure class="node-visual" aria-live="polite">
+        <img loading="lazy" decoding="async">
+        <div class="visual-loading">Finding an openly licensed visual…</div>
+        <figcaption class="visual-caption"></figcaption>
+      </figure>
       ${node.key_fact ? `<div class="fact-card"><span>One remarkable fact</span><strong></strong></div>` : ""}
       ${node.explainer ? `<section class="story-section"><h2>Look closer</h2><p class="explainer"></p></section>` : ""}
       ${node.why_it_matters ? `<section class="story-section"><h2>Why it matters</h2><p class="why"></p></section>` : ""}
@@ -1460,6 +1521,7 @@ function drawDetail(node) {
   if (node.explainer) box.querySelector(".explainer").textContent = node.explainer;
   if (node.why_it_matters) box.querySelector(".why").textContent = node.why_it_matters;
   if (node.wonder) box.querySelector(".wonder-text").textContent = node.wonder;
+  loadVisual(node, box);
 
   const tagBox = box.querySelector(".angle-tags");
   tagBox.replaceChildren(...tags.map((item) => {
@@ -1517,6 +1579,98 @@ function drawDetail(node) {
     }));
   } else {
     sourceList.innerHTML = `<p class="empty">This overview gathers the sourced paths below it.</p>`;
+  }
+}
+
+function plainText(value) {
+  const doc = new DOMParser().parseFromString(value || "", "text/html");
+  return (doc.body.textContent || "").replace(/\s+/g, " ").trim();
+}
+
+function visualSearchTerm(node) {
+  if (node.visual_query) return node.visual_query;
+  const hasChildren = (state.childrenOf.get(node.id) || []).length > 0;
+  if (hasChildren) return `${node.keyword} ${state.subject.title}`;
+  const suffix = state.subject.visual_query_suffix || state.subject.title;
+  return `${node.keyword} ${suffix}`;
+}
+
+async function findCommonsVisual(node) {
+  const query = visualSearchTerm(node);
+  if (visualCache.has(query)) return visualCache.get(query);
+  const task = (async () => {
+    const params = new URLSearchParams({
+      action: "query",
+      generator: "search",
+      gsrsearch: `${query} filetype:bitmap`,
+      gsrnamespace: "6",
+      gsrlimit: "3",
+      gsrsort: "relevance",
+      prop: "imageinfo",
+      iiprop: "url|extmetadata",
+      iiurlwidth: "1200",
+      format: "json",
+      origin: "*",
+    });
+    const response = await fetch(`https://commons.wikimedia.org/w/api.php?${params}`);
+    if (!response.ok) throw new Error("Commons search failed");
+    const payload = await response.json();
+    const pages = Object.values(payload.query?.pages || {}).sort((a, b) => (a.index || 99) - (b.index || 99));
+    const page = pages.find((item) => item.imageinfo?.[0]?.thumburl);
+    if (!page) return null;
+    const info = page.imageinfo[0];
+    const meta = info.extmetadata || {};
+    return {
+      src: info.thumburl,
+      page: info.descriptionurl,
+      title: plainText(meta.ObjectName?.value) || page.title.replace(/^File:/, ""),
+      description: plainText(meta.ImageDescription?.value),
+      artist: plainText(meta.Artist?.value) || "Wikimedia Commons contributor",
+      licence: plainText(meta.LicenseShortName?.value) || plainText(meta.UsageTerms?.value) || "See source for licence",
+      licenceUrl: meta.LicenseUrl?.value || info.descriptionurl,
+    };
+  })();
+  visualCache.set(query, task);
+  return task;
+}
+
+async function loadVisual(node, box) {
+  const figure = box.querySelector(".node-visual");
+  if (!figure || node.visual === false) {
+    figure?.remove();
+    return;
+  }
+  try {
+    const visual = await findCommonsVisual(node);
+    if (box.dataset.nodeId !== node.id || !figure.isConnected) return;
+    if (!visual) throw new Error("No visual found");
+    const img = figure.querySelector("img");
+    img.alt = node.visual_alt || visual.description || `Openly licensed visual related to ${node.keyword}`;
+    img.referrerPolicy = "no-referrer";
+    img.addEventListener("load", () => figure.classList.add("ready"), { once: true });
+    img.addEventListener("error", () => {
+      figure.classList.add("failed");
+      figure.querySelector(".visual-loading").textContent = "The visual could not be loaded. The learning content is still available below.";
+    }, { once: true });
+    img.src = visual.src;
+    const caption = figure.querySelector(".visual-caption");
+    const description = node.visual_caption || visual.description || visual.title;
+    caption.replaceChildren(document.createTextNode(description));
+    const credit = document.createElement("span");
+    credit.className = "visual-credit";
+    credit.append("Photo: ", visual.artist, " · ");
+    const source = document.createElement("a");
+    source.href = visual.page;
+    source.target = "_blank";
+    source.rel = "noopener noreferrer";
+    source.textContent = visual.licence;
+    source.setAttribute("aria-label", `${visual.licence}; open source and licence details`);
+    credit.append(source);
+    caption.append(credit);
+  } catch (error) {
+    if (box.dataset.nodeId !== node.id || !figure.isConnected) return;
+    figure.classList.add("failed");
+    figure.querySelector(".visual-loading").textContent = "No trustworthy open visual was found for this topic. The sourced learning content continues below.";
   }
 }
 
