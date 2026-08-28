@@ -329,6 +329,38 @@
     font-size: 10px;
   }
 
+  .animal-filters {
+    display: none;
+    gap: 9px;
+    margin-bottom: 20px;
+  }
+  .animal-filters.visible { display: grid; }
+  .filter-field span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--ink-dim);
+    font-size: 9px;
+    font-weight: 700;
+  }
+  .filter-field select {
+    width: 100%;
+    min-height: 38px;
+    padding: 0 30px 0 10px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, .035);
+    color: var(--ink-soft);
+  }
+  .filter-field option { background: #0a1922; color: var(--ink); }
+  .browse-all {
+    min-height: 38px;
+    border: 1px solid rgba(85, 228, 209, .32);
+    border-radius: 9px;
+    background: rgba(85, 228, 209, .08);
+    color: #c9fffa;
+    cursor: pointer;
+  }
+
   .place-list { display: grid; gap: 5px; }
   .place {
     position: relative;
@@ -472,6 +504,16 @@
     border-color: var(--pin-color);
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--pin-color) 18%, transparent), 0 10px 30px rgba(0, 0, 0, .42);
   }
+  .pin.animal-pin { padding: 4px 10px 4px 4px; }
+  .pin-photo {
+    width: 32px;
+    height: 32px;
+    flex: none;
+    border: 1px solid rgba(255, 255, 255, .22);
+    border-radius: 50%;
+    object-fit: cover;
+    background: rgba(255, 255, 255, .06);
+  }
   .pin-orb {
     width: 9px;
     height: 9px;
@@ -543,6 +585,17 @@
       linear-gradient(180deg, rgba(13, 32, 41, .98), rgba(7, 20, 27, .98));
     scrollbar-width: thin;
   }
+  .detail::after {
+    content: "";
+    position: absolute;
+    z-index: 20;
+    inset: 0 auto 0 0;
+    width: 7px;
+    border-left: 1px solid transparent;
+    cursor: ew-resize;
+  }
+  .detail.resizing::after,
+  .detail:hover::after { border-left-color: rgba(85, 228, 209, .45); }
   .detail-inner { min-height: 100%; padding: 27px 28px 38px; }
   .detail-topline {
     display: flex;
@@ -664,6 +717,40 @@
     display: block;
     color: var(--gold);
     font: 600 16px/1.35 "Manrope", sans-serif;
+  }
+  .animal-profile {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    margin: 18px 0 22px;
+  }
+  .animal-field {
+    min-width: 0;
+    padding: 10px 11px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .025);
+  }
+  .animal-field.wide { grid-column: 1 / -1; }
+  .animal-field dt {
+    margin: 0 0 3px;
+    color: var(--ink-dim);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  .animal-field dd {
+    margin: 0;
+    color: #d9e7e8;
+    font-size: 11px;
+    line-height: 1.42;
+  }
+  .food-note {
+    margin: 8px 0 0;
+    color: var(--ink-dim);
+    font-size: 10px;
+    line-height: 1.5;
   }
   .story-section {
     padding: 18px 0;
@@ -833,6 +920,7 @@
       backdrop-filter: blur(10px);
     }
     .globe-hint { bottom: 18px; }
+    .detail::after { display: none; }
   }
 
   @media (max-width: 680px) {
@@ -927,10 +1015,17 @@
       <p class="section-label">You are exploring</p>
       <section class="overview-card" id="overview-card"></section>
 
-      <p class="section-label">View through a lens</p>
+      <div class="animal-filters" id="animal-filters" aria-label="Filter the Animals A–Z catalogue">
+        <label class="filter-field"><span>Animal Type</span><select id="animal-type-filter"><option value="">All animal types</option></select></label>
+        <label class="filter-field"><span>Natural Habitat</span><select id="habitat-filter"><option value="">All natural habitats</option></select></label>
+        <label class="filter-field"><span>Zone</span><select id="zone-filter"><option value="">All zones</option></select></label>
+        <button class="browse-all" id="browse-all-animals" type="button">View all Animals A–Z</button>
+      </div>
+
+      <p class="section-label" id="lens-label">View through a lens</p>
       <div class="angle-list" id="angle-list" role="group" aria-label="Knowledge lenses"></div>
 
-      <p class="section-label">Explore this level</p>
+      <p class="section-label" id="browse-label">Explore this level</p>
       <div class="place-list" id="place-list"></div>
     </aside>
 
@@ -976,7 +1071,18 @@ const EDGE_STYLE = {
   "depends-on":      { color: "#64a8ff", label: "depends on" },
   "conflicts-with":  { color: "#ffad5d", label: "competes with" },
   "precedes":        { color: "#bd86ff", label: "comes before" },
+  "preys-on":        { color: "#ff8b62", label: "preys on" },
   "correlates-with": { color: "#8da4af", label: "changes alongside" },
+};
+
+const EDGE_INVERSE_LABEL = {
+  "causes": "is caused by",
+  "enables": "is made possible by",
+  "depends-on": "supports",
+  "conflicts-with": "competes with",
+  "precedes": "comes after",
+  "preys-on": "is preyed on by",
+  "correlates-with": "changes alongside",
 };
 
 const state = {
@@ -986,6 +1092,8 @@ const state = {
   focusId: null,
   selectedId: null,
   activeAngle: null,
+  animalFilters: { type: "", habitat: "", zone: "" },
+  animalBrowseMode: false,
   markerVectors: new Map(),
   pointer: null,
   moved: false,
@@ -1000,6 +1108,7 @@ const visualCache = new Map();
 const $ = (id) => document.getElementById(id);
 const stage = $("globe-stage");
 let scene, camera, renderer, globeGroup, planet, atmosphere, starfield, arcGroup;
+let subjectTexture;
 let lastFrame = performance.now();
 
 function angle(id) {
@@ -1007,6 +1116,16 @@ function angle(id) {
 }
 
 function nodeColor(node) {
+  if (isOceanarium() && node.animal) {
+    return {
+      "Cnidarian": "#58dff5",
+      "Fish": "#48a8ff",
+      "Sharks and Rays": "#a98aff",
+      "Amphibian": "#62dfa2",
+      "Invertebrate": "#ffb45d",
+      "Crustacean": "#ff796f",
+    }[animalGroup(node)] || "#55e4d1";
+  }
   return angle((node.angle_tags || [])[0])?.color || "#55e4d1";
 }
 
@@ -1015,7 +1134,29 @@ function isDimmed(node) {
 }
 
 function currentNodes() {
+  if (isOceanarium() && state.animalBrowseMode) {
+    return state.subject.nodes.filter((node) => {
+      if (node.catalogue !== "animals-a-z" || !node.animal) return false;
+      return (!state.animalFilters.type || animalGroup(node) === state.animalFilters.type)
+        && (!state.animalFilters.habitat || node.animal.habitat === state.animalFilters.habitat)
+        && (!state.animalFilters.zone || node.animal.zone === state.animalFilters.zone);
+    });
+  }
   return state.childrenOf.get(state.focusId) || [];
+}
+
+function isOceanarium() {
+  return state.subject?.id === "singapore-oceanarium";
+}
+
+function animalGroup(node) {
+  const type = node.animal?.type || "";
+  if (type === "Cnidarian") return "Cnidarian";
+  if (type === "Cartilaginous fish") return "Sharks and Rays";
+  if (type === "Amphibian") return "Amphibian";
+  if (type === "Crustacean") return "Crustacean";
+  if (["Echinoderm", "Chelicerate"].includes(type)) return "Invertebrate";
+  return "Fish";
 }
 
 async function boot() {
@@ -1054,7 +1195,10 @@ async function loadSubject(id) {
   state.focusId = root.id;
   state.selectedId = root.id;
   state.activeAngle = null;
+  state.animalFilters = { type: "", habitat: "", zone: "" };
+  state.animalBrowseMode = false;
   state.cameraTarget = 4.25;
+  applySubjectTheme();
   drawStaticUI();
   rebuildLevel();
   selectNode(root.id, false);
@@ -1105,6 +1249,27 @@ function bindUI() {
     if (innerWidth <= 680 && event.target === detail) detail.classList.toggle("open");
   });
 
+  let resizingPanel = false;
+  detail.addEventListener("pointerdown", (event) => {
+    if (innerWidth <= 900 || event.clientX - detail.getBoundingClientRect().left > 12) return;
+    resizingPanel = true;
+    detail.classList.add("resizing");
+    detail.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  });
+  detail.addEventListener("pointermove", (event) => {
+    if (!resizingPanel) return;
+    const width = Math.max(320, Math.min(innerWidth * .58, innerWidth - event.clientX));
+    document.documentElement.style.setProperty("--panel-width", `${Math.round(width)}px`);
+    resizeGlobe();
+  });
+  const stopPanelResize = () => {
+    resizingPanel = false;
+    detail.classList.remove("resizing");
+  };
+  detail.addEventListener("pointerup", stopPanelResize);
+  detail.addEventListener("pointercancel", stopPanelResize);
+
   setupSearch();
   addEventListener("resize", resizeGlobe);
   addEventListener("keydown", (event) => {
@@ -1139,6 +1304,7 @@ function initGlobe() {
         uDeep: { value: new THREE.Color("#052f46") },
         uShallow: { value: new THREE.Color("#0b7f8e") },
         uGlow: { value: new THREE.Color("#55e4d1") },
+        uThemeMap: { value: createSubjectTexture("default") },
       },
       vertexShader: `
         varying vec3 vNormal;
@@ -1157,6 +1323,7 @@ function initGlobe() {
         uniform vec3 uDeep;
         uniform vec3 uShallow;
         uniform vec3 uGlow;
+        uniform sampler2D uThemeMap;
         varying vec3 vNormal;
         varying vec3 vWorld;
         varying vec2 vUv;
@@ -1174,7 +1341,9 @@ function initGlobe() {
           float meridian = lines(vUv.x, 18.0, .055);
           float parallel = lines(vUv.y, 9.0, .055);
           float grid = max(meridian, parallel) * .09;
+          vec3 theme = texture2D(uThemeMap, vec2(fract(vUv.x + uTime * .0015), vUv.y)).rgb;
           vec3 color = mix(uDeep, uShallow, light * .72 + current * .09);
+          color = mix(color, theme, .48);
           color += uGlow * (fresnel * .25 + grid);
           color *= .44 + light * .76;
           gl_FragColor = vec4(color, 1.0);
@@ -1182,6 +1351,7 @@ function initGlobe() {
       `,
     });
     planet = new THREE.Mesh(new THREE.SphereGeometry(1, 96, 96), planetMaterial);
+    subjectTexture = planetMaterial.uniforms.uThemeMap.value;
     globeGroup.add(planet);
 
     const wire = new THREE.Mesh(
@@ -1230,6 +1400,88 @@ function initGlobe() {
     console.error(error);
     $("globe-fallback").style.display = "grid";
   }
+}
+
+function createSubjectTexture(subjectId) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1024;
+  canvas.height = 512;
+  const ctx = canvas.getContext("2d");
+  const oceanarium = subjectId === "singapore-oceanarium";
+  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  gradient.addColorStop(0, oceanarium ? "#0a7990" : "#0b536e");
+  gradient.addColorStop(.45, oceanarium ? "#07506c" : "#06374e");
+  gradient.addColorStop(1, "#031a2a");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.globalAlpha = oceanarium ? .24 : .13;
+  ctx.strokeStyle = "#bffcff";
+  ctx.lineWidth = 2;
+  for (let y = 28; y < 330; y += 32) {
+    ctx.beginPath();
+    for (let x = -30; x <= canvas.width + 30; x += 18) {
+      const wave = y + Math.sin(x * .024 + y * .033) * 13;
+      if (x === -30) ctx.moveTo(x, wave); else ctx.lineTo(x, wave);
+    }
+    ctx.stroke();
+  }
+
+  if (oceanarium) {
+    let seed = 43;
+    const random = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+    ctx.fillStyle = "#d5ffff";
+    for (let i = 0; i < 78; i += 1) {
+      ctx.globalAlpha = .08 + random() * .2;
+      const x = random() * canvas.width;
+      const y = 25 + random() * 370;
+      const radius = 1 + random() * 3;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.fillStyle = "#031f31";
+    for (let i = 0; i < 28; i += 1) {
+      ctx.globalAlpha = .22 + random() * .18;
+      const x = random() * canvas.width;
+      const y = 90 + random() * 280;
+      const size = 5 + random() * 11;
+      ctx.save();
+      ctx.translate(x, y);
+      if (random() > .5) ctx.scale(-1, 1);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, size * 1.8, size, 0, 0, Math.PI * 2);
+      ctx.moveTo(-size * 1.5, 0);
+      ctx.lineTo(-size * 2.7, -size);
+      ctx.lineTo(-size * 2.7, size);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+    ctx.globalAlpha = .5;
+    ctx.fillStyle = "#063c46";
+    for (let x = -20; x < canvas.width + 30; x += 45) {
+      const height = 24 + (x * 17 % 68);
+      ctx.beginPath();
+      ctx.moveTo(x - 24, canvas.height);
+      ctx.quadraticCurveTo(x, canvas.height - height, x + 18, canvas.height);
+      ctx.fill();
+    }
+  }
+  ctx.globalAlpha = 1;
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.needsUpdate = true;
+  return texture;
+}
+
+function applySubjectTheme() {
+  if (!planet || !state.subject) return;
+  const next = createSubjectTexture(state.subject.id);
+  planet.material.uniforms.uThemeMap.value = next;
+  subjectTexture?.dispose();
+  subjectTexture = next;
 }
 
 function createStars() {
@@ -1301,7 +1553,14 @@ function rebuildLevel() {
   drawArcs(nodes);
   drawCrumbs();
   const focus = state.byId.get(state.focusId);
-  $("level-readout").innerHTML = `Depth <strong>${focus.zoom_level + 1}</strong> · ${nodes.length || "final"} ${nodes.length === 1 ? "path" : "paths"}`;
+  if (isOceanarium()) {
+    const itemLabel = state.animalBrowseMode
+      ? "A–Z animals"
+      : focus.zoom_level === 0 ? "zones" : nodes.some((node) => node.animal) ? "animals" : "areas";
+    $("level-readout").innerHTML = `<strong>${nodes.length}</strong> ${itemLabel}`;
+  } else {
+    $("level-readout").innerHTML = `Depth <strong>${focus.zoom_level + 1}</strong> · ${nodes.length || "final"} ${nodes.length === 1 ? "path" : "paths"}`;
+  }
 }
 
 function drawPins(nodes) {
@@ -1309,16 +1568,32 @@ function drawPins(nodes) {
   box.replaceChildren(...nodes.map((node) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "pin";
+    button.className = `pin${node.animal ? " animal-pin" : ""}`;
     button.dataset.id = node.id;
     button.style.setProperty("--pin-color", nodeColor(node));
     button.setAttribute("aria-label", `Open ${node.keyword}`);
-    button.innerHTML = `<span class="pin-orb"></span><span class="pin-label"></span>`;
+    button.innerHTML = node.animal
+      ? `<img class="pin-photo" alt=""><span class="pin-label"></span>`
+      : `<span class="pin-orb"></span><span class="pin-label"></span>`;
     button.querySelector(".pin-label").textContent = node.keyword;
     button.addEventListener("click", () => selectNode(node.id));
+    if (node.animal) loadPinVisual(node, button);
     return button;
   }));
   updatePinStates();
+}
+
+async function loadPinVisual(node, pin) {
+  try {
+    const visual = node.visual && typeof node.visual === "object"
+      ? node.visual
+      : await findCommonsVisual(node);
+    if (!pin.isConnected || !visual?.src) return;
+    const img = pin.querySelector(".pin-photo");
+    img.src = visual.src;
+  } catch (error) {
+    pin.querySelector(".pin-photo")?.remove();
+  }
 }
 
 function updatePins() {
@@ -1364,16 +1639,34 @@ function drawArcs(nodes) {
 
 function drawStaticUI() {
   const subject = state.subject;
+  const catalogue = subject.nodes.filter((node) => node.catalogue === "animals-a-z");
+  const stats = isOceanarium()
+    ? [
+        [catalogue.length, "A–Z animals"],
+        [new Set(catalogue.map(animalGroup)).size, "animal types"],
+        [new Set(catalogue.map((node) => node.animal.zone)).size, "zones"],
+      ]
+    : [
+        [subject.nodes.length, "discoveries"],
+        [Math.max(...subject.nodes.map((node) => node.zoom_level)) + 1, "depths"],
+        [subject.edges.length, "links"],
+      ];
   $("overview-card").innerHTML = `
     <h2></h2>
     <p></p>
     <div class="overview-stats">
-      <div><strong>${subject.nodes.length}</strong><span>discoveries</span></div>
-      <div><strong>${Math.max(...subject.nodes.map((node) => node.zoom_level)) + 1}</strong><span>depths</span></div>
-      <div><strong>${subject.edges.length}</strong><span>links</span></div>
+      ${stats.map(([value, label]) => `<div><strong>${value}</strong><span>${label}</span></div>`).join("")}
     </div>`;
   $("overview-card").querySelector("h2").textContent = subject.title;
   $("overview-card").querySelector("p").textContent = subject.summary;
+
+  const filters = $("animal-filters");
+  const oceanarium = isOceanarium();
+  filters.classList.toggle("visible", oceanarium);
+  $("lens-label").hidden = oceanarium;
+  $("angle-list").hidden = oceanarium;
+  $("browse-label").textContent = oceanarium ? "Browse this area" : "Explore this level";
+  if (oceanarium) setupAnimalFilters();
 
   const angleList = $("angle-list");
   angleList.replaceChildren(...subject.angles.map((item) => {
@@ -1394,6 +1687,55 @@ function drawStaticUI() {
     });
     return button;
   }));
+}
+
+function setupAnimalFilters() {
+  const animals = state.subject.nodes.filter((node) => node.catalogue === "animals-a-z" && node.animal);
+  const populate = (id, values) => {
+    const select = $(id);
+    while (select.options.length > 1) select.remove(1);
+    for (const value of values) {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = value;
+      select.append(option);
+    }
+  };
+  populate("animal-type-filter", [...new Set(animals.map(animalGroup))].sort());
+  populate("habitat-filter", [...new Set(animals.map((node) => node.animal.habitat))].sort());
+  populate("zone-filter", [...new Set(animals.map((node) => node.animal.zone))].sort());
+
+  const applyFilters = () => {
+    state.animalFilters = {
+      type: $("animal-type-filter").value,
+      habitat: $("habitat-filter").value,
+      zone: $("zone-filter").value,
+    };
+    state.animalBrowseMode = true;
+    state.focusId = state.subject.id;
+    state.selectedId = state.subject.id;
+    $("browse-all-animals").textContent = "Back to ocean zones";
+    rebuildLevel();
+    drawDetail(state.byId.get(state.subject.id));
+  };
+  for (const id of ["animal-type-filter", "habitat-filter", "zone-filter"]) {
+    const select = $(id);
+    select.onchange = applyFilters;
+  }
+  $("browse-all-animals").onclick = () => {
+    state.animalBrowseMode = !state.animalBrowseMode;
+    if (!state.animalBrowseMode) {
+      state.animalFilters = { type: "", habitat: "", zone: "" };
+      $("animal-type-filter").value = "";
+      $("habitat-filter").value = "";
+      $("zone-filter").value = "";
+    }
+    state.focusId = state.subject.id;
+    state.selectedId = state.subject.id;
+    $("browse-all-animals").textContent = state.animalBrowseMode ? "Back to ocean zones" : "View all Animals A–Z";
+    rebuildLevel();
+    drawDetail(state.byId.get(state.subject.id));
+  };
 }
 
 function updateAngleStates() {
@@ -1418,8 +1760,12 @@ function drawPlaces(nodes) {
     button.className = "place" + (node.id === state.selectedId ? " selected" : "");
     button.style.setProperty("--place-color", nodeColor(node));
     const childCount = (state.childrenOf.get(node.id) || []).length;
-    button.innerHTML = `<strong></strong><small>${childCount ? `${childCount} paths inside` : "A closer look"}</small>`;
+    const description = node.animal
+      ? `${animalGroup(node)} · ${node.animal.zone}`
+      : childCount ? `${childCount} ${isOceanarium() ? "areas inside" : "paths inside"}` : "A closer look";
+    button.innerHTML = `<strong></strong><small></small>`;
     button.querySelector("strong").textContent = node.keyword;
+    button.querySelector("small").textContent = description;
     button.addEventListener("click", () => selectNode(node.id));
     return button;
   }));
@@ -1468,6 +1814,7 @@ function enterNode(id) {
   state.focusId = id;
   state.selectedId = id;
   state.activeAngle = null;
+  if (isOceanarium()) state.animalBrowseMode = false;
   state.cameraTarget = node.zoom_level === 0 ? 4.25 : 3.05;
   updateAngleStates();
   if (!state.reducedMotion) {
@@ -1480,22 +1827,24 @@ function enterNode(id) {
 
 function drawDetail(node) {
   const kids = state.childrenOf.get(node.id) || [];
-  const tags = (node.angle_tags || []).map((id) => angle(id)).filter(Boolean);
+  const tags = isOceanarium() ? [] : (node.angle_tags || []).map((id) => angle(id)).filter(Boolean);
   const relations = state.subject.edges
     .filter((edge) => edge.from === node.id || edge.to === node.id)
-    .slice(0, 4)
+    .sort((a, b) => Number(b.type === "preys-on") - Number(a.type === "preys-on"))
+    .slice(0, 6)
     .map((edge) => {
       const otherId = edge.from === node.id ? edge.to : edge.from;
       return { edge, other: state.byId.get(otherId), outgoing: edge.from === node.id };
     });
   const glossary = node.glossary || [];
+  const animal = node.animal || null;
   const sources = node.sources || [];
   const box = $("detail");
   box.dataset.nodeId = node.id;
   box.innerHTML = `
     <div class="detail-inner">
       <div class="detail-topline">
-        <span class="detail-kicker">${node.zoom_level === 0 ? "The big picture" : `Depth ${node.zoom_level + 1}`}</span>
+        <span class="detail-kicker">${isOceanarium() ? (node.animal ? "Animal profile" : node.zoom_level === 0 ? "Oceanarium overview" : "Oceanarium area") : node.zoom_level === 0 ? "The big picture" : `Depth ${node.zoom_level + 1}`}</span>
         <span class="verified">${sources.length ? "Source-checked" : "Overview"}</span>
       </div>
       <h1></h1>
@@ -1503,16 +1852,18 @@ function drawDetail(node) {
       <p class="lede"></p>
       <figure class="node-visual" aria-live="polite">
         <img loading="lazy" decoding="async">
-        <div class="visual-loading">Finding an openly licensed visual…</div>
+        <div class="visual-loading">Loading a source-credited visual…</div>
         <figcaption class="visual-caption"></figcaption>
       </figure>
+      ${animal ? `<dl class="animal-profile" aria-label="Animal profile"></dl>` : ""}
       ${node.key_fact ? `<div class="fact-card"><span>One remarkable fact</span><strong></strong></div>` : ""}
       ${node.explainer ? `<section class="story-section"><h2>Look closer</h2><p class="explainer"></p></section>` : ""}
       ${node.why_it_matters ? `<section class="story-section"><h2>Why it matters</h2><p class="why"></p></section>` : ""}
       ${node.wonder ? `<section class="story-section wonder"><h2>Keep wondering</h2><p class="wonder-text"></p></section>` : ""}
       ${glossary.length ? `<section class="story-section"><h2>Words worth knowing</h2><div class="glossary"></div></section>` : ""}
       ${kids.length && node.id !== state.focusId ? `<button class="zoom-deeper" type="button">Zoom into ${kids.length} ${kids.length === 1 ? "path" : "paths"} <span>→</span></button>` : ""}
-      ${relations.length ? `<section class="story-section"><h2>Connections</h2><div class="relations"></div></section>` : ""}
+      ${animal ? `<section class="story-section food-web"><h2>Predators & prey</h2><div class="food-relations"></div><p class="food-note"></p></section>` : ""}
+      ${relations.some(({ edge }) => edge.type !== "preys-on") ? `<section class="story-section"><h2>Connections</h2><div class="relations"></div></section>` : ""}
       <section class="sources"><h2>Sources & further reading</h2><div class="source-list"></div></section>
     </div>`;
   box.querySelector("h1").textContent = node.keyword;
@@ -1522,6 +1873,27 @@ function drawDetail(node) {
   if (node.why_it_matters) box.querySelector(".why").textContent = node.why_it_matters;
   if (node.wonder) box.querySelector(".wonder-text").textContent = node.wonder;
   loadVisual(node, box);
+
+  if (animal) {
+    const fields = [
+      ["Animal type", animal.type],
+      ["Natural habitat", animal.habitat],
+      ["Oceanarium zone", animal.zone],
+      ["Presentation", animal.presentation],
+      ["Natural diet / prey", (animal.diet || []).join(", "), true],
+    ].filter(([, value]) => value);
+    const profile = box.querySelector(".animal-profile");
+    profile.replaceChildren(...fields.map(([label, value, wide]) => {
+      const wrapper = document.createElement("div");
+      wrapper.className = `animal-field${wide ? " wide" : ""}`;
+      const term = document.createElement("dt");
+      const description = document.createElement("dd");
+      term.textContent = label;
+      description.textContent = value;
+      wrapper.append(term, description);
+      return wrapper;
+    }));
+  }
 
   const tagBox = box.querySelector(".angle-tags");
   tagBox.replaceChildren(...tags.map((item) => {
@@ -1549,21 +1921,34 @@ function drawDetail(node) {
     }));
   }
 
-  if (relations.length) {
+  const createRelationButton = ({ edge, other, outgoing }) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "relation";
+    button.style.setProperty("--rel-color", EDGE_STYLE[edge.type]?.color || "#8da4af");
+    const relationLabel = outgoing
+      ? EDGE_STYLE[edge.type]?.label || edge.type
+      : EDGE_INVERSE_LABEL[edge.type] || `is related to`;
+    button.innerHTML = `<span class="relation-type"></span><strong></strong>${edge.label ? "<small></small>" : ""}`;
+    button.querySelector(".relation-type").textContent = relationLabel;
+    button.querySelector("strong").textContent = other.keyword;
+    if (edge.label) button.querySelector("small").textContent = edge.label;
+    button.addEventListener("click", () => revealNode(other.id));
+    return button;
+  };
+
+  if (animal) {
+    const foodRelations = relations.filter(({ edge }) => edge.type === "preys-on");
+    box.querySelector(".food-relations").replaceChildren(...foodRelations.map(createRelationButton));
+    box.querySelector(".food-note").textContent = foodRelations.length
+      ? "These links describe documented relationships in the wild—not what animals are fed at the Oceanarium."
+      : "The official page lists broad diet groups above. No species-level link to another A–Z animal has been documented here yet.";
+  }
+
+  const otherRelations = relations.filter(({ edge }) => edge.type !== "preys-on");
+  if (otherRelations.length) {
     const relBox = box.querySelector(".relations");
-    relBox.replaceChildren(...relations.map(({ edge, other, outgoing }) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "relation";
-      button.style.setProperty("--rel-color", EDGE_STYLE[edge.type]?.color || "#8da4af");
-      const relationLabel = outgoing ? EDGE_STYLE[edge.type]?.label : `is ${EDGE_STYLE[edge.type]?.label || edge.type} by`;
-      button.innerHTML = `<span class="relation-type"></span><strong></strong>${edge.label ? "<small></small>" : ""}`;
-      button.querySelector(".relation-type").textContent = relationLabel;
-      button.querySelector("strong").textContent = other.keyword;
-      if (edge.label) button.querySelector("small").textContent = edge.label;
-      button.addEventListener("click", () => revealNode(other.id));
-      return button;
-    }));
+    relBox.replaceChildren(...otherRelations.map(createRelationButton));
   }
 
   const sourceList = box.querySelector(".source-list");
@@ -1641,11 +2026,13 @@ async function loadVisual(node, box) {
     return;
   }
   try {
-    const visual = await findCommonsVisual(node);
+    const visual = node.visual && typeof node.visual === "object"
+      ? node.visual
+      : await findCommonsVisual(node);
     if (box.dataset.nodeId !== node.id || !figure.isConnected) return;
     if (!visual) throw new Error("No visual found");
     const img = figure.querySelector("img");
-    img.alt = node.visual_alt || visual.description || `Openly licensed visual related to ${node.keyword}`;
+    img.alt = node.visual_alt || visual.alt || visual.description || `Real-world visual related to ${node.keyword}`;
     img.referrerPolicy = "no-referrer";
     img.addEventListener("load", () => figure.classList.add("ready"), { once: true });
     img.addEventListener("error", () => {
@@ -1654,23 +2041,23 @@ async function loadVisual(node, box) {
     }, { once: true });
     img.src = visual.src;
     const caption = figure.querySelector(".visual-caption");
-    const description = node.visual_caption || visual.description || visual.title;
+    const description = node.visual_caption || visual.caption || visual.description || visual.title;
     caption.replaceChildren(document.createTextNode(description));
     const credit = document.createElement("span");
     credit.className = "visual-credit";
-    credit.append("Photo: ", visual.artist, " · ");
+    credit.append("Photo: ", visual.artist || visual.credit || "Source contributor", " · ");
     const source = document.createElement("a");
     source.href = visual.page;
     source.target = "_blank";
     source.rel = "noopener noreferrer";
-    source.textContent = visual.licence;
-    source.setAttribute("aria-label", `${visual.licence}; open source and licence details`);
+    source.textContent = visual.licence || "View source";
+    source.setAttribute("aria-label", `${source.textContent}; image source and licence details`);
     credit.append(source);
     caption.append(credit);
   } catch (error) {
     if (box.dataset.nodeId !== node.id || !figure.isConnected) return;
     figure.classList.add("failed");
-    figure.querySelector(".visual-loading").textContent = "No trustworthy open visual was found for this topic. The sourced learning content continues below.";
+    figure.querySelector(".visual-loading").textContent = "No source-credited visual was found for this topic. The sourced learning content continues below.";
   }
 }
 

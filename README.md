@@ -54,13 +54,28 @@ The viewer includes:
 - drag and touch rotation, scroll/pinch-style zoom, reset controls, subject
   search, a random discovery action, and keyboard focus states;
 - angle lenses that highlight science, ecology, society, power, or culture;
+- subject-specific exploration controls: Singapore Oceanarium follows its
+  official Animal Type, Natural Habitat, and Zone filters instead of showing
+  generic knowledge lenses;
 - a responsive reading panel that works as a desktop column or mobile sheet;
+- an adjustable desktop reading panel—drag its left edge to give a detailed
+  profile more or less room;
 - progressive content fields (`key_fact`, `explainer`, `why_it_matters`,
   `wonder`, and optional `glossary`) while retaining the original concise
   `summary`;
 - contextual real photographs and diagrams from Wikimedia Commons, loaded on
   demand with creator and licence attribution. Visual lookup is resilient: the
   sourced text remains available if the network or media provider is offline.
+- a subject-aware projected globe surface. The Oceanarium theme adds underwater
+  light, drifting particles, fish silhouettes, and reef forms; animal pins use
+  photo thumbnails, with 34 verified official profile images and licensed
+  Commons fallbacks for the remaining nine.
+
+The Singapore Oceanarium subject contains all 43 entries currently shown on
+the official Animals A–Z page. Every profile records animal type, natural
+habitat, Oceanarium zone, natural diet, presentation type, sources, and a real
+photo path. Replicas and preserved specimens are explicitly labelled rather
+than presented as live residents.
 
 ## Subject map format
 
@@ -75,7 +90,7 @@ list of `nodes`, and a flat list of typed `edges`.
   parent chain at load time, so it cannot drift.
 - **Edges** are the web on top of the tree, drawn from a fixed vocabulary:
   `causes`, `enables`, `depends-on`, `conflicts-with`, `precedes`,
-  `correlates-with`. They may cross angles and zoom levels freely.
+  `preys-on`, `correlates-with`. They may cross angles and zoom levels freely.
 - **Visuals** default to an openly licensed Wikimedia Commons search based on
   the node and subject names. Set `visual_query_suffix` on a subject or
   `visual_query` on a node to make that search precise; set `visual: false` only

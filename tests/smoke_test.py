@@ -128,8 +128,35 @@ try:
               max((n.get("zoom_level", 0) for n in oceanarium_nodes), default=0) >= 3)
         check("Oceanarium animal content is source-checked",
               all(n.get("sources") for n in oceanarium_nodes))
+        catalogue = [n for n in oceanarium_nodes
+                     if n.get("catalogue") == "animals-a-z"]
+        check("Oceanarium includes all 43 official A–Z entries",
+              len(catalogue) == 43, f"got {len(catalogue)}")
+        check("every A–Z entry has a complete animal profile",
+              all(all(n.get("animal", {}).get(field)
+                      for field in ("type", "habitat", "zone", "diet", "presentation"))
+                  for n in catalogue))
+        check("every A–Z entry has a real-photo path",
+              all(isinstance(n.get("visual"), dict) or n.get("visual_query")
+                  for n in catalogue))
+        check("non-live A–Z displays are labelled",
+              any("Replica" in n["animal"]["presentation"] for n in catalogue) and
+              any("Preserved" in n["animal"]["presentation"] for n in catalogue))
+        check("Oceanarium includes internal predator/prey links",
+              sum(e.get("type") == "preys-on"
+                  for e in oceanarium.get("edges", [])) >= 2)
         check("viewer includes licensed visual lookup",
               b"Wikimedia Commons" in get("/")[1])
+        viewer = get("/")[1]
+        check("viewer includes official Oceanarium filters",
+              all(term in viewer for term in
+                  (b"Animal Type", b"Natural Habitat", b"Zone")))
+        check("viewer supports animal photos on globe pins",
+              b"pin-photo" in viewer and b"loadPinVisual" in viewer)
+        check("viewer supports a resizable reading drawer",
+              b"resizingPanel" in viewer and b"--panel-width" in viewer)
+        check("viewer projects a subject theme on the globe",
+              b"uThemeMap" in viewer and b"createSubjectTexture" in viewer)
 
         print("\n--- Input validation ---")
         status, _ = get("/api/subjects/nope")

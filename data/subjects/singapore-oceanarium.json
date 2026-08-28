@@ -5,34 +5,74 @@
   "content_reviewed": "2026-08-28",
   "visual_query_suffix": "animal",
   "angles": [
-    { "id": "habitat", "label": "Where They Live", "color": "#38BDF8" },
-    { "id": "adaptation", "label": "Amazing Adaptations", "color": "#A78BFA" },
-    { "id": "feeding", "label": "Food Web", "color": "#F59E0B" },
-    { "id": "conservation", "label": "Care & Conservation", "color": "#FB7185" },
-    { "id": "singapore", "label": "Singapore Coast", "color": "#34D399" }
+    {
+      "id": "habitat",
+      "label": "Where They Live",
+      "color": "#38BDF8"
+    },
+    {
+      "id": "adaptation",
+      "label": "Amazing Adaptations",
+      "color": "#A78BFA"
+    },
+    {
+      "id": "feeding",
+      "label": "Food Web",
+      "color": "#F59E0B"
+    },
+    {
+      "id": "conservation",
+      "label": "Care & Conservation",
+      "color": "#FB7185"
+    },
+    {
+      "id": "singapore",
+      "label": "Singapore Coast",
+      "color": "#34D399"
+    }
   ],
   "nodes": [
     {
       "id": "singapore-oceanarium",
       "keyword": "Singapore Oceanarium",
-      "summary": "A visual journey through the living animals explicitly named on Singapore Oceanarium's official visitor and Animal A–Z pages.",
-      "key_fact": "The official visitor map has 22 exhibits arranged across six story zones, from the origin of ocean life to its possible future.",
-      "explainer": "This globe follows the visitor journey but focuses on living animals. It does not treat replicas, projections or preserved specimens as residents. The Oceanarium says some live displays rotate, and its public pages are a showcase rather than a complete census, so this is a source-checked learning guide—not a guarantee that every animal will be visible on every visit.",
+      "summary": "Zoom from six ocean story zones into habitats and all 43 entries in Singapore Oceanarium's official Animals A–Z catalogue.",
+      "key_fact": "The A–Z catalogue contains 43 source-checked entries, including live displays, rotating displays, preserved specimens and one clearly labelled replica.",
+      "explainer": "Follow the globe from zone to habitat to animal. Every A–Z profile shows a real photograph, animal type, natural habitat, Oceanarium exhibit and natural diet. Presentation labels prevent replicas and specimens from being mistaken for live residents.",
       "why_it_matters": "Organising animals by habitat reveals more than an alphabetical list: body shapes, senses, feeding strategies and migrations make sense when you see the environments that shaped them.",
       "wonder": "If you could explore only one layer of the ocean—from mangrove mud to the abyss—which would you choose?",
       "glossary": [
-        { "term": "Habitat", "definition": "The place and conditions in which an organism normally lives." },
-        { "term": "Species", "definition": "A group of organisms that share defining biological characteristics and can usually reproduce with one another." }
+        {
+          "term": "Habitat",
+          "definition": "The place and conditions in which an organism normally lives."
+        },
+        {
+          "term": "Species",
+          "definition": "A group of organisms that share defining biological characteristics and can usually reproduce with one another."
+        }
       ],
-      "angle_tags": ["habitat", "adaptation", "feeding", "conservation", "singapore"],
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding",
+        "conservation",
+        "singapore"
+      ],
       "parent": null,
       "sources": [
-        { "title": "Singapore Oceanarium — Animals and Habitats", "url": "https://www.singaporeoceanarium.com/en/animals-habitats.html" },
-        { "title": "Singapore Oceanarium — Official Visitor Map", "url": "https://www.singaporeoceanarium.com/content/dam/sgo/pdf-documents/visit/20251216_singapore_oceanarium_digital_map.pdf" },
-        { "title": "Singapore Oceanarium — Animals A–Z", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z.html" }
+        {
+          "title": "Singapore Oceanarium — Animals and Habitats",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats.html"
+        },
+        {
+          "title": "Singapore Oceanarium — Official Visitor Map",
+          "url": "https://www.singaporeoceanarium.com/content/dam/sgo/pdf-documents/visit/20251216_singapore_oceanarium_digital_map.pdf"
+        },
+        {
+          "title": "Singapore Oceanarium — Animals A–Z",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z.html"
+        }
       ]
     },
-
     {
       "id": "beginning",
       "keyword": "In the Beginning",
@@ -41,9 +81,17 @@
       "explainer": "This zone uses living animals alongside fossils, replicas and digital reconstructions. The globe includes only the living animals named by the Oceanarium and clearly leaves extinct display animals out of the resident list.",
       "why_it_matters": "Living species can preserve body plans and survival strategies with very deep evolutionary histories.",
       "wonder": "Which is more surprising: an animal that barely changed, or one that found a new way to live?",
-      "angle_tags": ["habitat", "adaptation"],
+      "angle_tags": [
+        "habitat",
+        "adaptation"
+      ],
       "parent": "singapore-oceanarium",
-      "sources": [{ "title": "Singapore Oceanarium — In the Beginning", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — In the Beginning",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html"
+        }
+      ]
     },
     {
       "id": "surface",
@@ -53,9 +101,18 @@
       "explainer": "Mangroves and mudflats are border worlds. Their residents need ways to cling, burrow, breathe, hide or move as the tide repeatedly covers and uncovers the shore.",
       "why_it_matters": "These animals make Singapore's own marine biodiversity visible and connect coastal development to habitat protection.",
       "wonder": "What would you need to survive if your home disappeared underwater twice a day?",
-      "angle_tags": ["habitat", "adaptation", "singapore"],
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "singapore"
+      ],
       "parent": "singapore-oceanarium",
-      "sources": [{ "title": "Singapore Oceanarium — At the Surface", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/at-the-surface.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — At the Surface",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/at-the-surface.html"
+        }
+      ]
     },
     {
       "id": "sunlight",
@@ -65,9 +122,18 @@
       "explainer": "Sunlight powers algae and plankton, which support complex food webs. Reefs add three-dimensional shelter; open water rewards efficient swimming and wide-ranging senses.",
       "why_it_matters": "The richest-looking zone also shows how closely predators, grazers, filter feeders and habitat-building corals depend on one another.",
       "wonder": "Why might a healthy reef need both tiny filter feeders and large sharks?",
-      "angle_tags": ["habitat", "feeding", "conservation"],
+      "angle_tags": [
+        "habitat",
+        "feeding",
+        "conservation"
+      ],
       "parent": "singapore-oceanarium",
-      "sources": [{ "title": "Singapore Oceanarium — Sunlight", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Sunlight",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ]
     },
     {
       "id": "deep",
@@ -77,9 +143,18 @@
       "explainer": "This zone links movement to survival: some animals drift, some school, some migrate vast distances, and others stay close to the seafloor or shelter in wrecks.",
       "why_it_matters": "Ocean currents and animal movements carry energy and nutrients between places and depths that can seem separate.",
       "wonder": "How can an animal navigate across an ocean with no road signs?",
-      "angle_tags": ["habitat", "adaptation", "feeding"],
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
       "parent": "singapore-oceanarium",
-      "sources": [{ "title": "Singapore Oceanarium — Into the Deep", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Into the Deep",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ]
     },
     {
       "id": "abyss",
@@ -89,11 +164,19 @@
       "explainer": "Much of this zone uses specimens and projections because deep-sea animals are difficult to observe and care for. This globe's resident branch includes only the three live animals explicitly named for the Whale Fall and Seamount habitat.",
       "why_it_matters": "Deep habitats show that life can persist with no sunlight by using falling food, scavenging and chemosynthetic ecosystems.",
       "wonder": "How do you find food in a place that is always dark?",
-      "angle_tags": ["habitat", "adaptation", "feeding"],
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
       "parent": "singapore-oceanarium",
-      "sources": [{ "title": "Singapore Oceanarium — The Abyss", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/the-abyss.html.html.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — The Abyss",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/the-abyss.html.html.html"
+        }
+      ]
     },
-
     {
       "id": "ocean-wonders",
       "keyword": "Ocean Wonders",
@@ -102,9 +185,17 @@
       "explainer": "Sea jellies have no bones, heart or brain. Their soft bells pulse to move, while tentacles and oral arms help capture food.",
       "why_it_matters": "Their simple-looking bodies are highly successful and reveal an ancient branch of animal evolution.",
       "wonder": "How can an animal coordinate movement without a brain?",
-      "angle_tags": ["habitat", "adaptation"],
+      "angle_tags": [
+        "habitat",
+        "adaptation"
+      ],
       "parent": "beginning",
-      "sources": [{ "title": "Singapore Oceanarium — Ocean Wonders", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Ocean Wonders",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html"
+        }
+      ]
     },
     {
       "id": "ancient-waters",
@@ -114,9 +205,17 @@
       "explainer": "A lineage can be ancient even though every living individual is modern. These species are not 'unchanged fossils'; they continue to evolve while retaining recognisable ancestral features.",
       "why_it_matters": "Comparing fins, gills, lungs, armour and senses helps reconstruct major transitions in vertebrate and arthropod history.",
       "wonder": "Which body feature can tell the longest evolutionary story?",
-      "angle_tags": ["adaptation", "habitat"],
+      "angle_tags": [
+        "adaptation",
+        "habitat"
+      ],
       "parent": "beginning",
-      "sources": [{ "title": "Singapore Oceanarium — Ancient Waters", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Ancient Waters",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html"
+        }
+      ]
     },
     {
       "id": "conquering-land",
@@ -126,9 +225,17 @@
       "explainer": "Amphibians link aquatic ancestry with life on land. Their eggs, larvae, skin and breathing strategies show why moving onto land required many coordinated changes.",
       "why_it_matters": "Because many amphibians respond quickly to environmental change, their decline can warn us that habitats are under stress.",
       "wonder": "What is the hardest problem an aquatic animal faces when it moves onto land?",
-      "angle_tags": ["adaptation", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "conservation"
+      ],
       "parent": "beginning",
-      "sources": [{ "title": "Singapore Oceanarium — Conquering Land", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Conquering Land",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html"
+        }
+      ]
     },
     {
       "id": "singapore-coast",
@@ -138,9 +245,18 @@
       "explainer": "The animals here use very different solutions—accurate water jets, air exposure, tube feet and grasping tails—but all depend on complex coastal habitat.",
       "why_it_matters": "Knowing nearby species turns conservation from an abstract global issue into care for Singapore's own shores.",
       "wonder": "Which adaptation would help most in a mangrove: aiming, walking, gripping or clinging?",
-      "angle_tags": ["singapore", "habitat", "adaptation"],
+      "angle_tags": [
+        "singapore",
+        "habitat",
+        "adaptation"
+      ],
       "parent": "surface",
-      "sources": [{ "title": "Singapore Oceanarium — Singapore's Coast", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/at-the-surface.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Singapore's Coast",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/at-the-surface.html"
+        }
+      ]
     },
     {
       "id": "shark-seas",
@@ -150,9 +266,18 @@
       "explainer": "Sharks are cartilaginous fishes: their skeletons are built mainly from cartilage rather than bone. Different species cruise open water, rest near the bottom or use specialised heads and senses to find prey.",
       "why_it_matters": "Many shark populations recover slowly because the animals mature late and produce relatively few young.",
       "wonder": "Why might a frightening appearance tell you very little about an animal's behaviour?",
-      "angle_tags": ["adaptation", "feeding", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "conservation"
+      ],
       "parent": "sunlight",
-      "sources": [{ "title": "Singapore Oceanarium — Shark Seas", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Shark Seas",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ]
     },
     {
       "id": "coral-gardens",
@@ -162,9 +287,18 @@
       "explainer": "Reef-builders create shelter. Filter feeders clean particles from water. Predators use holes and crevices. Together they turn a hard structure into a living neighbourhood.",
       "why_it_matters": "When reef-building corals are damaged, many other species lose feeding, nursery and hiding places.",
       "wonder": "Can one animal be a home for hundreds of others?",
-      "angle_tags": ["habitat", "feeding", "conservation"],
+      "angle_tags": [
+        "habitat",
+        "feeding",
+        "conservation"
+      ],
       "parent": "sunlight",
-      "sources": [{ "title": "Singapore Oceanarium — Coral Gardens", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Coral Gardens",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ]
     },
     {
       "id": "reef-kelp",
@@ -174,9 +308,18 @@
       "explainer": "Every shape tells a story: tubes suck tiny prey, spines deter predators, leaf-like fins hide an animal, and beaks scrape food from hard surfaces.",
       "why_it_matters": "Specialisation can be very effective, but it also makes animals vulnerable when their particular habitat disappears.",
       "wonder": "Would you rather survive by hiding, warning, armouring or partnering?",
-      "angle_tags": ["adaptation", "habitat", "feeding"],
+      "angle_tags": [
+        "adaptation",
+        "habitat",
+        "feeding"
+      ],
       "parent": "sunlight",
-      "sources": [{ "title": "Singapore Oceanarium — Reef Animals and Kelp Forest", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Reef Animals and Kelp Forest",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ]
     },
     {
       "id": "open-ocean",
@@ -186,9 +329,18 @@
       "explainer": "Open-water animals often need efficient swimming, broad sensory awareness and ways to feed while covering large areas. Reef-associated giants also move between shelter and open water.",
       "why_it_matters": "Wide-ranging species connect distant habitats and can cross many human jurisdictions during their lives.",
       "wonder": "What would it feel like to live in a home with almost nowhere to hide?",
-      "angle_tags": ["habitat", "feeding", "conservation"],
+      "angle_tags": [
+        "habitat",
+        "feeding",
+        "conservation"
+      ],
       "parent": "sunlight",
-      "sources": [{ "title": "Singapore Oceanarium — Open Ocean", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Open Ocean",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ]
     },
     {
       "id": "ocean-currents",
@@ -198,9 +350,18 @@
       "explainer": "The current is both transport and habitat. Animals living among floating seaweed need to remain close to it, match it or feed on the tiny organisms gathered there.",
       "why_it_matters": "Currents connect ecosystems, but they also collect human debris and transport it across oceans.",
       "wonder": "How do you stay home when your entire home is drifting?",
-      "angle_tags": ["habitat", "adaptation", "feeding"],
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
       "parent": "deep",
-      "sources": [{ "title": "Singapore Oceanarium — Open Ocean Currents", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Open Ocean Currents",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ]
     },
     {
       "id": "migrators",
@@ -210,9 +371,18 @@
       "explainer": "Vertical migration changes depth, sometimes every day. Horizontal migration crosses regions or oceans. Both require animals to sense changing conditions and spend energy at the right time.",
       "why_it_matters": "Migrating animals transfer nutrients and depend on safe routes rather than a single protected place.",
       "wonder": "What invisible clues could tell an animal when and where to travel?",
-      "angle_tags": ["adaptation", "habitat", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "habitat",
+        "conservation"
+      ],
       "parent": "deep",
-      "sources": [{ "title": "Singapore Oceanarium — Migrators", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Migrators",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ]
     },
     {
       "id": "benthos",
@@ -222,9 +392,18 @@
       "explainer": "The seafloor provides surfaces, burrows and crevices. Its residents may be powerful crabs, secretive eels or brightly coloured reef fishes.",
       "why_it_matters": "The bottom is not empty space; it is a layered community that recycles nutrients and provides shelter.",
       "wonder": "Why might staying close to the bottom be safer than swimming in open water?",
-      "angle_tags": ["habitat", "feeding", "adaptation"],
+      "angle_tags": [
+        "habitat",
+        "feeding",
+        "adaptation"
+      ],
       "parent": "deep",
-      "sources": [{ "title": "Singapore Oceanarium — Benthos", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Benthos",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ]
     },
     {
       "id": "artificial-habitats",
@@ -234,9 +413,17 @@
       "explainer": "Artificial reefs are not substitutes for protecting natural reefs, but carefully designed structures can provide habitat and research opportunities.",
       "why_it_matters": "The design, material, location and monitoring of an artificial habitat determine whether it helps or harms marine life.",
       "wonder": "What would you include if you designed a safe underwater neighbourhood?",
-      "angle_tags": ["habitat", "conservation"],
+      "angle_tags": [
+        "habitat",
+        "conservation"
+      ],
       "parent": "deep",
-      "sources": [{ "title": "Singapore Oceanarium — Artificial Habitats", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Artificial Habitats",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ]
     },
     {
       "id": "whale-fall",
@@ -246,11 +433,19 @@
       "explainer": "Deep-sea animals may grow slowly, conserve energy and rely on scattered food. The surrounding whale-fall story shows how one large pulse of organic matter can support an entire succession of life.",
       "why_it_matters": "The deep sea is connected to surface life by sinking particles, migrating animals and falling carcasses.",
       "wonder": "How could one dead whale create many new lives?",
-      "angle_tags": ["habitat", "adaptation", "feeding"],
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
       "parent": "abyss",
-      "sources": [{ "title": "Singapore Oceanarium — Whale Fall and Seamount", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/the-abyss.html.html.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Whale Fall and Seamount",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/the-abyss.html.html.html"
+        }
+      ]
     },
-
     {
       "id": "moon-jelly",
       "keyword": "Moon Jelly",
@@ -259,9 +454,32 @@
       "explainer": "The bell contracts to push water, while cilia and oral arms move captured plankton toward the mouth. A loose nerve net coordinates simple responses without a central brain.",
       "why_it_matters": "Moon Jellies make nervous systems, life cycles and movement understandable without familiar bones or limbs.",
       "wonder": "Can you predict the direction of the next pulse?",
-      "angle_tags": ["adaptation", "feeding"],
+      "angle_tags": [
+        "adaptation",
+        "feeding"
+      ],
       "parent": "ocean-wonders",
-      "sources": [{ "title": "Singapore Oceanarium — Ocean Wonders", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/moon-jelly.html"
+        },
+        {
+          "title": "Singapore Oceanarium — Ocean Wonders",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html"
+        }
+      ],
+      "visual_query": "Moon Jelly animal",
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cnidarian",
+        "habitat": "Coastal waters",
+        "zone": "Ocean Wonders",
+        "diet": [
+          "Plankton"
+        ],
+        "presentation": "Rotating live display"
+      }
     },
     {
       "id": "atlantic-sea-nettle",
@@ -271,9 +489,17 @@
       "explainer": "Touch triggers tiny harpoon-like structures that fire from specialised cells. The sting helps a slow-moving animal catch zooplankton and small prey.",
       "why_it_matters": "It shows how microscopic structures can act as a powerful feeding and defence system.",
       "wonder": "How fast must a microscopic harpoon fire to catch swimming prey?",
-      "angle_tags": ["adaptation", "feeding"],
+      "angle_tags": [
+        "adaptation",
+        "feeding"
+      ],
       "parent": "ocean-wonders",
-      "sources": [{ "title": "Singapore Oceanarium — Ocean Wonders", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Ocean Wonders",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html"
+        }
+      ]
     },
     {
       "id": "fried-egg-jelly",
@@ -283,9 +509,32 @@
       "explainer": "Like other jellies, it alternates between attached polyp and free-swimming medusa stages during its life cycle.",
       "why_it_matters": "Changing body forms let one species use different habitats and feeding strategies across its life.",
       "wonder": "Why might one animal need two very different body plans?",
-      "angle_tags": ["adaptation", "habitat"],
+      "angle_tags": [
+        "adaptation",
+        "habitat"
+      ],
       "parent": "ocean-wonders",
-      "sources": [{ "title": "Singapore Oceanarium — Ocean Wonders", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/fried-egg-sea-jelly.html"
+        },
+        {
+          "title": "Singapore Oceanarium — Ocean Wonders",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html"
+        }
+      ],
+      "visual_query": "Fried Egg Sea Jelly animal",
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cnidarian",
+        "habitat": "Open ocean",
+        "zone": "Ocean Wonders",
+        "diet": [
+          "Plankton"
+        ],
+        "presentation": "Rotating live display"
+      }
     },
     {
       "id": "australian-lungfish",
@@ -295,9 +544,42 @@
       "explainer": "Its lobe-like fins and air-breathing anatomy help scientists compare living fishes with the ancestors of four-limbed vertebrates.",
       "why_it_matters": "The species helps explain the long evolutionary transition from fins and gills toward limbs and lungs.",
       "wonder": "Which came first in evolution: stronger fins or better air breathing?",
-      "angle_tags": ["adaptation", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "conservation"
+      ],
       "parent": "ancient-waters",
-      "sources": [{ "title": "Singapore Oceanarium — Ancient Waters", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/australian-lungfish.html"
+        },
+        {
+          "title": "Singapore Oceanarium — Ancient Waters",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html"
+        }
+      ],
+      "visual_query": "Australian Lungfish animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/australian_lungfish:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/australian-lungfish.html",
+        "alt": "Official profile photograph of Australian Lungfish",
+        "caption": "Australian Lungfish — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Freshwater habitats",
+        "zone": "Ancient Waters",
+        "diet": [
+          "Fish",
+          "Crustaceans",
+          "Frogs"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "arapaima",
@@ -307,9 +589,17 @@
       "explainer": "Low-oxygen tropical waters reward animals able to use atmospheric oxygen. Surfacing solves one problem but exposes the fish to people and predators.",
       "why_it_matters": "Its physiology shows that water-dwelling vertebrates can evolve many ways to obtain oxygen.",
       "wonder": "How would you sleep if you had to keep returning to the surface?",
-      "angle_tags": ["adaptation", "habitat"],
+      "angle_tags": [
+        "adaptation",
+        "habitat"
+      ],
       "parent": "ancient-waters",
-      "sources": [{ "title": "Singapore Oceanarium — Ancient Waters", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Ancient Waters",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html"
+        }
+      ]
     },
     {
       "id": "horseshoe-crab",
@@ -319,9 +609,30 @@
       "explainer": "Book gills exchange gases, many eyes sense light, and the long tail helps the animal right itself. Its biomedical importance comes from blood cells that react strongly to bacterial contamination.",
       "why_it_matters": "Coastal habitat loss and harvesting connect this animal's survival to medicine and shoreline management.",
       "wonder": "How can an animal's immune system help keep human medicines safe?",
-      "angle_tags": ["adaptation", "conservation", "singapore"],
+      "angle_tags": [
+        "adaptation",
+        "conservation",
+        "singapore"
+      ],
       "parent": "ancient-waters",
-      "sources": [{ "title": "Singapore Oceanarium — Indo-Pacific Horseshoe Crab", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/indo-pacific-horseshoe-crab.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/indo-pacific-horseshoe-crab.html"
+        }
+      ],
+      "visual_query": "Indo-Pacific Horseshoe Crab animal",
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Chelicerate",
+        "habitat": "Intertidal zone",
+        "zone": "Ancient Waters",
+        "diet": [
+          "Detritus",
+          "Molluscs"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "epaulette-shark",
@@ -331,9 +642,37 @@
       "explainer": "Strong pectoral and pelvic fins push the body over the bottom. Dark eye-spots may distract predators, while electroreception helps locate hidden prey.",
       "why_it_matters": "Its unusual movement and oxygen tolerance show how sharks diversified beyond constant open-water swimming.",
       "wonder": "When is walking better than swimming for a shark?",
-      "angle_tags": ["adaptation", "feeding"],
+      "angle_tags": [
+        "adaptation",
+        "feeding"
+      ],
       "parent": "ancient-waters",
-      "sources": [{ "title": "Singapore Oceanarium — Epaulette Shark", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/epaulette-shark.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/epaulette-shark.html"
+        }
+      ],
+      "visual_query": "Epaulette Shark animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/epaulette_shark:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/epaulette-shark.html",
+        "alt": "Official profile photograph of Epaulette Shark",
+        "caption": "Epaulette Shark — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cartilaginous fish",
+        "habitat": "Coastal waters",
+        "zone": "Ancient Waters",
+        "diet": [
+          "Fish",
+          "Crustaceans"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "american-paddlefish",
@@ -343,9 +682,37 @@
       "explainer": "The snout is packed with electroreceptors, helping the fish locate concentrations of zooplankton even when visibility is poor.",
       "why_it_matters": "Dams can block the long river journeys adults need to reach spawning grounds.",
       "wonder": "What would an electrical map of a river feel like?",
-      "angle_tags": ["adaptation", "feeding", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "conservation"
+      ],
       "parent": "ancient-waters",
-      "sources": [{ "title": "Singapore Oceanarium — American Paddlefish", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/american-paddlefish.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/american-paddlefish.html"
+        }
+      ],
+      "visual_query": "American Paddlefish animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/american_paddlefish:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/american-paddlefish.html",
+        "alt": "Official profile photograph of American Paddlefish",
+        "caption": "American Paddlefish — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Freshwater habitats",
+        "zone": "Ancient Waters",
+        "diet": [
+          "Plankton"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "axolotl",
@@ -355,9 +722,38 @@
       "explainer": "Most salamanders metamorphose into a more terrestrial adult form. Axolotls usually remain aquatic and sexually mature without completing that transformation, a condition called neoteny.",
       "why_it_matters": "Wild Axolotls are critically endangered even though captive animals are common in laboratories and homes.",
       "wonder": "Why can an Axolotl regrow a limb when a human cannot?",
-      "angle_tags": ["adaptation", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "conservation"
+      ],
       "parent": "conquering-land",
-      "sources": [{ "title": "Singapore Oceanarium — Axolotl", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/axolotl.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/axolotl.html"
+        }
+      ],
+      "visual_query": "Axolotl animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/axolotl:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/axolotl.html",
+        "alt": "Official profile photograph of Axolotl",
+        "caption": "Axolotl — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Amphibian",
+        "habitat": "Freshwater habitats",
+        "zone": "Conquering Land",
+        "diet": [
+          "Crustaceans",
+          "Molluscs",
+          "Fish"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "poison-dart-frog",
@@ -367,9 +763,17 @@
       "explainer": "Warning colouration works when predators learn or inherit an avoidance of conspicuous patterns. Different poison frog species vary greatly in colour and toxicity.",
       "why_it_matters": "Naming the exact species matters because conservation status, range and biology are not identical across the group.",
       "wonder": "Why advertise yourself brightly instead of hiding?",
-      "angle_tags": ["adaptation", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "conservation"
+      ],
       "parent": "conquering-land",
-      "sources": [{ "title": "Singapore Oceanarium — Conquering Land", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Conquering Land",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/in-the-beginning.html"
+        }
+      ]
     },
     {
       "id": "archerfish",
@@ -379,9 +783,42 @@
       "explainer": "The fish forms a narrow groove with its tongue and mouth, then squeezes water into an accelerating jet that knocks prey down.",
       "why_it_matters": "Its hunting shows sophisticated vision, learning and control in an animal with a very different brain from ours.",
       "wonder": "Where would you aim if the surface makes an insect appear in the wrong place?",
-      "angle_tags": ["adaptation", "feeding", "singapore"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "singapore"
+      ],
       "parent": "singapore-coast",
-      "sources": [{ "title": "Singapore Oceanarium — Singapore's Coast", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/at-the-surface.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/archerfish.html"
+        },
+        {
+          "title": "Singapore Oceanarium — Singapore's Coast",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/at-the-surface.html"
+        }
+      ],
+      "visual_query": "Archerfish animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/archerfish:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/archerfish.html",
+        "alt": "Official profile photograph of Archerfish",
+        "caption": "Archerfish — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Coastal waters",
+        "zone": "Singapore's Coast",
+        "diet": [
+          "Insects",
+          "Plant matter"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "barred-mudskipper",
@@ -391,9 +828,39 @@
       "explainer": "Mudskippers keep breathing surfaces moist and use sturdy paired fins like crutches. Burrows provide shelter and more stable conditions during tidal change.",
       "why_it_matters": "Their survival depends on healthy mudflats and mangroves—habitats easily removed by coastal development.",
       "wonder": "Is a mudskipper a fish visiting land, or a land animal returning to water?",
-      "angle_tags": ["adaptation", "habitat", "singapore", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "habitat",
+        "singapore",
+        "conservation"
+      ],
       "parent": "singapore-coast",
-      "sources": [{ "title": "Singapore Oceanarium — Barred Mudskipper", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/barred-mudskipper.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/barred-mudskipper.html"
+        }
+      ],
+      "visual_query": "Barred Mudskipper animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/barred_mudskipper:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/barred-mudskipper.html",
+        "alt": "Official profile photograph of Barred Mudskipper",
+        "caption": "Barred Mudskipper — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Intertidal zone",
+        "zone": "Singapore's Coast",
+        "diet": [
+          "Crustaceans",
+          "Worms"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "knobbly-sea-star",
@@ -403,9 +870,43 @@
       "explainer": "A water vascular system operates the tube feet for movement, attachment and handling food. The mouth is on the underside.",
       "why_it_matters": "Singapore's intertidal sea stars depend on seagrass, reef flats and careful behaviour around sensitive shores.",
       "wonder": "How can hundreds of tiny feet move one large body together?",
-      "angle_tags": ["adaptation", "feeding", "singapore"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "singapore"
+      ],
       "parent": "singapore-coast",
-      "sources": [{ "title": "Singapore Oceanarium — Singapore's Coast", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/at-the-surface.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/knobbly-sea-star.html"
+        },
+        {
+          "title": "Singapore Oceanarium — Singapore's Coast",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/at-the-surface.html"
+        }
+      ],
+      "visual_query": "Knobbly Sea Star animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/knobbly_sea_star:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/knobbly-sea-star.html",
+        "alt": "Official profile photograph of Knobbly Sea Star",
+        "caption": "Knobbly Sea Star — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Echinoderm",
+        "habitat": "Intertidal zone",
+        "zone": "Singapore's Coast",
+        "diet": [
+          "Algae",
+          "Molluscs",
+          "Detritus"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "spotted-seahorse",
@@ -415,9 +916,19 @@
       "explainer": "A tubular snout sucks in tiny prey, independently moving eyes scan the surroundings, and camouflage helps this weak swimmer avoid detection.",
       "why_it_matters": "Seahorses are vulnerable when seagrass and shallow coastal habitat are damaged.",
       "wonder": "Why might staying still be a better hunting strategy than chasing prey?",
-      "angle_tags": ["adaptation", "feeding", "singapore", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "singapore",
+        "conservation"
+      ],
       "parent": "singapore-coast",
-      "sources": [{ "title": "Singapore Oceanarium — Singapore's Coast", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/at-the-surface.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Singapore's Coast",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/at-the-surface.html"
+        }
+      ]
     },
     {
       "id": "sand-tiger-shark",
@@ -427,9 +938,38 @@
       "explainer": "Air reduces the need to keep swimming for lift. Although its exposed teeth look fierce, appearance alone does not describe behaviour or risk.",
       "why_it_matters": "Very low reproductive output makes populations slow to recover from fishing pressure.",
       "wonder": "How does swallowed air help a shark hover?",
-      "angle_tags": ["adaptation", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "conservation"
+      ],
       "parent": "shark-seas",
-      "sources": [{ "title": "Singapore Oceanarium — Sand Tiger Shark", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/sand-tiger-shark.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/sand-tiger-shark.html"
+        }
+      ],
+      "visual_query": "Sand Tiger Shark animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/sand_tiger_shark:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/sand-tiger-shark.html",
+        "alt": "Official profile photograph of Sand Tiger Shark",
+        "caption": "Sand Tiger Shark — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cartilaginous fish",
+        "habitat": "Coastal waters",
+        "zone": "Shark Seas",
+        "diet": [
+          "Fish",
+          "Cephalopods",
+          "Crustaceans"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "scalloped-hammerhead",
@@ -439,9 +979,38 @@
       "explainer": "Wide-set eyes provide extensive visual coverage, while sensory pores help detect the electrical activity of prey, including animals hidden under sand.",
       "why_it_matters": "Scalloped Hammerheads are critically endangered, with schooling behaviour making many adults vulnerable at once.",
       "wonder": "What can a hammer-shaped head sense that a narrow head might miss?",
-      "angle_tags": ["adaptation", "feeding", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "conservation"
+      ],
       "parent": "shark-seas",
-      "sources": [{ "title": "Singapore Oceanarium — Scalloped Hammerhead", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/scalloped-hammerhead.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/scalloped-hammerhead.html"
+        }
+      ],
+      "visual_query": "Scalloped Hammerhead animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/scalloped_hammerhead:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/scalloped-hammerhead.html",
+        "alt": "Official profile photograph of Scalloped Hammerhead",
+        "caption": "Scalloped Hammerhead — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cartilaginous fish",
+        "habitat": "Coastal waters",
+        "zone": "Shark Seas",
+        "diet": [
+          "Fish",
+          "Cephalopods"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "sandbar-shark",
@@ -451,9 +1020,18 @@
       "explainer": "A streamlined body supports steady cruising while electroreception, smell and hearing help locate fish and bottom-dwelling prey.",
       "why_it_matters": "Coastal habitat use brings this shark into frequent contact with fisheries and human activity.",
       "wonder": "Why are shallow nurseries useful for young sharks?",
-      "angle_tags": ["habitat", "conservation", "feeding"],
+      "angle_tags": [
+        "habitat",
+        "conservation",
+        "feeding"
+      ],
       "parent": "shark-seas",
-      "sources": [{ "title": "Singapore Oceanarium — Shark Seas", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Shark Seas",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ]
     },
     {
       "id": "tawny-nurse-shark",
@@ -463,9 +1041,39 @@
       "explainer": "This carpet shark spends much of the day resting and becomes more active after dark. Small comb-like teeth crush hard-shelled prey.",
       "why_it_matters": "Coral reef damage removes both its shelter and feeding grounds.",
       "wonder": "Why might suction work better than biting inside a narrow crack?",
-      "angle_tags": ["feeding", "adaptation", "conservation"],
+      "angle_tags": [
+        "feeding",
+        "adaptation",
+        "conservation"
+      ],
       "parent": "shark-seas",
-      "sources": [{ "title": "Singapore Oceanarium — Tawny Nurse Shark", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/tawny-nurse-shark.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/tawny-nurse-shark.html"
+        }
+      ],
+      "visual_query": "Tawny Nurse Shark animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/tawny_nurse_shark:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/tawny-nurse-shark.html",
+        "alt": "Official profile photograph of Tawny Nurse Shark",
+        "caption": "Tawny Nurse Shark — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cartilaginous fish",
+        "habitat": "Benthic habitats",
+        "zone": "Shark Seas",
+        "diet": [
+          "Fish",
+          "Cephalopods",
+          "Crustaceans"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "coral-animals",
@@ -475,9 +1083,18 @@
       "explainer": "Hard corals deposit calcium carbonate skeletons. Soft corals usually lack massive stony skeletons. Each colony contains many connected polyps with tentacles.",
       "why_it_matters": "Heat stress can disrupt coral–algae partnerships and cause bleaching, weakening the habitat many species need.",
       "wonder": "How can animals smaller than a fingertip build a structure visible from space?",
-      "angle_tags": ["habitat", "feeding", "conservation"],
+      "angle_tags": [
+        "habitat",
+        "feeding",
+        "conservation"
+      ],
       "parent": "coral-gardens",
-      "sources": [{ "title": "Singapore Oceanarium — Coral Gardens", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Coral Gardens",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ]
     },
     {
       "id": "giant-clam",
@@ -487,9 +1104,18 @@
       "explainer": "The clam pumps water over its gills to collect particles. Light reaches algae in the exposed mantle, while iridescent cells help distribute that light.",
       "why_it_matters": "It links sunlight, plankton, water quality and animal–algae partnership in one visible organism.",
       "wonder": "Is the clam feeding from water, sunlight, or both?",
-      "angle_tags": ["feeding", "habitat", "conservation"],
+      "angle_tags": [
+        "feeding",
+        "habitat",
+        "conservation"
+      ],
       "parent": "coral-gardens",
-      "sources": [{ "title": "Singapore Oceanarium — Coral Gardens", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Coral Gardens",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ]
     },
     {
       "id": "coral-moray",
@@ -499,9 +1125,17 @@
       "explainer": "The eel-like body fits narrow spaces. Repeated mouth opening moves water over the gills and should not automatically be read as aggression.",
       "why_it_matters": "Precise species names matter because morays vary in size, range, diet and conservation needs.",
       "wonder": "How do you swallow prey when you cannot expand your head very far?",
-      "angle_tags": ["adaptation", "feeding"],
+      "angle_tags": [
+        "adaptation",
+        "feeding"
+      ],
       "parent": "coral-gardens",
-      "sources": [{ "title": "Singapore Oceanarium — Coral Gardens", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Coral Gardens",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ]
     },
     {
       "id": "weedy-seadragon",
@@ -511,9 +1145,42 @@
       "explainer": "A long tube-like snout sucks in tiny crustaceans. Like seahorses, the male carries eggs, but they attach beneath the tail rather than inside a pouch.",
       "why_it_matters": "Camouflage specialists depend on the habitat background their bodies evolved to match.",
       "wonder": "Which parts are for swimming, and which are only for looking like seaweed?",
-      "angle_tags": ["adaptation", "feeding", "habitat"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "habitat"
+      ],
       "parent": "reef-kelp",
-      "sources": [{ "title": "Singapore Oceanarium — Reef Animals", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/weedy-seadragon.html"
+        },
+        {
+          "title": "Singapore Oceanarium — Reef Animals",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ],
+      "visual_query": "Weedy Seadragon animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/weedy_seadragon:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/weedy-seadragon.html",
+        "alt": "Official profile photograph of Weedy Seadragon",
+        "caption": "Weedy Seadragon — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Coastal waters",
+        "zone": "Reef Animals",
+        "diet": [
+          "Crustaceans",
+          "Plankton"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "dogface-puffer",
@@ -523,9 +1190,17 @@
       "explainer": "Strong teeth crush hard food. Slow swimming is balanced by defence: a tough inflated body and, in some puffers, powerful toxins.",
       "why_it_matters": "It demonstrates evolutionary trade-offs between speed, feeding equipment and defence.",
       "wonder": "Why spend energy swimming fast if you have another way to avoid being eaten?",
-      "angle_tags": ["adaptation", "feeding"],
+      "angle_tags": [
+        "adaptation",
+        "feeding"
+      ],
       "parent": "reef-kelp",
-      "sources": [{ "title": "Singapore Oceanarium — Reef Animals", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Reef Animals",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ]
     },
     {
       "id": "clown-anemonefish",
@@ -535,9 +1210,37 @@
       "explainer": "The fish gains shelter; the anemone can gain nutrients, cleaning, water movement and defence. The exact benefits vary among species and conditions.",
       "why_it_matters": "Their partnership makes both animals vulnerable when reefs and host anemones decline.",
       "wonder": "How can one animal's weapon become another animal's safe home?",
-      "angle_tags": ["habitat", "feeding", "conservation"],
+      "angle_tags": [
+        "habitat",
+        "feeding",
+        "conservation"
+      ],
       "parent": "reef-kelp",
-      "sources": [{ "title": "Singapore Oceanarium — Clown Anemonefish", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/clown-anemonefish.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/clown-anemonefish.html"
+        }
+      ],
+      "visual_query": "Clown Anemonefish animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/clown_anemonefish:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/clown-anemonefish.html",
+        "alt": "Official profile photograph of Clown Anemonefish",
+        "caption": "Clown Anemonefish — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Coral reef",
+        "zone": "Kelp Forest",
+        "diet": [
+          "Plankton"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "longsnout-seahorse",
@@ -547,9 +1250,38 @@
       "explainer": "A grasping tail anchors the body while independently moving eyes search for prey. Rapid head rotation and mouth expansion pull crustaceans inward.",
       "why_it_matters": "Habitat loss affects an animal that cannot simply outswim strong currents or travel easily to a new meadow.",
       "wonder": "How can a slow swimmer become a fast hunter?",
-      "angle_tags": ["adaptation", "feeding", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "conservation"
+      ],
       "parent": "reef-kelp",
-      "sources": [{ "title": "Singapore Oceanarium — Longsnout Seahorse", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/longsnout-seahorse.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/longsnout-seahorse.html"
+        }
+      ],
+      "visual_query": "Longsnout Seahorse animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/longsnout_seahorse:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/longsnout-seahorse.html",
+        "alt": "Official profile photograph of Longsnout Seahorse",
+        "caption": "Longsnout Seahorse — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Coastal waters",
+        "zone": "Reef Animals",
+        "diet": [
+          "Crustaceans",
+          "Plankton"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "razorfish",
@@ -559,9 +1291,37 @@
       "explainer": "Vertical posture and synchronised movement can help the fish disappear among coral branches or sea urchin spines. A tube-like mouth captures plankton.",
       "why_it_matters": "Its specialised shelter strategy ties survival closely to healthy reefs and seagrass beds.",
       "wonder": "Why might swimming the 'wrong' way up make you harder to see?",
-      "angle_tags": ["adaptation", "habitat", "feeding"],
+      "angle_tags": [
+        "adaptation",
+        "habitat",
+        "feeding"
+      ],
       "parent": "reef-kelp",
-      "sources": [{ "title": "Singapore Oceanarium — Razorfish", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/razorfish.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/razorfish.html"
+        }
+      ],
+      "visual_query": "Razorfish animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/razorfish:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/razorfish.html",
+        "alt": "Official profile photograph of Razorfish",
+        "caption": "Razorfish — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Coastal waters",
+        "zone": "Reef Animals",
+        "diet": [
+          "Plankton"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "red-lionfish",
@@ -571,9 +1331,38 @@
       "explainer": "Large pectoral fins help herd prey, while rapid mouth expansion creates suction. The conspicuous spines warn would-be predators.",
       "why_it_matters": "A species can be a valued native predator in one region and a damaging invasive predator in another.",
       "wonder": "How can the same animal belong in one reef and threaten another?",
-      "angle_tags": ["feeding", "adaptation", "conservation"],
+      "angle_tags": [
+        "feeding",
+        "adaptation",
+        "conservation"
+      ],
       "parent": "reef-kelp",
-      "sources": [{ "title": "Singapore Oceanarium — Red Lionfish", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/red-lionfish.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/red-lionfish.html"
+        }
+      ],
+      "visual_query": "Red Lionfish animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/red_lionfish:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/red-lionfish.html",
+        "alt": "Official profile photograph of Red Lionfish",
+        "caption": "Red Lionfish — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Coral reef",
+        "zone": "Ocean's Future",
+        "diet": [
+          "Fish",
+          "Crustaceans"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "longspine-snipefish",
@@ -583,9 +1372,37 @@
       "explainer": "Schools can reduce individual predation risk, while the body shape and snout suit life around reefs and deeper coastal water.",
       "why_it_matters": "Small fishes often connect plankton to larger predators in marine food webs.",
       "wonder": "When is a long narrow mouth better than a wide one?",
-      "angle_tags": ["feeding", "adaptation"],
+      "angle_tags": [
+        "feeding",
+        "adaptation"
+      ],
       "parent": "reef-kelp",
-      "sources": [{ "title": "Singapore Oceanarium — Longspine Snipefish", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/longspine-snipefish.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/longspine-snipefish.html"
+        }
+      ],
+      "visual_query": "Longspine Snipefish animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/longspine_snipefish:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/longspine-snipefish.html",
+        "alt": "Official profile photograph of Longspine Snipefish",
+        "caption": "Longspine Snipefish — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Benthic habitats",
+        "zone": "Whale Fall & Seamount",
+        "diet": [
+          "Plankton",
+          "Crustaceans"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "pinecone-soldierfish",
@@ -595,9 +1412,36 @@
       "explainer": "During daylight it hides in reef crevices; at night it emerges to feed. Red colouration becomes less conspicuous as red light disappears with depth.",
       "why_it_matters": "Day and night create different ecological worlds on the same reef.",
       "wonder": "Why can bright red become good camouflage underwater?",
-      "angle_tags": ["adaptation", "feeding"],
+      "angle_tags": [
+        "adaptation",
+        "feeding"
+      ],
       "parent": "reef-kelp",
-      "sources": [{ "title": "Singapore Oceanarium — Pinecone Soldierfish", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/pinecone-soldierfish.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/pinecone-soldierfish.html"
+        }
+      ],
+      "visual_query": "Pinecone Soldierfish animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/pinecone_soldierfish:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/pinecone-soldierfish.html",
+        "alt": "Official profile photograph of Pinecone Soldierfish",
+        "caption": "Pinecone Soldierfish — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Coral reef",
+        "zone": "Kelp Forest",
+        "diet": [
+          "Plankton"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "long-spined-urchin",
@@ -607,9 +1451,36 @@
       "explainer": "Tube feet move and grip while the mouth scrapes algae. Spines discourage predators and create a protected space around the body.",
       "why_it_matters": "Grazing can stop algae from overwhelming corals, but ecosystem imbalance can also produce damaging urchin outbreaks.",
       "wonder": "How can one grazer both help and harm a reef?",
-      "angle_tags": ["feeding", "habitat"],
+      "angle_tags": [
+        "feeding",
+        "habitat"
+      ],
       "parent": "reef-kelp",
-      "sources": [{ "title": "Singapore Oceanarium — Long-spined Sea Urchin", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/long-spined-sea-urchin.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/long-spined-sea-urchin.html"
+        }
+      ],
+      "visual_query": "Long-spined Sea Urchin animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/long_spined_sea_urchin:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/long-spined-sea-urchin.html",
+        "alt": "Official profile photograph of Long-spined Sea Urchin",
+        "caption": "Long-spined Sea Urchin — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Echinoderm",
+        "habitat": "Coral reef",
+        "zone": "Kelp Forest",
+        "diet": [
+          "Algae"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "green-humphead-parrotfish",
@@ -619,9 +1490,38 @@
       "explainer": "Powerful jaws scrape algae and coral material. Grinding plates farther back process each bite before digestion.",
       "why_it_matters": "Large reef grazers can strongly influence algae, coral competition and sediment production.",
       "wonder": "How much of a tropical beach may have passed through an animal?",
-      "angle_tags": ["feeding", "habitat", "conservation"],
+      "angle_tags": [
+        "feeding",
+        "habitat",
+        "conservation"
+      ],
       "parent": "reef-kelp",
-      "sources": [{ "title": "Singapore Oceanarium — Green Humphead Parrotfish", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/green-humphead-parrotfish.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/green-humphead-parrotfish.html"
+        }
+      ],
+      "visual_query": "Green Humphead Parrotfish animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/green_humphead_parrotfish:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/green-humphead-parrotfish.html",
+        "alt": "Official profile photograph of Green Humphead Parrotfish",
+        "caption": "Green Humphead Parrotfish — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Coral reef",
+        "zone": "Ocean's Future",
+        "diet": [
+          "Corals",
+          "Algae"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "manta-ray",
@@ -631,9 +1531,18 @@
       "explainer": "Mantas swim by flapping broad pectoral fins like wings. They must find dense patches of tiny food despite their enormous size.",
       "why_it_matters": "Species-level identification is important because range and conservation assessments differ between manta species.",
       "wonder": "How can one of the ocean's largest fishes live on some of its smallest organisms?",
-      "angle_tags": ["feeding", "adaptation", "conservation"],
+      "angle_tags": [
+        "feeding",
+        "adaptation",
+        "conservation"
+      ],
       "parent": "open-ocean",
-      "sources": [{ "title": "Singapore Oceanarium — Open Ocean", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Open Ocean",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ]
     },
     {
       "id": "spotted-eagle-ray",
@@ -643,9 +1552,43 @@
       "explainer": "A long snout helps investigate sediment, and electroreception helps locate buried animals. Powerful fins carry it between feeding areas.",
       "why_it_matters": "Coastal feeding habitats and open-water movement expose the ray to multiple human pressures.",
       "wonder": "How do you find a buried clam without seeing it?",
-      "angle_tags": ["feeding", "adaptation", "conservation"],
+      "angle_tags": [
+        "feeding",
+        "adaptation",
+        "conservation"
+      ],
       "parent": "open-ocean",
-      "sources": [{ "title": "Singapore Oceanarium — Open Ocean", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/spotted-eagle-ray.html"
+        },
+        {
+          "title": "Singapore Oceanarium — Open Ocean",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ],
+      "visual_query": "Spotted Eagle Ray animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/spotted_eagle_ray:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/spotted-eagle-ray.html",
+        "alt": "Official profile photograph of Spotted Eagle Ray",
+        "caption": "Spotted Eagle Ray — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cartilaginous fish",
+        "habitat": "Coastal waters",
+        "zone": "Open Ocean",
+        "diet": [
+          "Molluscs",
+          "Crustaceans",
+          "Fish"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "zebra-shark",
@@ -655,9 +1598,18 @@
       "explainer": "A flexible body and small barbels help the shark search reef crevices for molluscs, crustaceans and fishes, often at night.",
       "why_it_matters": "Changing appearance across life stages can cause the same species to be mistaken for two different animals.",
       "wonder": "Why might a young animal need different camouflage from an adult?",
-      "angle_tags": ["adaptation", "feeding", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "conservation"
+      ],
       "parent": "open-ocean",
-      "sources": [{ "title": "Singapore Oceanarium — Open Ocean", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Open Ocean",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/sunlight.html"
+        }
+      ]
     },
     {
       "id": "giant-grouper",
@@ -667,9 +1619,38 @@
       "explainer": "A rapid expansion of the mouth pulls in fishes and crustaceans. Large adults occupy reefs, caves and wrecks where cover helps an ambush predator.",
       "why_it_matters": "Large, slow-growing reef predators are vulnerable to heavy fishing and habitat loss.",
       "wonder": "How can a fish catch prey without chasing it very far?",
-      "angle_tags": ["feeding", "habitat", "conservation"],
+      "angle_tags": [
+        "feeding",
+        "habitat",
+        "conservation"
+      ],
       "parent": "open-ocean",
-      "sources": [{ "title": "Singapore Oceanarium — Giant Grouper", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/giant-grouper.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/giant-grouper.html"
+        }
+      ],
+      "visual_query": "Giant Grouper animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/giant_grouper:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/giant-grouper.html",
+        "alt": "Official profile photograph of Giant Grouper",
+        "caption": "Giant Grouper — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Coral reef",
+        "zone": "Open Ocean",
+        "diet": [
+          "Fish",
+          "Crustaceans"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "napoleon-wrasse",
@@ -679,9 +1660,31 @@
       "explainer": "Fused front teeth and crushing throat teeth process molluscs, crustaceans and echinoderms. Adults can change sex from female to male.",
       "why_it_matters": "The species is endangered because slow reproduction, reef damage and fishing make populations difficult to rebuild.",
       "wonder": "How can one predator help protect the structure of an entire reef?",
-      "angle_tags": ["feeding", "adaptation", "conservation"],
+      "angle_tags": [
+        "feeding",
+        "adaptation",
+        "conservation"
+      ],
       "parent": "open-ocean",
-      "sources": [{ "title": "Singapore Oceanarium — Napoleon Wrasse", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/napoleon-wrasse.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/napoleon-wrasse.html"
+        }
+      ],
+      "visual_query": "Napoleon Wrasse animal",
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Coral reef",
+        "zone": "Deep Ocean Exploration",
+        "diet": [
+          "Fish",
+          "Molluscs",
+          "Crustaceans"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "indo-pacific-tarpon",
@@ -691,9 +1694,29 @@
       "explainer": "Tarpon move between coastal, estuarine and freshwater environments. Air breathing gives them access to habitats that exclude less tolerant fishes.",
       "why_it_matters": "Animals moving among habitats depend on the connections between them, not just one protected site.",
       "wonder": "When does breathing air give a fish an advantage?",
-      "angle_tags": ["adaptation", "habitat"],
+      "angle_tags": [
+        "adaptation",
+        "habitat"
+      ],
       "parent": "open-ocean",
-      "sources": [{ "title": "Singapore Oceanarium — Indo-Pacific Tarpon", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/indo-pacific-tarpon.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/indo-pacific-tarpon.html"
+        }
+      ],
+      "visual_query": "Indo-Pacific Tarpon animal",
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Coastal waters",
+        "zone": "Open Ocean",
+        "diet": [
+          "Fish",
+          "Crustaceans"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "sargassum-fish",
@@ -703,9 +1726,18 @@
       "explainer": "Camouflage hides the fish from both predators and prey. A rapidly expanding mouth can swallow surprisingly large animals at close range.",
       "why_it_matters": "Its entire lifestyle depends on a mobile habitat created by floating algae.",
       "wonder": "How do you tell the animal from the habitat?",
-      "angle_tags": ["adaptation", "feeding", "habitat"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "habitat"
+      ],
       "parent": "ocean-currents",
-      "sources": [{ "title": "Singapore Oceanarium — Open Ocean Currents", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Open Ocean Currents",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ]
     },
     {
       "id": "mysid-shrimp",
@@ -715,9 +1747,17 @@
       "explainer": "They filter or pick small particles and plankton, then transfer that energy to larger predators. Females carry young in a brood pouch.",
       "why_it_matters": "Small prey animals can be the hidden bridge between microscopic production and visible fishes.",
       "wonder": "Would an ocean food web work without tiny animals in the middle?",
-      "angle_tags": ["feeding", "habitat"],
+      "angle_tags": [
+        "feeding",
+        "habitat"
+      ],
       "parent": "ocean-currents",
-      "sources": [{ "title": "Singapore Oceanarium — Open Ocean Currents", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Open Ocean Currents",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ]
     },
     {
       "id": "japanese-bigeye",
@@ -727,9 +1767,17 @@
       "explainer": "Bigeyes commonly shelter by day and feed more actively in dim conditions, using vision to locate crustaceans and small fishes.",
       "why_it_matters": "Eye size illustrates an evolutionary trade-off shaped by depth and time of activity.",
       "wonder": "How large would your eyes need to be if twilight never ended?",
-      "angle_tags": ["adaptation", "feeding"],
+      "angle_tags": [
+        "adaptation",
+        "feeding"
+      ],
       "parent": "ocean-currents",
-      "sources": [{ "title": "Singapore Oceanarium — Open Ocean Currents", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Open Ocean Currents",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ]
     },
     {
       "id": "japanese-pineapplefish",
@@ -739,9 +1787,17 @@
       "explainer": "The fish can partly cover the light organs. Bioluminescence may help it communicate, find prey or reduce its silhouette in dim water.",
       "why_it_matters": "A partnership with microbes gives the fish a capability neither partner would express in the same way alone.",
       "wonder": "Would you use a living light to signal, hunt or hide?",
-      "angle_tags": ["adaptation", "feeding"],
+      "angle_tags": [
+        "adaptation",
+        "feeding"
+      ],
       "parent": "migrators",
-      "sources": [{ "title": "Singapore Oceanarium — Migrators", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Migrators",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ]
     },
     {
       "id": "bottlenose-dolphin",
@@ -751,9 +1807,38 @@
       "explainer": "Dolphins breathe air, nurse their young and maintain complex social relationships. Their brains integrate sound, memory and learned behaviour.",
       "why_it_matters": "The species is near threatened and depends on coastal waters affected by fishing, noise, pollution and habitat change.",
       "wonder": "What would an object look like if you could only 'see' it through echoes?",
-      "angle_tags": ["adaptation", "conservation", "habitat"],
+      "angle_tags": [
+        "adaptation",
+        "conservation",
+        "habitat"
+      ],
       "parent": "migrators",
-      "sources": [{ "title": "Singapore Oceanarium — Indo-Pacific Bottlenose Dolphin", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/indo-pacific-bottlenose-dolphin.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/indo-pacific-bottlenose-dolphin.html"
+        }
+      ],
+      "visual_query": "Indo-Pacific Bottlenose Dolphin animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/indo_pacific_bottlenose_dolphin:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/indo-pacific-bottlenose-dolphin.html",
+        "alt": "Official profile photograph of Indo-Pacific Bottlenose Dolphin",
+        "caption": "Indo-Pacific Bottlenose Dolphin — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Mammal",
+        "habitat": "Coastal waters",
+        "zone": "Horizontal Migrators",
+        "diet": [
+          "Fish",
+          "Cephalopods"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "green-moray",
@@ -763,9 +1848,41 @@
       "explainer": "The flexible body enters crevices where most large predators cannot follow. Smell is especially important when hunting in dim shelter.",
       "why_it_matters": "The animal's colour and open-mouth breathing are easy to misinterpret without looking closer.",
       "wonder": "Why might a predator need two sets of jaws?",
-      "angle_tags": ["adaptation", "feeding"],
+      "angle_tags": [
+        "adaptation",
+        "feeding"
+      ],
       "parent": "benthos",
-      "sources": [{ "title": "Singapore Oceanarium — Benthos", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/green-moray.html"
+        },
+        {
+          "title": "Singapore Oceanarium — Benthos",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ],
+      "visual_query": "Green Moray animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/green_moray:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/green-moray.html",
+        "alt": "Official profile photograph of Green Moray",
+        "caption": "Green Moray — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Coral reef",
+        "zone": "Benthos",
+        "diet": [
+          "Fish",
+          "Crustaceans"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "tasmanian-giant-crab",
@@ -775,9 +1892,34 @@
       "explainer": "The heavy exoskeleton protects the body, while jointed legs carry the crab over the bottom. Like other crustaceans it must moult to grow.",
       "why_it_matters": "Slow-growing deep and cold-water animals may be especially vulnerable to harvesting.",
       "wonder": "How does an animal stay safe while its new shell is still soft?",
-      "angle_tags": ["adaptation", "feeding", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "conservation"
+      ],
       "parent": "benthos",
-      "sources": [{ "title": "Singapore Oceanarium — Benthos", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/tasmanian-giant-crab.html"
+        },
+        {
+          "title": "Singapore Oceanarium — Benthos",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ],
+      "visual_query": "Tasmanian Giant Crab animal",
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Crustacean",
+        "habitat": "Benthic habitats",
+        "zone": "Benthos",
+        "diet": [
+          "Molluscs",
+          "Carrion"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "banggai-cardinalfish",
@@ -787,9 +1929,18 @@
       "explainer": "Mouthbrooding protects a small number of relatively well-developed young. Limited dispersal keeps populations local and genetically structured.",
       "why_it_matters": "A very restricted range and aquarium trade collection have contributed to endangered status.",
       "wonder": "How does a parent eat while carrying young in its mouth?",
-      "angle_tags": ["adaptation", "conservation", "habitat"],
+      "angle_tags": [
+        "adaptation",
+        "conservation",
+        "habitat"
+      ],
       "parent": "benthos",
-      "sources": [{ "title": "Singapore Oceanarium — Benthos", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Benthos",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ]
     },
     {
       "id": "yellow-tang",
@@ -799,9 +1950,17 @@
       "explainer": "A small mouth clips plant material, while the laterally compressed body turns quickly among reef structures. The tail spine can deter attack.",
       "why_it_matters": "Herbivorous fishes help maintain the balance between algae and reef-building organisms.",
       "wonder": "What happens to a reef when too many grazers disappear?",
-      "angle_tags": ["feeding", "habitat"],
+      "angle_tags": [
+        "feeding",
+        "habitat"
+      ],
       "parent": "benthos",
-      "sources": [{ "title": "Singapore Oceanarium — Benthos", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Benthos",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ]
     },
     {
       "id": "leopard-shark",
@@ -811,9 +1970,43 @@
       "explainer": "The official Artificial Habitats page uses 'Indo-Pacific Leopard Shark.' This globe keeps the visitor-page name while showing its connection to the Zebra Shark entry.",
       "why_it_matters": "Common names can create accidental duplicates, so scientific identification is essential in a complete animal catalogue.",
       "wonder": "When do two names describe one species rather than two animals?",
-      "angle_tags": ["adaptation", "habitat", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "habitat",
+        "conservation"
+      ],
       "parent": "artificial-habitats",
-      "sources": [{ "title": "Singapore Oceanarium — Artificial Habitats", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/indo-pacific-leopard-shark.html"
+        },
+        {
+          "title": "Singapore Oceanarium — Artificial Habitats",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ],
+      "visual_query": "Indo-Pacific Leopard Shark animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/indo_pacific_leopard_shark:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/indo-pacific-leopard-shark.html",
+        "alt": "Official profile photograph of Indo-Pacific Leopard Shark",
+        "caption": "Indo-Pacific Leopard Shark — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cartilaginous fish",
+        "habitat": "Coastal waters",
+        "zone": "Deep Ocean Exploration",
+        "diet": [
+          "Fish",
+          "Crustaceans",
+          "Molluscs"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "blotched-fantail-ray",
@@ -823,9 +2016,18 @@
       "explainer": "Camouflage hides the ray against sand and rubble. Electroreception helps it locate buried molluscs, crustaceans and fishes.",
       "why_it_matters": "Bottom trawling and coastal habitat damage can affect animals that feed and rest on the seabed.",
       "wonder": "How can a flat animal breathe while buried in sand?",
-      "angle_tags": ["adaptation", "feeding", "conservation"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "conservation"
+      ],
       "parent": "artificial-habitats",
-      "sources": [{ "title": "Singapore Oceanarium — Artificial Habitats", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Artificial Habitats",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ]
     },
     {
       "id": "bonnethead-shark",
@@ -835,9 +2037,43 @@
       "explainer": "The head carries widely distributed sensory organs, while a compact body manoeuvres through shallow coastal habitat.",
       "why_it_matters": "Its flexible diet challenges the simple idea that every shark is strictly carnivorous.",
       "wonder": "Can an animal be both a shark and partly omnivorous?",
-      "angle_tags": ["feeding", "adaptation", "habitat"],
+      "angle_tags": [
+        "feeding",
+        "adaptation",
+        "habitat"
+      ],
       "parent": "artificial-habitats",
-      "sources": [{ "title": "Singapore Oceanarium — Artificial Habitats", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/bonnethead-shark.html"
+        },
+        {
+          "title": "Singapore Oceanarium — Artificial Habitats",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/into-the-deep.html"
+        }
+      ],
+      "visual_query": "Bonnethead Shark animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/bonnethead_shark:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/bonnethead-shark.html",
+        "alt": "Official profile photograph of Bonnethead Shark",
+        "caption": "Bonnethead Shark — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cartilaginous fish",
+        "habitat": "Coastal waters",
+        "zone": "Deep Ocean Exploration",
+        "diet": [
+          "Crustaceans",
+          "Molluscs",
+          "Fish"
+        ],
+        "presentation": "Live display"
+      }
     },
     {
       "id": "japanese-isopod",
@@ -847,9 +2083,18 @@
       "explainer": "Armour protects the body, while a scavenging lifestyle helps exploit unpredictable food reaching the deep seafloor.",
       "why_it_matters": "Scavengers recycle rare food and move nutrients through an ecosystem where little is wasted.",
       "wonder": "How long would you wait between meals if food almost never arrived?",
-      "angle_tags": ["adaptation", "feeding", "habitat"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "habitat"
+      ],
       "parent": "whale-fall",
-      "sources": [{ "title": "Singapore Oceanarium — Whale Fall and Seamount", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/the-abyss.html.html.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Whale Fall and Seamount",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/the-abyss.html.html.html"
+        }
+      ]
     },
     {
       "id": "akaza-prawn",
@@ -859,9 +2104,18 @@
       "explainer": "Long antennae sense the surroundings beyond the reach of vision, while legs and mouthparts search for small food items on or near the bottom.",
       "why_it_matters": "Colour only functions in relation to the light available in an animal's habitat.",
       "wonder": "Can a bright red animal be camouflaged?",
-      "angle_tags": ["adaptation", "feeding", "habitat"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "habitat"
+      ],
       "parent": "whale-fall",
-      "sources": [{ "title": "Singapore Oceanarium — Whale Fall and Seamount", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/the-abyss.html.html.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — Whale Fall and Seamount",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/the-abyss.html.html.html"
+        }
+      ]
     },
     {
       "id": "australian-ghostshark",
@@ -871,41 +2125,691 @@
       "explainer": "Large eyes, electroreception and a sensory lateral-line system help the fish operate in dim water. A venomous dorsal spine provides defence.",
       "why_it_matters": "Chimaeras reveal a distinct branch of cartilaginous-fish evolution often overshadowed by sharks.",
       "wonder": "Which senses become most useful when sunlight disappears?",
-      "angle_tags": ["adaptation", "feeding", "habitat"],
+      "angle_tags": [
+        "adaptation",
+        "feeding",
+        "habitat"
+      ],
       "parent": "whale-fall",
-      "sources": [{ "title": "Singapore Oceanarium — Whale Fall and Seamount", "url": "https://www.singaporeoceanarium.com/en/animals-habitats/the-abyss.html.html.html" }]
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/australian-ghostshark.html"
+        },
+        {
+          "title": "Singapore Oceanarium — Whale Fall and Seamount",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/the-abyss.html.html.html"
+        }
+      ],
+      "visual_query": "Australian Ghostshark animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/australian_ghostshark:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/australian-ghostshark.html",
+        "alt": "Official profile photograph of Australian Ghostshark",
+        "caption": "Australian Ghostshark — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cartilaginous fish",
+        "habitat": "Benthic habitats",
+        "zone": "Whale Fall & Seamount",
+        "diet": [
+          "Molluscs"
+        ],
+        "presentation": "Live display"
+      }
+    },
+    {
+      "id": "deep-ocean-exploration",
+      "keyword": "Deep Ocean Exploration",
+      "summary": "Meet deep-water animals through exploration stories and source-checked A–Z profiles.",
+      "angle_tags": [
+        "habitat",
+        "adaptation"
+      ],
+      "parent": "abyss",
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — The Abyss",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/the-abyss.html.html.html"
+        }
+      ]
+    },
+    {
+      "id": "life-in-deep",
+      "keyword": "Life in the Deep",
+      "summary": "Preserved specimens make the forms of rarely seen deep-sea animals visible without presenting them as live residents.",
+      "angle_tags": [
+        "habitat",
+        "adaptation"
+      ],
+      "parent": "abyss",
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — The Abyss",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/the-abyss.html.html.html"
+        }
+      ]
+    },
+    {
+      "id": "bluefin-gurnard",
+      "keyword": "Bluefin Gurnard",
+      "summary": "Its fan-like blue-edged fins can startle predators and signal to other fish.",
+      "key_fact": "Its fan-like blue-edged fins can startle predators and signal to other fish.",
+      "explainer": "Open the animal profile to compare its body group, natural habitat, Oceanarium story zone and wild diet with neighbouring animals.",
+      "why_it_matters": "Seeing an animal in its ecological context makes its shape, movement and survival strategies easier to understand.",
+      "wonder": "Which feature would help this animal most in its natural home?",
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
+      "parent": "whale-fall",
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/bluefin-gurnard.html"
+        }
+      ],
+      "visual_query": "Bluefin Gurnard animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/bluefin_gurnard:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/bluefin-gurnard.html",
+        "alt": "Official profile photograph of Bluefin Gurnard",
+        "caption": "Bluefin Gurnard — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Benthic habitats",
+        "zone": "Whale Fall & Seamount",
+        "diet": [
+          "Crustaceans",
+          "Fish",
+          "Molluscs"
+        ],
+        "presentation": "Live display"
+      }
+    },
+    {
+      "id": "bowmouth-guitarfish",
+      "keyword": "Bowmouth Guitarfish",
+      "summary": "This critically endangered ray combines a broad ray-like head with a shark-like tail.",
+      "key_fact": "This critically endangered ray combines a broad ray-like head with a shark-like tail.",
+      "explainer": "Open the animal profile to compare its body group, natural habitat, Oceanarium story zone and wild diet with neighbouring animals.",
+      "why_it_matters": "Seeing an animal in its ecological context makes its shape, movement and survival strategies easier to understand.",
+      "wonder": "Which feature would help this animal most in its natural home?",
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
+      "parent": "open-ocean",
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/bowmouth-guitarfish.html"
+        }
+      ],
+      "visual_query": "Bowmouth Guitarfish animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/bowmouth_guitarfish:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/bowmouth-guitarfish.html",
+        "alt": "Official profile photograph of Bowmouth Guitarfish",
+        "caption": "Bowmouth Guitarfish — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cartilaginous fish",
+        "habitat": "Benthic habitats",
+        "zone": "Open Ocean",
+        "diet": [
+          "Crustaceans",
+          "Molluscs"
+        ],
+        "presentation": "Live display"
+      }
+    },
+    {
+      "id": "brown-hagfish",
+      "keyword": "Brown Hagfish",
+      "summary": "A jawless deep-sea fish that can produce remarkable amounts of defensive slime.",
+      "key_fact": "A jawless deep-sea fish that can produce remarkable amounts of defensive slime.",
+      "explainer": "Open the animal profile to compare its body group, natural habitat, Oceanarium story zone and wild diet with neighbouring animals.",
+      "why_it_matters": "Seeing an animal in its ecological context makes its shape, movement and survival strategies easier to understand.",
+      "wonder": "Which feature would help this animal most in its natural home?",
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
+      "parent": "life-in-deep",
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/brown-hagfish.html"
+        }
+      ],
+      "visual_query": "Brown Hagfish animal",
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Jawless fish",
+        "habitat": "Deep ocean",
+        "zone": "Life in the Deep",
+        "diet": [
+          "Small invertebrates",
+          "Carrion"
+        ],
+        "presentation": "Preserved specimen"
+      }
+    },
+    {
+      "id": "coelacanth-replica",
+      "keyword": "Coelacanth (Replica)",
+      "summary": "A life-sized replica introduces a deep-water lineage once known only from fossils.",
+      "key_fact": "A life-sized replica introduces a deep-water lineage once known only from fossils.",
+      "explainer": "Open the animal profile to compare its body group, natural habitat, Oceanarium story zone and wild diet with neighbouring animals.",
+      "why_it_matters": "Seeing an animal in its ecological context makes its shape, movement and survival strategies easier to understand.",
+      "wonder": "Which feature would help this animal most in its natural home?",
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
+      "parent": "ancient-waters",
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/coelacanth-replica.html"
+        }
+      ],
+      "visual_query": "Coelacanth (Replica) animal",
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Deep ocean",
+        "zone": "Ancient Waters",
+        "diet": [
+          "Fish",
+          "Cephalopods",
+          "Crustaceans"
+        ],
+        "presentation": "Replica—not a live animal"
+      }
+    },
+    {
+      "id": "deep-sea-spider",
+      "keyword": "Deep Sea Spider",
+      "summary": "This marine arthropod breathes through the surface of its long, slender legs.",
+      "key_fact": "This marine arthropod breathes through the surface of its long, slender legs.",
+      "explainer": "Open the animal profile to compare its body group, natural habitat, Oceanarium story zone and wild diet with neighbouring animals.",
+      "why_it_matters": "Seeing an animal in its ecological context makes its shape, movement and survival strategies easier to understand.",
+      "wonder": "Which feature would help this animal most in its natural home?",
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
+      "parent": "whale-fall",
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/deep-sea-spider.html"
+        }
+      ],
+      "visual_query": "Deep Sea Spider animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/deep_sea_spider:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/deep-sea-spider.html",
+        "alt": "Official profile photograph of Deep Sea Spider",
+        "caption": "Deep Sea Spider — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Chelicerate",
+        "habitat": "Deep ocean",
+        "zone": "Whale Fall & Seamount",
+        "diet": [
+          "Sponges",
+          "Molluscs"
+        ],
+        "presentation": "Live display"
+      }
+    },
+    {
+      "id": "deepsea-lizardfish",
+      "keyword": "Deepsea Lizardfish",
+      "summary": "A preserved specimen reveals an ambush predator from hundreds to thousands of metres deep.",
+      "key_fact": "A preserved specimen reveals an ambush predator from hundreds to thousands of metres deep.",
+      "explainer": "Open the animal profile to compare its body group, natural habitat, Oceanarium story zone and wild diet with neighbouring animals.",
+      "why_it_matters": "Seeing an animal in its ecological context makes its shape, movement and survival strategies easier to understand.",
+      "wonder": "Which feature would help this animal most in its natural home?",
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
+      "parent": "life-in-deep",
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/deepsea-lizardfish.html"
+        }
+      ],
+      "visual_query": "Deepsea Lizardfish animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/deepsea_lizardfish:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/deepsea-lizardfish.html",
+        "alt": "Official profile photograph of Deepsea Lizardfish",
+        "caption": "Deepsea Lizardfish — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Bony fish",
+        "habitat": "Deep ocean",
+        "zone": "Life in the Deep",
+        "diet": [
+          "Fish"
+        ],
+        "presentation": "Preserved specimen"
+      }
+    },
+    {
+      "id": "dyeing-poison-frog",
+      "keyword": "Dyeing Poison Frog",
+      "summary": "Its vivid colours warn predators about chemical defences built partly from its wild diet.",
+      "key_fact": "Its vivid colours warn predators about chemical defences built partly from its wild diet.",
+      "explainer": "Open the animal profile to compare its body group, natural habitat, Oceanarium story zone and wild diet with neighbouring animals.",
+      "why_it_matters": "Seeing an animal in its ecological context makes its shape, movement and survival strategies easier to understand.",
+      "wonder": "Which feature would help this animal most in its natural home?",
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
+      "parent": "conquering-land",
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/dyeing-poison-frog.html"
+        }
+      ],
+      "visual_query": "Dyeing Poison Frog animal",
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Amphibian",
+        "habitat": "Terrestrial habitats",
+        "zone": "Conquering Land",
+        "diet": [
+          "Insects"
+        ],
+        "presentation": "Live display"
+      }
+    },
+    {
+      "id": "pacific-sea-nettle",
+      "keyword": "Pacific Sea Nettle",
+      "summary": "Long stinging tentacles trail behind a red-brown bell to capture drifting plankton.",
+      "key_fact": "Long stinging tentacles trail behind a red-brown bell to capture drifting plankton.",
+      "explainer": "Open the animal profile to compare its body group, natural habitat, Oceanarium story zone and wild diet with neighbouring animals.",
+      "why_it_matters": "Seeing an animal in its ecological context makes its shape, movement and survival strategies easier to understand.",
+      "wonder": "Which feature would help this animal most in its natural home?",
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
+      "parent": "ocean-wonders",
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/pacific-sea-nettle.html"
+        }
+      ],
+      "visual_query": "Pacific Sea Nettle animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/pacific_sea_nettle:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/pacific-sea-nettle.html",
+        "alt": "Official profile photograph of Pacific Sea Nettle",
+        "caption": "Pacific Sea Nettle — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cnidarian",
+        "habitat": "Open ocean",
+        "zone": "Ocean Wonders",
+        "diet": [
+          "Plankton"
+        ],
+        "presentation": "Rotating live display"
+      }
+    },
+    {
+      "id": "reef-manta-ray",
+      "keyword": "Reef Manta Ray",
+      "summary": "Wing-like fins carry this huge filter-feeder through clouds of tiny plankton.",
+      "key_fact": "Wing-like fins carry this huge filter-feeder through clouds of tiny plankton.",
+      "explainer": "Open the animal profile to compare its body group, natural habitat, Oceanarium story zone and wild diet with neighbouring animals.",
+      "why_it_matters": "Seeing an animal in its ecological context makes its shape, movement and survival strategies easier to understand.",
+      "wonder": "Which feature would help this animal most in its natural home?",
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
+      "parent": "open-ocean",
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/reef-manta-ray.html"
+        }
+      ],
+      "visual_query": "Reef Manta Ray animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/reef_manta_ray:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/reef-manta-ray.html",
+        "alt": "Official profile photograph of Reef Manta Ray",
+        "caption": "Reef Manta Ray — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cartilaginous fish",
+        "habitat": "Coral reef",
+        "zone": "Open Ocean",
+        "diet": [
+          "Plankton"
+        ],
+        "presentation": "Live display"
+      }
+    },
+    {
+      "id": "sunflower-sea-star",
+      "keyword": "Sunflower Sea Star",
+      "summary": "Thousands of tube feet make this many-armed sea star surprisingly fast.",
+      "key_fact": "Thousands of tube feet make this many-armed sea star surprisingly fast.",
+      "explainer": "Open the animal profile to compare its body group, natural habitat, Oceanarium story zone and wild diet with neighbouring animals.",
+      "why_it_matters": "Seeing an animal in its ecological context makes its shape, movement and survival strategies easier to understand.",
+      "wonder": "Which feature would help this animal most in its natural home?",
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
+      "parent": "whale-fall",
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/sunflower-sea-star.html"
+        }
+      ],
+      "visual_query": "Sunflower Sea Star animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/sunflower_sea_star:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/sunflower-sea-star.html",
+        "alt": "Official profile photograph of Sunflower Sea Star",
+        "caption": "Sunflower Sea Star — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Echinoderm",
+        "habitat": "Benthic habitats",
+        "zone": "Whale Fall & Seamount",
+        "diet": [
+          "Crustaceans",
+          "Invertebrates"
+        ],
+        "presentation": "Live display"
+      }
+    },
+    {
+      "id": "white-spotted-sea-jelly",
+      "keyword": "White Spotted Sea Jelly",
+      "summary": "Instead of long stinging tentacles, it has spotted bells and many tiny mouths along its oral arms.",
+      "key_fact": "Instead of long stinging tentacles, it has spotted bells and many tiny mouths along its oral arms.",
+      "explainer": "Open the animal profile to compare its body group, natural habitat, Oceanarium story zone and wild diet with neighbouring animals.",
+      "why_it_matters": "Seeing an animal in its ecological context makes its shape, movement and survival strategies easier to understand.",
+      "wonder": "Which feature would help this animal most in its natural home?",
+      "angle_tags": [
+        "habitat",
+        "adaptation",
+        "feeding"
+      ],
+      "parent": "ocean-wonders",
+      "sources": [
+        {
+          "title": "Singapore Oceanarium — official A–Z animal page",
+          "url": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/white-spotted-sea-jelly.html"
+        }
+      ],
+      "visual_query": "White Spotted Sea Jelly animal",
+      "visual": {
+        "src": "https://s7ap1.scene7.com/is/image/rwsentosa/white_spotted_sea_jelly:2by1?wid=1200&hei=600&fmt=webp",
+        "page": "https://www.singaporeoceanarium.com/en/animals-habitats/animals-a-z/white-spotted-sea-jelly.html",
+        "alt": "Official profile photograph of White Spotted Sea Jelly",
+        "caption": "White Spotted Sea Jelly — official Animals A–Z profile",
+        "credit": "Singapore Oceanarium",
+        "licence": "Official profile"
+      },
+      "catalogue": "animals-a-z",
+      "animal": {
+        "type": "Cnidarian",
+        "habitat": "Coastal waters",
+        "zone": "Ocean Wonders",
+        "diet": [
+          "Plankton"
+        ],
+        "presentation": "Rotating live display"
+      }
     }
   ],
   "edges": [
-    { "from": "ocean-wonders", "to": "ancient-waters", "type": "precedes", "label": "The visitor story moves from early drifting animals to ancient fishes." },
-    { "from": "ancient-waters", "to": "conquering-land", "type": "precedes", "label": "Fins, lungs and freshwater life frame the transition toward land." },
-    { "from": "surface", "to": "sunlight", "type": "precedes", "label": "The visitor journey leaves the coast for sunlit seas." },
-    { "from": "sunlight", "to": "deep", "type": "precedes", "label": "Light fades as the journey descends." },
-    { "from": "deep", "to": "abyss", "type": "precedes", "label": "The seafloor journey continues into the deep ocean." },
-    { "from": "moon-jelly", "to": "atlantic-sea-nettle", "type": "correlates-with", "label": "Both use stinging cells and a medusa body plan." },
-    { "from": "australian-lungfish", "to": "axolotl", "type": "precedes", "label": "Air-breathing fishes help explain the ancestry of land vertebrates." },
-    { "from": "american-paddlefish", "to": "moon-jelly", "type": "depends-on", "label": "Both ultimately depend on plankton-rich food webs." },
-    { "from": "archerfish", "to": "barred-mudskipper", "type": "correlates-with", "label": "Both exploit the shifting boundary between air and water." },
-    { "from": "spotted-seahorse", "to": "longsnout-seahorse", "type": "correlates-with", "label": "Related fishes share male pregnancy and suction feeding." },
-    { "from": "coral-animals", "to": "clown-anemonefish", "type": "enables", "label": "Reef structure supports anemones and their fish partners." },
-    { "from": "coral-animals", "to": "giant-clam", "type": "correlates-with", "label": "Both partner with photosynthetic algae." },
-    { "from": "coral-animals", "to": "green-humphead-parrotfish", "type": "enables", "label": "Reef surfaces provide feeding habitat." },
-    { "from": "green-humphead-parrotfish", "to": "yellow-tang", "type": "correlates-with", "label": "Both grazing fishes influence algal growth." },
-    { "from": "long-spined-urchin", "to": "yellow-tang", "type": "correlates-with", "label": "Invertebrate and fish grazers can serve similar reef functions." },
-    { "from": "tawny-nurse-shark", "to": "coral-moray", "type": "correlates-with", "label": "Both hunt around reef crevices and use suction." },
-    { "from": "scalloped-hammerhead", "to": "bonnethead-shark", "type": "correlates-with", "label": "Two hammerhead shapes support different coastal lifestyles." },
-    { "from": "zebra-shark", "to": "leopard-shark", "type": "correlates-with", "label": "The visitor pages use two common names associated with the same species." },
-    { "from": "manta-ray", "to": "american-paddlefish", "type": "correlates-with", "label": "Very different giant fishes both filter tiny plankton." },
-    { "from": "spotted-eagle-ray", "to": "blotched-fantail-ray", "type": "correlates-with", "label": "Related rays use different combinations of open-water swimming and bottom feeding." },
-    { "from": "sargassum-fish", "to": "mysid-shrimp", "type": "depends-on", "label": "Small drifting crustaceans support Sargassum food webs." },
-    { "from": "japanese-bigeye", "to": "japanese-pineapplefish", "type": "correlates-with", "label": "Large eyes and light-related adaptations suit dim habitats." },
-    { "from": "bottlenose-dolphin", "to": "scalloped-hammerhead", "type": "correlates-with", "label": "Both travel widely and use sophisticated non-visual senses." },
-    { "from": "green-moray", "to": "coral-moray", "type": "correlates-with", "label": "One page names a species; the other names only the wider group." },
-    { "from": "banggai-cardinalfish", "to": "long-spined-urchin", "type": "depends-on", "label": "Young and small cardinalfish can shelter among long spines." },
-    { "from": "whale-fall", "to": "japanese-isopod", "type": "enables", "label": "Falling organic matter supports deep scavengers." },
-    { "from": "whale-fall", "to": "akaza-prawn", "type": "enables", "label": "Food-rich deep habitats support crustaceans." },
-    { "from": "australian-ghostshark", "to": "scalloped-hammerhead", "type": "correlates-with", "label": "Chimaeras and sharks are different branches of cartilaginous fishes." },
-    { "from": "knobbly-sea-star", "to": "long-spined-urchin", "type": "correlates-with", "label": "Both are five-part echinoderms using tube feet." },
-    { "from": "red-lionfish", "to": "australian-ghostshark", "type": "correlates-with", "label": "Both carry venomous defensive spines despite distant ancestry." }
+    {
+      "from": "ocean-wonders",
+      "to": "ancient-waters",
+      "type": "precedes",
+      "label": "The visitor story moves from early drifting animals to ancient fishes."
+    },
+    {
+      "from": "ancient-waters",
+      "to": "conquering-land",
+      "type": "precedes",
+      "label": "Fins, lungs and freshwater life frame the transition toward land."
+    },
+    {
+      "from": "surface",
+      "to": "sunlight",
+      "type": "precedes",
+      "label": "The visitor journey leaves the coast for sunlit seas."
+    },
+    {
+      "from": "sunlight",
+      "to": "deep",
+      "type": "precedes",
+      "label": "Light fades as the journey descends."
+    },
+    {
+      "from": "deep",
+      "to": "abyss",
+      "type": "precedes",
+      "label": "The seafloor journey continues into the deep ocean."
+    },
+    {
+      "from": "moon-jelly",
+      "to": "atlantic-sea-nettle",
+      "type": "correlates-with",
+      "label": "Both use stinging cells and a medusa body plan."
+    },
+    {
+      "from": "australian-lungfish",
+      "to": "axolotl",
+      "type": "precedes",
+      "label": "Air-breathing fishes help explain the ancestry of land vertebrates."
+    },
+    {
+      "from": "american-paddlefish",
+      "to": "moon-jelly",
+      "type": "depends-on",
+      "label": "Both ultimately depend on plankton-rich food webs."
+    },
+    {
+      "from": "archerfish",
+      "to": "barred-mudskipper",
+      "type": "correlates-with",
+      "label": "Both exploit the shifting boundary between air and water."
+    },
+    {
+      "from": "spotted-seahorse",
+      "to": "longsnout-seahorse",
+      "type": "correlates-with",
+      "label": "Related fishes share male pregnancy and suction feeding."
+    },
+    {
+      "from": "coral-animals",
+      "to": "clown-anemonefish",
+      "type": "enables",
+      "label": "Reef structure supports anemones and their fish partners."
+    },
+    {
+      "from": "coral-animals",
+      "to": "giant-clam",
+      "type": "correlates-with",
+      "label": "Both partner with photosynthetic algae."
+    },
+    {
+      "from": "coral-animals",
+      "to": "green-humphead-parrotfish",
+      "type": "enables",
+      "label": "Reef surfaces provide feeding habitat."
+    },
+    {
+      "from": "green-humphead-parrotfish",
+      "to": "yellow-tang",
+      "type": "correlates-with",
+      "label": "Both grazing fishes influence algal growth."
+    },
+    {
+      "from": "long-spined-urchin",
+      "to": "yellow-tang",
+      "type": "correlates-with",
+      "label": "Invertebrate and fish grazers can serve similar reef functions."
+    },
+    {
+      "from": "tawny-nurse-shark",
+      "to": "coral-moray",
+      "type": "correlates-with",
+      "label": "Both hunt around reef crevices and use suction."
+    },
+    {
+      "from": "scalloped-hammerhead",
+      "to": "bonnethead-shark",
+      "type": "correlates-with",
+      "label": "Two hammerhead shapes support different coastal lifestyles."
+    },
+    {
+      "from": "zebra-shark",
+      "to": "leopard-shark",
+      "type": "correlates-with",
+      "label": "The visitor pages use two common names associated with the same species."
+    },
+    {
+      "from": "manta-ray",
+      "to": "american-paddlefish",
+      "type": "correlates-with",
+      "label": "Very different giant fishes both filter tiny plankton."
+    },
+    {
+      "from": "spotted-eagle-ray",
+      "to": "blotched-fantail-ray",
+      "type": "correlates-with",
+      "label": "Related rays use different combinations of open-water swimming and bottom feeding."
+    },
+    {
+      "from": "sargassum-fish",
+      "to": "mysid-shrimp",
+      "type": "depends-on",
+      "label": "Small drifting crustaceans support Sargassum food webs."
+    },
+    {
+      "from": "japanese-bigeye",
+      "to": "japanese-pineapplefish",
+      "type": "correlates-with",
+      "label": "Large eyes and light-related adaptations suit dim habitats."
+    },
+    {
+      "from": "bottlenose-dolphin",
+      "to": "scalloped-hammerhead",
+      "type": "correlates-with",
+      "label": "Both travel widely and use sophisticated non-visual senses."
+    },
+    {
+      "from": "green-moray",
+      "to": "coral-moray",
+      "type": "correlates-with",
+      "label": "One page names a species; the other names only the wider group."
+    },
+    {
+      "from": "banggai-cardinalfish",
+      "to": "long-spined-urchin",
+      "type": "depends-on",
+      "label": "Young and small cardinalfish can shelter among long spines."
+    },
+    {
+      "from": "whale-fall",
+      "to": "japanese-isopod",
+      "type": "enables",
+      "label": "Falling organic matter supports deep scavengers."
+    },
+    {
+      "from": "whale-fall",
+      "to": "akaza-prawn",
+      "type": "enables",
+      "label": "Food-rich deep habitats support crustaceans."
+    },
+    {
+      "from": "australian-ghostshark",
+      "to": "scalloped-hammerhead",
+      "type": "correlates-with",
+      "label": "Chimaeras and sharks are different branches of cartilaginous fishes."
+    },
+    {
+      "from": "knobbly-sea-star",
+      "to": "long-spined-urchin",
+      "type": "correlates-with",
+      "label": "Both are five-part echinoderms using tube feet."
+    },
+    {
+      "from": "red-lionfish",
+      "to": "australian-ghostshark",
+      "type": "correlates-with",
+      "label": "Both carry venomous defensive spines despite distant ancestry."
+    },
+    {
+      "from": "tawny-nurse-shark",
+      "to": "long-spined-urchin",
+      "type": "preys-on",
+      "label": "Wild tawny nurse sharks eat sea urchins; this is not an Oceanarium feeding record."
+    },
+    {
+      "from": "scalloped-hammerhead",
+      "to": "spotted-eagle-ray",
+      "type": "preys-on",
+      "label": "Scalloped hammerheads eat rays; this links an in-catalogue ray example, not a feeding record."
+    }
   ]
 }

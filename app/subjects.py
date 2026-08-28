@@ -13,6 +13,7 @@ EDGE_TYPES = {
     "depends-on",
     "conflicts-with",
     "precedes",
+    "preys-on",
     "correlates-with",
 }
 
@@ -99,6 +100,13 @@ def validate(subject):
         for tag in node.get("angle_tags", []):
             if tag not in angle_ids:
                 problems.append(f"node {node['id']}: unknown angle tag {tag}")
+        if node.get("catalogue") == "animals-a-z":
+            animal = node.get("animal", {})
+            for field in ("type", "habitat", "zone", "diet", "presentation"):
+                if not animal.get(field):
+                    problems.append(f"node {node['id']}: missing animal profile field {field}")
+            if not isinstance(node.get("visual"), dict) and not node.get("visual_query"):
+                problems.append(f"node {node['id']}: missing animal photo source or fallback query")
 
     for edge in subject.get("edges", []):
         if edge["type"] not in EDGE_TYPES:
