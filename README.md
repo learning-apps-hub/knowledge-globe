@@ -30,13 +30,20 @@ and `8112` is used by the smoke suite.
 
 ## Production
 
-Production is a static GitHub Pages deployment at
-`https://fionaxu33-art.github.io/knowledge-globe/`. A push to `main` validates
-the curated subject maps, generates static JSON with derived zoom levels, and
-deploys the artifact through `.github/workflows/pages.yml`. GitHub Pages hosts
-the production site over HTTPS, so it does not expose an application port.
+Production runs on two tracks from the same `main` commit:
 
-Build and verify the same artifact locally with:
+| Track | Where | Serves |
+|---|---|---|
+| Internal | `prod/` worktree on port `8110` (LAN) | The full application, live API and all subject maps |
+| Public | GitHub Pages, `https://learning-apps-hub.github.io/knowledge-globe/` | A static, prebuilt snapshot of the public subject maps |
+
+The internal track is the read-only Python API described above, deployed by
+advancing the `prod/` worktree to a release tag. The public track is built by a
+push to `main`: `.github/workflows/pages.yml` validates the curated subject
+maps, generates static JSON with derived zoom levels, and publishes the
+artifact over HTTPS with no application port.
+
+Build and verify the public artifact locally with:
 
 ```bash
 python3 scripts/build_pages.py --output _site
