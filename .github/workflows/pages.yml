@@ -1,3 +1,13 @@
+# This workflow ships in BOTH repos: it lives on `main` in the private repo and
+# is carried into the public repo by scripts/publish_public.sh, which derives
+# the public branch from `main`. Only the public repo can actually serve Pages
+# (GitHub does not host free Pages from a private repo), so the jobs are gated
+# on the repository name. Without that gate every push to the private `main`
+# produced a failed run, and a permanently red X hides real failures.
+#
+# Do not "fix" this by deleting the file — publish_public.sh would then strip it
+# from the public repo and the live site would stop deploying.
+
 name: Deploy production to GitHub Pages
 
 on:
@@ -16,6 +26,9 @@ concurrency:
 
 jobs:
   build:
+    # Skipped in the private repo, which cannot serve Pages. `deploy` needs
+    # this job, so it skips with it.
+    if: github.repository == 'learning-apps-hub/knowledge-globe'
     runs-on: ubuntu-latest
     steps:
       - name: Check out production
