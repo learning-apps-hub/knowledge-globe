@@ -26,8 +26,22 @@ PORT=8111 python3 run.py
 ```
 
 `8110` is the local default, `8111` is the persistent development preview,
-and `8112` is used by the smoke suite. This repository does not currently
-define a production deployment or production port.
+and `8112` is used by the smoke suite.
+
+## Production
+
+Production is a static GitHub Pages deployment at
+`https://fionaxu33-art.github.io/knowledge-globe/`. A push to `main` validates
+the curated subject maps, generates static JSON with derived zoom levels, and
+deploys the artifact through `.github/workflows/pages.yml`. GitHub Pages hosts
+the production site over HTTPS, so it does not expose an application port.
+
+Build and verify the same artifact locally with:
+
+```bash
+python3 scripts/build_pages.py --output _site
+python3 tests/pages_build_test.py
+```
 
 ## Layout
 

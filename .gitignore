@@ -5,6 +5,7 @@ __pycache__/
 
 # Virtual environment
 venv/
+_site/
 
 # Environment variables — never commit
 .env

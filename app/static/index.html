@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-static-build="false">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -1061,7 +1061,7 @@ window.__kgBootWatch = setTimeout(function () {
 }, 8000);
 </script>
 <script type="module">
-import * as THREE from "/static/vendor/three.module.min.js";
+import * as THREE from "./static/vendor/three.module.min.js";
 
 const EDGE_STYLE = {
   "causes":          { color: "#ff746c", label: "causes" },
@@ -1103,6 +1103,7 @@ const state = {
 };
 
 const visualCache = new Map();
+const STATIC_BUILD = document.documentElement.dataset.staticBuild === "true";
 
 const $ = (id) => document.getElementById(id);
 const stage = $("globe-stage");
@@ -1159,7 +1160,7 @@ function animalGroup(node) {
 }
 
 async function boot() {
-  const list = await fetchJSON("/api/subjects");
+  const list = await fetchJSON(STATIC_BUILD ? "./data/subjects/index.json" : "/api/subjects");
   const picker = $("subject-picker");
   picker.replaceChildren(...list.map((subject) => {
     const option = document.createElement("option");
@@ -1182,7 +1183,10 @@ async function fetchJSON(url) {
 }
 
 async function loadSubject(id) {
-  state.subject = await fetchJSON("/api/subjects/" + encodeURIComponent(id));
+  const subjectUrl = STATIC_BUILD
+    ? `./data/subjects/${encodeURIComponent(id)}.json`
+    : "/api/subjects/" + encodeURIComponent(id);
+  state.subject = await fetchJSON(subjectUrl);
   state.byId = new Map(state.subject.nodes.map((node) => [node.id, node]));
   state.childrenOf = new Map();
   for (const node of state.subject.nodes) {
