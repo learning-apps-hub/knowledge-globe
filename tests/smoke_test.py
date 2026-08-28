@@ -151,12 +151,20 @@ try:
         check("viewer includes official Oceanarium filters",
               all(term in viewer for term in
                   (b"Animal Type", b"Natural Habitat", b"Zone")))
+        check("viewer removes the duplicate Oceanarium journey list",
+              b'$("browse-label").hidden = oceanarium' in viewer and
+              b'$("place-list").hidden = oceanarium' in viewer and
+              b"state.animalBrowseMode = isOceanarium()" in viewer)
         check("viewer supports animal photos on globe pins",
               b"pin-photo" in viewer and b"loadPinVisual" in viewer)
         check("viewer supports a resizable reading drawer",
               b"resizingPanel" in viewer and b"--panel-width" in viewer)
         check("viewer projects a subject theme on the globe",
               b"uThemeMap" in viewer and b"createSubjectTexture" in viewer)
+        check("Oceanarium surface has accessible water animation",
+              all(term in viewer for term in
+                  (b"causticField", b"rippleRing", b"waveShadow",
+                   b"state.reducedMotion ? 0")))
 
         print("\n--- Input validation ---")
         status, _ = get("/api/subjects/nope")

@@ -56,7 +56,7 @@ The viewer includes:
 - angle lenses that highlight science, ecology, society, power, or culture;
 - subject-specific exploration controls: Singapore Oceanarium follows its
   official Animal Type, Natural Habitat, and Zone filters instead of showing
-  generic knowledge lenses;
+  generic knowledge lenses or a duplicate journey-section list;
 - a responsive reading panel that works as a desktop column or mobile sheet;
 - an adjustable desktop reading panel—drag its left edge to give a detailed
   profile more or less room;
@@ -66,10 +66,11 @@ The viewer includes:
 - contextual real photographs and diagrams from Wikimedia Commons, loaded on
   demand with creator and licence attribution. Visual lookup is resilient: the
   sourced text remains available if the network or media provider is offline.
-- a subject-aware projected globe surface. The Oceanarium theme adds underwater
-  light, drifting particles, fish silhouettes, and reef forms; animal pins use
-  photo thumbnails, with 34 verified official profile images and licensed
-  Commons fallbacks for the remaining nine.
+- a subject-aware projected globe surface. The Oceanarium theme adds animated
+  underwater caustics, expanding ripples, moving wave shadows, drifting
+  particles, fish silhouettes, and reef forms. Animation honours the device's
+  reduced-motion preference. Animal pins use photo thumbnails, with 34 verified
+  official profile images and licensed Commons fallbacks for the remaining nine.
 
 The Singapore Oceanarium subject contains all 43 entries currently shown on
 the official Animals A–Z page. Every profile records animal type, natural
