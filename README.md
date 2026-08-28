@@ -34,21 +34,49 @@ Production runs on two tracks from the same `main` commit:
 
 | Track | Where | Serves |
 |---|---|---|
-| Internal | `prod/` worktree on port `8110` (LAN) | The full application, live API and all subject maps |
-| Public | GitHub Pages, `https://learning-apps-hub.github.io/knowledge-globe/` | A static, prebuilt snapshot of the public subject maps |
+| Internal | `prod/` worktree on port `8110` (LAN) | The full application, live API and **all** subject maps, private included |
+| Public | GitHub Pages, `https://learning-apps-hub.github.io/knowledge-globe/` | A static, prebuilt snapshot of the **public** subject maps only |
 
 The internal track is the read-only Python API described above, deployed by
-advancing the `prod/` worktree to a release tag. The public track is built by a
-push to `main`: `.github/workflows/pages.yml` validates the curated subject
-maps, generates static JSON with derived zoom levels, and publishes the
-artifact over HTTPS with no application port.
+advancing the `prod/` worktree to a release tag.
 
-Build and verify the public artifact locally with:
+The public track is published deliberately, never automatically:
+
+```bash
+scripts/publish_public.sh
+```
+
+The script refuses to run on a dirty tree, builds and verifies the artifact
+from `main`, prints the subject ids going out and the private ones being
+withheld, asks for confirmation, then rebuilds the `public` branch and
+force-pushes it to the public repo's `main`. That push triggers
+`.github/workflows/pages.yml`, which validates the maps, generates static JSON
+with derived zoom levels, and publishes over HTTPS with no application port.
+
+`public` is a **derived artifact**, rebuilt from `main` on every release. Never
+hand-edit it and never merge it back — that is what stops a long-lived
+divergent branch from drifting out of sync.
+
+Build and verify the public artifact locally without publishing:
 
 ```bash
 python3 scripts/build_pages.py --output _site
 python3 tests/pages_build_test.py
 ```
+
+### Private subjects
+
+A subject map placed in `data/subjects/private/` is served normally by the LAN
+app on port `8110`, and is stripped from everything the public site sees.
+Three independent layers enforce that:
+
+1. `scripts/build_pages.py` builds from the public maps only, then re-scans the
+   generated artifact and fails if a private id appears in it.
+2. `tests/pages_build_test.py` asserts the same thing about the built artifact,
+   so CI catches a leak before it deploys.
+3. `scripts/publish_public.sh` removes `data/subjects/private/` from the
+   `public` branch, so the private maps are never committed to the public repo
+   at all — they stay versioned in the private repo only.
 
 ## Layout
 
@@ -60,6 +88,9 @@ python3 tests/pages_build_test.py
 | `app/static/index.html` | The responsive 3D viewer (inline CSS + app logic) |
 | `app/static/vendor/` | Vendored Three.js module and its MIT licence |
 | `data/subjects/*.json` | Curated subject maps — one file per subject |
+| `data/subjects/private/*.json` | Private maps: served on the LAN, never published |
+| `scripts/build_pages.py` | Builds the static public artifact |
+| `scripts/publish_public.sh` | Publishes that artifact to the public repo |
 | `tests/smoke_test.py` | End-to-end smoke test |
 
 ## API
@@ -67,7 +98,7 @@ python3 tests/pages_build_test.py
 | Route | Returns |
 |---|---|
 | `GET /` | The viewer |
-| `GET /api/subjects` | `[{id, title, summary}, ...]` |
+| `GET /api/subjects` | `[{id, title, summary, private}, ...]` |
 | `GET /api/subjects/<id>` | Full subject map, `zoom_level` derived |
 
 Read-only. Curation happens by editing the JSON directly.
@@ -128,8 +159,12 @@ list of `nodes`, and a flat list of typed `edges`.
   `visual_caption` override retrieved metadata.
 
 Adding a subject means dropping a new file in `data/subjects/`. It appears in
-the picker automatically; no viewer change needed. Malformed maps fail at
-startup with a specific message rather than breaking the viewer at runtime.
+the picker automatically; no viewer change needed. Drop it in
+`data/subjects/private/` instead and it behaves identically on the LAN but is
+excluded from the public site (see "Private subjects" above). An id may not be
+used in both places — that would silently shadow one of the two files, so it
+fails at startup. Malformed maps fail at startup with a specific message rather
+than breaking the viewer at runtime.
 
 ## Tests
 

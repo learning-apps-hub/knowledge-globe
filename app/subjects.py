@@ -6,6 +6,8 @@ import re
 DATA_DIR = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "subjects"
 )
+# Private subject maps: served by the LAN app, never published (README "Production").
+PRIVATE_DIR = os.path.join(DATA_DIR, "private")
 
 EDGE_TYPES = {
     "causes",
@@ -24,39 +26,79 @@ class SubjectError(Exception):
     pass
 
 
-def list_subjects():
+def _ids_in(directory):
+    if not os.path.isdir(directory):
+        return []
+    return sorted(
+        name[:-5]
+        for name in os.listdir(directory)
+        if name.endswith(".json") and os.path.isfile(os.path.join(directory, name))
+    )
+
+
+def list_subjects(include_private=True):
+    """Summaries of every subject map, public first. Each carries a `private` flag.
+
+    `include_private=False` is what the Pages build uses — private maps must
+    never reach the published artifact (README "Production").
+    """
+    public_ids = _ids_in(DATA_DIR)
+    private_ids = _ids_in(PRIVATE_DIR)
+    clash = sorted(set(public_ids) & set(private_ids))
+    if clash:
+        # A shadowed file would load one map and silently ignore the other.
+        raise SubjectError(f"subject id defined both publicly and privately: {', '.join(clash)}")
+
     out = []
-    for name in sorted(os.listdir(DATA_DIR)):
-        if not name.endswith(".json"):
+    for subject_id, private in [(i, False) for i in public_ids] + [
+        (i, True) for i in private_ids
+    ]:
+        if private and not include_private:
             continue
-        subject = _read(name[:-5])
+        subject = _read(_subject_path(subject_id))
         out.append(
             {
                 "id": subject["id"],
                 "title": subject["title"],
                 "summary": subject.get("summary", ""),
+                "private": private,
             }
         )
     return out
 
 
+def private_ids():
+    """Ids that must never appear in a published artifact."""
+    return set(_ids_in(PRIVATE_DIR))
+
+
 def get_subject(subject_id):
     """Return a subject with zoom_level derived. Raises SubjectError if unknown."""
-    if not ID_RE.match(subject_id or ""):
+    path = _subject_path(subject_id)
+    if path is None:
         raise SubjectError("unknown subject")
-    path = os.path.join(DATA_DIR, subject_id + ".json")
-    # Resolve and confirm the path stayed inside DATA_DIR (traversal guard).
-    if os.path.realpath(path) != os.path.join(os.path.realpath(DATA_DIR), subject_id + ".json"):
-        raise SubjectError("unknown subject")
-    if not os.path.isfile(path):
-        raise SubjectError("unknown subject")
-    subject = _read(subject_id)
+    subject = _read(path)
     _derive_zoom_levels(subject)
     return subject
 
 
-def _read(subject_id):
-    with open(os.path.join(DATA_DIR, subject_id + ".json"), encoding="utf-8") as fh:
+def _subject_path(subject_id):
+    """Resolve an id to a readable map file, or None. Public maps shadow private."""
+    if not ID_RE.match(subject_id or ""):
+        return None
+    for directory in (DATA_DIR, PRIVATE_DIR):
+        path = os.path.join(directory, subject_id + ".json")
+        # Resolve and confirm the path stayed inside `directory` (traversal guard).
+        expected = os.path.join(os.path.realpath(directory), subject_id + ".json")
+        if os.path.realpath(path) != expected:
+            continue
+        if os.path.isfile(path):
+            return path
+    return None
+
+
+def _read(path):
+    with open(path, encoding="utf-8") as fh:
         return json.load(fh)
 
 
