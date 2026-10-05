@@ -970,15 +970,22 @@
   }
 
   /* ── Door mode ───────────────────────────────────────────────────────────
-     Selecting a topic sinks the globe to a horizon and stands the topic up
-     as a "door" with its photograph. Related topics wait behind it; picking
-     one turns the globe to it. Resting state (no door open) is unchanged. */
+     Selecting a topic, or zooming in past the nearest zoom, sinks the globe
+     to a horizon and stands the topic up as a "door" with its photograph.
+     Related topics wait behind it; picking one turns the globe to it.
+
+     The whole change is driven by one number, --door (0 = resting globe,
+     1 = door open), written by the render loop. Everything below reads it,
+     so the transition can be scrubbed with the wheel and has no mode jump.
+     Resting state (--door: 0) is unchanged. */
+  .app { --door: 0; }
   .view-toggle,
   .turn-progress,
   .door-strip,
   .door-layer,
   .door-controls,
   .door-hint,
+  .door-chips,
   .flat { display: none; }
 
   .view-toggle {
@@ -1031,21 +1038,41 @@
   }
   .turning .turn-progress { display: flex; }
 
-  .door-mode .workspace { grid-template-columns: 56px minmax(340px, 1fr) var(--panel-width); }
-  .door-mode .rail { display: none; }
-  .door-mode .door-strip {
-    position: relative;
-    z-index: 12;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 18px 0;
-    border-right: 1px solid var(--line);
-    background: linear-gradient(90deg, rgba(6, 17, 23, .94), rgba(6, 17, 23, .72));
-    transition: opacity .3s;
+  @media (min-width: 901px) {
+    /* The rail narrows to the icon strip as the door opens. Both sit in the
+       first column: the rail keeps its width and is clipped, so its text
+       never reflows on the way. */
+    .workspace {
+      grid-template-columns:
+        calc(var(--rail-width) - (var(--rail-width) - 56px) * var(--door))
+        minmax(340px, 1fr)
+        var(--panel-width);
+    }
+    .door-strip, .rail { grid-column: 1; grid-row: 1; }
+    .globe-stage { grid-column: 2; grid-row: 1; }
+    .detail { grid-column: 3; grid-row: 1; }
+    .door-mode .rail {
+      width: var(--rail-width);
+      overflow: hidden;
+      opacity: calc(1 - var(--door) * 1.7);
+      clip-path: inset(0 calc((var(--rail-width) - 56px) * var(--door)) 0 0);
+      pointer-events: none;
+    }
+    .door-mode .door-strip {
+      position: relative;
+      z-index: 13;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 56px;
+      padding: 18px 0;
+      border-right: 1px solid var(--line);
+      opacity: calc(var(--door) * 1.7 - .7);
+    }
+    .door-closing .door-strip { pointer-events: none; }
+    .turning .door-strip { opacity: .5; }
   }
-  .turning .door-strip { opacity: .5; }
   .strip-button {
     width: 38px;
     height: 38px;
@@ -1072,10 +1099,17 @@
   .strip-button[aria-pressed="true"] .lens-dot { box-shadow: 0 0 10px var(--lens-color); }
   .strip-divider { width: 22px; height: 1px; flex: none; background: var(--line); }
 
-  .door-mode .node-pins,
-  .door-mode .globe-hint,
+  /* Pins and arcs stay on the globe while a door is open: every other
+     topic remains visible and selectable. */
   .door-mode .mobile-explore { display: none; }
-  .door-mode .globe-stage { cursor: default; }
+  .door-mode .globe-hint { opacity: calc(1 - var(--door) * 2); }
+  .door-mode .pin.visible.unselected {
+    border-color: rgba(221, 248, 246, .22);
+    color: var(--ink-soft);
+    filter: none;
+    opacity: calc(.3 + .52 * var(--door));
+  }
+  .door-mode .pin.visible.unselected.dimmed { opacity: .17; filter: grayscale(.8); }
 
   .door-mode .crumbs { gap: 7px; font-size: 11px; }
   .crumb-trail { display: contents; }
@@ -1104,6 +1138,8 @@
     perspective: 1500px;
     perspective-origin: 30% 44%;
     pointer-events: none;
+    opacity: var(--door);
+    transform: translateY(calc((1 - var(--door)) * 54px));
   }
   .door {
     --door-accent: var(--aqua);
@@ -1138,6 +1174,7 @@
     border-radius: 50%;
     background: radial-gradient(ellipse at center, color-mix(in srgb, var(--door-accent) 34%, transparent), transparent 66%);
     filter: blur(9px);
+    pointer-events: none;
   }
   .door-face {
     position: relative;
@@ -1253,9 +1290,10 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    transition: opacity .3s;
+    opacity: var(--door);
   }
-  .turning .door-controls { opacity: 0; pointer-events: none; }
+  .turning .door-controls,
+  .door-closing .door-controls { opacity: 0; pointer-events: none; }
   .door-controls > span {
     color: var(--ink-dim);
     font-size: 9px;
@@ -1299,6 +1337,7 @@
     white-space: nowrap;
     pointer-events: none;
     backdrop-filter: blur(10px);
+    opacity: calc(var(--door) * 2 - 1);
   }
   .door-hint strong { color: var(--ink); font-weight: 600; }
   .door-hint .turning-dot {
@@ -1331,77 +1370,23 @@
     background: var(--kicker-color, var(--aqua));
     box-shadow: 0 0 10px var(--kicker-color, var(--aqua));
   }
-  .door-panel h2 {
-    margin: 0 0 14px;
-    font: 700 25px/1.2 "Manrope", sans-serif;
-    letter-spacing: -.025em;
-  }
-  .door-panel .door-lede {
-    margin: 0 0 18px;
+  .visual-retry {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+    height: 34px;
+    padding: 0 14px;
+    border: 1px solid rgba(190, 225, 235, .18);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, .04);
     color: var(--ink-soft);
-    font-size: 13.5px;
-    line-height: 1.62;
-  }
-  .door-fact {
-    margin-bottom: 18px;
-    padding: 15px 16px;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    background:
-      radial-gradient(circle at 100% 0, rgba(85, 228, 209, .11), transparent 52%),
-      rgba(255, 255, 255, .028);
-  }
-  .door-fact span,
-  .door-panel h3,
-  .door-nophoto span {
-    display: block;
-    margin: 0 0 8px;
-    color: var(--ink-dim);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-  }
-  .door-fact span { color: var(--aqua); letter-spacing: .14em; }
-  .door-fact div { font-size: 13.5px; line-height: 1.55; }
-  .door-closer { margin-bottom: 18px; }
-  .door-closer p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.6; }
-  .door-nophoto {
-    margin-bottom: 18px;
-    padding: 15px 16px;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    background: rgba(255, 255, 255, .028);
-  }
-  .door-nophoto p { margin: 0 0 12px; color: var(--ink-soft); font-size: 13px; line-height: 1.55; }
-  .door-nophoto button,
-  .door-read,
-  .door-panel .zoom-deeper {
-    width: 100%;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 15px;
-    border-radius: 11px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
   }
-  .door-nophoto button {
-    justify-content: center;
-    border: 1px solid rgba(190, 225, 235, .18);
-    background: rgba(255, 255, 255, .04);
-    color: var(--ink-soft);
-  }
-  .door-read {
-    margin-bottom: 10px;
-    border: 1px solid rgba(85, 228, 209, .34);
-    background: rgba(85, 228, 209, .1);
-    color: var(--aqua);
-  }
-  .door-read:hover { background: rgba(85, 228, 209, .15); }
-  .door-panel .zoom-deeper { margin: 0 0 18px; }
+  .visual-retry:hover { border-color: var(--line-strong); color: var(--ink); }
   .door-behind { display: flex; flex-direction: column; gap: 7px; margin-top: 8px; }
   .door-thumb-button {
     display: flex;
@@ -1430,7 +1415,6 @@
     background: linear-gradient(160deg, #0c3644, #06161f);
   }
   .door-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .door-chips { display: none; }
   .door-skeleton { opacity: .28; }
   .door-skeleton div { border-radius: 5px; background: rgba(190, 225, 235, .22); margin-bottom: 10px; }
   .turn-note {
@@ -1599,8 +1583,6 @@
   .flat-sources a { color: var(--aqua); }
 
   @media (max-width: 900px) {
-    .door-mode .workspace { grid-template-columns: minmax(0, 1fr) 350px; }
-    .door-mode .door-strip { display: none; }
     .door-mode.flat-open .flat { grid-template-columns: minmax(0, 1fr); }
     .flat-rail { display: none; }
     .flat-scroll { padding: 24px 22px 40px; }
@@ -1608,19 +1590,23 @@
 
   @media (max-width: 680px) {
     .door-mode .view-toggle { display: none; }
-    .door-mode .detail { transform: translateY(calc(100% - 196px)); }
-    .door-mode .detail.open { transform: translateY(0); }
     .door-mode .door-controls { display: none; }
     .door-mode .door-hint { display: none; }
     .door-mode .crumbs .crumb-trail { display: none; }
-    .door-behind-label, .door-behind { display: none !important; }
-    .door-chips {
+    .door-mode .door-chips {
+      position: absolute;
+      z-index: 8;
+      left: 12px;
+      right: 12px;
+      bottom: 116px;
       display: flex;
       gap: 8px;
-      margin: 0 0 14px;
       overflow-x: auto;
       scrollbar-width: none;
+      opacity: var(--door);
     }
+    .door-closing .door-chips,
+    .turning .door-chips { pointer-events: none; }
     .door-chips button {
       display: flex;
       align-items: center;
@@ -1630,10 +1616,11 @@
       padding: 0 12px 0 6px;
       border: 1px solid var(--line);
       border-radius: 999px;
-      background: rgba(255, 255, 255, .04);
+      background: rgba(6, 18, 24, .84);
       color: var(--ink);
       font-size: 12px;
       cursor: pointer;
+      backdrop-filter: blur(8px);
     }
     .door-chips .door-thumb { width: 22px; height: 26px; border-radius: 999px; }
     .flat-article h1 { font-size: 30px; }
@@ -1730,6 +1717,7 @@
         <button type="button" id="doors-siblings" aria-pressed="false">Siblings</button>
       </div>
       <div class="door-hint" id="door-hint" aria-hidden="true"></div>
+      <div class="door-chips" id="door-chips" role="group" aria-label="Next doors"></div>
     </section>
 
     <article class="detail" id="detail" aria-live="polite"></article>
@@ -1804,7 +1792,9 @@ const state = {
   doorIds: [],
   turning: null,
   flat: false,
-  worldY: 0,
+  door: 0,        // 0 = resting globe, 1 = door open; eased toward doorTarget
+  doorTarget: 0,
+  doorDir: 0,     // last direction of travel, so a half-finished scrub settles the way it was going
   reducedMotion: matchMedia("(prefers-reduced-motion: reduce)").matches,
 };
 
@@ -1840,8 +1830,8 @@ function isDimmed(node) {
   return state.activeAngle && !(node.angle_tags || []).includes(state.activeAngle);
 }
 
-function currentNodes() {
-  if (isOceanarium() && state.animalBrowseMode) {
+function nodesAt(focusId, browse) {
+  if (isOceanarium() && browse) {
     return state.subject.nodes.filter((node) => {
       if (node.catalogue !== "animals-a-z" || !node.animal) return false;
       return (!state.animalFilters.type || animalGroup(node) === state.animalFilters.type)
@@ -1849,7 +1839,11 @@ function currentNodes() {
         && (!state.animalFilters.zone || node.animal.zone === state.animalFilters.zone);
     });
   }
-  return state.childrenOf.get(state.focusId) || [];
+  return state.childrenOf.get(focusId) || [];
+}
+
+function currentNodes() {
+  return nodesAt(state.focusId, state.animalBrowseMode);
 }
 
 function isOceanarium() {
@@ -1919,8 +1913,8 @@ async function loadSubject(id) {
 }
 
 function bindUI() {
-  $("zoom-in").addEventListener("click", () => changeZoom(-.42));
-  $("zoom-out").addEventListener("click", () => changeZoom(.42));
+  $("zoom-in").addEventListener("click", () => changeZoom(-.42, { step: true }));
+  $("zoom-out").addEventListener("click", () => changeZoom(.42, { step: true }));
   $("reset-view").addEventListener("click", resetView);
   $("surprise-button").addEventListener("click", surpriseMe);
   $("mobile-explore").addEventListener("click", () => {
@@ -1956,7 +1950,8 @@ function bindUI() {
     const shouldResume = Boolean(state.pointer && !state.moved && event.type === "pointerup");
     state.pointer = null;
     stage.classList.remove("dragging");
-    if (shouldResume) state.autoRotate = !state.reducedMotion;
+    // With a door open the chosen pin should stay put, so a tap does not restart the spin.
+    if (shouldResume && !state.doorId) state.autoRotate = !state.reducedMotion;
   };
   stage.addEventListener("pointerup", endDrag);
   stage.addEventListener("pointercancel", endDrag);
@@ -1989,6 +1984,8 @@ function bindUI() {
 
   setupSearch();
   addEventListener("resize", resizeGlobe);
+  // The stage also changes width while the rail narrows into the strip.
+  if ("ResizeObserver" in window) new ResizeObserver(resizeGlobe).observe(stage);
   addEventListener("keydown", (event) => {
     if (event.key === "/" && document.activeElement !== $("search-input")) {
       event.preventDefault();
@@ -2278,7 +2275,13 @@ function resizeGlobe() {
   renderer.setSize(rect.width, rect.height, false);
   camera.aspect = rect.width / rect.height;
   camera.updateProjectionMatrix();
-  if (state.doorId) layoutDoors();
+  if (doorEls.size) layoutDoors();
+  // Resizing clears the canvas. While the rail narrows the stage resizes on
+  // every frame, after that frame's draw, so draw again or the globe blinks.
+  if (planet) {
+    updatePins();
+    renderer.render(scene, camera);
+  }
 }
 
 function animate(now) {
@@ -2293,26 +2296,38 @@ function animate(now) {
     globeGroup.rotation.y += dt * .055;
   }
   state.cameraDistance += (state.cameraTarget - state.cameraDistance) * Math.min(1, dt * 7);
-  world.position.y += (state.worldY - world.position.y) * Math.min(1, dt * 4.5);
-  const halo = atmosphere.material.uniforms.uStrength;
-  halo.value += ((state.doorId ? .28 : 1) - halo.value) * Math.min(1, dt * 4.5);
+  stepDoor(Math.min((now - doorClock) / 1000, .25));
+  doorClock = now;
+  // One eased number places the whole scene: the globe sinks and tips back so
+  // the chosen pin rides up onto the visible cap, and the camera settles.
+  const door = doorEase();
+  world.position.y = DOOR_WORLD_Y * door;
+  world.rotation.x = -DOOR_TILT * door;
+  atmosphere.material.uniforms.uStrength.value = 1 - .5 * door;
   if (state.turning) {
     const progress = state.turning.duration ? Math.min(1, (now - state.turning.started) / state.turning.duration) : 1;
     $("turn-bar").style.width = `${Math.round(progress * 100)}%`;
   }
-  camera.position.z = state.cameraDistance;
+  camera.position.z = state.cameraDistance + (DOOR_CAMERA - state.cameraDistance) * door;
   planet.material.uniforms.uTime.value = state.reducedMotion ? 0 : now / 1000;
   starfield.rotation.y += dt * .002;
   updatePins();
   renderer.render(scene, camera);
 }
 
-function changeZoom(delta) {
-  const [min, max] = state.doorId ? [DOOR_CAMERA - .3, DOOR_CAMERA + .7] : [2.45, 5.8];
-  state.cameraTarget = THREE.MathUtils.clamp(state.cameraTarget + delta, min, max);
+function changeZoom(delta, { step = false } = {}) {
+  const inward = delta < 0;
+  const atNearest = state.cameraTarget <= ZOOM_NEAR + .001;
+  // Zooming in past the nearest zoom carries on into the door of the topic
+  // nearest the centre; zooming out from a door carries on back to the globe.
+  const scrubbing = state.doorId ? inward || state.doorTarget > 0 : inward && atNearest;
+  if (scrubbing && scrubDoor(-delta / DOOR_SCRUB, step)) return;
+  if (state.doorId && inward) return;
+  state.cameraTarget = THREE.MathUtils.clamp(state.cameraTarget + delta, ZOOM_NEAR, ZOOM_FAR);
 }
 
 function resetView() {
+  if (state.doorId) exitDoor();
   state.autoRotate = !state.reducedMotion;
   state.rotationTween = null;
   state.cameraTarget = state.byId.get(state.focusId)?.zoom_level ? 3.1 : 4.25;
@@ -2358,6 +2373,10 @@ function rebuildLevel() {
   drawPlaces(nodes);
   drawArcs(nodes);
   drawCrumbs();
+  drawLevelReadout(nodes);
+}
+
+function drawLevelReadout(nodes = currentNodes()) {
   const focus = state.byId.get(state.focusId);
   if (state.doorId) {
     drawDoorReadout();
@@ -2388,22 +2407,52 @@ function drawPins(nodes) {
   updatePinStates();
 }
 
+// Where a pin sits on screen, and whether it is on the side facing the camera.
+// "Facing" is measured against the line from the globe's centre to the camera,
+// which at rest is the old `z > .08` test exactly, and keeps working once door
+// mode has sunk and tipped the globe. With a door open the cut-off tightens so
+// labels do not float above the horizon behind the doors.
+function projectMarker(local, rect) {
+  const point = local.clone().multiplyScalar(1.08).applyMatrix4(globeGroup.matrixWorld);
+  const normal = point.clone().sub(world.position).normalize();
+  const toCamera = camera.position.clone().sub(world.position).normalize();
+  const facing = normal.dot(toCamera);
+  const screen = point.project(camera);
+  return {
+    x: (screen.x * .5 + .5) * rect.width,
+    y: (-screen.y * .5 + .5) * rect.height,
+    visible: facing > .074 + .346 * doorEase(),
+  };
+}
+
 function updatePins() {
   if (!renderer || !state.markerVectors.size) return;
   const rect = renderer.domElement.getBoundingClientRect();
-  globeGroup.updateMatrixWorld();
+  world.updateMatrixWorld();
+  const scale = THREE.MathUtils.clamp(5 / camera.position.z, .86, 1.2);
   for (const pin of $("node-pins").children) {
     const local = state.markerVectors.get(pin.dataset.id);
     if (!local) continue;
-    const world = local.clone().multiplyScalar(1.08).applyMatrix4(globeGroup.matrixWorld);
-    const visible = world.z > .08;
-    const screen = world.clone().project(camera);
-    const x = (screen.x * .5 + .5) * rect.width;
-    const y = (-screen.y * .5 + .5) * rect.height;
-    pin.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) scale(${THREE.MathUtils.clamp(5 / state.cameraDistance, .86, 1.2)})`;
+    const { x, y, visible } = projectMarker(local, rect);
+    pin.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) scale(${scale})`;
     pin.classList.toggle("visible", visible);
     pin.tabIndex = visible ? 0 : -1;
   }
+}
+
+function nearestPinId() {
+  if (!renderer || !state.markerVectors.size) return null;
+  const rect = renderer.domElement.getBoundingClientRect();
+  world.updateMatrixWorld();
+  let best = null;
+  let bestDistance = Infinity;
+  for (const [id, local] of state.markerVectors) {
+    const { x, y, visible } = projectMarker(local, rect);
+    if (!visible) continue;
+    const distance = Math.hypot(x - rect.width / 2, y - rect.height / 2);
+    if (distance < bestDistance) [best, bestDistance] = [id, distance];
+  }
+  return best;
 }
 
 function drawArcs(nodes) {
@@ -2614,7 +2663,7 @@ function selectNode(id, openMobile = true) {
   drawPlaces(currentNodes());
   drawDetail(state.byId.get(id));
   // A user's pick (not the initial overview) opens the topic as a door.
-  if (openMobile && openDoor(id)) return;
+  if (openMobile && openDoor(id, { drawn: true })) return;
   if (openMobile && innerWidth <= 680) $("detail").classList.add("open");
 }
 
@@ -2847,6 +2896,7 @@ async function loadVisual(node, box) {
     img.addEventListener("error", () => {
       figure.classList.add("failed");
       figure.querySelector(".visual-loading").textContent = "The visual could not be loaded. The learning content is still available below.";
+      offerVisualRetry(node, figure);
     }, { once: true });
     img.src = visual.src;
     const caption = figure.querySelector(".visual-caption");
@@ -2867,11 +2917,14 @@ async function loadVisual(node, box) {
     if (box.dataset.nodeId !== node.id || !figure.isConnected) return;
     figure.classList.add("failed");
     figure.querySelector(".visual-loading").textContent = "No source-credited visual was found for this topic. The sourced learning content continues below.";
+    offerVisualRetry(node, figure);
   }
 }
 
 function revealNode(id) {
   const node = state.byId.get(id);
+  // With a door open the globe turns there; the level changes when it lands.
+  if (state.doorId) return turnTo(id);
   if (isOceanarium() && node.catalogue === "animals-a-z") {
     state.animalBrowseMode = true;
     state.focusId = state.subject.id;
@@ -2940,28 +2993,45 @@ function closeSearch() {
 // A chosen topic stands up as a door over a globe sunk to the horizon. The
 // doors behind it are its linked topics (edges) or its siblings (same level).
 // Choosing one turns the globe to it; Esc steps back out to the resting globe.
+//
+// There is no separate "mode" to jump into. `state.door` runs from 0 (resting
+// globe) to 1 (door open) and the render loop places everything from it, so a
+// pin click, the + button and the wheel are three ways of moving one number.
 
+const ZOOM_NEAR = 2.45;
+const ZOOM_FAR = 5.8;
 const DOOR_W = 300;
 const DOOR_H = 424;
-const DOOR_WORLD_Y = -1.42;
-const DOOR_CAMERA = 1.62;
+// Framing with a door open: about the top third of the globe stays in view.
+// WORLD_Y sinks it, CAMERA sets how large it reads, and TILT tips it back so
+// the pin that was facing the camera rides up onto the visible cap.
+const DOOR_WORLD_Y = -1.24;
+const DOOR_CAMERA = 2.62;
+const DOOR_TILT = 1.02;
+const DOOR_SCRUB = .84; // wheel travel, in zoom units, from the nearest zoom to an open door
+const DOOR_SETTLE_MS = 170;
+const DOOR_MS = 700;    // a full open or close
 const TURN_MS = 900;
+// Where each door stands. `x` is the left edge as a fraction of the stage
+// width; `lift` is how far its foot sits above the globe's horizon, in door
+// pixels, so the doors stand on the horizon at every stage size. Then scale,
+// turn in degrees and opacity. The doors behind overlap like a fanned hand.
 const DESK_SLOTS = [
-  { x: .094, y: .223, s: 1, r: -7, o: 1, blur: 0 },
-  { x: .47, y: .272, s: .72, r: -28, o: .64, blur: 0 },
-  { x: .679, y: .307, s: .533, r: -34, o: .42, blur: 0 },
-  { x: .827, y: .332, s: .393, r: -38, o: .26, blur: 0 },
+  { x: .07, lift: 10, s: .94, r: -7, o: 1, blur: 0 },
+  { x: .385, lift: 70, s: .7, r: -27, o: .74, blur: 0 },
+  { x: .535, lift: 112, s: .54, r: -33, o: .52, blur: 0 },
+  { x: .64, lift: 143, s: .42, r: -37, o: .34, blur: 0 },
 ];
-const DESK_LEAVE = { x: -.12, y: .29, s: .71, r: -52, o: 0, blur: 2.4 };
-const DESK_ENTER = { x: 1.02, y: .34, s: .3, r: -40, o: 0, blur: 1.6 };
+const DESK_LEAVE = { x: -.12, lift: 52, s: .68, r: -52, o: 0, blur: 2.4 };
+const DESK_ENTER = { x: .76, lift: 150, s: .32, r: -40, o: 0, blur: 1.6 };
 const PHONE_SLOTS = [
-  { x: .2, y: .12, s: 1, r: -4, o: 1, blur: 0 },
-  { x: .84, y: .17, s: .78, r: -30, o: .55, blur: 0 },
-  { x: 1.1, y: .2, s: .6, r: -34, o: 0, blur: 0 },
-  { x: 1.2, y: .2, s: .5, r: -36, o: 0, blur: 0 },
+  { x: .2, lift: 10, s: 1, r: -4, o: 1, blur: 0 },
+  { x: .84, lift: 34, s: .78, r: -30, o: .55, blur: 0 },
+  { x: 1.1, lift: 46, s: .6, r: -34, o: 0, blur: 0 },
+  { x: 1.2, lift: 46, s: .5, r: -36, o: 0, blur: 0 },
 ];
-const PHONE_LEAVE = { x: -.7, y: .14, s: .8, r: -50, o: 0, blur: 2 };
-const PHONE_ENTER = { x: 1.2, y: .2, s: .6, r: -36, o: 0, blur: 1 };
+const PHONE_LEAVE = { x: -.7, lift: 24, s: .8, r: -50, o: 0, blur: 2 };
+const PHONE_ENTER = { x: 1.2, lift: 46, s: .6, r: -36, o: 0, blur: 1 };
 
 const doorEls = new Map();
 const doorPhoto = new Map(); // node id → { state: "loading" | "photo" | "none", visual }
@@ -3013,57 +3083,157 @@ function doorsBehind(id) {
   return { ids: ids.slice(0, 3), linkedCount: linked.length, mode: useLinked ? "linked" : "siblings" };
 }
 
-function focusFor(node) {
-  if (isOceanarium() && node.catalogue === "animals-a-z") return state.subject.id;
-  return node.parent === null ? node.id : node.parent;
+// The level a topic's pin lives on: which node is in focus, and whether the
+// Oceanarium's A–Z catalogue is the set being browsed.
+function levelFor(node) {
+  if (isOceanarium() && node.catalogue === "animals-a-z") return { focusId: state.subject.id, browse: true };
+  return { focusId: node.parent === null ? node.id : node.parent, browse: state.animalBrowseMode };
 }
 
+function doorEase() {
+  const t = state.door;
+  return t * t * (3 - 2 * t);
+}
+
+let doorSettleTimer = 0;
+let doorPainted = -1;
+let doorClock = performance.now();
+let doorOnStage = false; // door furniture is in the DOM (open, opening or easing shut)
+
+// Advance `state.door` toward its target and publish it to CSS as --door.
+function stepDoor(dt) {
+  if (state.door !== state.doorTarget) {
+    // Constant speed, so the move always finishes on time (DOOR_MS for the
+    // full distance); `doorEase` rounds off both ends.
+    const gap = state.doorTarget - state.door;
+    const stride = dt * 1000 / DOOR_MS;
+    state.door = state.reducedMotion || Math.abs(gap) <= stride
+      ? state.doorTarget
+      : state.door + Math.sign(gap) * stride;
+  }
+  if (state.door !== doorPainted) {
+    doorPainted = state.door;
+    appEl.style.setProperty("--door", doorEase().toFixed(4));
+  }
+  if (state.door === 0 && state.doorTarget === 0 && doorOnStage) {
+    // Fully back at the resting globe: only now does the door state go away.
+    if (state.doorId) exitDoor();
+    sweepDoors();
+  }
+}
+
+// Move the door progress by `amount` (positive opens). A wheel scrubs it and,
+// once the wheel goes quiet, it settles the way it was heading; a button press
+// (`commit`) goes all the way at once. Returns false when there is no door to
+// open, so the caller can fall back to plain zoom.
+function scrubDoor(amount, commit = false) {
+  if (!amount || state.flat) return Boolean(state.doorId);
+  if (!state.doorId) {
+    if (amount < 0) return false;
+    const id = nearestPinId();
+    if (!id || !openDoor(id, { target: 0 })) return false;
+  }
+  clearTimeout(doorSettleTimer);
+  state.doorDir = Math.sign(amount);
+  if (commit || state.reducedMotion) {
+    state.doorTarget = amount > 0 ? 1 : 0;
+    return true;
+  }
+  state.doorTarget = THREE.MathUtils.clamp(state.doorTarget + amount, 0, 1);
+  doorSettleTimer = setTimeout(() => {
+    if (state.doorId) state.doorTarget = state.doorDir > 0 ? 1 : 0;
+  }, DOOR_SETTLE_MS);
+  return true;
+}
+
+function sweepDoors() {
+  for (const el of doorEls.values()) el.remove();
+  doorEls.clear();
+  $("door-chips").replaceChildren();
+  appEl.classList.remove("door-mode", "door-closing");
+  document.querySelector(".rail").inert = false;
+  doorOnStage = false;
+}
+
+// Hard reset, for loading another subject: no animation, nothing left over.
 function resetDoorState() {
   clearTimeout(state.turning?.timer);
+  clearTimeout(doorSettleTimer);
   state.turning = null;
   state.doorId = null;
   state.doorIds = [];
   state.flat = false;
-  state.worldY = 0;
-  appEl.classList.remove("door-mode", "turning", "flat-open");
-  for (const el of doorEls.values()) el.remove();
-  doorEls.clear();
-  if (arcGroup) arcGroup.visible = true;
+  state.door = 0;
+  state.doorTarget = 0;
+  state.doorDir = 0;
+  appEl.classList.remove("turning", "flat-open");
+  sweepDoors();
 }
 
-function openDoor(id) {
+// Begin opening `id` as a door. `target` is where the progress should head:
+// 1 for a pin click, 0 when the wheel is about to scrub it open by hand.
+// `drawn` is set when the caller has already selected the topic and drawn it.
+function openDoor(id, { target = 1, drawn = false } = {}) {
   const node = state.byId.get(id);
   if (!node || node.parent === null || !globeGroup) return false;
   state.doorId = id;
-  state.selectedId = id;
   state.autoRotate = false;
-  state.worldY = DOOR_WORLD_Y;
-  state.cameraTarget = DOOR_CAMERA;
-  arcGroup.visible = false;
+  state.doorTarget = target;
+  state.doorDir = 1;
+  if (!drawn) {
+    state.selectedId = id;
+    if (state.markerVectors.has(id)) centerPin(id);
+    updatePinStates();
+    drawPlaces(currentNodes());
+    drawDetail(node);
+  }
+  doorOnStage = true;
   appEl.classList.add("door-mode");
+  appEl.classList.remove("door-closing");
+  document.querySelector(".rail").inert = true;
   $("detail").classList.remove("open");
   drawStrip();
   drawCrumbs();
   drawDoorReadout();
   showDoors(id, { fresh: true });
-  drawDoorPanel(node);
   updateDoorHint();
-  requestAnimationFrame(resizeGlobe);
   return true;
 }
 
+// Leave the door. The topic stays selected and its entry stays in the card;
+// the scene itself eases back as `state.door` runs down to 0.
 function exitDoor({ redraw = true } = {}) {
   if (!state.doorId) return;
-  const id = state.doorId;
-  resetDoorState();
-  state.cameraTarget = state.byId.get(state.focusId)?.zoom_level ? 3.05 : 4.25;
-  state.autoRotate = !state.reducedMotion;
-  requestAnimationFrame(resizeGlobe);
+  const turning = state.turning;
+  const id = turning ? turning.from : state.doorId;
+  clearTimeout(turning?.timer);
+  clearTimeout(doorSettleTimer);
+  if (state.flat) closeFlat();
+  state.turning = null;
+  state.doorId = null;
+  state.doorIds = [];
+  state.doorTarget = 0;
+  state.doorDir = -1;
+  appEl.classList.remove("turning");
+  appEl.classList.add("door-closing");
+  for (const el of doorEls.values()) {
+    el.classList.add("leaving");
+    el.tabIndex = -1;
+  }
   if (!redraw) return;
   state.selectedId = id;
-  rebuildLevel();
+  if (turning) {
+    drawDetail(state.byId.get(id));
+    if (state.markerVectors.has(id)) centerPin(id);
+  }
+  drawCrumbs();
+  drawLevelReadout();
+  drawPlaces(currentNodes());
   updatePinStates();
-  drawDetail(state.byId.get(id));
+  // Keyboard focus was on a door that is now fading out: hand it to the pin.
+  if ($("door-layer").contains(document.activeElement)) {
+    document.querySelector(".pin.selected")?.focus({ preventScroll: true });
+  }
 }
 
 function showDoors(frontId, { fresh = false } = {}) {
@@ -3072,6 +3242,7 @@ function showDoors(frontId, { fresh = false } = {}) {
   const leavingFront = !fresh ? state.doorIds.includes(state.turning?.from) ? null : state.turning?.from : null;
   renderDoors(state.doorIds, { fresh, leavingFront });
   updateDoorControls(behind);
+  $("door-chips").replaceChildren(...behind.ids.map((other) => doorThumbButton(other, "door-chip")));
 }
 
 function slotSet() {
@@ -3085,10 +3256,23 @@ function stageScale(rect) {
   return THREE.MathUtils.clamp(Math.min(rect.height / 788, rect.width / 834), .55, 1.25);
 }
 
+// How far down the stage the top of the globe sits with a door open, as a
+// fraction of the stage height. Follows from the framing constants above.
+function doorHorizon() {
+  const centre = Math.atan2(-DOOR_WORLD_Y, DOOR_CAMERA);
+  const radius = Math.asin(1 / Math.hypot(DOOR_WORLD_Y, DOOR_CAMERA));
+  const edge = Math.tan(centre - radius) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  return (1 + edge) / 2;
+}
+
+function doorTop(slot, rect, k) {
+  return doorHorizon() * rect.height - (slot.lift + DOOR_H * slot.s) * k;
+}
+
 function placeDoor(el, slot, rect, k) {
   const scale = slot.s * k;
   const x = slot.x * rect.width - (1 - scale) * DOOR_W / 2;
-  const y = slot.y * rect.height - (1 - scale) * DOOR_H / 2;
+  const y = doorTop(slot, rect, k) - (1 - scale) * DOOR_H / 2;
   el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${scale.toFixed(3)}) rotateY(${slot.r}deg)`;
   el.style.opacity = String(slot.o);
   el.style.filter = slot.blur ? `blur(${slot.blur}px)` : "none";
@@ -3121,7 +3305,7 @@ function renderDoors(ids, { fresh = false, leavingFront = null } = {}) {
     if (!el) {
       el = createDoor(state.byId.get(id));
       el.classList.add("no-transition");
-      placeDoor(el, fresh ? { ...slots[index], o: 0 } : enter, rect, k);
+      placeDoor(el, fresh ? slots[index] : enter, rect, k);
       layer.append(el);
       doorEls.set(id, el);
       el.getBoundingClientRect();
@@ -3144,7 +3328,6 @@ function renderDoors(ids, { fresh = false, leavingFront = null } = {}) {
 }
 
 function layoutDoors() {
-  if (!state.doorId) return;
   const rect = stage.getBoundingClientRect();
   const k = stageScale(rect);
   const { slots } = slotSet();
@@ -3159,13 +3342,14 @@ function layoutDoors() {
 }
 
 function layoutDoorControls(rect, k) {
+  // The Linked / Siblings switch sits above the doors behind, level with the
+  // top of the front door and clear of its right edge.
   const controls = $("door-controls");
-  const slot = DESK_SLOTS[1];
-  const scale = slot.s * k;
-  controls.style.left = `${Math.round(slot.x * rect.width)}px`;
-  controls.style.top = `${Math.round(DESK_SLOTS[0].y * rect.height)}px`;
-  controls.style.maxWidth = `${Math.round(rect.width - slot.x * rect.width - 12)}px`;
-  controls.dataset.scale = scale.toFixed(2);
+  const [front, next] = DESK_SLOTS;
+  const left = Math.max(next.x * rect.width, front.x * rect.width + DOOR_W * front.s * k + 14);
+  controls.style.left = `${Math.round(left)}px`;
+  controls.style.top = `${Math.round(doorTop(front, rect, k))}px`;
+  controls.style.maxWidth = `${Math.round(rect.width - left - 12)}px`;
 }
 
 const DOOR_PATTERN = `
@@ -3210,10 +3394,6 @@ function setDoorPhoto(id, entry) {
   doorPhoto.set(id, entry);
   const el = doorEls.get(id);
   if (el) paintDoorPhoto(el, entry);
-  if (state.doorId === id && !state.turning) {
-    const box = $("detail").querySelector(".door-nophoto");
-    if (box) box.hidden = entry.state !== "none";
-  }
   for (const thumb of document.querySelectorAll(`.door-thumb[data-id="${CSS.escape(id)}"]`)) paintThumb(thumb, entry);
 }
 
@@ -3265,62 +3445,94 @@ function retryDoorPhoto(id) {
   if (!el) return;
   el.classList.remove("no-photo", "has-photo");
   el.querySelector(".door-caption small").textContent = "";
-  const box = $("detail").querySelector(".door-nophoto");
-  if (box) box.hidden = true;
   loadDoorPhoto(node, el);
+}
+
+// The info card's picture failed while this topic's door is open: offer the
+// same Commons retry the door itself depends on.
+function offerVisualRetry(node, figure) {
+  if (state.doorId !== node.id || figure.querySelector(".visual-retry")) return;
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "visual-retry";
+  button.textContent = "Search Commons again";
+  button.addEventListener("click", () => {
+    retryDoorPhoto(node.id);
+    if (state.doorId === node.id && !state.turning) drawDetail(node);
+  });
+  figure.append(button);
 }
 
 function turnTo(id) {
   if (!state.doorId || !state.byId.has(id)) return;
   if (state.flat) closeFlat();
+  // Picking a topic while the door is easing shut opens it again.
+  clearTimeout(doorSettleTimer);
+  state.doorTarget = 1;
+  state.doorDir = 1;
   if (id === state.doorId && !state.turning) return;
   if (state.turning) land(state.turning.to);
   if (id === state.doorId) return;
   const from = state.doorId;
   const node = state.byId.get(id);
+  // Find where the topic's pin will sit on the level it belongs to, so the
+  // globe can turn straight to it, including when that level is not the one
+  // on show yet (the pins swap when the globe lands).
+  const level = levelFor(node);
+  const nodes = nodesAt(level.focusId, level.browse);
+  const index = nodes.findIndex((item) => item.id === id);
+  const marker = index < 0 ? null : markerVector(index, nodes.length);
+  const here = globeGroup.quaternion.clone();
+  const there = marker
+    ? new THREE.Quaternion().setFromUnitVectors(marker, new THREE.Vector3(0, 0, 1))
+    : here.clone().premultiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -.95));
   state.turning = {
     from,
     to: id,
+    level,
     previous: [...state.doorIds],
-    quaternion: globeGroup.quaternion.clone(),
+    quaternion: here,
+    arrive: there,
     started: performance.now(),
     duration: state.reducedMotion ? 0 : TURN_MS,
   };
   showDoors(id);
   if (state.reducedMotion) return land(id);
 
+  state.selectedId = id;
+  updatePinStates();
   appEl.classList.add("turning");
   $("turn-label").textContent = `Turning to ${node.keyword}`;
   $("turn-bar").style.width = "0%";
   updateDoorHint();
   drawTurningPanel();
-  const spin = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -.95);
-  state.rotationTween = {
-    from: globeGroup.quaternion.clone(),
-    to: globeGroup.quaternion.clone().premultiply(spin),
-    started: performance.now(),
-    duration: TURN_MS,
-  };
+  state.rotationTween = { from: here.clone(), to: there, started: performance.now(), duration: TURN_MS };
   state.turning.timer = setTimeout(() => land(id), TURN_MS);
 }
 
 function land(id) {
-  if (!state.turning || state.turning.to !== id) return;
-  clearTimeout(state.turning.timer);
+  const turning = state.turning;
+  if (!turning || turning.to !== id) return;
+  clearTimeout(turning.timer);
   state.turning = null;
   appEl.classList.remove("turning");
   const node = state.byId.get(id);
   state.doorId = id;
   state.selectedId = id;
-  const focus = focusFor(node);
-  if (focus !== state.focusId) {
-    state.focusId = focus;
-    if (isOceanarium() && node.catalogue === "animals-a-z") state.animalBrowseMode = true;
+  const { focusId, browse } = turning.level;
+  if (focusId !== state.focusId || browse !== state.animalBrowseMode) {
+    state.focusId = focusId;
+    state.animalBrowseMode = browse;
     rebuildLevel();
   }
+  if (!turning.duration) {
+    state.rotationTween = null;
+    globeGroup.quaternion.copy(turning.arrive);
+  }
+  updatePinStates();
   drawCrumbs();
   drawDoorReadout();
-  drawDoorPanel(node);
+  drawDetail(node);
   updateDoorHint();
   $("turn-label").textContent = `Arrived at ${node.keyword}`;
   if (state.flat) drawFlat(node);
@@ -3339,9 +3551,13 @@ function cancelTurn() {
     duration: 320,
   };
   state.doorIds = turning.previous;
+  state.selectedId = turning.from;
+  updatePinStates();
   renderDoors(turning.previous, { leavingFront: null });
-  updateDoorControls(doorsBehind(turning.from));
-  drawDoorPanel(state.byId.get(turning.from));
+  const behind = doorsBehind(turning.from);
+  updateDoorControls(behind);
+  $("door-chips").replaceChildren(...turning.previous.slice(1).map((other) => doorThumbButton(other, "door-chip")));
+  drawDetail(state.byId.get(turning.from));
   updateDoorHint();
 }
 
@@ -3358,7 +3574,7 @@ function updateDoorHint() {
   const hint = $("door-hint");
   hint.innerHTML = state.turning
     ? `<span class="turning-dot"></span><span>Turning — <strong>Esc</strong> to stop</span>`
-    : `<span><strong>Select a door behind</strong> to turn the globe to it</span><span><strong>Esc</strong> to step back out</span>`;
+    : `<span><strong>Drag</strong> to turn</span><span><strong>Select a door or a pin</strong> to go there</span><span><strong>Zoom out</strong> or <strong>Esc</strong> to step back</span>`;
 }
 
 function drawDoorReadout() {
@@ -3447,7 +3663,6 @@ function drawStrip() {
       updatePinStates();
       drawStrip();
       for (const [id, el] of doorEls) el.style.setProperty("--door-accent", doorAccent(state.byId.get(id)));
-      if (!state.turning) drawDoorPanel(state.byId.get(state.doorId));
     });
     items.push(button);
   }
@@ -3468,48 +3683,6 @@ function doorThumbButton(id, className) {
   const known = doorPhoto.get(id);
   if (known) paintThumb(thumb, known);
   return button;
-}
-
-function drawDoorPanel(node) {
-  const box = $("detail");
-  box.dataset.nodeId = node.id;
-  const parent = node.parent === null ? null : state.byId.get(node.parent);
-  const kids = state.childrenOf.get(node.id) || [];
-  const behind = state.doorIds.slice(1);
-  box.innerHTML = `
-    <div class="detail-inner door-panel">
-      <div class="door-chips" role="group" aria-label="Doors waiting behind"></div>
-      <div class="door-kicker"><i></i><span></span></div>
-      <h2></h2>
-      <p class="door-lede"></p>
-      ${node.key_fact ? `<div class="door-fact"><span>Key fact</span><div></div></div>` : ""}
-      ${node.explainer ? `<section class="door-closer"><h3>Look closer</h3><p></p></section>` : ""}
-      <div class="door-nophoto" hidden>
-        <span>No photograph yet</span>
-        <p>Wikimedia Commons returned no usable image for this topic, so the door carries its name instead.</p>
-        <button type="button">Search Commons again</button>
-      </div>
-      <button class="door-read" type="button">Read the full entry
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
-      </button>
-      ${kids.length ? `<button class="zoom-deeper" type="button">Zoom into ${kids.length} ${kids.length === 1 ? "path" : "paths"} <span>→</span></button>` : ""}
-      ${behind.length ? `<h3 class="door-behind-label">Doors waiting behind</h3><div class="door-behind"></div>` : ""}
-    </div>`;
-  box.querySelector(".door-kicker").style.setProperty("--kicker-color", kickerColor(node));
-  box.querySelector(".door-kicker span").textContent = parent ? parent.keyword : state.subject.title;
-  box.querySelector("h2").textContent = node.keyword;
-  box.querySelector(".door-lede").textContent = node.summary || "";
-  if (node.key_fact) box.querySelector(".door-fact div").textContent = node.key_fact;
-  if (node.explainer) box.querySelector(".door-closer p").textContent = node.explainer;
-  box.querySelector(".door-nophoto").hidden = doorPhoto.get(node.id)?.state !== "none";
-  box.querySelector(".door-nophoto button").addEventListener("click", () => retryDoorPhoto(node.id));
-  box.querySelector(".door-read").addEventListener("click", openFlat);
-  if (kids.length) box.querySelector(".zoom-deeper").addEventListener("click", () => enterNode(node.id));
-  if (behind.length) {
-    box.querySelector(".door-behind").replaceChildren(...behind.map((id) => doorThumbButton(id, "door-thumb-button")));
-  }
-  box.querySelector(".door-chips").replaceChildren(...behind.map((id) => doorThumbButton(id, "door-chip")));
-  box.scrollTop = 0;
 }
 
 function drawTurningPanel() {
@@ -3692,7 +3865,6 @@ function bindDoorUI() {
     if (!state.doorId || state.turning || state.doorMode === mode) return;
     state.doorMode = mode;
     showDoors(state.doorId);
-    drawDoorPanel(state.byId.get(state.doorId));
   };
   $("doors-linked").addEventListener("click", () => setMode("linked"));
   $("doors-siblings").addEventListener("click", () => setMode("siblings"));
