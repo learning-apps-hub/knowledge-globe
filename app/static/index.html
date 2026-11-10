@@ -1097,6 +1097,24 @@
     background: color-mix(in srgb, var(--lens-color) 12%, transparent);
   }
   .strip-button[aria-pressed="true"] .lens-dot { box-shadow: 0 0 10px var(--lens-color); }
+  /* A topic risen into a 3D object: its dot opens into the object and its
+     pin stays as the nameplate at the foot. */
+  .pin.risen .pin-orb { opacity: calc(1 - var(--rise, 0)); }
+  .rise-credit {
+    position: absolute;
+    z-index: 7;
+    left: 14px;
+    bottom: 14px;
+    max-width: min(30%, 250px);
+    color: var(--ink-dim);
+    font-size: 9px;
+    line-height: 1.45;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .door-mode .rise-credit.on { opacity: calc(var(--door) * 2 - 1); pointer-events: auto; }
+  .rise-credit a { color: var(--ink-soft); }
+  .flat-open .rise-credit { display: none; }
   .strip-divider { width: 22px; height: 1px; flex: none; background: var(--line); }
 
   /* Pins and arcs stay on the globe while a door is open: every other
@@ -1592,6 +1610,15 @@
     .door-mode .view-toggle { display: none; }
     .door-mode .door-controls { display: none; }
     .door-mode .door-hint { display: none; }
+    .rise-credit {
+      left: 12px;
+      right: 12px;
+      bottom: 156px;
+      max-width: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     .door-mode .crumbs .crumb-trail { display: none; }
     .door-mode .door-chips {
       position: absolute;
@@ -1717,6 +1744,7 @@
         <button type="button" id="doors-siblings" aria-pressed="false">Siblings</button>
       </div>
       <div class="door-hint" id="door-hint" aria-hidden="true"></div>
+      <div class="rise-credit" id="rise-credit"></div>
       <div class="door-chips" id="door-chips" role="group" aria-label="Next doors"></div>
     </section>
 
@@ -1950,6 +1978,8 @@ function bindUI() {
     const shouldResume = Boolean(state.pointer && !state.moved && event.type === "pointerup");
     state.pointer = null;
     stage.classList.remove("dragging");
+    // A click or tap on the standing object opens its full entry.
+    if (shouldResume && state.doorId && !state.turning && !state.flat && riseHit(event)) openFlat();
     // With a door open the chosen pin should stay put, so a tap does not restart the spin.
     if (shouldResume && !state.doorId) state.autoRotate = !state.reducedMotion;
   };
@@ -2158,6 +2188,7 @@ function initGlobe() {
     scene.add(starfield);
     arcGroup = new THREE.Group();
     globeGroup.add(arcGroup);
+    riseSetup();
     resizeGlobe();
     renderer.setAnimationLoop(animate);
   } catch (error) {
@@ -2275,6 +2306,10 @@ function resizeGlobe() {
   renderer.setSize(rect.width, rect.height, false);
   camera.aspect = rect.width / rect.height;
   camera.updateProjectionMatrix();
+  // A risen object may fill most of a phone's width, and the left part of a
+  // desktop stage so the doors behind keep their room on the right.
+  const perUnit = rect.height / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * (DOOR_CAMERA - .45));
+  rise.fit = THREE.MathUtils.clamp(rect.width * (isPhone() ? .8 : .4) / (perUnit * RISE_W), .45, 1);
   if (doorEls.size) layoutDoors();
   // Resizing clears the canvas. While the rail narrows the stage resizes on
   // every frame, after that frame's draw, so draw again or the globe blinks.
@@ -2311,6 +2346,7 @@ function animate(now) {
   camera.position.z = state.cameraDistance + (DOOR_CAMERA - state.cameraDistance) * door;
   planet.material.uniforms.uTime.value = state.reducedMotion ? 0 : now / 1000;
   starfield.rotation.y += dt * .002;
+  stepRise(dt, now);
   updatePins();
   renderer.render(scene, camera);
 }
@@ -2412,8 +2448,8 @@ function drawPins(nodes) {
 // which at rest is the old `z > .08` test exactly, and keeps working once door
 // mode has sunk and tipped the globe. With a door open the cut-off tightens so
 // labels do not float above the horizon behind the doors.
-function projectMarker(local, rect) {
-  const point = local.clone().multiplyScalar(1.08).applyMatrix4(globeGroup.matrixWorld);
+function projectMarker(local, rect, height = 1.08) {
+  const point = local.clone().multiplyScalar(height).applyMatrix4(globeGroup.matrixWorld);
   const normal = point.clone().sub(world.position).normalize();
   const toCamera = camera.position.clone().sub(world.position).normalize();
   const facing = normal.dot(toCamera);
@@ -2430,10 +2466,20 @@ function updatePins() {
   const rect = renderer.domElement.getBoundingClientRect();
   world.updateMatrixWorld();
   const scale = THREE.MathUtils.clamp(5 / camera.position.z, .86, 1.2);
+  const cover = rise.models.size ? riseCover(rect) : null;
   for (const pin of $("node-pins").children) {
     const local = state.markerVectors.get(pin.dataset.id);
     if (!local) continue;
-    const { x, y, visible } = projectMarker(local, rect);
+    // A risen topic's pin drops to the foot of its object as a nameplate.
+    const model = rise.models.get(pin.dataset.id);
+    const up = model ? riseAmount(model) : 0;
+    const spot = projectMarker(local, rect, 1.08 - .08 * up);
+    const x = spot.x;
+    const y = spot.y + 24 * up;
+    const covered = cover && !model && x > cover.x0 + 6 && x < cover.x1 - 6 && y > cover.y0 + 6 && y < cover.y1 - 4;
+    const visible = spot.visible && !covered;
+    pin.classList.toggle("risen", up > 0);
+    if (up > 0 || pin.style.getPropertyValue("--rise")) pin.style.setProperty("--rise", up.toFixed(3));
     pin.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) scale(${scale})`;
     pin.classList.toggle("visible", visible);
     pin.tabIndex = visible ? 0 : -1;
@@ -2652,6 +2698,11 @@ function drawCrumbs() {
 }
 
 function selectNode(id, openMobile = true) {
+  if (openMobile && rise.on && state.doorId === id && !state.turning && state.doorTarget === 1) {
+    // The nameplate of the object already standing: read its full entry.
+    openFlat();
+    return;
+  }
   if (openMobile && state.doorId) {
     // Already standing at a door: picking another topic turns the globe to it.
     turnTo(id);
@@ -2998,6 +3049,818 @@ function closeSearch() {
 // globe) to 1 (door open) and the render loop places everything from it, so a
 // pin click, the + button and the wheel are three ways of moving one number.
 
+// ── Photo → 3D relief ───────────────────────────────────────────────────────
+// Turns one flat photograph into a closed 3D shape, in the browser, with no
+// model and no network call of its own:
+//   1. find the subject: learn the background's colours from the photo's rim,
+//      keep whatever differs from them and hangs together near the middle;
+//   2. inflate that outline like a cushion (thick where the shape is wide,
+//      thin where it is narrow), then press the photo's light and shade into
+//      the surface as fine relief;
+//   3. if no clean subject is found, the whole photo becomes a standing plaque
+//      whose surface swells toward what is probably nearer.
+// The result is honest about what it is: a sculpted relief of the photo, not a
+// scan of the real object. The back is the mirror of the front.
+const RELIEF_GRID = 112;   // analysis and mesh resolution, cells on the long side
+const RELIEF_TEX = 768;    // texture size, pixels on the long side
+
+function boxBlur(src, w, h, r, passes = 1) {
+  if (r < 1) return Float32Array.from(src);
+  let a = Float32Array.from(src);
+  let b = new Float32Array(a.length);
+  for (let pass = 0; pass < passes; pass += 1) {
+    for (let y = 0; y < h; y += 1) {            // horizontal
+      const row = y * w;
+      let sum = 0;
+      for (let x = -r; x <= r; x += 1) sum += a[row + Math.min(w - 1, Math.max(0, x))];
+      for (let x = 0; x < w; x += 1) {
+        b[row + x] = sum / (2 * r + 1);
+        sum += a[row + Math.min(w - 1, x + r + 1)] - a[row + Math.max(0, x - r)];
+      }
+    }
+    for (let x = 0; x < w; x += 1) {            // vertical
+      let sum = 0;
+      for (let y = -r; y <= r; y += 1) sum += b[Math.min(h - 1, Math.max(0, y)) * w + x];
+      for (let y = 0; y < h; y += 1) {
+        a[y * w + x] = sum / (2 * r + 1);
+        sum += b[Math.min(h - 1, y + r + 1) * w + x] - b[Math.max(0, y - r) * w + x];
+      }
+    }
+  }
+  return a;
+}
+
+// k-means over a list of pixel indices in a 3-channel feature space.
+function colourModel(feat, picks, k) {
+  const sorted = Array.from(picks).sort((p, q) => feat[p * 3] - feat[q * 3]);
+  const centres = [];
+  for (let c = 0; c < k; c += 1) {
+    const p = sorted[Math.floor(((c + .5) / k) * (sorted.length - 1))];
+    centres.push([feat[p * 3], feat[p * 3 + 1], feat[p * 3 + 2]]);
+  }
+  const spread = new Array(k).fill(0);
+  for (let round = 0; round < 7; round += 1) {
+    const sum = centres.map(() => [0, 0, 0, 0, 0]);
+    for (const p of sorted) {
+      let best = 0;
+      let bestD = Infinity;
+      for (let c = 0; c < k; c += 1) {
+        const d = (feat[p * 3] - centres[c][0]) ** 2 + (feat[p * 3 + 1] - centres[c][1]) ** 2
+          + (feat[p * 3 + 2] - centres[c][2]) ** 2;
+        if (d < bestD) [best, bestD] = [c, d];
+      }
+      const s = sum[best];
+      s[0] += feat[p * 3]; s[1] += feat[p * 3 + 1]; s[2] += feat[p * 3 + 2]; s[3] += 1; s[4] += bestD;
+    }
+    for (let c = 0; c < k; c += 1) {
+      if (!sum[c][3]) continue;
+      centres[c] = [sum[c][0] / sum[c][3], sum[c][1] / sum[c][3], sum[c][2] / sum[c][3]];
+      spread[c] = sum[c][4] / sum[c][3];
+    }
+  }
+  return { centres, spread };
+}
+
+// How far a pixel sits from a colour model, in that model's own spreads.
+function colourDistance(feat, p, model, floor) {
+  let best = Infinity;
+  for (let c = 0; c < model.centres.length; c += 1) {
+    const m = model.centres[c];
+    const d = ((feat[p * 3] - m[0]) ** 2 + (feat[p * 3 + 1] - m[1]) ** 2 + (feat[p * 3 + 2] - m[2]) ** 2)
+      / (model.spread[c] + floor);
+    if (d < best) best = d;
+  }
+  return Math.sqrt(best);
+}
+
+// Keep the main blob (and any nearly-as-large companions), then fill its holes.
+function tidyMask(mask, w, h) {
+  const n = w * h;
+  const label = new Int32Array(n);
+  const stack = new Int32Array(n);
+  const blobs = [];
+  for (let start = 0; start < n; start += 1) {
+    if (!mask[start] || label[start]) continue;
+    const id = blobs.length + 1;
+    let top = 0;
+    let area = 0;
+    let sx = 0;
+    let sy = 0;
+    stack[top++] = start;
+    label[start] = id;
+    while (top) {
+      const p = stack[--top];
+      const x = p % w;
+      const y = (p - x) / w;
+      area += 1; sx += x; sy += y;
+      for (let dy = -1; dy <= 1; dy += 1) {
+        for (let dx = -1; dx <= 1; dx += 1) {
+          const nx = x + dx;
+          const ny = y + dy;
+          if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
+          const q = ny * w + nx;
+          if (mask[q] && !label[q]) { label[q] = id; stack[top++] = q; }
+        }
+      }
+    }
+    const cx = sx / area / w - .5;
+    const cy = sy / area / h - .5;
+    blobs.push({ id, area, score: area * (.25 + Math.exp(-(cx * cx + cy * cy) / .09)) });
+  }
+  if (!blobs.length) return { mask, blobs: 0 };
+  const best = blobs.reduce((a, b) => (b.score > a.score ? b : a));
+  const keep = new Set(blobs.filter((b) => b.area >= best.area * .18).map((b) => b.id));
+  const out = new Uint8Array(n);
+  for (let p = 0; p < n; p += 1) out[p] = keep.has(label[p]) ? 1 : 0;
+  // Flood the outside from the rim; whatever the flood cannot reach is a hole.
+  const seen = new Uint8Array(n);
+  let top = 0;
+  const push = (p) => { if (!out[p] && !seen[p]) { seen[p] = 1; stack[top++] = p; } };
+  for (let x = 0; x < w; x += 1) { push(x); push((h - 1) * w + x); }
+  for (let y = 0; y < h; y += 1) { push(y * w); push(y * w + w - 1); }
+  while (top) {
+    const p = stack[--top];
+    const x = p % w;
+    if (x > 0) push(p - 1);
+    if (x < w - 1) push(p + 1);
+    if (p >= w) push(p - w);
+    if (p < n - w) push(p + w);
+  }
+  for (let p = 0; p < n; p += 1) if (!out[p] && !seen[p]) out[p] = 1;
+  return { mask: out, blobs: keep.size };
+}
+
+function findSubject(px, feat, w, h) {
+  const n = w * h;
+  // A cut-out picture already says where its subject is.
+  let clear = 0;
+  for (let p = 0; p < n; p += 1) if (px[p * 4 + 3] < 128) clear += 1;
+  if (clear > n * .05) {
+    const mask = new Uint8Array(n);
+    for (let p = 0; p < n; p += 1) mask[p] = px[p * 4 + 3] >= 128 ? 1 : 0;
+    return { ...tidyMask(mask, w, h), stray: 0, edged: 1, lift: Float32Array.from(mask) };
+  }
+  const rim = Math.max(2, Math.round(Math.min(w, h) * .045));
+  const border = [];
+  for (let y = 0; y < h; y += 1) {
+    for (let x = 0; x < w; x += 1) {
+      if (x < rim || y < rim || x >= w - rim || y >= h - rim) border.push(y * w + x);
+    }
+  }
+  const ground = colourModel(feat, border, 3);
+  let sal = new Float32Array(n);
+  for (let p = 0; p < n; p += 1) sal[p] = Math.min(12, colourDistance(feat, p, ground, 110));
+  sal = boxBlur(sal, w, h, 1);
+  for (let y = 0; y < h; y += 1) {
+    for (let x = 0; x < w; x += 1) {
+      const dx = (x + .5) / w - .5;
+      const dy = (y + .5) / h - .5;
+      sal[y * w + x] *= .55 + .45 * Math.exp(-(dx * dx + dy * dy) / .16);
+    }
+  }
+  // Otsu's threshold, kept inside a band so one glint cannot set it.
+  const bins = new Float32Array(64);
+  for (let p = 0; p < n; p += 1) bins[Math.min(63, Math.floor(sal[p] / 12 * 64))] += 1;
+  let total = 0;
+  for (let b = 0; b < 64; b += 1) total += b * bins[b];
+  let below = 0;
+  let belowSum = 0;
+  let bestVar = -1;
+  let cut = 0;
+  for (let b = 0; b < 64; b += 1) {
+    below += bins[b];
+    belowSum += b * bins[b];
+    if (!below || below === n) continue;
+    const gap = belowSum / below - (total - belowSum) / (n - below);
+    const between = below * (n - below) * gap * gap;
+    if (between > bestVar) [bestVar, cut] = [between, b];
+  }
+  const threshold = Math.min(3.6, Math.max(1.5, (cut + 1) / 64 * 12));
+  let mask = new Uint8Array(n);
+  for (let p = 0; p < n; p += 1) mask[p] = sal[p] > threshold ? 1 : 0;
+  let tidy = tidyMask(mask, w, h);
+  // Grow the confident core outward through fainter pixels that touch it, so a
+  // thin tail or a shaded flank stays attached without admitting loose specks.
+  const faint = Math.max(1.1, threshold * .55);
+  const grown = Uint8Array.from(tidy.mask);
+  const stack = [];
+  for (let p = 0; p < n; p += 1) if (grown[p]) stack.push(p);
+  while (stack.length) {
+    const p = stack.pop();
+    const x = p % w;
+    for (const q of [x > 0 ? p - 1 : -1, x < w - 1 ? p + 1 : -1, p - w, p + w]) {
+      if (q < 0 || q >= n || grown[q] || sal[q] <= faint) continue;
+      grown[q] = 1;
+      stack.push(q);
+    }
+  }
+  tidy = tidyMask(grown, w, h);
+
+  // Second look: now that there is a rough subject, learn its colours too and
+  // let each pixel near the outline side with whichever model it resembles.
+  const inside = [];
+  const outside = [];
+  for (let p = 0; p < n; p += 1) (tidy.mask[p] ? inside : outside).push(p);
+  if (inside.length > 40 && outside.length > 40) {
+    const figure = colourModel(feat, inside, 3);
+    const field = colourModel(feat, outside, 4);
+    const near = boxBlur(Float32Array.from(tidy.mask), w, h, Math.max(2, Math.round(Math.max(w, h) * .05)), 2);
+    let vote = new Float32Array(n);
+    for (let p = 0; p < n; p += 1) {
+      vote[p] = colourDistance(feat, p, field, 110) - colourDistance(feat, p, figure, 110) + (near[p] - .5) * 1.6;
+    }
+    vote = boxBlur(vote, w, h, 1);
+    const next = new Uint8Array(n);
+    for (let p = 0; p < n; p += 1) next[p] = near[p] > .04 && vote[p] > 0 ? 1 : 0;
+    tidy = tidyMask(next, w, h);
+  }
+  // How much of the picture still looks unlike the background yet was left
+  // out. A lot of it means the "subject" is only a fragment of a busy scene.
+  let kept = 0;
+  let stray = 0;
+  for (let p = 0; p < n; p += 1) {
+    if (tidy.mask[p]) kept += 1;
+    else if (sal[p] > faint) stray += 1;
+  }
+  // Does the outline sit on real edges in the photo? A true silhouette does
+  // nearly all the way round; a fragment of a busy scene mostly does not.
+  const grad = new Float32Array(n);
+  for (let y = 1; y < h - 1; y += 1) {
+    for (let x = 1; x < w - 1; x += 1) {
+      const p = y * w + x;
+      let g = 0;
+      for (let c = 0; c < 3; c += 1) {
+        g += Math.abs(feat[(p + 1) * 3 + c] - feat[(p - 1) * 3 + c]) + Math.abs(feat[(p + w) * 3 + c] - feat[(p - w) * 3 + c]);
+      }
+      grad[p] = g;
+    }
+  }
+  const strong = Float32Array.from(grad).sort()[Math.floor(n * .8)];
+  let outline = 0;
+  let onEdge = 0;
+  for (let y = 1; y < h - 1; y += 1) {
+    for (let x = 1; x < w - 1; x += 1) {
+      const p = y * w + x;
+      if (!tidy.mask[p] || (tidy.mask[p - 1] && tidy.mask[p + 1] && tidy.mask[p - w] && tidy.mask[p + w])) continue;
+      outline += 1;
+      let best = 0;
+      for (let dy = -1; dy <= 1; dy += 1) for (let dx = -1; dx <= 1; dx += 1) best = Math.max(best, grad[p + dy * w + dx]);
+      if (best > strong) onEdge += 1;
+    }
+  }
+  const edged = onEdge / Math.max(1, outline);
+  const lift = new Float32Array(n);
+  for (let p = 0; p < n; p += 1) lift[p] = Math.min(1, sal[p] / (threshold * 1.5));
+  return { ...tidy, stray: stray / Math.max(1, kept), lift, edged };
+}
+
+function maskStats(mask, w, h) {
+  let area = 0, x0 = w, y0 = h, x1 = -1, y1 = -1, touch = 0;
+  for (let y = 0; y < h; y += 1) {
+    for (let x = 0; x < w; x += 1) {
+      if (!mask[y * w + x]) continue;
+      area += 1;
+      if (x < x0) x0 = x;
+      if (x > x1) x1 = x;
+      if (y < y0) y0 = y;
+      if (y > y1) y1 = y;
+      if (x === 0 || y === 0 || x === w - 1 || y === h - 1) touch += 1;
+    }
+  }
+  const box = Math.max(1, (x1 - x0 + 1) * (y1 - y0 + 1));
+  return { area: area / (w * h), touch: touch / (2 * (w + h) - 4), solid: area / box, x0, y0, x1, y1 };
+}
+
+function photoToRelief(img) {
+  const iw = img.naturalWidth || img.width;
+  const ih = img.naturalHeight || img.height;
+  const fit = RELIEF_GRID / Math.max(iw, ih);
+  const w = Math.max(16, Math.round(iw * fit));
+  const h = Math.max(16, Math.round(ih * fit));
+  const n = w * h;
+  const probe = document.createElement("canvas");
+  probe.width = w;
+  probe.height = h;
+  const ctx = probe.getContext("2d", { willReadFrequently: true });
+  ctx.drawImage(img, 0, 0, w, h);
+  const px = ctx.getImageData(0, 0, w, h).data; // throws if the host forbids reading the photo
+
+  // Features: brightness counts for less than hue, so a shaded side of the
+  // subject does not read as a different thing.
+  const feat = new Float32Array(n * 3);
+  const luma = new Float32Array(n);
+  for (let p = 0; p < n; p += 1) {
+    const r = px[p * 4], g = px[p * 4 + 1], b = px[p * 4 + 2];
+    luma[p] = .299 * r + .587 * g + .114 * b;
+    feat[p * 3] = luma[p] * .7;
+    feat[p * 3 + 1] = r - g;
+    feat[p * 3 + 2] = (r + g) * .5 - b;
+  }
+
+  const subject = findSubject(px, feat, w, h);
+  const mask = subject.mask;
+  let stats = maskStats(mask, w, h);
+  // Cut the subject out only when the evidence is good; otherwise the whole
+  // photo stands as a plaque, which always reads properly.
+  const figure = stats.area >= .07 && stats.area <= .7 && stats.touch <= .3 && stats.solid >= .3
+    && (subject.blobs === 1 || subject.stray <= .08) && subject.stray <= .6 && subject.edged >= .75;
+  const long = Math.max(w, h);
+
+  // `field` is above zero inside the shape and crosses zero on its outline.
+  let field;
+  if (figure) {
+    field = boxBlur(Float32Array.from(mask), w, h, 1, 2);
+    for (let p = 0; p < n; p += 1) field[p] -= .5;
+  } else {
+    field = new Float32Array(n);
+    const corner = long * .07;
+    for (let y = 0; y < h; y += 1) {
+      for (let x = 0; x < w; x += 1) {
+        const qx = Math.abs(x - (w - 1) / 2) - ((w - 1) / 2 - 1.5 - corner);
+        const qy = Math.abs(y - (h - 1) / 2) - ((h - 1) / 2 - 1.5 - corner);
+        const dist = Math.hypot(Math.max(qx, 0), Math.max(qy, 0)) + Math.min(Math.max(qx, qy), 0) - corner;
+        field[y * w + x] = Math.max(-.5, Math.min(.5, -dist * .5));
+      }
+    }
+  }
+  for (let x = 0; x < w; x += 1) { field[x] = Math.min(field[x], -.3); field[(h - 1) * w + x] = Math.min(field[(h - 1) * w + x], -.3); }
+  for (let y = 0; y < h; y += 1) { field[y * w] = Math.min(field[y * w], -.3); field[y * w + w - 1] = Math.min(field[y * w + w - 1], -.3); }
+  const solid = new Uint8Array(n);
+  for (let p = 0; p < n; p += 1) solid[p] = field[p] > 0 ? 1 : 0;
+  stats = { ...stats, ...maskStats(solid, w, h), touch: stats.touch };
+  const bw = stats.x1 - stats.x0 + 1;
+  const bh = stats.y1 - stats.y0 + 1;
+
+  // Inflate: solve a soap-film equation over the shape (its height is zero on
+  // the outline and grows with the room around a point), then take the root,
+  // which turns a strip into a half-round and a blob into a dome.
+  const film = new Float32Array(n);
+  for (let round = 0; round < 150; round += 1) {
+    for (let y = stats.y0; y <= stats.y1; y += 1) {
+      for (let x = stats.x0; x <= stats.x1; x += 1) {
+        const p = y * w + x;
+        if (!solid[p]) continue;
+        const target = (film[p - 1] + film[p + 1] + film[p - w] + film[p + w] + 1) * .25;
+        film[p] += 1.86 * (target - film[p]);
+      }
+    }
+  }
+  const cap = figure ? Math.max(3, Math.min(bw, bh) * .2) : Math.max(1.6, long * .026);
+  const fine = boxBlur(luma, w, h, Math.max(1, Math.round(long * .035)), 3);
+  let rough = new Float32Array(n);
+  let swing = 0;
+  for (let p = 0; p < n; p += 1) {
+    rough[p] = luma[p] - fine[p];
+    swing += rough[p] * rough[p];
+  }
+  swing = Math.sqrt(swing / n) || 1;
+  let nearer = null;
+  if (!figure) {
+    // No subject to lift out, so guess depth the way a painter would: lower in
+    // the frame is nearer, and busy, sharp areas are nearer than smooth ones.
+    const busy = boxBlur(rough.map(Math.abs), w, h, Math.max(2, Math.round(long * .06)), 2);
+    let top = 0;
+    for (let p = 0; p < n; p += 1) top = Math.max(top, busy[p]);
+    nearer = new Float32Array(n);
+    for (let p = 0; p < n; p += 1) {
+      nearer[p] = .4 * (Math.floor(p / w) / h) + .3 * (busy[p] / (top || 1)) + .3 * subject.lift[p];
+    }
+    nearer = boxBlur(nearer, w, h, Math.max(2, Math.round(long * .05)), 3);
+    let lo = Infinity, hi = -Infinity;
+    for (let p = 0; p < n; p += 1) if (solid[p]) { lo = Math.min(lo, nearer[p]); hi = Math.max(hi, nearer[p]); }
+    for (let p = 0; p < n; p += 1) nearer[p] = (nearer[p] - lo) / ((hi - lo) || 1);
+  }
+  const rise = new Float32Array(n);
+  for (let p = 0; p < n; p += 1) {
+    if (!solid[p]) continue;
+    const dome = Math.sqrt(2 * film[p]) * (figure ? .6 : 1);
+    const edge = Math.min(1, dome / 2.5);
+    let z = cap * Math.tanh(dome / cap);
+    const grain = Math.max(-1, Math.min(1, rough[p] / (3 * swing)));
+    z += grain * edge * (figure ? Math.min(bw, bh) * .03 : long * .012);
+    if (nearer) z += nearer[p] * edge * long * .1;
+    rise[p] = Math.max(.05, z);
+  }
+
+  // Mesh: one vertex per grid point. Points just outside the outline slide
+  // onto it, so the silhouette is smooth instead of stair-stepped and the
+  // front and back skins meet there with no gap.
+  const x0 = Math.max(0, stats.x0 - 1), y0 = Math.max(0, stats.y0 - 1);
+  const x1 = Math.min(w - 1, stats.x1 + 1), y1 = Math.min(h - 1, stats.y1 + 1);
+  const unit = 1 / Math.max(bw, bh);
+  const midX = (stats.x0 + stats.x1) / 2;
+  const index = new Int32Array(n).fill(-1);
+  const pos = [];
+  const uv = [];
+  const NEIGH = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1]];
+  const vertexAt = (x, y) => {
+    const p = y * w + x;
+    if (index[p] >= 0) return index[p];
+    let gx = x, gy = y, z = rise[p];
+    if (!solid[p]) {
+      let sx = 0, sy = 0, hits = 0;
+      for (let k = 0; k < 8 && !(k === 4 && hits); k += 1) {
+        const nx = x + NEIGH[k][0], ny = y + NEIGH[k][1];
+        if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
+        const q = ny * w + nx;
+        if (!solid[q]) continue;
+        const t = field[p] / (field[p] - field[q]);
+        sx += x + NEIGH[k][0] * t; sy += y + NEIGH[k][1] * t; hits += 1;
+      }
+      if (hits) { gx = sx / hits; gy = sy / hits; }
+      z = 0;
+    }
+    index[p] = pos.length / 3;
+    pos.push((gx - midX) * unit, (stats.y1 + .5 - gy) * unit, z * unit);
+    uv.push((gx + .5) / w, 1 - (gy + .5) / h);
+    return index[p];
+  };
+  const quads = [];
+  for (let y = y0; y < y1; y += 1) {
+    for (let x = x0; x < x1; x += 1) {
+      const p = y * w + x;
+      if (!(solid[p] || solid[p + 1] || solid[p + w] || solid[p + w + 1])) continue;
+      quads.push(vertexAt(x, y), vertexAt(x + 1, y), vertexAt(x, y + 1), vertexAt(x + 1, y + 1));
+    }
+  }
+  const count = pos.length / 3;
+  const positions = new Float32Array(count * 6);
+  const uvs = new Float32Array(count * 4);
+  const side = new Float32Array(count * 2);
+  const back = figure ? .75 : .35;
+  let depth = 0;
+  for (let v = 0; v < count; v += 1) {
+    positions.set([pos[v * 3], pos[v * 3 + 1], pos[v * 3 + 2]], v * 3);
+    positions.set([pos[v * 3], pos[v * 3 + 1], -pos[v * 3 + 2] * back], (count + v) * 3);
+    uvs.set([uv[v * 2], uv[v * 2 + 1]], v * 2);
+    uvs.set([uv[v * 2], uv[v * 2 + 1]], (count + v) * 2);
+    side[count + v] = 1;
+    depth = Math.max(depth, pos[v * 3 + 2]);
+  }
+  const indices = new Uint32Array(quads.length * 3);
+  for (let q = 0, i = 0; q < quads.length; q += 4) {
+    const [tl, tr, bl, br] = [quads[q], quads[q + 1], quads[q + 2], quads[q + 3]];
+    indices.set([tl, bl, br, tl, br, tr, count + tl, count + br, count + bl, count + tl, count + tr, count + br], i);
+    i += 12;
+  }
+
+  const texFit = Math.min(1, RELIEF_TEX / Math.max(iw, ih));
+  const texture = document.createElement("canvas");
+  texture.width = Math.max(1, Math.round(iw * texFit));
+  texture.height = Math.max(1, Math.round(ih * texFit));
+  texture.getContext("2d").drawImage(img, 0, 0, texture.width, texture.height);
+
+  return {
+    mode: figure ? "figure" : "plaque",
+    positions, uvs, side, indices, texture,
+    width: bw * unit, height: bh * unit, depth,
+  };
+}
+
+// ── Rising 3D objects ───────────────────────────────────────────────────────
+// The chosen topic grows out of its pin into a 3D object standing on the
+// globe, shaped from its photograph by `photoToRelief` above. It is fixed to
+// the globe, so dragging the globe shows it from other sides. Picking another
+// topic sends this one back down into its dot while the next one rises.
+const RISE_MS = 1150;
+const RISE_H = .6;        // tallest an object stands, in globe radii
+const RISE_W = .68;       // widest it spreads
+const RISE_RECLINE = .12; // leans back a little, like something on a stand
+const RISE_KEEP = 8;      // converted photos kept ready for a return visit
+
+const rise = { on: false, models: new Map(), shapes: new Map(), fit: 1, layer: null };
+
+function riseSetup() {
+  rise.layer = new THREE.Group();
+  globeGroup.add(rise.layer);
+  rise.ringGeo = new THREE.RingGeometry(.91, 1, 64).rotateX(-Math.PI / 2);
+  rise.shadowGeo = new THREE.CircleGeometry(1, 40).rotateX(-Math.PI / 2);
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = 64;
+  const ctx = canvas.getContext("2d");
+  const fade = ctx.createRadialGradient(32, 32, 2, 32, 32, 32);
+  fade.addColorStop(0, "rgba(0,0,0,.9)");
+  fade.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = fade;
+  ctx.fillRect(0, 0, 64, 64);
+  rise.shadowMap = new THREE.CanvasTexture(canvas);
+  rise.ray = new THREE.Raycaster();
+  rise.on = true;
+}
+
+function loadPhoto(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous"; // the pixels have to be readable to shape them
+    img.referrerPolicy = "no-referrer";
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error("Photo could not be read"));
+    img.src = src;
+  });
+}
+
+// The 3D shape for a topic's photo, converted once and kept for a while.
+// Resolves to null when there is no photo or its host will not let it be read.
+async function riseShape(node) {
+  const visual = await resolveVisual(node);
+  if (!visual?.src) return null;
+  const known = rise.shapes.get(visual.src);
+  if (known) {
+    rise.shapes.delete(visual.src);
+    rise.shapes.set(visual.src, known);
+    return known;
+  }
+  const task = loadPhoto(visual.src).then((img) => {
+    const relief = photoToRelief(img);
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.BufferAttribute(relief.positions, 3));
+    geometry.setAttribute("uv", new THREE.BufferAttribute(relief.uvs, 2));
+    geometry.setAttribute("aSide", new THREE.BufferAttribute(relief.side, 1));
+    geometry.setIndex(new THREE.BufferAttribute(relief.indices, 1));
+    geometry.computeVertexNormals();
+    const texture = new THREE.CanvasTexture(relief.texture);
+    texture.colorSpace = THREE.NoColorSpace;
+    texture.anisotropy = 4;
+    return { ...relief, geometry, texture, visual, key: visual.src };
+  }).catch(() => null);
+  rise.shapes.set(visual.src, task);
+  // A photo that could not be read is not remembered, so a retry can succeed.
+  task.then((shape) => { if (!shape && rise.shapes.get(visual.src) === task) rise.shapes.delete(visual.src); });
+  for (const [key, old] of rise.shapes) {
+    if (rise.shapes.size <= RISE_KEEP) break;
+    if ([...rise.models.values()].some((model) => model.shape?.key === key)) continue;
+    rise.shapes.delete(key);
+    old.then((shape) => { shape?.geometry.dispose(); shape?.texture.dispose(); });
+  }
+  return task;
+}
+
+// A topic with no usable photo still rises: as a small cluster of crystals in
+// its own colour, the same every time for the same topic.
+function riseCrystal(node) {
+  let seed = 7;
+  for (const ch of node.id) seed = (seed * 31 + ch.charCodeAt(0)) >>> 0;
+  const random = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+  const parts = [];
+  const shards = [[0, 1, .15, 0], [-.19, .56, .1, .3], [.2, .68, .11, -.24], [.04, .36, .085, .5]];
+  for (const [x, tall, wide, lean] of shards) {
+    const height = tall * (.86 + random() * .22);
+    const profile = [[0, 0], [wide * .8, 0], [wide, height * .7], [0, height]].map(([r, y]) => new THREE.Vector2(r, y));
+    const shard = new THREE.LatheGeometry(profile, 6).toNonIndexed();
+    shard.rotateY(random() * Math.PI).rotateZ(-lean * .8).translate(x, 0, (random() - .5) * .1);
+    parts.push(shard.getAttribute("position").array);
+    shard.dispose();
+  }
+  const positions = new Float32Array(parts.reduce((sum, part) => sum + part.length, 0));
+  let at = 0;
+  for (const part of parts) { positions.set(part, at); at += part.length; }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute("uv", new THREE.BufferAttribute(new Float32Array(positions.length / 3 * 2), 2));
+  geometry.setAttribute("aSide", new THREE.BufferAttribute(new Float32Array(positions.length / 3), 1));
+  geometry.computeVertexNormals();
+  geometry.computeBoundingBox();
+  const box = geometry.boundingBox;
+  return { mode: "crystal", geometry, texture: null, width: box.max.x - box.min.x, height: box.max.y, depth: .15, own: true };
+}
+
+function riseMaterial(shape, color) {
+  return new THREE.ShaderMaterial({
+    uniforms: {
+      uMap: { value: shape.texture },
+      uPhoto: { value: shape.texture ? 1 : 0 },
+      uPlaque: { value: shape.mode === "plaque" ? 1 : 0 },
+      uAccent: { value: color },
+      uReveal: { value: 0 },
+      uHeight: { value: shape.height },
+      uTime: { value: 0 },
+    },
+    vertexShader: `
+      attribute float aSide;
+      uniform float uHeight;
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vView;
+      varying float vUp;
+      varying float vSide;
+      void main() {
+        vUv = uv;
+        vSide = aSide;
+        vUp = position.y / uHeight;
+        vec4 seen = modelViewMatrix * vec4(position, 1.0);
+        vNormal = normalize(normalMatrix * normal);
+        vView = normalize(-seen.xyz);
+        gl_Position = projectionMatrix * seen;
+      }
+    `,
+    fragmentShader: `
+      uniform sampler2D uMap;
+      uniform float uPhoto;
+      uniform float uPlaque;
+      uniform vec3 uAccent;
+      uniform float uReveal;
+      uniform float uTime;
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vView;
+      varying float vUp;
+      varying float vSide;
+      void main() {
+        vec3 normal = normalize(vNormal);
+        vec3 lightDir = normalize(vec3(-0.55, 0.62, 0.95));
+        float light = max(dot(normal, lightDir), 0.0);
+        float rim = pow(1.0 - max(dot(normal, vView), 0.0), 2.6);
+        float glint = pow(max(dot(normal, normalize(lightDir + vView)), 0.0), 26.0);
+        vec3 gem = mix(uAccent * .28, uAccent * .95, vUp) + vec3(1.0) * glint * .5;
+        vec3 base = mix(gem, texture2D(uMap, vUv).rgb, uPhoto);
+        vec3 color = base * (.6 + .58 * light) + vec3(1.0) * glint * .1 * uPhoto;
+        color = mix(color, (vec3(.04, .1, .13) + uAccent * .1) * (.7 + .5 * light), vSide * uPlaque);
+        color += uAccent * rim * .42;
+        // Rising: the shape arrives first as light in the topic's colour, then
+        // the photograph floods up through it from the foot.
+        float ahead = vUp - uReveal;
+        float ghost = smoothstep(-.015, .07, ahead);
+        float tone = dot(base, vec3(.299, .587, .114));
+        vec3 glow = uAccent * (.3 + .55 * tone + .7 * rim) * (.82 + .18 * sin(vUp * 80.0 - uTime * 7.0));
+        color = mix(color, glow, ghost);
+        color += uAccent * (1.0 - smoothstep(0.0, .045, abs(ahead))) * step(uReveal, 1.02) * .9;
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `,
+  });
+}
+
+function riseModel(node, normal) {
+  const group = new THREE.Group();
+  // Stand on the surface at the pin, facing the way the camera looks at it
+  // once the globe has turned the pin to the front.
+  const centred = new THREE.Quaternion().setFromUnitVectors(normal, new THREE.Vector3(0, 0, 1));
+  const front = new THREE.Vector3(0, -1, 0).applyQuaternion(centred.invert());
+  const right = new THREE.Vector3().crossVectors(normal, front);
+  group.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(right, normal, front));
+  group.position.copy(normal);
+  const color = new THREE.Color(nodeColor(node));
+  const ring = new THREE.Mesh(rise.ringGeo, new THREE.MeshBasicMaterial({
+    color, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
+  }));
+  ring.position.y = .012;
+  const shadow = new THREE.Mesh(rise.shadowGeo, new THREE.MeshBasicMaterial({
+    map: rise.shadowMap, transparent: true, opacity: 0, depthWrite: false,
+  }));
+  shadow.position.y = .009;
+  const body = new THREE.Group();
+  group.add(shadow, ring, body);
+  rise.layer.add(group);
+  const model = { id: node.id, group, body, ring, shadow, color, grow: 0, target: 0, wait: 0, mesh: null, shape: null };
+  riseShape(node).then((shape) => {
+    if (rise.models.get(node.id) !== model) return;
+    model.shape = shape || riseCrystal(node);
+    model.mesh = new THREE.Mesh(model.shape.geometry, riseMaterial(model.shape, color));
+    model.mesh.rotation.x = -RISE_RECLINE;
+    model.mesh.position.y = model.shape.mode === "figure" ? .05 : .014;
+    body.add(model.mesh);
+    if (state.doorId === node.id || state.turning?.to === node.id) riseCredit(model);
+  });
+  return model;
+}
+
+// Raise `id` and send every other object back down. `local` places it when
+// its pin is not on the globe yet (the pins swap when a turn lands).
+function riseTo(id, { local = null, delay = 0 } = {}) {
+  if (!rise.on) return;
+  for (const [other, model] of rise.models) if (other !== id) model.target = 0;
+  let model = rise.models.get(id);
+  if (!model) {
+    const node = state.byId.get(id);
+    const at = local || state.markerVectors.get(id);
+    if (!node || !at) return;
+    model = riseModel(node, at.clone().normalize());
+    rise.models.set(id, model);
+  }
+  model.target = 1;
+  model.wait = model.grow ? 0 : delay;
+  riseCredit(model);
+}
+
+function riseDown() {
+  for (const model of rise.models.values()) model.target = 0;
+}
+
+function riseDrop(model) {
+  rise.layer.remove(model.group);
+  model.ring.material.dispose();
+  model.shadow.material.dispose();
+  model.mesh?.material.dispose();
+  if (model.shape?.own) model.shape.geometry.dispose();
+  rise.models.delete(model.id);
+}
+
+function riseClear() {
+  for (const model of [...rise.models.values()]) riseDrop(model);
+  $("rise-credit").classList.remove("on");
+}
+
+// How far up an object is, 0 (a dot) to 1 (standing). It can never be further
+// along than the door itself, so scrubbing the zoom scrubs the rise with it.
+function riseAmount(model) {
+  return Math.min(model.grow, state.door);
+}
+
+function stepRise(dt, now) {
+  if (!rise.on || !rise.models.size) return;
+  const clamp01 = (value) => Math.min(1, Math.max(0, value));
+  for (const model of [...rise.models.values()]) {
+    if (model.target && model.wait > 0) {
+      model.wait -= dt;
+    } else if (model.mesh || !model.target) {
+      const gap = model.target - model.grow;
+      const stride = dt * 1000 / (model.target ? RISE_MS : RISE_MS * .5);
+      model.grow = state.reducedMotion || Math.abs(gap) <= stride ? model.target : model.grow + Math.sign(gap) * stride;
+    }
+    if (!model.target && model.grow === 0) {
+      riseDrop(model);
+      continue;
+    }
+    const amount = riseAmount(model);
+    const t = clamp01(amount / .62);
+    const back = 1 + 2.2 * Math.pow(t - 1, 3) + 1.2 * Math.pow(t - 1, 2); // settles with a small overshoot
+    const wide = 1 - Math.pow(1 - clamp01(amount / .45), 3);
+    model.body.scale.set(Math.max(wide, .0001), Math.max(back, .0001), Math.max(wide, .0001));
+    let foot = .16;
+    if (model.mesh) {
+      const shape = model.shape;
+      const fit = Math.min(RISE_H / shape.height, RISE_W * rise.fit / shape.width);
+      model.mesh.scale.setScalar(fit);
+      const reveal = clamp01((amount - .34) / .6);
+      model.mesh.material.uniforms.uReveal.value = reveal * reveal * (3 - 2 * reveal) * 1.16 - .05;
+      model.mesh.material.uniforms.uTime.value = state.reducedMotion ? 0 : now / 1000;
+      model.mesh.visible = amount > .002;
+      foot = Math.max(.13, shape.width * fit * .56);
+    }
+    // The ring is the dot opening: it pulses while the photo is still being
+    // fetched, widens as the object rises, then rests as a faint base.
+    const waiting = model.target && !model.mesh ? .5 + .5 * Math.sin(now / 170) : 0;
+    const ring = foot * (.3 + .7 * wide) * (waiting ? .42 : 1);
+    model.ring.scale.set(ring, 1, ring);
+    model.ring.material.opacity = (waiting ? .3 + .4 * waiting : .2 * amount + .6 * Math.sin(Math.PI * clamp01(amount))) * doorEase();
+    model.shadow.scale.set(foot * 1.15 * wide + .001, 1, foot * .8 * wide + .001);
+    model.shadow.material.opacity = .46 * amount;
+  }
+}
+
+// The patch of screen a standing object covers, so pins on the ground behind
+// it can step aside instead of floating across its face.
+function riseCover(rect) {
+  let cover = null;
+  const corner = new THREE.Vector3();
+  for (const model of rise.models.values()) {
+    if (!model.mesh || riseAmount(model) < .4) continue;
+    if (!model.mesh.geometry.boundingBox) model.mesh.geometry.computeBoundingBox();
+    const { min, max } = model.mesh.geometry.boundingBox;
+    cover = cover || { id: model.id, x0: Infinity, y0: Infinity, x1: -Infinity, y1: -Infinity };
+    for (let i = 0; i < 8; i += 1) {
+      corner.set(i & 1 ? max.x : min.x, i & 2 ? max.y : min.y, i & 4 ? max.z : min.z)
+        .applyMatrix4(model.mesh.matrixWorld).project(camera);
+      const x = (corner.x * .5 + .5) * rect.width;
+      const y = (-corner.y * .5 + .5) * rect.height;
+      cover.x0 = Math.min(cover.x0, x); cover.x1 = Math.max(cover.x1, x);
+      cover.y0 = Math.min(cover.y0, y); cover.y1 = Math.max(cover.y1, y);
+    }
+  }
+  return cover;
+}
+
+// The object under a click or tap, if it is the one standing at the open door.
+function riseHit(event) {
+  const model = rise.models.get(state.doorId);
+  if (!rise.on || !model?.mesh || riseAmount(model) < .6) return false;
+  const rect = renderer.domElement.getBoundingClientRect();
+  const point = new THREE.Vector2(
+    ((event.clientX - rect.left) / rect.width) * 2 - 1,
+    -((event.clientY - rect.top) / rect.height) * 2 + 1
+  );
+  rise.ray.setFromCamera(point, camera);
+  return rise.ray.intersectObject(model.mesh, false).length > 0;
+}
+
+// Say where the shape came from, next to it: the photographer and licence
+// still apply to a shape made from their photo.
+function riseCredit(model) {
+  const box = $("rise-credit");
+  const visual = model.shape?.visual;
+  box.replaceChildren();
+  box.classList.toggle("on", Boolean(visual));
+  if (!visual) return;
+  const who = String(visual.artist || visual.credit || "Source contributor");
+  box.append("3D relief shaped in your browser from a photo by ", who.length > 48 ? `${who.slice(0, 46)}…` : who, " · ");
+  const link = document.createElement("a");
+  link.href = visual.page;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = visual.licence || "source";
+  box.append(link);
+}
+
 const ZOOM_NEAR = 2.45;
 const ZOOM_FAR = 5.8;
 const DOOR_W = 300;
@@ -3007,7 +3870,7 @@ const DOOR_H = 424;
 // the pin that was facing the camera rides up onto the visible cap.
 const DOOR_WORLD_Y = -1.24;
 const DOOR_CAMERA = 2.62;
-const DOOR_TILT = 1.02;
+const DOOR_TILT = 1.16;
 const DOOR_SCRUB = .84; // wheel travel, in zoom units, from the nearest zoom to an open door
 const DOOR_SETTLE_MS = 170;
 const DOOR_MS = 700;    // a full open or close
@@ -3030,6 +3893,17 @@ const PHONE_SLOTS = [
   { x: 1.1, lift: 46, s: .6, r: -34, o: 0, blur: 0 },
   { x: 1.2, lift: 46, s: .5, r: -36, o: 0, blur: 0 },
 ];
+// With 3D on, the topic itself stands on the globe as an object, so the front
+// door is not drawn (it stays in the list, unseen, so the turn logic and the
+// card that slides forward keep working) and the doors behind move right.
+const DESK_SLOTS_3D = [
+  { x: .36, lift: 30, s: .78, r: 0, o: 0, blur: 0 },
+  { x: .675, lift: 64, s: .55, r: -27, o: .8, blur: 0 },
+  { x: .765, lift: 98, s: .44, r: -33, o: .56, blur: 0 },
+  { x: .83, lift: 124, s: .35, r: -37, o: .36, blur: 0 },
+];
+const DESK_ENTER_3D = { x: .9, lift: 136, s: .28, r: -40, o: 0, blur: 1.6 };
+const PHONE_SLOTS_3D = [{ ...PHONE_SLOTS[0], o: 0 }, { ...PHONE_SLOTS[1], x: .89 }, ...PHONE_SLOTS.slice(2)];
 const PHONE_LEAVE = { x: -.7, lift: 24, s: .8, r: -50, o: 0, blur: 2 };
 const PHONE_ENTER = { x: 1.2, lift: 46, s: .6, r: -36, o: 0, blur: 1 };
 
@@ -3150,6 +4024,7 @@ function sweepDoors() {
   for (const el of doorEls.values()) el.remove();
   doorEls.clear();
   $("door-chips").replaceChildren();
+  riseClear();
   appEl.classList.remove("door-mode", "door-closing");
   document.querySelector(".rail").inert = false;
   doorOnStage = false;
@@ -3197,6 +4072,7 @@ function openDoor(id, { target = 1, drawn = false } = {}) {
   drawDoorReadout();
   showDoors(id, { fresh: true });
   updateDoorHint();
+  riseTo(id);
   return true;
 }
 
@@ -3216,6 +4092,7 @@ function exitDoor({ redraw = true } = {}) {
   state.doorDir = -1;
   appEl.classList.remove("turning");
   appEl.classList.add("door-closing");
+  riseDown();
   for (const el of doorEls.values()) {
     el.classList.add("leaving");
     el.tabIndex = -1;
@@ -3246,6 +4123,11 @@ function showDoors(frontId, { fresh = false } = {}) {
 }
 
 function slotSet() {
+  if (rise.on) {
+    return isPhone()
+      ? { slots: PHONE_SLOTS_3D, leave: PHONE_LEAVE, enter: PHONE_ENTER }
+      : { slots: DESK_SLOTS_3D, leave: DESK_LEAVE, enter: DESK_ENTER_3D };
+  }
   return isPhone()
     ? { slots: PHONE_SLOTS, leave: PHONE_LEAVE, enter: PHONE_ENTER }
     : { slots: DESK_SLOTS, leave: DESK_LEAVE, enter: DESK_ENTER };
@@ -3275,6 +4157,7 @@ function placeDoor(el, slot, rect, k) {
   const y = doorTop(slot, rect, k) - (1 - scale) * DOOR_H / 2;
   el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${scale.toFixed(3)}) rotateY(${slot.r}deg)`;
   el.style.opacity = String(slot.o);
+  el.style.pointerEvents = slot.o > 0 ? "" : "none";
   el.style.filter = slot.blur ? `blur(${slot.blur}px)` : "none";
 }
 
@@ -3345,10 +4228,14 @@ function layoutDoorControls(rect, k) {
   // The Linked / Siblings switch sits above the doors behind, level with the
   // top of the front door and clear of its right edge.
   const controls = $("door-controls");
-  const [front, next] = DESK_SLOTS;
-  const left = Math.max(next.x * rect.width, front.x * rect.width + DOOR_W * front.s * k + 14);
+  const [front, next] = rise.on ? DESK_SLOTS_3D : DESK_SLOTS;
+  // With 3D on there is no front door to clear: the switch sits just above
+  // the doors behind.
+  const left = rise.on
+    ? next.x * rect.width
+    : Math.max(next.x * rect.width, front.x * rect.width + DOOR_W * front.s * k + 14);
   controls.style.left = `${Math.round(left)}px`;
-  controls.style.top = `${Math.round(doorTop(front, rect, k))}px`;
+  controls.style.top = `${Math.round(rise.on ? doorTop(next, rect, k) - 38 : doorTop(front, rect, k))}px`;
   controls.style.maxWidth = `${Math.round(rect.width - left - 12)}px`;
 }
 
@@ -3441,6 +4328,12 @@ function retryDoorPhoto(id) {
   const node = state.byId.get(id);
   visualCache.delete(visualSearchTerm(node));
   doorPhoto.delete(id);
+  // Try the 3D object again too: drop the stand-in and raise a fresh one.
+  const stale = rise.models.get(id);
+  if (stale) {
+    riseDrop(stale);
+    if (state.doorId === id) riseTo(id);
+  }
   const el = doorEls.get(id);
   if (!el) return;
   el.classList.remove("no-photo", "has-photo");
@@ -3497,6 +4390,12 @@ function turnTo(id) {
     duration: state.reducedMotion ? 0 : TURN_MS,
   };
   showDoors(id);
+  // The object standing here goes back into its dot; the next one starts to
+  // rise as the globe brings its pin round to the front.
+  riseTo(id, {
+    local: new THREE.Vector3(0, 0, 1).applyQuaternion(there.clone().invert()),
+    delay: state.reducedMotion ? 0 : TURN_MS * .5 / 1000,
+  });
   if (state.reducedMotion) return land(id);
 
   state.selectedId = id;
@@ -3552,6 +4451,7 @@ function cancelTurn() {
   };
   state.doorIds = turning.previous;
   state.selectedId = turning.from;
+  riseTo(turning.from);
   updatePinStates();
   renderDoors(turning.previous, { leavingFront: null });
   const behind = doorsBehind(turning.from);
