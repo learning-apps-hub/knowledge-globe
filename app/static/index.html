@@ -926,34 +926,8 @@
     .app { height: 100dvh; }
     .workspace { display: block; position: relative; }
     .globe-stage { height: 100%; }
-    .detail {
-      position: absolute;
-      inset: auto 0 0;
-      max-height: 62%;
-      border-top: 1px solid var(--line-strong);
-      border-left: 0;
-      border-radius: 22px 22px 0 0;
-      box-shadow: 0 -25px 60px rgba(0, 0, 0, .35);
-      transform: translateY(calc(100% - 104px));
-      transition: transform .34s ease;
-    }
-    .detail.open { transform: translateY(0); }
-    .detail::before {
-      content: "";
-      position: sticky;
-      z-index: 2;
-      top: 9px;
-      display: block;
-      width: 38px;
-      height: 4px;
-      margin: 9px auto -8px;
-      border-radius: 999px;
-      background: var(--line-strong);
-    }
-    .detail-inner { padding: 25px 21px 35px; }
-    .detail h1 { font-size: 24px; }
-    .lede { display: -webkit-box; font-size: 13px; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .detail.open .lede { display: block; }
+    /* No drawer on phones: the full entry is the Flat view, reached by the Doors / Flat switch. */
+    .detail { display: none; }
     .top-action, .brand-title, .subject-wrap { display: none; }
     .brand { width: 36px; }
     .search { margin-left: 0; }
@@ -1607,13 +1581,14 @@
   }
 
   @media (max-width: 680px) {
-    .door-mode .view-toggle { display: none; }
+    .door-mode .view-toggle { display: flex; flex: none; }
+    .door-mode .view-toggle button { height: 30px; padding: 0 11px; }
     .door-mode .door-controls { display: none; }
     .door-mode .door-hint { display: none; }
     .rise-credit {
       left: 12px;
       right: 12px;
-      bottom: 156px;
+      bottom: 58px;
       max-width: none;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -1625,7 +1600,7 @@
       z-index: 8;
       left: 12px;
       right: 12px;
-      bottom: 116px;
+      bottom: 16px;
       display: flex;
       gap: 8px;
       overflow-x: auto;
@@ -1987,37 +1962,6 @@ function bindUI() {
   stage.addEventListener("pointercancel", endDrag);
 
   const detail = $("detail");
-  // Phone drawer: it opens and folds by tapping its top band (handle, label, title), by a swipe
-  // up or down, by tapping the globe, or with Esc. The old handle was a 38 x 4 px sliver.
-  const SHEET_BAND = 64;
-  const setSheet = (open) => detail.classList.toggle("open", open);
-  detail.addEventListener("click", (event) => {
-    if (!isPhone() || event.target.closest("a, button, input, select, textarea, summary")) return;
-    const inBand = event.clientY - detail.getBoundingClientRect().top < SHEET_BAND;
-    // Folded, the whole peek is the control; open, only the band is, so reading and selecting stay free.
-    if (!detail.classList.contains("open") || inBand) setSheet(!detail.classList.contains("open"));
-  });
-  let sheetTouch = null;
-  detail.addEventListener("touchstart", (event) => {
-    if (!isPhone() || event.touches.length !== 1) { sheetTouch = null; return; }
-    const t = event.touches[0];
-    sheetTouch = { x: t.clientX, y: t.clientY, scrolled: detail.scrollTop > 0,
-      band: t.clientY - detail.getBoundingClientRect().top < SHEET_BAND };
-  }, { passive: true });
-  detail.addEventListener("touchend", (event) => {
-    const start = sheetTouch;
-    sheetTouch = null;
-    if (!start || !isPhone()) return;
-    const t = event.changedTouches[0];
-    const dy = t.clientY - start.y;
-    if (Math.abs(t.clientX - start.x) > Math.abs(dy)) return;
-    const open = detail.classList.contains("open");
-    if (!open && dy < -24) setSheet(true);
-    else if (open && dy > 48 && (start.band || !start.scrolled)) setSheet(false);
-  }, { passive: true });
-  stage.addEventListener("click", (event) => {
-    if (isPhone() && detail.classList.contains("open") && !event.target.closest("button, a, .pin")) setSheet(false);
-  });
 
   let resizingPanel = false;
   detail.addEventListener("pointerdown", (event) => {
@@ -2053,8 +1997,7 @@ function bindUI() {
       const searching = $("search-results").classList.contains("open") || document.activeElement === $("search-input");
       closeSearch();
       if (searching) return;
-      if (isPhone() && $("detail").classList.contains("open")) $("detail").classList.remove("open");
-      else if (state.flat) closeFlat();
+      if (state.flat) closeFlat();
       else if (state.turning) cancelTurn();
       else if (state.doorId) exitDoor();
     }
@@ -3897,7 +3840,7 @@ const DOOR_H = 424;
 // Framing with a door open: about the top third of the globe stays in view.
 // WORLD_Y sinks it, CAMERA sets how large it reads, and TILT tips it back so
 // the pin that was facing the camera rides up onto the visible cap.
-const DOOR_WORLD_Y = -1.24;
+const DOOR_WORLD_Y = -1.04;
 const DOOR_CAMERA = 2.62;
 const DOOR_TILT = 1.16;
 const DOOR_SCRUB = .84; // wheel travel, in zoom units, from the nearest zoom to an open door
