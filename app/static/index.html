@@ -1987,8 +1987,36 @@ function bindUI() {
   stage.addEventListener("pointercancel", endDrag);
 
   const detail = $("detail");
+  // Phone drawer: it opens and folds by tapping its top band (handle, label, title), by a swipe
+  // up or down, by tapping the globe, or with Esc. The old handle was a 38 x 4 px sliver.
+  const SHEET_BAND = 64;
+  const setSheet = (open) => detail.classList.toggle("open", open);
   detail.addEventListener("click", (event) => {
-    if (innerWidth <= 680 && event.target === detail) detail.classList.toggle("open");
+    if (!isPhone() || event.target.closest("a, button, input, select, textarea, summary")) return;
+    const inBand = event.clientY - detail.getBoundingClientRect().top < SHEET_BAND;
+    // Folded, the whole peek is the control; open, only the band is, so reading and selecting stay free.
+    if (!detail.classList.contains("open") || inBand) setSheet(!detail.classList.contains("open"));
+  });
+  let sheetTouch = null;
+  detail.addEventListener("touchstart", (event) => {
+    if (!isPhone() || event.touches.length !== 1) { sheetTouch = null; return; }
+    const t = event.touches[0];
+    sheetTouch = { x: t.clientX, y: t.clientY, scrolled: detail.scrollTop > 0,
+      band: t.clientY - detail.getBoundingClientRect().top < SHEET_BAND };
+  }, { passive: true });
+  detail.addEventListener("touchend", (event) => {
+    const start = sheetTouch;
+    sheetTouch = null;
+    if (!start || !isPhone()) return;
+    const t = event.changedTouches[0];
+    const dy = t.clientY - start.y;
+    if (Math.abs(t.clientX - start.x) > Math.abs(dy)) return;
+    const open = detail.classList.contains("open");
+    if (!open && dy < -24) setSheet(true);
+    else if (open && dy > 48 && (start.band || !start.scrolled)) setSheet(false);
+  }, { passive: true });
+  stage.addEventListener("click", (event) => {
+    if (isPhone() && detail.classList.contains("open") && !event.target.closest("button, a, .pin")) setSheet(false);
   });
 
   let resizingPanel = false;
@@ -2025,7 +2053,8 @@ function bindUI() {
       const searching = $("search-results").classList.contains("open") || document.activeElement === $("search-input");
       closeSearch();
       if (searching) return;
-      if (state.flat) closeFlat();
+      if (isPhone() && $("detail").classList.contains("open")) $("detail").classList.remove("open");
+      else if (state.flat) closeFlat();
       else if (state.turning) cancelTurn();
       else if (state.doorId) exitDoor();
     }
