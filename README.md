@@ -177,3 +177,16 @@ path-traversal guards. The chosen port must be free.
 
 Full design rationale lives in the vault:
 `AI Projects/knowledge-globe/working files/DESIGN_v0.1.md`.
+
+## 3D objects on the globe
+
+Choosing a topic raises it out of its pin as a 3D object standing on the
+globe; choosing another sends it back into its dot while the next one rises.
+The shape is made in the browser from the topic's photograph by
+`photoToRelief` in `app/static/index.html` — no model, no API call, nothing
+stored. It finds the subject by comparing the photo with the colours round its
+rim, inflates that outline into a rounded body and presses the photo's light
+and shade into the surface. When no clean subject is found the whole photo
+stands as a relief plaque; a topic with no readable photo rises as a crystal in
+its own colour. It is a sculpted relief of the photo, not a scan of the real
+thing: the back is the mirror of the front.
