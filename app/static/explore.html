@@ -266,10 +266,13 @@
     }
     .shot { aspect-ratio: 16 / 8; }
   }
+  .panel-body.more-below { -webkit-mask-image: linear-gradient(#000 calc(100% - 44px), transparent); mask-image: linear-gradient(#000 calc(100% - 44px), transparent); }
   .tap-hint { display: none; }
   @media (max-width: 680px) {
     /* A low, compact sheet: the globe above stays free to tap. */
     .panel { max-height: 31%; }
+    /* Choosing from a list needs the room more than the globe does. */
+    .panel.tall { max-height: 62%; }
     .panel-body { padding: 8px 16px calc(12px + env(safe-area-inset-bottom)); }
     .panel-kicker { margin: 0 44px 6px 0; font-size: 9.5px; }
     .shot { float: left; width: 76px; aspect-ratio: 1; margin: 0 12px 6px 0; border-radius: 10px; }
@@ -572,6 +575,56 @@ function frontVec(az, far) {
   return new THREE.Vector3(Math.sin(f) * Math.cos(a), Math.sin(f) * Math.sin(a), Math.cos(f));
 }
 
+// Neighbours on the ring are eased apart until no question label sits on
+// another pin's name or picture (measured at rest, on the screen).
+const meter = document.createElement("canvas").getContext("2d");
+function textBox(text, font, max, lineH) {
+  meter.font = font;
+  const w = meter.measureText(text).width;
+  const lines = Math.min(2, Math.ceil(w / max));
+  return { w: Math.min(w, max), h: lines * lineH };
+}
+function restScreen(v) {
+  if (!renderer) {
+    const frame = globeFrame();
+    return { x: frame.x + frame.r * v.x, y: frame.y - frame.r * v.y };
+  }
+  scratch.copy(v).add(world.position).project(camera);
+  return { x: (scratch.x + 1) / 2 * view.w + view.x, y: (1 - scratch.y) / 2 * view.h + view.y };
+}
+function ease(spots, { phone, D, blockW, answers }) {
+  if (spots.length < 2) return;
+  const W = stage.clientWidth;
+  for (const spot of spots) {
+    const name = state.points.get(headline(answers.get(spot.home.key)).id).name;
+    spot.q = textBox(question(spot.home.key), `700 ${phone ? 10.5 : 11.5}px "DM Sans"`, blockW - 4, phone ? 13 : 14);
+    spot.cap = textBox(name, `600 ${phone ? 11.5 : 12.5}px Manrope`, blockW, phone ? 14.5 : 16);
+  }
+  const boxes = (spot) => {
+    const at = restScreen(frontVec(spot.az, RING));
+    const qx = clamp(at.x, blockW / 2 + 4, W - blockW / 2 - 4);
+    return [
+      { x0: qx - spot.q.w / 2, x1: qx + spot.q.w / 2, y0: at.y - D / 2 - 5 - spot.q.h, y1: at.y - D / 2 - 3 },
+      { x0: at.x - D / 2, x1: at.x + D / 2, y0: at.y - D / 2, y1: at.y + D / 2 },
+      { x0: at.x - spot.cap.w / 2, x1: at.x + spot.cap.w / 2, y0: at.y + D / 2 + 4, y1: at.y + D / 2 + 6 + spot.cap.h },
+    ];
+  };
+  const pad = 4; // breathing room between one pin's words and the next
+  const hit = (a, b) => a.some((p) => b.some((q) => p.x0 < q.x1 + pad && q.x0 < p.x1 + pad && p.y0 < q.y1 + pad && q.y0 < p.y1 + pad));
+  for (let pass = 0; pass < 60; pass += 1) {
+    let moved = false;
+    for (let i = 0; i < spots.length; i += 1) {
+      const a = spots[i];
+      const b = spots[(i + 1) % spots.length];
+      if (a === b || !hit(boxes(a), boxes(b))) continue;
+      a.az -= 1.5;
+      b.az += 1.5;
+      moved = true;
+    }
+    if (!moved) break;
+  }
+}
+
 // Works out every pin's spot ON the globe (in the globe's own frame), its
 // size and its label. Where it shows on the screen is worked out every frame
 // by place(), so a pin rides the globe wherever the globe turns.
@@ -612,6 +665,8 @@ function layout() {
       }
     }
   }
+
+  ease(spots, { phone, D, blockW, labelH: phone ? 28 : 32, answers });
 
   const now = performance.now();
   // New pins wait until the globe has nearly finished turning to the centre.
@@ -707,7 +762,16 @@ function layout() {
 }
 /* ---------- the card: peek before go ---------- */
 
-function openPanel() { $("panel").classList.add("open"); }
+function openPanel() {
+  $("panel").classList.add("open");
+  if (!state.peek?.list) $("panel").classList.remove("tall");
+  requestAnimationFrame(moreBelow);
+}
+// A fade at the sheet's foot while there is more to scroll.
+function moreBelow() {
+  const body = $("panel-body");
+  body.classList.toggle("more-below", body.scrollHeight - body.scrollTop - body.clientHeight > 6);
+}
 function closePanel() {
   $("panel").classList.remove("open");
   for (const el of toks.values()) el.classList.remove("peeked");
@@ -857,6 +921,7 @@ function showList(key) {
   }
   body.append(rows);
   body.scrollTop = 0;
+  $("panel").classList.add("tall");
   for (const el of toks.values()) el.classList.remove("peeked");
   state.peek = { list: key };
   openPanel();
@@ -920,6 +985,7 @@ function drawResults(term) {
 function bindUI() {
   $("home").addEventListener("click", () => { closePanel(); go(state.home); });
   $("close").addEventListener("click", closePanel);
+  $("panel-body").addEventListener("scroll", moreBelow, { passive: true });
   const search = $("search");
   search.addEventListener("focus", () => drawResults(search.value));
   search.addEventListener("input", () => drawResults(search.value));
@@ -1268,7 +1334,8 @@ function animate(now) {
     globeQ.slerpQuaternions(turn.from, turn.to, 1 - Math.pow(1 - progress, 3));
     if (progress === 1) turn = null;
   } else if (!reduced && state.centre && state.centre === state.home
-      && !$("panel").classList.contains("open") && !$("results").classList.contains("open")
+      && !(state.peek && stage.clientWidth <= 680 && $("panel").classList.contains("open"))
+      && !$("results").classList.contains("open")
       && now - state.lastTouch > IDLE_MS) {
     // The old viewer's resting spin, about the globe's own north, easing in.
     state.spin = Math.min(1, state.spin + dt / 2.5);
