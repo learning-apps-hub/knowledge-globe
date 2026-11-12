@@ -293,7 +293,16 @@
     .brand { display: none; }
     .pill { padding: 0 11px; }
     .pill .wide { display: none; }
-    .search { max-width: none; }
+    /* The home pill gives way first (its name shortens); the search box keeps
+       room for its words. */
+    #home { flex: 0 1 auto; min-width: 0; }
+    #home-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+    #home-steps { flex: none; }
+    .search { flex: 1 0 128px; max-width: none; }
+    /* 16px stops iPhone Safari zooming the whole page in when the box is tapped. */
+    .search input { font-size: 16px; padding: 0 12px; }
+    /* Suggestions use the full width and hide the globe's labels behind them. */
+    .results { position: fixed; left: 12px; right: 12px; top: 50px; max-height: 60vh; background: #0a1922; }
     .trail button { max-width: 104px; }
     .q { font-size: 10.5px; }
     .cap strong { font-size: 11.5px; }
@@ -949,7 +958,8 @@ function drawTrail() {
   const steps = state.trail.length - 1;
   const atHome = state.centre === state.home;
   $("home-name").textContent = state.points.get(state.home).name;
-  $("home-steps").textContent = atHome ? "" : `${steps} step${steps === 1 ? "" : "s"} away`;
+  const away = room === 3 ? "" : " away"; // phones: the trail below already shows the way back
+  $("home-steps").textContent = atHome ? "" : `${steps} step${steps === 1 ? "" : "s"}${away}`;
   $("home").setAttribute("aria-label", `Back to my topic, ${state.points.get(state.home).name}`);
 }
 
