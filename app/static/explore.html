@@ -41,7 +41,9 @@
 
   .app {
     position: fixed;
-    inset: 0;
+    inset: 0 0 auto 0;
+    /* --app-h is the height the browser really shows (set from visualViewport). */
+    height: var(--app-h, 100dvh);
     display: grid;
     grid-template-columns: minmax(0, 1fr) var(--panel);
     grid-template-rows: 58px 40px minmax(0, 1fr);
@@ -110,30 +112,38 @@
   .trail i { flex: none; font-style: normal; opacity: .6; }
 
   #stage { grid-column: 1; grid-row: 3; position: relative; z-index: 1; min-width: 0; min-height: 0; overflow: hidden; }
-  #links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; transition: opacity .35s ease; }
-  #links.on { opacity: 1; }
+  #links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
+  /* Pins are placed by place() every frame from their spot on the globe, so
+     only their size eases here. */
   .tok {
-    position: absolute;
-    transition: left var(--move), top var(--move), width var(--move), height var(--move), opacity .5s ease;
-  }
-  .tok.fresh, .tok.gone { opacity: 0; }
-  .tok.gone { pointer-events: none; }
-  .face {
     --accent: var(--aqua);
+    position: absolute; left: 0; top: 0;
+    will-change: transform, opacity;
+    transition: width var(--move), height var(--move);
+  }
+  /* The pin's footprint on the globe: flattened toward the rim like a disc
+     lying on a ball, so the pin reads as sitting on the surface. */
+  .base {
+    position: absolute; left: 50%; top: 50%; width: 138%; height: 138%;
+    border-radius: 50%; pointer-events: none;
+    transform: translate(-50%, -50%) rotate(var(--tilt, 0rad)) scaleX(var(--squash, 1));
+    background: radial-gradient(closest-side, rgba(1, 10, 16, .75) 56%, color-mix(in srgb, var(--accent) 55%, transparent) 70%, color-mix(in srgb, var(--accent) 12%, transparent) 84%, transparent 100%);
+  }
+  .face {
     position: absolute; inset: 0;
     display: block; padding: 0; overflow: hidden;
     border: 2px solid color-mix(in srgb, var(--accent) 70%, transparent);
     border-radius: 50%;
     background: linear-gradient(162deg, color-mix(in srgb, var(--accent) 30%, #0a1017) 0%, #0a2735 60%, #06161f 100%);
-    box-shadow: 0 0 26px color-mix(in srgb, var(--accent) 26%, transparent), 0 12px 30px rgba(0, 0, 0, .5);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 24%, transparent), 0 2px 5px rgba(0, 0, 0, .6);
     transition: border-radius var(--move), box-shadow .3s ease, transform .2s ease;
   }
   .tok.dot .face:hover { transform: scale(1.06); }
   .tok.peeked .face { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 45%, transparent), 0 0 34px var(--accent); }
   .tok.centre .face {
     border-width: 3px;
-    box-shadow: 0 0 0 6px rgba(85, 228, 209, .16), 0 0 60px rgba(85, 228, 209, .5), 0 18px 40px rgba(0, 0, 0, .55);
+    box-shadow: 0 0 0 6px rgba(85, 228, 209, .16), 0 0 46px rgba(85, 228, 209, .45), 0 3px 8px rgba(0, 0, 0, .6);
   }
   .face img {
     position: absolute; inset: 0; width: 100%; height: 100%;
@@ -161,24 +171,21 @@
   .tok.centre .cap strong { font-size: 16px; }
 
   .q {
-    position: absolute;
+    position: absolute; left: 0; top: 0;
     display: flex; align-items: flex-end; justify-content: center;
     padding: 0 2px 5px; text-align: center;
     color: color-mix(in srgb, var(--accent) 72%, white);
     font: 700 11.5px/1.2 "DM Sans", sans-serif;
     text-shadow: 0 1px 8px #000, 0 0 14px #000;
-    opacity: 0; transition: opacity .4s ease .3s;
+    pointer-events: none;
   }
-  .q.on { opacity: 1; }
   .more {
-    position: absolute; z-index: 2;
+    position: absolute; left: 0; top: 0; z-index: 2;
     min-width: 30px; height: 24px; padding: 0 7px;
     border: 1px solid color-mix(in srgb, var(--accent) 70%, transparent); border-radius: 99px;
     background: #0a1c26; color: var(--ink);
     font: 700 11px/1 "DM Sans", sans-serif;
-    opacity: 0; transition: opacity .4s ease .3s;
   }
-  .more.on { opacity: 1; }
   /* A bigger finger target than the chip looks. */
   .more::before { content: ""; position: absolute; inset: -10px; }
 
@@ -244,7 +251,8 @@
   @media (max-width: 1040px) {
     .app { grid-template-columns: minmax(0, 1fr); }
     .panel {
-      position: fixed; left: 0; right: 0; bottom: 0; grid-column: auto; grid-row: auto;
+      position: absolute; left: 0; right: 0; bottom: 0; grid-column: auto; grid-row: auto;
+      background: #0a1922;
       max-height: 68%; border: 1px solid var(--line-strong); border-bottom: 0; border-radius: 18px 18px 0 0;
       box-shadow: 0 -22px 70px rgba(0, 0, 0, .55);
       transform: translateY(105%); transition: transform .35s cubic-bezier(.22, .8, .24, 1);
@@ -290,7 +298,7 @@
   }
   @media (prefers-reduced-motion: reduce) {
     :root { --move: 0s; }
-    .tok, .q, .more, #links, .panel { transition: none; }
+    .tok, .panel { transition: none; }
   }
 </style>
 </head>
@@ -383,8 +391,17 @@ const state = {
   home: null,
   trail: [],
   peek: null,        // { id, key } or { list: key }
+  blocks: [],        // one per question on the ring: label, chip, line
+  spots: new Map(),  // point id → its spot on the globe, once it has been the centre
+  restQ: null,       // the globe's resting turn for the current centre
+  lastTouch: performance.now(),
+  spin: 0,           // 0..1, the resting spin easing in
+  spun: false,       // the globe has spun off its resting turn
 };
 const toks = new Map(); // slot ("centre" or a question key) → element
+const pins = new Set(); // every pin element still on the stage, leaving ones too
+const IDLE_MS = 7000;   // quiet time on the home point before the globe starts its resting spin
+const SPIN = .055;      // radians a second: the old viewer's resting spin
 
 /* ---------- data ---------- */
 
@@ -491,6 +508,11 @@ function go(id, { fresh = false, back = false } = {}) {
   if (!state.points.has(id)) return;
   const from = state.centre;
   if (id === from && !fresh) return showCard(id);
+  // The new centre stays where it sits on the globe: the pin just tapped keeps
+  // its own spot, a point met before goes back to its spot, a new one gets one.
+  const pin = [...toks.values()].find((el) => el.dataset.id === id);
+  const spot = pin?.anchor?.clone() || state.spots.get(id) || homeSpot(id);
+  state.spots.set(id, spot);
   state.cameFrom = from;
   state.centre = id;
   if (!back) {
@@ -500,7 +522,7 @@ function go(id, { fresh = false, back = false } = {}) {
   }
   state.peek = null;
   history.replaceState(null, "", `#${encodeURIComponent(id)}`);
-  turnGlobe(id, fresh);
+  turnGlobe(spot, fresh);
   drawTrail();
   layout();
   showCard(id, { quiet: true });
@@ -514,9 +536,9 @@ function headline(list) {
 
 function makeTok(point) {
   const el = document.createElement("div");
-  el.className = "tok fresh";
+  el.className = "tok";
   el.dataset.id = point.id;
-  el.innerHTML = `<button class="face" type="button"><span class="init"></span><img alt="" decoding="async" referrerpolicy="no-referrer"></button>
+  el.innerHTML = `<span class="base"></span><button class="face" type="button"><span class="init"></span><img alt="" decoding="async" referrerpolicy="no-referrer"></button>
     <span class="cap"><strong></strong><small></small></span>`;
   el.querySelector(".init").textContent = initials(point.name);
   el.querySelector(".cap strong").textContent = point.name;
@@ -536,25 +558,33 @@ function makeTok(point) {
     img.addEventListener("load", () => el.classList.add("has-photo"), { once: true });
     img.src = visual.src;
   });
+  el.style.opacity = "0";
   stage.append(el);
+  pins.add(el);
   return el;
 }
 
+// A spot on the globe, `far` degrees from the front in the screen direction
+// `az` (0 = right, 90 = up), with the globe at rest on the centre.
+function frontVec(az, far) {
+  const a = THREE.MathUtils.degToRad(az);
+  const f = THREE.MathUtils.degToRad(far);
+  return new THREE.Vector3(Math.sin(f) * Math.cos(a), Math.sin(f) * Math.sin(a), Math.cos(f));
+}
+
+// Works out every pin's spot ON the globe (in the globe's own frame), its
+// size and its label. Where it shows on the screen is worked out every frame
+// by place(), so a pin rides the globe wherever the globe turns.
 function layout() {
   const W = stage.clientWidth;
   const H = stage.clientHeight;
-  if (!W || !H || !state.centre) return;
+  if (!W || !H || !state.centre || !state.restQ) return;
   const phone = W <= 680;
   const answers = state.answers.get(state.centre);
   const shown = HOMES.filter((home) => answers.has(home.key));
 
-  const labelH = phone ? 28 : 32;
-  const frame = globeFrame();
-  const cx = frame.x;
-  const cy = frame.y;
-  const R = frame.r;
+  const R = globeFrame().r;
   const cd = clamp(R * (phone ? .46 : .42), 80, 190);
-  const door = { x: cx - cd / 2, y: cy - cd / 2, w: cd, h: cd };
   const D = clamp(R * (phone ? .27 : .22), 44, 84);
   const blockW = phone ? 104 : 168;
   const gap = phone ? 42 : 32; // degrees between neighbours on the ring
@@ -562,11 +592,11 @@ function layout() {
   // Each home's own direction first, then neighbours are eased apart until
   // their labels have room. The order around the centre never changes.
   const spots = [];
-  for (const [side, { axis, turn }] of Object.entries(SIDES)) {
+  for (const [side, { axis, turn: way }] of Object.entries(SIDES)) {
     const homes = shown.filter((home) => home.side === side);
     const step = homes.length > 1 ? Math.min(gap, 84 / (homes.length - 1)) : 0;
     homes.forEach((home, i) => {
-      spots.push({ home, az: (axis + turn * (i - (homes.length - 1) / 2) * step + 360) % 360 });
+      spots.push({ home, az: (axis + way * (i - (homes.length - 1) / 2) * step + 360) % 360 });
     });
   }
   spots.sort((a, b) => a.az - b.az);
@@ -582,108 +612,99 @@ function layout() {
       }
     }
   }
+
+  const now = performance.now();
+  // New pins wait until the globe has nearly finished turning to the centre.
+  const delay = turn ? turn.duration * .55 : 0;
+  const toGlobe = state.restQ.clone().invert();
+  const want = [{ slot: "centre", id: state.centre, size: cd, anchor: state.spots.get(state.centre), restFace: 1 }];
   const blocks = [];
   for (const { home, az } of spots) {
-    const spot = onGlobe(az, RING);
-    // Keep the label on the screen where the ring comes close to the edge.
-    const x = clamp(spot.x, blockW / 2 + 4, W - blockW / 2 - 4);
-    blocks.push({ home, x, top: spot.y - D / 2 - labelH, size: D, width: blockW });
-  }
-
-  // Tokens: reuse the element already showing a point, so it travels to its new home.
-  const want = [{ slot: "centre", id: state.centre, rect: door }];
-  for (const block of blocks) {
-    const list = answers.get(block.home.key);
-    block.answer = headline(list);
-    block.count = list.length;
+    const list = answers.get(home.key);
+    const answer = headline(list);
+    const block = { slot: home.key, count: list.length, width: blockW, born: now + delay };
+    blocks.push(block);
     want.push({
-      slot: block.home.key, id: block.answer.id, width: block.width,
-      rect: { x: block.x - block.size / 2, y: block.top + labelH, w: block.size, h: block.size },
+      slot: home.key, id: answer.id, width: blockW, size: D,
+      anchor: frontVec(az, RING).applyQuaternion(toGlobe), restFace: Math.cos(THREE.MathUtils.degToRad(RING)),
     });
   }
+
+  // Reuse the pin already showing a point: it slides along the surface to its
+  // new spot while the globe turns, instead of popping out and back in.
   const spare = [...toks.values()];
   toks.clear();
   for (const item of want) {
-    const at = spare.findIndex((el) => el.dataset.id === item.id && !el.classList.contains("gone"));
+    const at = spare.findIndex((el) => el.dataset.id === item.id);
     const el = at >= 0 ? spare.splice(at, 1)[0] : makeTok(state.points.get(item.id));
+    if (!el.anchor) {
+      el.anchor = item.anchor.clone();
+      el.born = now + delay;
+    } else if (turn) {
+      el.slide = { from: el.anchor.clone(), to: item.anchor.clone(), started: turn.started, duration: turn.duration };
+    } else {
+      el.anchor = item.anchor.clone();
+      el.slide = null;
+    }
     const isCentre = item.slot === "centre";
     el.dataset.slot = item.slot;
+    el.restFace = item.restFace;
     el.classList.toggle("centre", isCentre);
     el.classList.toggle("dot", !isCentre);
     el.classList.remove("peeked");
     el.style.zIndex = isCentre ? "1" : "2";
+    el.style.width = `${item.size}px`;
+    el.style.height = `${item.size}px`;
+    el.size = item.size;
     el.style.setProperty("--capw", `${item.width || 190}px`);
-    el.querySelector(".face").style.setProperty("--accent", isCentre ? "#55e4d1" : KIND_COLOR[kindOf(item.slot)]);
+    el.style.setProperty("--accent", isCentre ? "#55e4d1" : KIND_COLOR[kindOf(item.slot)]);
     const point = state.points.get(item.id);
     el.querySelector(".face").setAttribute("aria-label", isCentre ? `${point.name}. Open its card.` : `${question(item.slot)} ${point.name}`);
-    if (el.classList.contains("fresh")) {
-      // First paint at the target, unseen, then fade in.
-      Object.assign(el.style, { left: `${item.rect.x}px`, top: `${item.rect.y}px`, width: `${item.rect.w}px`, height: `${item.rect.h}px` });
-      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove("fresh")));
-    } else {
-      Object.assign(el.style, { left: `${item.rect.x}px`, top: `${item.rect.y}px`, width: `${item.rect.w}px`, height: `${item.rect.h}px` });
-    }
     toks.set(item.slot, el);
   }
   for (const el of spare) {
-    el.classList.add("gone");
-    setTimeout(() => el.remove(), 600);
+    el.dying = now;
+    el.dataset.slot = "";
+    el.style.zIndex = "0";
   }
 
-  // Question labels, "+N" chips and the link lines are redrawn, not moved.
-  for (const el of stage.querySelectorAll(".q, .more")) el.remove();
+  // Question labels, "+N" chips and the link lines are rebuilt, then ride
+  // their pin every frame like the pin does.
+  for (const block of state.blocks) {
+    block.label.remove();
+    block.more?.remove();
+  }
   const svg = $("links");
-  svg.classList.remove("on");
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
   svg.replaceChildren();
+  const labelH = phone ? 28 : 32;
   for (const block of blocks) {
-    const color = KIND_COLOR[kindOf(block.home.key)];
-    const label = document.createElement("div");
-    label.className = "q";
-    label.textContent = question(block.home.key);
-    label.style.setProperty("--accent", color);
-    Object.assign(label.style, { left: `${block.x - block.width / 2}px`, top: `${block.top}px`, width: `${block.width}px`, height: `${labelH}px` });
-    stage.append(label);
+    const color = KIND_COLOR[kindOf(block.slot)];
+    block.labelH = labelH;
+    block.label = node("div", "q", question(block.slot));
+    block.label.style.setProperty("--accent", color);
+    Object.assign(block.label.style, { width: `${block.width}px`, height: `${labelH}px`, opacity: "0" });
+    stage.append(block.label);
     if (block.count > 1) {
-      const more = document.createElement("button");
-      more.type = "button";
-      more.className = "more";
-      more.textContent = `+${block.count - 1}`;
-      more.style.setProperty("--accent", color);
-      more.setAttribute("aria-label", `${question(block.home.key)} ${block.count} answers. Show all.`);
-      Object.assign(more.style, { left: `${block.x + block.size / 2 - 16}px`, top: `${block.top + labelH + block.size - 20}px` });
-      more.addEventListener("click", () => showList(block.home.key));
-      stage.append(more);
+      block.more = node("button", "more", `+${block.count - 1}`);
+      block.more.type = "button";
+      block.more.style.setProperty("--accent", color);
+      block.more.style.opacity = "0";
+      block.more.setAttribute("aria-label", `${question(block.slot)} ${block.count} answers. Show all.`);
+      block.more.addEventListener("click", () => showList(block.slot));
+      stage.append(block.more);
     }
-    const dotY = block.top + labelH + block.size / 2;
-    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    const edge = doorEdge(door, cx, cy, block.x, dotY);
-    const reach = Math.hypot(block.x - edge.x, dotY - edge.y) || 1;
-    const stop = Math.max(0, reach - block.size / 2 - 3) / reach;
-    line.setAttribute("x1", edge.x);
-    line.setAttribute("y1", edge.y);
-    line.setAttribute("x2", edge.x + (block.x - edge.x) * stop);
-    line.setAttribute("y2", edge.y + (dotY - edge.y) * stop);
-    line.setAttribute("stroke", color);
-    line.setAttribute("stroke-opacity", ".5");
-    line.setAttribute("stroke-width", "1.5");
-    line.setAttribute("stroke-dasharray", "2 5");
-    line.setAttribute("stroke-linecap", "round");
-    svg.append(line);
+    block.line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    block.line.setAttribute("stroke", color);
+    block.line.setAttribute("stroke-width", "1.5");
+    block.line.setAttribute("stroke-dasharray", "2 5");
+    block.line.setAttribute("stroke-linecap", "round");
+    block.line.setAttribute("stroke-opacity", "0");
+    svg.append(block.line);
   }
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    for (const el of stage.querySelectorAll(".q, .more")) el.classList.add("on");
-  }));
-  clearTimeout(layout.timer);
-  layout.timer = setTimeout(() => svg.classList.add("on"), reduced ? 0 : 520);
+  state.blocks = blocks;
+  place(now);
 }
-
-// Where the line from the centre pin's middle to (x, y) leaves the pin.
-function doorEdge(door, cx, cy, x, y) {
-  const reach = Math.hypot(x - cx, y - cy) || 1;
-  return { x: cx + (x - cx) * (door.w / 2 + 3) / reach, y: cy + (y - cy) * (door.w / 2 + 3) / reach };
-}
-
 /* ---------- the card: peek before go ---------- */
 
 function openPanel() { $("panel").classList.add("open"); }
@@ -910,13 +931,27 @@ function bindUI() {
     if ($("results").classList.contains("open")) $("results").classList.remove("open");
     else closePanel();
   });
+  for (const type of ["pointerdown", "keydown", "wheel", "focusin"]) {
+    document.addEventListener(type, touched, { capture: true, passive: true });
+  }
   new ResizeObserver(() => { resizeGlobe(); drawTrail(); layout(); }).observe(stage);
+  // Size the app to the part of the screen the browser really shows, so a
+  // phone browser's own toolbar never sits over the card (iOS Chrome does).
+  const fit = () => {
+    const vv = window.visualViewport;
+    if (vv && Math.abs(vv.scale - 1) > .01) return;
+    document.documentElement.style.setProperty("--app-h", `${Math.round(vv ? vv.height : innerHeight)}px`);
+  };
+  fit();
+  window.visualViewport?.addEventListener("resize", fit);
+  addEventListener("resize", fit);
 }
 
 /* ---------- the globe behind: same look as the viewer's door mode ---------- */
 
 let scene, camera, renderer, world, globeGroup, planet, starfield;
 let turn = null;
+const globeQ = new THREE.Quaternion(); // the globe's turn; pins are placed from it every frame
 let lastFrame = performance.now();
 const FOV = 37;
 
@@ -1047,6 +1082,8 @@ function initGlobe() {
   } catch (error) {
     console.error(error);
     renderer = null;
+    const loop = (now) => { animate(now); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
   }
 }
 
@@ -1054,17 +1091,32 @@ function initGlobe() {
 function globeFrame() {
   const W = stage.clientWidth;
   const H = stage.clientHeight;
-  const phone = W <= 680;
-  const r = Math.min(H * (phone ? .4 : .43), W * (phone ? .47 : .36));
-  return { x: W / 2, y: phone ? H * .36 : H * .5, r };
+  if (W > 680) return { x: W / 2, y: H * .5, r: Math.min(H * .43, W * .36) };
+  // Phone: the whole ring (top label to bottom caption) fits between the top
+  // of the stage and the top of the card sheet (31% of the app's height).
+  // The ring sits on the near side of the ball, so perspective pushes it
+  // about a tenth further out than its flat distance.
+  const reach = Math.sin(THREE.MathUtils.degToRad(RING)) * 1.11;
+  const above = 58;  // room over the top pin's middle for its question
+  const below = 48;  // room under the bottom pin's middle for its name
+  const appH = $("panel").offsetParent?.clientHeight || H;
+  const sheetTop = H - appH * .31;
+  const r = clamp(Math.min(W * .47, (sheetTop - above - below) / (2 * reach)), 90, W * .47);
+  return { x: W / 2, y: above + r * reach, r };
 }
 
+// The canvas's offset from the stage, kept so place() reads no layout per frame.
+const view = { w: 1, h: 1, x: 0, y: 0 };
+
 function resizeGlobe() {
-  if (!renderer) return;
   const canvas = $("globe");
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
   if (!width || !height) return;
+  const box = canvas.getBoundingClientRect();
+  const at = stage.getBoundingClientRect();
+  Object.assign(view, { w: width, h: height, x: box.left - at.left, y: box.top - at.top });
+  if (!renderer) return;
   renderer.setSize(width, height, false);
   camera.aspect = width / height;
   // Pull the camera back until the globe is `frame.r` pixels across, then
@@ -1076,8 +1128,6 @@ function resizeGlobe() {
   camera.updateProjectionMatrix();
   camera.updateMatrixWorld();
   const perPx = 2 * camera.position.z * half / height;
-  const box = canvas.getBoundingClientRect();
-  const at = stage.getBoundingClientRect();
   world.position.set(
     (at.left + frame.x - (box.left + width / 2)) * perPx,
     -(at.top + frame.y - (box.top + height / 2)) * perPx,
@@ -1086,61 +1136,152 @@ function resizeGlobe() {
   world.updateMatrixWorld();
 }
 
-// A spot on the globe's surface, `far` degrees from the centre pin in the
-// screen direction `az` (0 = right, 90 = up), as stage pixels.
-function onGlobe(az, far) {
-  const a = THREE.MathUtils.degToRad(az);
-  const f = THREE.MathUtils.degToRad(far);
-  const frame = globeFrame();
+// A spot in the globe's own frame → stage pixels, and how squarely it faces
+// the viewer (1 = front, 0 = on the rim, below 0 = round the back).
+const scratch = new THREE.Vector3();
+function project(local) {
+  scratch.copy(local).applyQuaternion(globeQ);
+  const face = scratch.z;
   if (!renderer) {
-    return { x: frame.x + frame.r * Math.sin(f) * Math.cos(a), y: frame.y - frame.r * Math.sin(f) * Math.sin(a) };
+    const frame = globeFrame();
+    return { x: frame.x + frame.r * scratch.x, y: frame.y - frame.r * scratch.y, face };
   }
-  const canvas = $("globe");
-  const box = canvas.getBoundingClientRect();
-  const at = stage.getBoundingClientRect();
-  const v = new THREE.Vector3(Math.sin(f) * Math.cos(a), Math.sin(f) * Math.sin(a), Math.cos(f))
-    .add(world.position)
-    .project(camera);
-  return {
-    x: (v.x + 1) / 2 * box.width + box.left - at.left,
-    y: (1 - v.y) / 2 * box.height + box.top - at.top,
-  };
+  scratch.add(world.position).project(camera);
+  return { x: (scratch.x + 1) / 2 * view.w + view.x, y: (1 - scratch.y) / 2 * view.h + view.y, face };
 }
 
-// Every point keeps one place on the globe (from its id), so the globe turns
-// to the same spot each time that point is centred.
-function placeOf(id) {
+const smooth = (lo, hi, v) => {
+  const t = clamp((v - lo) / (hi - lo), 0, 1);
+  return t * t * (3 - 2 * t);
+};
+const fadeIn = (born, now) => (born ? smooth(0, 1, (now - born) / 450) : 1);
+
+// Every frame: put each pin, label, chip and line where its spot on the globe
+// is now. Pins round the back fade out; pins near the rim shrink and their
+// footprint flattens, as a disc lying on a ball would.
+function place(now) {
+  if (!state.centre) return;
+  const middle = project(new THREE.Vector3(0, 0, 0));
+  const at = new Map();
+  for (const el of pins) {
+    if (el.slide) {
+      const p = clamp((now - el.slide.started) / el.slide.duration, 0, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.anchor.copy(el.slide.from).lerp(el.slide.to, e).normalize();
+      if (p === 1) el.slide = null;
+    }
+    const spot = project(el.anchor);
+    let alpha = smooth(.06, .3, spot.face) * fadeIn(el.born, now);
+    if (el.dying) {
+      const p = (now - el.dying) / 450;
+      if (p >= 1) {
+        pins.delete(el);
+        el.remove();
+        continue;
+      }
+      alpha *= 1 - smooth(0, 1, p);
+    }
+    const scale = clamp((.5 + .5 * spot.face) / (.5 + .5 * el.restFace), .35, 1.15);
+    el.style.transform = `translate3d(${spot.x.toFixed(1)}px, ${spot.y.toFixed(1)}px, 0) translate(-50%, -50%) scale(${scale.toFixed(3)})`;
+    el.style.opacity = alpha.toFixed(3);
+    el.style.pointerEvents = alpha > .5 ? "" : "none";
+    const tilt = Math.atan2(spot.y - middle.y, spot.x - middle.x);
+    el.style.setProperty("--tilt", `${tilt.toFixed(3)}rad`);
+    el.style.setProperty("--squash", Math.max(.2, spot.face).toFixed(3));
+    if (!el.dying && el.dataset.slot) at.set(el.dataset.slot, { x: spot.x, y: spot.y, r: el.size * scale / 2, alpha });
+  }
+  const W = stage.clientWidth;
+  const centre = at.get("centre");
+  for (const block of state.blocks) {
+    const dot = at.get(block.slot);
+    if (!dot) continue;
+    const alpha = dot.alpha * fadeIn(block.born, now);
+    const left = clamp(dot.x - block.width / 2, 4, W - block.width - 4);
+    block.label.style.transform = `translate3d(${left.toFixed(1)}px, ${(dot.y - dot.r - block.labelH).toFixed(1)}px, 0)`;
+    block.label.style.opacity = alpha.toFixed(3);
+    if (block.more) {
+      block.more.style.transform = `translate3d(${(dot.x + dot.r - 16).toFixed(1)}px, ${(dot.y + dot.r - 20).toFixed(1)}px, 0)`;
+      block.more.style.opacity = alpha.toFixed(3);
+      block.more.style.pointerEvents = alpha > .5 ? "" : "none";
+    }
+    if (!centre) continue;
+    const dx = dot.x - centre.x;
+    const dy = dot.y - centre.y;
+    const reach = Math.hypot(dx, dy) || 1;
+    const from = (centre.r + 3) / reach;
+    const to = Math.max(from, 1 - (dot.r + 3) / reach);
+    block.line.setAttribute("x1", (centre.x + dx * from).toFixed(1));
+    block.line.setAttribute("y1", (centre.y + dy * from).toFixed(1));
+    block.line.setAttribute("x2", (centre.x + dx * to).toFixed(1));
+    block.line.setAttribute("y2", (centre.y + dy * to).toFixed(1));
+    block.line.setAttribute("stroke-opacity", (.5 * Math.min(alpha, centre.alpha)).toFixed(3));
+  }
+}
+
+// A point never centred before gets a spot on the globe from its id.
+function homeSpot(id) {
   let hash = 2166136261;
   for (let i = 0; i < id.length; i += 1) hash = Math.imul(hash ^ id.charCodeAt(i), 16777619) >>> 0;
   const lon = (hash % 3600) / 3600 * Math.PI * 2;
-  const lat = (((hash >>> 12) % 1000) / 1000 - .5) * 1.6;
-  return new THREE.Quaternion().setFromEuler(new THREE.Euler(lat, lon, 0));
+  const lat = (((hash >>> 12) % 1000) / 1000 - .5) * 1.2;
+  return new THREE.Vector3(Math.cos(lat) * Math.sin(lon), Math.sin(lat), Math.cos(lat) * Math.cos(lon));
 }
 
-function turnGlobe(id, instant) {
-  if (!renderer) return;
-  const to = placeOf(id);
+// The globe's resting turn for a spot: that spot faces the viewer and the
+// globe's north stays up, so the grid never tips over however far you wander.
+function restFor(spot) {
+  const lat = Math.asin(clamp(spot.y, -1, 1));
+  const lon = Math.atan2(spot.x, spot.z);
+  return new THREE.Quaternion().setFromEuler(new THREE.Euler(lat, -lon, 0, "XYZ"));
+}
+
+function turnGlobe(spot, instant) {
+  state.restQ = restFor(spot);
+  state.spin = 0;
+  state.spun = false;
   if (instant || reduced) {
-    globeGroup.quaternion.copy(to);
+    globeQ.copy(state.restQ);
     turn = null;
     return;
   }
-  turn = { from: globeGroup.quaternion.clone(), to, started: performance.now(), duration: 900 };
+  const angle = globeQ.angleTo(state.restQ);
+  turn = { from: globeQ.clone(), to: state.restQ.clone(), started: performance.now(), duration: clamp(500 + angle * 420, 700, 1500) };
 }
 
+// Any touch, key or wheel stops the resting spin and brings the centre back.
+function touched() {
+  state.lastTouch = performance.now();
+  if (!state.spun || !state.restQ) return;
+  state.spun = false;
+  state.spin = 0;
+  const angle = globeQ.angleTo(state.restQ);
+  turn = { from: globeQ.clone(), to: state.restQ.clone(), started: performance.now(), duration: clamp(500 + angle * 420, 600, 1500) };
+}
+
+const spinStep = new THREE.Quaternion();
+const UP = new THREE.Vector3(0, 1, 0);
 function animate(now) {
   const dt = Math.min((now - lastFrame) / 1000, .05);
   lastFrame = now;
   if (turn) {
     const progress = Math.min(1, (now - turn.started) / turn.duration);
-    globeGroup.quaternion.slerpQuaternions(turn.from, turn.to, 1 - Math.pow(1 - progress, 3));
+    globeQ.slerpQuaternions(turn.from, turn.to, 1 - Math.pow(1 - progress, 3));
     if (progress === 1) turn = null;
+  } else if (!reduced && state.centre && state.centre === state.home
+      && !$("panel").classList.contains("open") && !$("results").classList.contains("open")
+      && now - state.lastTouch > IDLE_MS) {
+    // The old viewer's resting spin, about the globe's own north, easing in.
+    state.spin = Math.min(1, state.spin + dt / 2.5);
+    globeQ.multiply(spinStep.setFromAxisAngle(UP, SPIN * state.spin * dt));
+    state.spun = true;
   }
+  place(now);
+  if (!renderer) return;
+  globeGroup.quaternion.copy(globeQ);
   planet.material.uniforms.uTime.value = reduced ? 0 : now / 1000;
   starfield.rotation.y += dt * .002;
   renderer.render(scene, camera);
 }
-
 boot().catch((error) => {
   console.error(error);
   $("panel-body").replaceChildren(node("p", "", "The graph could not be loaded."));
