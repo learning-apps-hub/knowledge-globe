@@ -314,8 +314,8 @@
   #sun-glow {
     position: absolute; left: 0; top: 0; width: 70vmin; height: 70vmin; border-radius: 50%;
     pointer-events: none; opacity: 0; will-change: transform, opacity; mix-blend-mode: screen;
-    background: radial-gradient(closest-side, rgba(255, 246, 225, .55), rgba(255, 214, 160, .2) 28%,
-      rgba(255, 180, 120, .06) 60%, transparent);
+    background: radial-gradient(closest-side, rgba(255, 250, 236, .8), rgba(255, 238, 206, .5) 8%,
+      rgba(255, 220, 170, .26) 20%, rgba(255, 190, 130, .09) 46%, rgba(255, 170, 110, .025) 74%, transparent);
   }
   /* The clock: the moment the Earth shows. Tap for what is real and the credits. */
   .clock {
@@ -1097,24 +1097,32 @@ let turn = null;
 const globeQ = new THREE.Quaternion(); // the globe's turn; pins are placed from it every frame
 const skyQ = new THREE.Quaternion();   // the sky's turn: the globe's, less the Earth's own turn (GMST)
 const sunW = new THREE.Vector3(1, 0, 0);
+const sunLocal = new THREE.Vector3(1, 0, 0);  // the Sun in the globe's own frame (cloud shadows)
+const unturn = new THREE.Quaternion();
 const moonW = new THREE.Vector3();
 let lastFrame = performance.now();
 const FOV = 37;
 
 // Every look setting in one place, so the first look on dev can be tuned fast.
 const LOOK = {
-  night: .028,      // how much day colour stays on the night side (moon- and starlight)
-  lights: 2.1,      // city-light brightness
-  lightsGamma: 1.5, // > 1 keeps only the real light cores, not their spill
-  clouds: .92,      // cloud thickness
-  glint: .7,        // the Sun's sparkle on water
-  rim: .85,         // atmosphere glow at the edge
+  night: .020,      // how much ground still shows on the night side (moon- and starlight)
+  vivid: 1.22,      // day colour strength (1 = the picture as it came)
+  sunlight: 1.16,   // how bright the day side is
+  haze: 1,          // blue air over the day side, thickest at the edge
+  lights: 2.6,      // city-light brightness
+  lightsGamma: 1.35,// > 1 keeps only the real light cores, not their spill
+  lightsGlow: 1.1,  // the soft glow round big cities
+  clouds: .95,      // cloud thickness
+  shadow: .42,      // how dark a cloud's shadow is on the ground
+  glint: 1,         // the Sun's silvery patch on water (1 = about its real strength)
+  rim: 1,           // atmosphere glow at the edge
   quietDim: .30,    // exploring: the Earth dims this much...
   quietGrey: .40,   // ...and loses this much colour, so the pins pop
   quietClouds: .60, // ...and its clouds thin this much
-  starSize: 1,      // star size and brightness
+  starSize: 1.12,   // star size and brightness
   moonAt: 1.9,      // the Moon's distance in Earth radii (really about 60: not to scale)
   moonR: .13,       // the Moon's size in Earth radii (really 0.27, seen from far away)
+  moonGain: 1.45,   // the Moon's brightness
 };
 
 // One turn of the Earth against the stars while resting = this many seconds.
@@ -1130,23 +1138,34 @@ const clock = {
 };
 const look = { quiet: 1 };  // 0 = resting (full show), 1 = exploring (Earth quiet)
 
+const AIR_R = 1.09;  // the glow's outer edge, in Earth radii
 const ATMOSPHERE_FRAG = `
   uniform vec3 uSun;
   uniform float uRim;
   varying vec3 vNormal;
+  varying vec3 vView;
   void main() {
     vec3 n = normalize(vNormal);
-    // Seen from outside, a back face's normal points away: -n.z is 0 at the
-    // shell's outer edge and about 0.36 where the Earth's own edge hides it.
-    float s = clamp(-n.z / 0.36, 0.0, 1.0);
-    float edge = pow(s, 3.2);
-    float mu = dot(n, uSun);
-    vec3 blue = vec3(0.16, 0.38, 1.0);
-    vec3 dusk = vec3(1.0, 0.40, 0.12);
-    vec3 col = mix(dusk, blue, smoothstep(-0.02, 0.22, mu)) * smoothstep(-0.20, 0.02, mu);
+    vec3 v = normalize(vView);
+    // This is the shell's far side. c is 0 at its outer edge; from c, how
+    // high over the ground this line of sight passes (0 = grazing the Earth).
+    float c = clamp(-dot(n, v), 0.0, 1.0);
+    float h = max(${AIR_R.toFixed(2)} * sqrt(1.0 - c * c) - 1.0, 0.0);
+    float out_ = 1.0 - smoothstep(0.0, ${(AIR_R - 1).toFixed(2)}, h);
+    // A bright thin line hugging the Earth, and a wide soft halo round it.
+    float line = exp(-h / 0.006);
+    float halo = exp(-h / 0.030) * out_;
+    // The ground this line of sight grazes, and how the Sun stands there.
+    vec3 g = normalize(n + v * c);
+    float mu = dot(g, uSun);
+    float day = smoothstep(-0.14, 0.30, mu);
+    vec3 blue = mix(vec3(0.20, 0.44, 1.0), vec3(0.50, 0.74, 1.0), line);
+    vec3 dusk = vec3(1.0, 0.42, 0.14);
+    float warm = smoothstep(0.26, 0.0, mu) * smoothstep(-0.16, -0.02, mu);
+    vec3 col = mix(blue, dusk, warm * 0.6) * day;
     // Backlit: with the Sun behind the Earth, the whole rim glows.
-    col += vec3(1.0, 0.75, 0.5) * pow(max(-uSun.z, 0.0), 6.0) * 0.5;
-    gl_FragColor = vec4(col * edge * uRim * 0.9, 1.0);
+    col += vec3(1.0, 0.72, 0.46) * pow(max(-uSun.z, 0.0), 6.0) * 0.5;
+    gl_FragColor = vec4(col * (line * 0.95 + halo * 0.32) * uRim, 1.0);
     #include <colorspace_fragment>
   }
 `;
@@ -1155,34 +1174,86 @@ const PLANET_FRAG = `
   uniform sampler2D uDay;
   uniform sampler2D uPack;
   uniform vec3 uSun;
+  uniform vec3 uSunLocal;
   uniform float uReady, uQuiet;
-  uniform float uNight, uLights, uLightsGamma, uClouds, uGlint, uRim, uQuietDim, uQuietGrey, uQuietClouds;
+  uniform float uNight, uVivid, uSunlight, uHaze, uLights, uLightsGamma, uLightsGlow;
+  uniform float uClouds, uShadow, uGlint, uRim, uQuietDim, uQuietGrey, uQuietClouds;
   varying vec3 vNormal;
   varying vec3 vView;
+  varying vec3 vLocal;
   varying vec2 vUv;
+  const vec3 LUMA = vec3(0.2126, 0.7152, 0.0722);
+  float cloudAt(vec2 uv) { return pow(texture2D(uPack, uv).g, 1.1); }
   void main() {
     vec3 n = normalize(vNormal);
     vec3 v = normalize(vView);
     float mu = dot(n, uSun);
+    float nv = max(dot(n, v), 0.0);
     vec3 dayc = texture2D(uDay, vUv).rgb;
     vec3 pack = texture2D(uPack, vUv).rgb;    // r city lights, g clouds, b water
-    float lit = clamp((mu + 0.04) / 1.04, 0.0, 1.0);
-    // A warm band where day turns to night.
-    float dusk = smoothstep(0.28, 0.0, mu) * smoothstep(-0.08, 0.02, mu);
-    vec3 sunCol = mix(vec3(1.0), vec3(1.0, 0.55, 0.32), dusk * 0.7);
-    vec3 col = dayc * (uNight + lit * 1.08 * sunCol);
+    dayc = max(mix(vec3(dot(dayc, LUMA)), dayc, uVivid), 0.0);
+
+    // Sunlight: full day, then a short twilight past the day/night line.
+    float lit = pow(clamp((mu + 0.05) / 1.05, 0.0, 1.0), 0.82);
+    // A warm band where day turns to night: low Sun through a lot of air.
+    float dusk = smoothstep(0.20, 0.0, mu) * smoothstep(-0.10, 0.0, mu);
+    vec3 sunCol = mix(vec3(1.0), vec3(1.0, 0.60, 0.36), dusk * 0.75);
+    vec3 sunlight = lit * uSunlight * sunCol;
+
+    // Clouds, and one more look towards the Sun: what stands between this
+    // ground and the Sun shades it, and a cloud's sunward side is brighter.
+    float thin = 1.0 - uQuietClouds * uQuiet;
+    float cloud = cloudAt(vUv) * uClouds * thin;
+    vec3 p = normalize(vLocal);
+    vec3 east = normalize(vec3(p.z, 0.0, -p.x) + vec3(1e-5, 0.0, 0.0));
+    vec3 north = cross(p, east);
+    vec2 toSun = vec2(dot(uSunLocal, east), dot(uSunLocal, north));
+    float coslat = max(sqrt(1.0 - p.y * p.y), 0.25);
+    vec2 step_ = toSun * vec2(0.1592 / coslat, 0.3183) * 0.0055;
+    float sunward = cloudAt(vUv + step_) * uClouds * thin;
+    float shade = 1.0 - uShadow * sunward * smoothstep(-0.05, 0.15, mu);
+
+    // Night ground: a trace of cool moon- and starlight, most colour gone.
+    vec3 nightc = mix(vec3(dot(dayc, LUMA)), dayc, 0.4) * vec3(0.72, 0.88, 1.2) * uNight;
+    vec3 col = nightc + dayc * sunlight * shade;
+    // The Sun on water. The sea is rough, so its mirror image of the Sun is
+    // smeared by the waves into a wide silvery patch: brighter than open sea,
+    // far dimmer than cloud, and never a white disc. (Wave-slope spread 0.04,
+    // a moderate breeze; water throws back 2% head-on, more at a low angle.)
     vec3 h = normalize(uSun + v);
     float nh = max(dot(n, h), 0.0);
-    float glint = (pow(nh, 90.0) * 1.2 + pow(nh, 12.0) * 0.05) * pack.b * smoothstep(0.0, 0.15, mu);
-    float cloud = pow(pack.g, 1.15) * uClouds * (1.0 - uQuietClouds * uQuiet);
-    col += vec3(1.0, 0.9, 0.75) * glint * uGlint * (1.0 - cloud);
-    col = mix(col, vec3(0.92) * (uNight * 0.6 + lit * sunCol), cloud * 0.92);
-    float dark = 1.0 - smoothstep(-0.16, 0.05, mu);
-    col += vec3(1.0, 0.64, 0.30) * pow(pack.r, uLightsGamma) * uLights * dark * (1.0 - cloud * 0.75);
-    float fres = pow(1.0 - max(dot(n, v), 0.0), 3.0);
-    col += vec3(0.25, 0.5, 1.0) * fres * smoothstep(-0.2, 0.4, mu) * uRim * 0.8;
-    float g = dot(col, vec3(0.2126, 0.7152, 0.0722));
+    float nh2 = max(nh * nh, 1e-4);
+    float waves = exp(-(1.0 - nh2) / (nh2 * 0.04)) / (0.1257 * nh2 * nh2);
+    float mirror = 0.02 + 0.98 * pow(1.0 - max(dot(v, h), 0.0), 5.0);
+    float glint = min(0.7854 * mirror * waves / max(nv, 0.12), 0.45)
+      * pack.b * smoothstep(0.0, 0.12, mu);
+    col += sunCol * uSunlight * glint * uGlint * (1.0 - min(cloud * 1.3, 1.0)) * shade;
+    // Blue air over the ground: a little everywhere, a lot towards the edge.
+    float air = (0.030 + 0.34 * pow(1.0 - nv, 3.0)) * uHaze;
+    vec3 airCol = mix(vec3(1.0, 0.46, 0.20), vec3(0.20, 0.46, 1.0), smoothstep(-0.02, 0.24, mu));
+    col += airCol * air * smoothstep(-0.12, 0.30, mu) * uSunlight;
+
+    float relief = clamp(1.0 + (cloud - sunward) * 0.9, 0.72, 1.18);
+    vec3 cloudCol = vec3(1.0, 1.01, 1.04) * (uNight * 0.7 + sunlight * relief);
+    col = mix(col, cloudCol, clamp(cloud, 0.0, 1.0) * 0.94);
+
+    // City lights: sharp cores, and a soft glow from the blurred picture.
+    float dark = 1.0 - smoothstep(-0.14, 0.03, mu);
+    // (The night picture carries faint speckle over empty sea and desert,
+    // up to about 0.08: below that is noise, not a town.)
+    float core = pow(pack.r, uLightsGamma) * smoothstep(0.06, 0.15, pack.r);
+    float glow = texture2D(uPack, vUv, 2.6).r;
+    vec3 lamp = mix(vec3(1.0, 0.55, 0.20), vec3(1.0, 0.82, 0.56), clamp(core * 1.6, 0.0, 1.0));
+    col += lamp * (core * uLights + glow * glow * uLightsGlow) * dark * (1.0 - cloud * 0.7);
+
+    // The edge of the Earth, seen through the most air.
+    float fres = pow(1.0 - nv, 4.0);
+    col += vec3(0.30, 0.56, 1.0) * fres * smoothstep(-0.16, 0.36, mu) * uRim * 0.75;
+
+    float g = dot(col, LUMA);
     col = mix(col, vec3(g), uQuietGrey * uQuiet) * (1.0 - uQuietDim * uQuiet);
+    // Bright cloud tops roll off softly rather than cut to flat white.
+    col = mix(col, 0.78 + (1.0 - exp(-(col - 0.78) * 3.2)) * 0.22, step(0.78, col));
     // Until the pictures arrive: a plain lit ball.
     col = mix(vec3(0.010, 0.035, 0.06) * (0.25 + lit), col, uReady);
     gl_FragColor = vec4(col, 1.0);
@@ -1193,9 +1264,11 @@ const PLANET_FRAG = `
 const VIEW_VERT = `
   varying vec3 vNormal;
   varying vec3 vView;
+  varying vec3 vLocal;
   varying vec2 vUv;
   void main() {
     vUv = uv;
+    vLocal = position;
     vNormal = normalize(normalMatrix * normal);
     vec4 at = modelViewMatrix * vec4(position, 1.0);
     vView = -at.xyz;
@@ -1206,15 +1279,16 @@ const VIEW_VERT = `
 const MOON_FRAG = `
   uniform sampler2D uMap;
   uniform vec3 uSun;
-  uniform float uReady, uAlpha;
+  uniform float uReady, uAlpha, uGain;
   varying vec3 vNormal;
   varying vec2 vUv;
   void main() {
     vec3 n = normalize(vNormal);
-    float lit = max(dot(n, uSun), 0.0);
+    // The Moon's dusty ground throws light back evenly: no dark edge when full.
+    float lit = pow(max(dot(n, uSun), 0.0), 0.6);
     vec3 surface = mix(vec3(0.42), texture2D(uMap, vUv).rgb, uReady);
     // A trace of earthshine keeps the dark part just visible, as it really is.
-    vec3 col = surface * (0.012 + lit * 1.1);
+    vec3 col = surface * (0.012 + lit * uGain);
     gl_FragColor = vec4(col, uAlpha);
     #include <colorspace_fragment>
   }
@@ -1269,9 +1343,11 @@ function initGlobe() {
     planet = new THREE.Mesh(ball, new THREE.ShaderMaterial({
       uniforms: {
         uDay: { value: null }, uPack: { value: null },
-        uSun: { value: sunW }, uReady: { value: 0 }, uQuiet: { value: 1 },
-        uNight: { value: LOOK.night }, uLights: { value: LOOK.lights }, uLightsGamma: { value: LOOK.lightsGamma },
-        uClouds: { value: LOOK.clouds }, uGlint: { value: LOOK.glint }, uRim: { value: LOOK.rim },
+        uSun: { value: sunW }, uSunLocal: { value: sunLocal }, uReady: { value: 0 }, uQuiet: { value: 1 },
+        uNight: { value: LOOK.night }, uVivid: { value: LOOK.vivid }, uSunlight: { value: LOOK.sunlight },
+        uHaze: { value: LOOK.haze }, uLights: { value: LOOK.lights }, uLightsGamma: { value: LOOK.lightsGamma },
+        uLightsGlow: { value: LOOK.lightsGlow }, uClouds: { value: LOOK.clouds }, uShadow: { value: LOOK.shadow },
+        uGlint: { value: LOOK.glint }, uRim: { value: LOOK.rim },
         uQuietDim: { value: LOOK.quietDim }, uQuietGrey: { value: LOOK.quietGrey },
         uQuietClouds: { value: LOOK.quietClouds },
       },
@@ -1281,7 +1357,7 @@ function initGlobe() {
     globeGroup.add(planet);
 
     atmosphere = new THREE.Mesh(
-      new THREE.SphereGeometry(1.07, 96, 64),
+      new THREE.SphereGeometry(AIR_R, 96, 64),
       new THREE.ShaderMaterial({
         transparent: true, side: THREE.BackSide, blending: THREE.AdditiveBlending, depthWrite: false,
         uniforms: { uSun: { value: sunW }, uRim: { value: LOOK.rim } },
@@ -1299,7 +1375,7 @@ function initGlobe() {
     moonBall.rotateY(-Math.PI / 2);   // the near side (longitude 0) faces +z, then lookAt turns it to us
     moon = new THREE.Mesh(moonBall, new THREE.ShaderMaterial({
       transparent: true,
-      uniforms: { uMap: { value: null }, uSun: { value: sunW }, uReady: { value: 0 }, uAlpha: { value: 0 } },
+      uniforms: { uMap: { value: null }, uSun: { value: sunW }, uReady: { value: 0 }, uAlpha: { value: 0 }, uGain: { value: LOOK.moonGain } },
       vertexShader: VIEW_VERT,
       fragmentShader: MOON_FRAG,
     }));
@@ -1595,6 +1671,7 @@ function animate(now) {
   skyQ.copy(globeQ).multiply(skyStep.setFromAxisAngle(UP, -gmst(clock.t)));
   sky.quaternion.copy(skyQ);
   sunW.fromArray(sunDir(clock.t)).applyQuaternion(skyQ);
+  sunLocal.copy(sunW).applyQuaternion(unturn.copy(globeQ).invert());
   moonSky.fromArray(moonDir(clock.t));
   moonW.copy(moonSky).applyQuaternion(skyQ);
   placeMoon();
