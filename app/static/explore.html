@@ -1106,13 +1106,13 @@ const FOV = 37;
 // Every look setting in one place, so the first look on dev can be tuned fast.
 const LOOK = {
   night: .020,      // how much ground still shows on the night side (moon- and starlight)
-  vivid: 1.22,      // day colour strength (1 = the picture as it came)
-  sunlight: 1.16,   // how bright the day side is
+  vivid: 1,         // day colour strength (1 = the picture as it came)
+  sunlight: 1.28,   // how bright the day side is
   haze: 1,          // blue air over the day side, thickest at the edge
   lights: 2.6,      // city-light brightness
   lightsGamma: 1.35,// > 1 keeps only the real light cores, not their spill
   lightsGlow: 1.1,  // the soft glow round big cities
-  clouds: .95,      // cloud thickness
+  clouds: 1.9,      // cloud thickness (thin cloud stays thin; thick cloud goes fully white)
   shadow: .42,      // how dark a cloud's shadow is on the ground
   glint: 1,         // the Sun's silvery patch on water (1 = about its real strength)
   rim: 1,           // atmosphere glow at the edge
@@ -1152,9 +1152,10 @@ const ATMOSPHERE_FRAG = `
     float c = clamp(-dot(n, v), 0.0, 1.0);
     float h = max(${AIR_R.toFixed(2)} * sqrt(1.0 - c * c) - 1.0, 0.0);
     float out_ = 1.0 - smoothstep(0.0, ${(AIR_R - 1).toFixed(2)}, h);
-    // A bright thin line hugging the Earth, and a wide soft halo round it.
-    float line = exp(-h / 0.006);
-    float halo = exp(-h / 0.030) * out_;
+    // A thin line of lit air hugging the Earth and a trace of halo: from this
+    // far away the real atmosphere is barely a hundredth of the Earth's size.
+    float line = exp(-h / 0.004);
+    float halo = exp(-h / 0.022) * out_;
     // The ground this line of sight grazes, and how the Sun stands there.
     vec3 g = normalize(n + v * c);
     float mu = dot(g, uSun);
@@ -1165,7 +1166,7 @@ const ATMOSPHERE_FRAG = `
     vec3 col = mix(blue, dusk, warm * 0.6) * day;
     // Backlit: with the Sun behind the Earth, the whole rim glows.
     col += vec3(1.0, 0.72, 0.46) * pow(max(-uSun.z, 0.0), 6.0) * 0.5;
-    gl_FragColor = vec4(col * (line * 0.95 + halo * 0.32) * uRim, 1.0);
+    gl_FragColor = vec4(col * (line * 0.30 + halo * 0.04) * uRim, 1.0);
     #include <colorspace_fragment>
   }
 `;
@@ -1183,7 +1184,7 @@ const PLANET_FRAG = `
   varying vec3 vLocal;
   varying vec2 vUv;
   const vec3 LUMA = vec3(0.2126, 0.7152, 0.0722);
-  float cloudAt(vec2 uv) { return pow(texture2D(uPack, uv).g, 1.1); }
+  float cloudAt(vec2 uv) { return pow(texture2D(uPack, uv).g, 1.25); }
   void main() {
     vec3 n = normalize(vNormal);
     vec3 v = normalize(vView);
@@ -1203,14 +1204,14 @@ const PLANET_FRAG = `
     // Clouds, and one more look towards the Sun: what stands between this
     // ground and the Sun shades it, and a cloud's sunward side is brighter.
     float thin = 1.0 - uQuietClouds * uQuiet;
-    float cloud = cloudAt(vUv) * uClouds * thin;
+    float cloud = min(cloudAt(vUv) * uClouds, 1.0) * thin;
     vec3 p = normalize(vLocal);
     vec3 east = normalize(vec3(p.z, 0.0, -p.x) + vec3(1e-5, 0.0, 0.0));
     vec3 north = cross(p, east);
     vec2 toSun = vec2(dot(uSunLocal, east), dot(uSunLocal, north));
     float coslat = max(sqrt(1.0 - p.y * p.y), 0.25);
     vec2 step_ = toSun * vec2(0.1592 / coslat, 0.3183) * 0.0055;
-    float sunward = cloudAt(vUv + step_) * uClouds * thin;
+    float sunward = min(cloudAt(vUv + step_) * uClouds, 1.0) * thin;
     float shade = 1.0 - uShadow * sunward * smoothstep(-0.05, 0.15, mu);
 
     // Night ground: a trace of cool moon- and starlight, most colour gone.
@@ -1229,8 +1230,10 @@ const PLANET_FRAG = `
       * pack.b * smoothstep(0.0, 0.12, mu);
     col += sunCol * uSunlight * glint * uGlint * (1.0 - min(cloud * 1.3, 1.0)) * shade;
     // Blue air over the ground: a little everywhere, a lot towards the edge.
-    float air = (0.030 + 0.34 * pow(1.0 - nv, 3.0)) * uHaze;
-    vec3 airCol = mix(vec3(1.0, 0.46, 0.20), vec3(0.20, 0.46, 1.0), smoothstep(-0.02, 0.24, mu));
+    // (Matched to NASA's DSCOVR/EPIC whole-Earth photos: the sea is slate
+    // blue, and the edge is a pale grey-blue haze, not a glowing outline.)
+    float air = (0.036 + 0.12 * pow(1.0 - nv, 3.0)) * uHaze;
+    vec3 airCol = mix(vec3(1.0, 0.50, 0.24), vec3(0.36, 0.58, 1.0), smoothstep(-0.02, 0.24, mu));
     col += airCol * air * smoothstep(-0.12, 0.30, mu) * uSunlight;
 
     float relief = clamp(1.0 + (cloud - sunward) * 0.9, 0.72, 1.18);
@@ -1248,7 +1251,7 @@ const PLANET_FRAG = `
 
     // The edge of the Earth, seen through the most air.
     float fres = pow(1.0 - nv, 4.0);
-    col += vec3(0.30, 0.56, 1.0) * fres * smoothstep(-0.16, 0.36, mu) * uRim * 0.75;
+    col += vec3(0.50, 0.66, 0.95) * fres * smoothstep(-0.16, 0.36, mu) * uRim * 0.18;
 
     float g = dot(col, LUMA);
     col = mix(col, vec3(g), uQuietGrey * uQuiet) * (1.0 - uQuietDim * uQuiet);
