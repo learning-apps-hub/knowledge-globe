@@ -175,6 +175,21 @@ try:
                   (b"causticField", b"rippleRing", b"waterWarp", b"waveShadow",
                    b"state.reducedMotion ? 0")))
 
+        print("\n--- Explore preview (one graph) ---")
+        status, body = get("/explore")
+        check("GET /explore → 200", status == 200, f"got {status}")
+        status, body = get("/api/graph")
+        check("GET /api/graph → 200", status == 200, f"got {status}")
+        if status == 200:
+            graph = json.loads(body)
+            ids = {point["id"] for point in graph["points"]}
+            check("graph: every link joins two known points with a known kind",
+                  all(link["from"] in ids and link["to"] in ids and link["kind"] in graph["kinds"]
+                      for link in graph["links"]))
+            check("graph: every start point exists", all(start in ids for start in graph["starts"]))
+            check("graph: each kind carries a question for both ends",
+                  all(kind.get("out") and kind.get("back") for kind in graph["kinds"].values()))
+
         print("\n--- Input validation ---")
         status, _ = get("/api/subjects/nope")
         check("unknown subject → 404", status == 404, f"got {status}")

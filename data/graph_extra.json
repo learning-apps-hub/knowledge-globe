@@ -1,0 +1,33 @@
+{
+  "note": "Hand-written points and links for the Explore preview. Each is a plain, checkable fact; they show questions the subject files cannot express yet.",
+  "starts": ["moon-jelly"],
+  "rekind": [
+    { "from": "american-paddlefish", "to": "moon-jelly", "kind": "like" }
+  ],
+  "points": [
+    {
+      "id": "jelly-polyp",
+      "name": "Polyp",
+      "line": "A tiny stalk stuck to a rock, with a mouth and tentacles on top. Many jellies start life like this.",
+      "visual_query": "Aurelia aurita polyp scyphistoma"
+    },
+    {
+      "id": "sea-turtle",
+      "name": "Sea turtle",
+      "line": "A reptile that lives in the ocean and comes ashore only to lay eggs.",
+      "visual_query": "sea turtle swimming"
+    },
+    {
+      "id": "singapore",
+      "name": "Singapore",
+      "line": "An island city and country at the southern tip of the Malay Peninsula.",
+      "visual_query": "Singapore skyline Marina Bay"
+    }
+  ],
+  "links": [
+    { "kind": "time", "from": "jelly-polyp", "to": "moon-jelly", "why": "The polyp buds off tiny young jellies that grow into adults." },
+    { "kind": "need", "from": "sea-turtle", "to": "moon-jelly", "why": "Some sea turtles eat jellies." },
+    { "kind": "place", "from": "singapore-oceanarium", "to": "singapore", "why": "It is on Sentosa island." },
+    { "kind": "need", "from": "moon-jelly", "to": "water", "why": "A jelly's body is mostly water and it can only live in it." }
+  ]
+}

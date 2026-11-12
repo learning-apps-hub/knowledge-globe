@@ -4,7 +4,7 @@ import mimetypes
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-from . import subjects
+from . import graph, subjects
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 
@@ -19,6 +19,10 @@ class Handler(BaseHTTPRequestHandler):
             return self._send_viewer()
         if path.startswith("/static/"):
             return self._send_static(path[len("/static/"):])
+        if path == "/explore":
+            return self._send_viewer("explore.html")
+        if path == "/api/graph":
+            return self._send_json(200, graph.build())
         if path == "/api/subjects":
             return self._send_json(200, subjects.list_subjects())
         if path.startswith("/api/subjects/"):
@@ -30,8 +34,8 @@ class Handler(BaseHTTPRequestHandler):
 
         self._send_json(404, {"error": "not found"})
 
-    def _send_viewer(self):
-        with open(os.path.join(STATIC_DIR, "index.html"), "rb") as fh:
+    def _send_viewer(self, name="index.html"):
+        with open(os.path.join(STATIC_DIR, name), "rb") as fh:
             body = fh.read()
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
