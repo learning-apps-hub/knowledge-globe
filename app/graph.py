@@ -10,7 +10,7 @@ import json
 import os
 import re
 
-from . import subjects
+from . import geography, subjects
 
 EXTRA_PATH = os.path.join(os.path.dirname(subjects.DATA_DIR), "graph_extra.json")
 
@@ -58,8 +58,12 @@ def _visual_query(node, subject, has_children):
     return f"{node['keyword']} {subject.get('visual_query_suffix') or subject['title']}"
 
 
-def build(include_private=True):
-    """Return {"kinds", "starts", "points", "links"} for every subject map."""
+def build(include_private=True, geo=None):
+    """Return {"kinds", "starts", "points", "links"} for every subject map.
+
+    `geo` is the geography JSON from the Earth data folder (geography.load); without it there are no
+    geography topics.
+    """
     points = {}
     links = []
     starts = []
@@ -147,6 +151,17 @@ def build(include_private=True):
     for link in extra.get("links", []):
         add_link(link["kind"], link["from"], link["to"], link.get("why"), link.get("mark"))
     starts.extend(i for i in extra.get("starts", []) if i in points and i not in starts)
+
+    if geo:
+        geo_points, geo_links = geography.build(geo)
+        for point in geo_points:
+            if point["id"] in points:
+                # A hand-written topic of the same id (Singapore) keeps its words and gains its place.
+                points[point["id"]].update({k: point[k] for k in ("shape", "where", "at", "tiny") if k in point})
+            else:
+                add_point(point)
+        for kind, source, target, why in geo_links:
+            add_link(kind, source, target, why)
 
     return {
         "kinds": LINK_KINDS,

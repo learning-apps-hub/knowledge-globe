@@ -189,6 +189,19 @@ try:
             check("graph: every start point exists", all(start in ids for start in graph["starts"]))
             check("graph: each kind carries a question for both ends",
                   all(kind.get("out") and kind.get("back") for kind in graph["kinds"].values()))
+            shaped = [point for point in graph["points"] if point.get("shape")]
+            if shaped:
+                shapes = {"pin": {"lat", "lon"}, "line": None, "area": None}
+                check("geography: every shaped topic has a known shape, a place to turn to and a where",
+                      all(point["shape"] in shapes and point.get("where") and point.get("at") for point in shaped))
+                check("geography: pins have a true latitude and longitude",
+                      all(-90 <= point["where"]["lat"] <= 90 and -180 <= point["where"]["lon"] <= 180
+                          for point in shaped if point["shape"] == "pin"))
+                check("geography: the poles, lines, continents and oceans are all there",
+                      {"north-pole", "south-pole", "equator", "prime-meridian", "date-line", "asia", "pacific-ocean",
+                       "northern-hemisphere", "japan", "tokyo"} <= ids)
+            else:
+                print("  [SKIP] no geography in the graph (no earth-data folder here)")
 
         print("\n--- Input validation ---")
         status, _ = get("/api/subjects/nope")

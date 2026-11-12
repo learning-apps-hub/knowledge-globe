@@ -374,7 +374,7 @@ def _write_manifest(out_dir, files):
 # ---------- geography: countries, oceans, lines, cities ----------
 
 AREA_W, AREA_H = 4096, 2048
-TINY_PIXELS = 12      # an area drawn smaller than this gets a ring marker instead of an outline
+TINY_PIXELS = 64      # an area drawn smaller than this gets a ring marker as well as its outline
 OCEANS = [(1, "Pacific Ocean", ("North Pacific Ocean", "South Pacific Ocean")),
           (2, "Atlantic Ocean", ("North Atlantic Ocean", "South Atlantic Ocean")),
           (3, "Indian Ocean", ("INDIAN OCEAN",)),
@@ -501,7 +501,7 @@ def _derive_geo(source_dir, out_dir, save, Image):
     seas = _spread_oceans(seas, codes == 0, np)
 
     rgb = np.stack([codes & 255, codes >> 8, seas], 2).astype(np.uint8)
-    name = save(Image.fromarray(rgb, "RGB"), f"areas-{AREA_W}.{VERSION}.png", optimize=True)
+    areas_file = save(Image.fromarray(rgb, "RGB"), f"areas-{AREA_W}.{VERSION}.png", optimize=True)
     gap = float(np.mean((codes == 0) & (seas == 0)))
     log(f"  areas: {int(codes.max())} codes, {gap * 100:.1f}% of the picture is neither country nor ocean")
 
@@ -550,13 +550,27 @@ def _derive_geo(source_dir, out_dir, save, Image):
             parts = [[[round(x, 3), round(y, 3)] for x, y, *_ in part] for part in geometry["coordinates"]]
             lines["date-line"] = {"name": props["name"], "paths": parts}
 
+    # How much of each continent's land lies north and east of the Equator and the Prime Meridian (by true area).
+    weight = np.cos(np.radians(90.0 - (np.arange(AREA_H) + .5) * 180.0 / AREA_H))[:, None] * np.ones((1, AREA_W))
+    north = (np.arange(AREA_H) < AREA_H // 2)[:, None] * np.ones((1, AREA_W), bool)
+    east = (np.arange(AREA_W) >= AREA_W // 2)[None, :] * np.ones((AREA_H, 1), bool)
+    continents = []
+    for name in CONTINENTS:
+        member = np.zeros(len(areas) + 1, bool)
+        for area in areas:
+            member[area["code"]] = area["continent"] == name
+        land = member[codes]
+        total = float((weight * land).sum())
+        continents.append({"name": name, "north": round(float((weight * land * north).sum()) / total, 3),
+                           "east": round(float((weight * land * east).sum()) / total, 3)})
+
     geo = {"version": VERSION, "size": [AREA_W, AREA_H], "areas": areas, "places": places, "lines": lines,
-           "oceans": [{"number": n, "name": label} for n, label, _ in OCEANS], "continents": list(CONTINENTS)}
+           "oceans": [{"number": n, "name": label} for n, label, _ in OCEANS], "continents": continents}
     path = os.path.join(out_dir, f"geo.{VERSION}.json")
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(geo, fh, ensure_ascii=False, separators=(",", ":"))
     log(f"  wrote  geo.{VERSION}.json  {os.path.getsize(path) / 1e3:.0f} KB")
-    return {"areas": name, "geo": f"geo.{VERSION}.json"}
+    return {"areas": areas_file, "geo": f"geo.{VERSION}.json"}
 
 
 def _geom_area(geometry):
