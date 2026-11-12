@@ -92,6 +92,38 @@ SOURCES = {
         "file": "ne_10m_antarctic_ice_shelves_polys.geojson",
         "urls": [f"{NE}/ne_10m_antarctic_ice_shelves_polys.geojson"],
     },
+    "countries": {
+        "file": "ne_10m_admin_0_countries.geojson",
+        "urls": [f"{NE}/ne_10m_admin_0_countries.geojson"],
+        "credit": "Natural Earth",
+        "what": "Countries, continents, oceans, the named lines, capitals and the biggest cities",
+        "years": "v5.1.2",
+        "licence": "Public domain (Natural Earth)",
+    },
+    "places": {
+        "file": "ne_10m_populated_places_simple.geojson",
+        "urls": [f"{NE}/ne_10m_populated_places_simple.geojson"],
+        "credit": "Natural Earth",
+        "what": "Capitals and the biggest cities",
+        "years": "v5.1.2",
+        "licence": "Public domain (Natural Earth)",
+    },
+    "lines": {
+        "file": "ne_10m_geographic_lines.geojson",
+        "urls": [f"{NE}/ne_10m_geographic_lines.geojson"],
+        "credit": "Natural Earth",
+        "what": "The Equator, the Tropics, the Polar Circles and the International Date Line",
+        "years": "v5.1.2",
+        "licence": "Public domain (Natural Earth)",
+    },
+    "oceans": {
+        "file": "ne_10m_geography_marine_polys.geojson",
+        "urls": [f"{NE}/ne_10m_geography_marine_polys.geojson"],
+        "credit": "Natural Earth",
+        "what": "The five oceans",
+        "years": "v5.1.2",
+        "licence": "Public domain (Natural Earth)",
+    },
     "stars": {
         "file": "bsc5-catalog.gz",
         "urls": [
@@ -242,7 +274,7 @@ def _sea_room(land_small):
     return room
 
 
-def derive(source_dir, out_dir, parts=("earth", "sky")):
+def derive(source_dir, out_dir, parts=("earth", "sky", "geo")):
     try:
         import numpy as np
         from PIL import Image
@@ -263,6 +295,8 @@ def derive(source_dir, out_dir, parts=("earth", "sky")):
 
     if "sky" in parts:
         files.update(_derive_sky(source_dir, out_dir, save, Image))
+    if "geo" in parts:
+        files.update(_derive_geo(source_dir, out_dir, save, Image))
     if "earth" not in parts:
         _write_manifest(out_dir, files)
         return
@@ -312,7 +346,7 @@ def derive(source_dir, out_dir, parts=("earth", "sky")):
     _write_manifest(out_dir, files)
 
 
-LAYERS = ("day", "night", "clouds", "land", "stars", "moon")
+LAYERS = ("day", "night", "clouds", "land", "countries", "stars", "moon")
 
 
 def _write_manifest(out_dir, files):
@@ -335,6 +369,204 @@ def _write_manifest(out_dir, files):
         json.dump(manifest, fh, indent=2, ensure_ascii=False)
         fh.write("\n")
     log("  wrote  manifest.json")
+
+
+# ---------- geography: countries, oceans, lines, cities ----------
+
+AREA_W, AREA_H = 4096, 2048
+TINY_PIXELS = 12      # an area drawn smaller than this gets a ring marker instead of an outline
+OCEANS = [(1, "Pacific Ocean", ("North Pacific Ocean", "South Pacific Ocean")),
+          (2, "Atlantic Ocean", ("North Atlantic Ocean", "South Atlantic Ocean")),
+          (3, "Indian Ocean", ("INDIAN OCEAN",)),
+          (4, "Southern Ocean", ("SOUTHERN OCEAN",)),
+          (5, "Arctic Ocean", ("Arctic Ocean",))]
+CONTINENTS = ("Africa", "Antarctica", "Asia", "Europe", "North America", "Oceania", "South America")
+
+# Places that have their own government on the ground but are not UN members or observers (Owner's
+# "Taiwan rule", APPROVALS #88 B): each lights up as its own area and its card says its status in one
+# plain sentence. Wording for Owner to read, 2026-11-13; only Taiwan's was agreed word for word.
+OWN_GOVERNMENT = {
+    "Taiwan": "Has its own government. China claims it as part of China. The UN and most countries do not "
+              "recognise it as a separate country.",
+    "Kosovo": "Has its own government and declared independence from Serbia in 2008. Serbia does not accept "
+              "this. Some countries recognise it and some do not.",
+    "N. Cyprus": "Has its own government in the north of Cyprus. Only Turkey recognises it. Cyprus and the UN "
+                 "treat the whole island as one country.",
+    "Somaliland": "Has run its own government since 1991. Somalia claims it as part of Somalia. The UN does not "
+                  "list it as a country.",
+    "W. Sahara": "Morocco governs most of it and the Sahrawi Arab Democratic Republic the rest. Both claim it all. "
+                 "The UN lists it as a territory whose future is not settled.",
+}
+UN_OBSERVER_OR_ODD = {"Palestine", "Israel", "Vatican", "Norway"}   # sovereign, though a field says otherwise
+
+
+def _slug(text):
+    import re
+    import unicodedata
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode()
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+
+
+def _area_status(props):
+    """(status, sentence). status: country | own-government | territory | disputed | unowned."""
+    name, admin, sovereign, kind = props["NAME"], props["ADMIN"], props["SOVEREIGNT"], props["TYPE"]
+    if name in OWN_GOVERNMENT:
+        return "own-government", OWN_GOVERNMENT[name]
+    if name == "Antarctica":
+        return "unowned", "No country owns it. A treaty sets it aside for peace and science."
+    if name in UN_OBSERVER_OR_ODD or (kind in ("Sovereign country", "Sovereignty", "Country") and admin == sovereign):
+        return "country", ""
+    if kind in ("Country", "Dependency") and admin != sovereign:
+        return "territory", f"Belongs to {sovereign}."
+    if kind == "Lease":
+        return "disputed", f"Land leased by {sovereign}'s lessee; it is not a country."
+    if kind == "Disputed":
+        return "disputed", f"Governed by {sovereign}. Its status is disputed."
+    return "disputed", "No country's claim to this area is settled."
+
+
+def _fill(draw, geometry, value, to_px):
+    polygons = geometry["coordinates"] if geometry["type"] == "MultiPolygon" else [geometry["coordinates"]]
+    for polygon in polygons:
+        draw.polygon(to_px(polygon[0]), fill=value)
+        for hole in polygon[1:]:
+            draw.polygon(to_px(hole), fill=0)
+
+
+def _spread_oceans(seed, water, np):
+    """Natural Earth's ocean polygons are rough label shapes, not the whole sea. Grow each ocean outwards over
+    every open-water pixel it can reach (land stops it), so seas and gulfs join the ocean they open into.
+    Water that no ocean reaches (the Mediterranean, the Black Sea, the Caspian) stays unclaimed.
+    """
+    step = 2                                         # grow at half size: fast, and borders stay where the seeds met
+    label = seed[::step, ::step].copy()
+    free = water[::step, ::step]
+    label[~free] = 0
+    reach = 1
+    for _ in range(6000):
+        grown = label.copy()
+        for axis in (0, 1):
+            for shift in [d for d in range(-reach, reach + 1) if d]:
+                near = np.roll(label, shift, axis)
+                if axis == 0 and shift > 0:          # the poles do not wrap round
+                    near[:shift] = 0
+                elif axis == 0:
+                    near[shift:] = 0
+                take = (grown == 0) & free & (near > 0)
+                grown[take] = near[take]
+        if np.array_equal(grown, label):
+            if reach == 1:                           # then once more, allowed to hop a narrow strait of land
+                reach = 3
+                continue
+            break
+        label = grown
+    full = np.repeat(np.repeat(label, step, 0), step, 1)
+    out = seed.copy()
+    out[(out == 0) & water & (full > 0)] = full[(out == 0) & water & (full > 0)]
+    return out
+
+
+def _derive_geo(source_dir, out_dir, save, Image):
+    """The area-code picture, and one small JSON of every geography fact the app needs."""
+    import numpy as np
+    from PIL import ImageDraw
+
+    def load(name):
+        with open(os.path.join(source_dir, SOURCES[name]["file"]), encoding="utf-8") as fh:
+            return json.load(fh)["features"]
+
+    def to_px(ring):
+        return [((lon + 180.0) / 360.0 * AREA_W, (90.0 - lat) / 180.0 * AREA_H) for lon, lat, *_ in ring]
+
+    # Countries: code = position in a fixed order (1..), so the picture and the JSON always agree.
+    features = sorted(load("countries"), key=lambda f: (f["properties"]["ADM0_A3"], f["properties"]["NAME"]))
+    code = Image.new("I", (AREA_W, AREA_H), 0)
+    draw = ImageDraw.Draw(code)
+    order = sorted(range(len(features)), key=lambda i: -_geom_area(features[i]["geometry"]))
+    for i in order:                                  # big first, so an enclave drawn later stays on top
+        _fill(draw, features[i]["geometry"], i + 1, to_px)
+    codes = np.asarray(code, np.int32)
+
+    # Oceans: five, each merged from Natural Earth's northern and southern halves.
+    sea = Image.new("L", (AREA_W, AREA_H), 0)
+    sea_draw = ImageDraw.Draw(sea)
+    marine = {f["properties"]["name"]: f for f in load("oceans") if f["properties"]["featurecla"] == "ocean"}
+    for number, _, names in OCEANS:
+        for name in names:
+            _fill(sea_draw, marine[name]["geometry"], number, to_px)
+    seas = np.asarray(sea, np.uint8).copy()
+    lon_grid = (np.arange(AREA_W) + .5) * 360.0 / AREA_W - 180.0
+    lat_grid = 90.0 - (np.arange(AREA_H) + .5) * 180.0 / AREA_H
+    seas[(seas == 3) & (lon_grid[None, :] > 147.0) & (lat_grid[:, None] < -10.0)] = 1   # Coral and Tasman seas: Pacific
+    seas = _spread_oceans(seas, codes == 0, np)
+
+    rgb = np.stack([codes & 255, codes >> 8, seas], 2).astype(np.uint8)
+    name = save(Image.fromarray(rgb, "RGB"), f"areas-{AREA_W}.{VERSION}.png", optimize=True)
+    gap = float(np.mean((codes == 0) & (seas == 0)))
+    log(f"  areas: {int(codes.max())} codes, {gap * 100:.1f}% of the picture is neither country nor ocean")
+
+    pixels = np.bincount(codes.ravel(), minlength=len(features) + 1)
+    areas, by_a3 = [], {}
+    for i, feature in enumerate(features):
+        props = feature["properties"]
+        status, sentence = _area_status(props)
+        continent = props["CONTINENT"] if props["CONTINENT"] in CONTINENTS else None
+        area = {
+            "code": i + 1, "id": _slug(props["ADM0_A3"] + "-" + props["NAME"]) if props["ADM0_A3"] in by_a3
+            else _slug(props["NAME_EN"] or props["NAME"]),
+            "name": props["NAME_EN"] or props["NAME"], "sovereign": props["SOVEREIGNT"], "status": status,
+            "sentence": sentence, "continent": continent, "population": props["POP_EST"],
+            "label": [round(props["LABEL_X"], 3), round(props["LABEL_Y"], 3)],
+            "tiny": int(pixels[i + 1]) < TINY_PIXELS,
+        }
+        by_a3.setdefault(props["ADM0_A3"], area)
+        areas.append(area)
+    ids = [a["id"] for a in areas]
+    assert len(ids) == len(set(ids)), "area ids must be unique"
+
+    # Cities: every national capital, plus any city over five million people.
+    places = []
+    for feature in load("places"):
+        props = feature["properties"]
+        capital = props["featurecla"] in ("Admin-0 capital", "Admin-0 capital alt")
+        if not (capital or props["pop_max"] >= 5_000_000):
+            continue
+        lon, lat = props["longitude"], props["latitude"]
+        col = min(AREA_W - 1, int((lon + 180.0) / 360.0 * AREA_W))
+        row = min(AREA_H - 1, int((90.0 - lat) / 180.0 * AREA_H))
+        owner = int(codes[row, col]) or (by_a3[props["adm0_a3"]]["code"] if props["adm0_a3"] in by_a3 else 0)
+        places.append({"name": props["name"], "lon": round(lon, 4), "lat": round(lat, 4),
+                       "population": props["pop_max"], "capital": capital, "area": owner})
+    places.sort(key=lambda p: (-p["population"], p["name"]))
+    log(f"  places: {len(places)} ({sum(p['capital'] for p in places)} capitals)")
+
+    # Lines: the five circles of latitude are exact numbers; the Date Line is the real, bending one.
+    lines = {}
+    for feature in load("lines"):
+        props, geometry = feature["properties"], feature["geometry"]
+        if geometry["type"] == "LineString":
+            lines[_slug(props["name"])] = {"name": props["name"], "lat": round(geometry["coordinates"][0][1], 4)}
+        else:
+            parts = [[[round(x, 3), round(y, 3)] for x, y, *_ in part] for part in geometry["coordinates"]]
+            lines["date-line"] = {"name": props["name"], "paths": parts}
+
+    geo = {"version": VERSION, "size": [AREA_W, AREA_H], "areas": areas, "places": places, "lines": lines,
+           "oceans": [{"number": n, "name": label} for n, label, _ in OCEANS], "continents": list(CONTINENTS)}
+    path = os.path.join(out_dir, f"geo.{VERSION}.json")
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(geo, fh, ensure_ascii=False, separators=(",", ":"))
+    log(f"  wrote  geo.{VERSION}.json  {os.path.getsize(path) / 1e3:.0f} KB")
+    return {"areas": name, "geo": f"geo.{VERSION}.json"}
+
+
+def _geom_area(geometry):
+    """Rough size in square degrees (outer rings only): just for deciding which area is drawn first."""
+    polygons = geometry["coordinates"] if geometry["type"] == "MultiPolygon" else [geometry["coordinates"]]
+    total = 0.0
+    for polygon in polygons:
+        ring = polygon[0]
+        total += abs(sum(x1 * y2 - x2 * y1 for (x1, y1, *_), (x2, y2, *_) in zip(ring, ring[1:]))) / 2
+    return total
 
 
 def _derive_sky(source_dir, out_dir, save, Image):
@@ -374,17 +606,19 @@ def _derive_sky(source_dir, out_dir, save, Image):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--data", default=DEFAULT_DIR, help=f"data folder (default: {DEFAULT_DIR})")
-    parser.add_argument("--only", choices=("fetch", "derive", "sky"),
-                        help="run one half; 'sky' re-derives only the stars and the Moon")
+    parser.add_argument("--only", choices=("fetch", "derive", "sky", "geo"),
+                        help="run one half; 'sky' re-derives only the stars and the Moon, "
+                             "'geo' only the countries, lines and cities")
     args = parser.parse_args()
     source_dir = os.path.join(args.data, "source")
     out_dir = os.path.join(args.data, "derived")
-    if args.only not in ("derive", "sky"):
+    if args.only not in ("derive", "sky", "geo"):
         log(f"Sources -> {source_dir}")
         fetch(source_dir)
     if args.only != "fetch":
         log(f"Derived -> {out_dir}")
-        derive(source_dir, out_dir, ("sky",) if args.only == "sky" else ("earth", "sky"))
+        parts = {"sky": ("sky",), "geo": ("geo",)}.get(args.only, ("earth", "sky", "geo"))
+        derive(source_dir, out_dir, parts)
     total = sum(os.path.getsize(os.path.join(root, name))
                 for root, _, names in os.walk(args.data) if ".venv" not in root for name in names)
     log(f"Earth data on disk: {total / 1e9:.2f} GB (budget: 6 GB)")
