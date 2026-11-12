@@ -263,6 +263,8 @@
     .close {
       display: grid; place-items: center; position: absolute; right: 8px; top: 8px;
       width: 44px; height: 44px; border: 0; border-radius: 50%; background: none; color: var(--ink-soft); font-size: 22px;
+      /* Above the card body: its scroll fade (a mask) makes it a layer of its own. */
+      z-index: 2;
     }
     .shot { aspect-ratio: 16 / 8; }
   }
@@ -528,7 +530,9 @@ function go(id, { fresh = false, back = false } = {}) {
   turnGlobe(spot, fresh);
   drawTrail();
   layout();
-  showCard(id, { quiet: true });
+  // The card always comes with the point, on a phone too: at rest, after a
+  // double-tap, after a search or a trail step.
+  showCard(id);
 }
 
 // Which answer shows as the dot at a home. The point just left is put first,
@@ -552,7 +556,6 @@ function makeTok(point) {
   });
   el.querySelector(".face").addEventListener("dblclick", () => {
     if (el.dataset.slot === "centre") return;
-    $("panel").classList.remove("open");
     go(point.id);
   });
   const img = el.querySelector("img");
@@ -810,7 +813,7 @@ function cardInto(body, point) {
   if (point.stub) body.append(node("p", "hint", "Only a name so far. This point is waiting for its own answers."));
 }
 
-function showCard(id, { quiet = false } = {}) {
+function showCard(id) {
   const point = state.points.get(id);
   const body = $("panel-body");
   body.replaceChildren(node("p", "panel-kicker", "What is it?"));
@@ -850,7 +853,7 @@ function showCard(id, { quiet = false } = {}) {
   body.scrollTop = 0;
   for (const el of toks.values()) el.classList.remove("peeked");
   state.peek = null;
-  if (!quiet) openPanel();
+  openPanel();
 }
 
 function peekAt(id, key) {
@@ -872,7 +875,7 @@ function peekAt(id, key) {
   body.append(node("p", "hint tap-hint", "Double-tap the pin to go there."));
   const goBtn = node("button", "btn go", "Go there");
   goBtn.type = "button";
-  goBtn.addEventListener("click", () => { $("panel").classList.remove("open"); go(id); });
+  goBtn.addEventListener("click", () => go(id));
   actions.append(goBtn);
   const list = state.answers.get(state.centre).get(key) || [];
   if (list.length > 1) {
