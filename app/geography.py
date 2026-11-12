@@ -150,9 +150,8 @@ def build(geo):
         if point_id in {p["id"] for p in points}:
             point_id += "-area"
         at = (area["label"][1], area["label"][0])
-        area_ids[area["code"]] = add(point_id, area["name"], text, "area", {"codes": [area["code"]]}, at,
-                                     fact=area["sentence"])
-        points[-1]["tiny"] = area["tiny"]
+        area_ids[area["code"]] = add(point_id, area["name"], text, "area", {"codes": [area["code"]]}, at)
+        points[-1].update({"tiny": area["tiny"], "status": area["status"], "more": area["sentence"]})
         if area["status"] != "unowned" and area["continent"]:
             links.append(("place", area_ids[area["code"]], continent_ids[area["continent"]],
                           f"It is in {area['continent']}."))

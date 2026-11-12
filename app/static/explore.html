@@ -1179,12 +1179,28 @@ const PLANET_FRAG = `
   uniform float uReady, uQuiet;
   uniform float uNight, uVivid, uSunlight, uHaze, uLights, uLightsGamma, uLightsGlow;
   uniform float uClouds, uShadow, uGlint, uRim, uQuietDim, uQuietGrey, uQuietClouds;
+  // Light-up: the area picture (red/green = country code, blue = ocean), a table of which codes are lit,
+  // half the Earth, one line of latitude and/or longitude, and a ring for an area too small to see.
+  uniform sampler2D uAreas;
+  uniform sampler2D uLit;
+  uniform float uLitAmt, uLitDash;
+  uniform vec4 uHemi;     // north, south, east, west: 1 for the one chosen
+  uniform vec2 uLineAt;   // latitude, longitude in radians; 9 = none
+  uniform vec4 uMark;     // ring centre (xyz) and 1 when shown
   varying vec3 vNormal;
   varying vec3 vView;
   varying vec3 vLocal;
   varying vec2 vUv;
   const vec3 LUMA = vec3(0.2126, 0.7152, 0.0722);
+  const vec3 LIT = vec3(1.0, 0.80, 0.42);
   float cloudAt(vec2 uv) { return pow(texture2D(uPack, uv).g, 1.25); }
+  float litAt(vec2 uv) {
+    vec3 a = floor(texture2D(uAreas, uv).rgb * 255.0 + 0.5);
+    float code = a.r + 256.0 * a.g;
+    float idx = code > 0.5 ? code : (mod(a.b, 8.0) > 0.5 ? 300.0 + mod(a.b, 8.0) : 0.0);
+    return idx > 0.5 ? texture2D(uLit, vec2((idx + 0.5) / 512.0, 0.5)).r : 0.0;
+  }
+  float lineNear(float d, float w) { return 1.0 - smoothstep(w * 0.6, w * 1.6, d); }
   void main() {
     vec3 n = normalize(vNormal);
     vec3 v = normalize(vView);
@@ -1257,6 +1273,36 @@ const PLANET_FRAG = `
     col = mix(col, vec3(g), uQuietGrey * uQuiet) * (1.0 - uQuietDim * uQuiet);
     // Bright cloud tops roll off softly rather than cut to flat white.
     col = mix(col, 0.78 + (1.0 - exp(-(col - 0.78) * 3.2)) * 0.22, step(0.78, col));
+    // Light-up: what was chosen glows, bright edge and a soft fill. Drawn after the dimming, so it pops.
+    if (uLitAmt > 0.001) {
+      float here = litAt(vUv);
+      vec2 px = vec2(1.5 / 4096.0, 1.5 / 2048.0);
+      float edge = max(max(abs(litAt(vUv + vec2(px.x, 0.0)) - here), abs(litAt(vUv - vec2(px.x, 0.0)) - here)),
+                       max(abs(litAt(vUv + vec2(0.0, px.y)) - here), abs(litAt(vUv - vec2(0.0, px.y)) - here)));
+      float dash = mix(1.0, step(0.5, fract((vUv.x * 4096.0 + vUv.y * 2048.0) / 10.0)), uLitDash);
+      float fill = here * 0.34 + min(edge * 2.2, 1.0) * 0.9 * dash;
+      // Half the Earth, with its dividing line.
+      float lat = asin(clamp(p.y, -1.0, 1.0));
+      float half_ = uHemi.x * step(0.0, p.y) + uHemi.y * step(p.y, 0.0) + uHemi.z * step(0.0, p.x) + uHemi.w * step(p.x, 0.0);
+      fill += half_ * 0.12;
+      float wLat = fwidth(p.y) / max(cos(lat), 0.05);
+      float wLon = length(fwidth(p.xz)) / max(length(p.xz), 0.05);
+      float lon = atan(p.x, p.z);
+      float line = 0.0;
+      if (uLineAt.x < 8.0) line = max(line, lineNear(abs(lat - uLineAt.x), wLat));
+      if (uLineAt.y < 8.0) line = max(line, lineNear(abs(mod(lon - uLineAt.y + 3.14159265, 6.2831853) - 3.14159265), wLon));
+      if (uHemi.x + uHemi.y > 0.5) line = max(line, lineNear(abs(lat), wLat));
+      if (uHemi.z + uHemi.w > 0.5) {
+        line = max(line, lineNear(abs(lon), wLon));
+        line = max(line, lineNear(3.14159265 - abs(lon), wLon * 0.5));
+      }
+      fill += line * 0.9;
+      if (uMark.w > 0.5) {
+        float ang = acos(clamp(dot(p, uMark.xyz), -1.0, 1.0));
+        fill += lineNear(abs(ang - 0.04), max(fwidth(ang), 0.002)) * 0.95;
+      }
+      col = mix(col, LIT, clamp(fill, 0.0, 1.0) * uLitAmt * uReady);
+    }
     // Until the pictures arrive: a plain lit ball.
     col = mix(vec3(0.010, 0.035, 0.06) * (0.25 + lit), col, uReady);
     gl_FragColor = vec4(col, 1.0);
@@ -1324,6 +1370,69 @@ const STAR_FRAG = `
   }
 `;
 
+// Which areas glow. A 512-wide table indexed by area code (countries 1..258) or 300 + ocean number.
+const litTable = new THREE.DataTexture(new Uint8Array(512 * 4), 512, 1, THREE.RGBAFormat);
+litTable.magFilter = THREE.NearestFilter;
+litTable.minFilter = THREE.NearestFilter;
+litTable.generateMipmaps = false;
+const lit = { id: null, amt: 0, want: 0 };
+let dateLine = null;
+
+function vecAt(latDeg, lonDeg, radius = 1) {
+  const lat = latDeg * Math.PI / 180;
+  const lon = lonDeg * Math.PI / 180;
+  return new THREE.Vector3(Math.cos(lat) * Math.sin(lon), Math.sin(lat), Math.cos(lat) * Math.cos(lon)).multiplyScalar(radius);
+}
+
+// Light up what the topic is: an area, a line, half the Earth, or a ring round a place too small to see.
+function applyLit(id) {
+  lit.id = id;
+  const point = state.points.get(id);
+  const u = planet.material.uniforms;
+  litTable.image.data.fill(0);
+  u.uHemi.value.set(0, 0, 0, 0);
+  u.uLineAt.value.set(9, 9);
+  u.uMark.value.set(0, 0, 0, 0);
+  u.uLitDash.value = 0;
+  if (dateLine) dateLine.visible = false;
+  lit.want = 0;
+  const where = point?.where;
+  if (where && point.shape !== "pin") {
+    lit.want = 1;
+    if (where.codes) {
+      for (const code of where.codes) litTable.image.data[code * 4] = 255;
+      if (point.status === "disputed") u.uLitDash.value = 1;
+      if (point.tiny && point.at) u.uMark.value.set(...vecAt(point.at.lat, point.at.lon).toArray(), 1);
+    } else if (where.ocean) {
+      litTable.image.data[(300 + where.ocean) * 4] = 120;   // an ocean is huge: a lighter wash
+    } else if (where.hemisphere) {
+      const slot = { north: 0, south: 1, east: 2, west: 3 }[where.hemisphere];
+      const flags = [0, 0, 0, 0];
+      flags[slot] = 1;
+      u.uHemi.value.set(...flags);
+    } else if (where.lat !== undefined) {
+      u.uLineAt.value.x = where.lat * Math.PI / 180;
+    } else if (where.lon !== undefined) {
+      u.uLineAt.value.y = where.lon * Math.PI / 180;
+    } else if (where.path && dateLine) {
+      dateLine.visible = true;
+    }
+  }
+  litTable.needsUpdate = true;
+  lit.amt = 0;   // fades in again for each new choice
+}
+
+function buildDateLine(paths) {
+  dateLine = new THREE.Group();
+  const material = new THREE.LineBasicMaterial({ color: 0xffcc6b, transparent: true, opacity: .95 });
+  for (const path of paths) {
+    const points = path.map(([lon, lat]) => vecAt(lat, lon, 1.002));
+    dateLine.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), material));
+  }
+  dateLine.visible = false;
+  globeGroup.add(dateLine);
+}
+
 function initGlobe() {
   try {
     scene = new THREE.Scene();
@@ -1353,6 +1462,9 @@ function initGlobe() {
         uGlint: { value: LOOK.glint }, uRim: { value: LOOK.rim },
         uQuietDim: { value: LOOK.quietDim }, uQuietGrey: { value: LOOK.quietGrey },
         uQuietClouds: { value: LOOK.quietClouds },
+        uAreas: { value: null }, uLit: { value: litTable }, uLitAmt: { value: 0 }, uLitDash: { value: 0 },
+        uHemi: { value: new THREE.Vector4() }, uLineAt: { value: new THREE.Vector2(9, 9) },
+        uMark: { value: new THREE.Vector4() },
       },
       vertexShader: VIEW_VERT,
       fragmentShader: PLANET_FRAG,
@@ -1430,6 +1542,23 @@ async function loadEarth() {
     planet.material.uniforms.uDay.value = day;
     planet.material.uniforms.uPack.value = pack;
     state.earthBorn = performance.now();
+    if (files.areas) {
+      // Codes, not colours: no smoothing, no mipmaps, no colour conversion.
+      loader.load(`./earth/${files.areas}`, (tex) => {
+        tex.colorSpace = THREE.NoColorSpace;
+        tex.magFilter = THREE.NearestFilter;
+        tex.minFilter = THREE.NearestFilter;
+        tex.generateMipmaps = false;
+        planet.material.uniforms.uAreas.value = tex;
+        lit.id = null;   // light the current topic now that the picture is here
+      }, undefined, (error) => console.warn("Area picture did not load.", error));
+    }
+    if (files.geo) {
+      fetch(`./earth/${files.geo}`).then((r) => r.json()).then((geo) => {
+        if (geo.lines?.["date-line"]) buildDateLine(geo.lines["date-line"].paths);
+        lit.id = null;
+      }).catch((error) => console.warn(error));
+    }
   } catch (error) {
     console.warn("Earth pictures did not load.", error);
   }
@@ -1596,6 +1725,8 @@ function place(now) {
 
 // A point never centred before gets a spot on the globe from its id.
 function homeSpot(id) {
+  const at = state.points.get(id)?.at;   // a geography topic sits at its true place
+  if (at) return vecAt(at.lat, at.lon);
   let hash = 2166136261;
   for (let i = 0; i < id.length; i += 1) hash = Math.imul(hash ^ id.charCodeAt(i), 16777619) >>> 0;
   const lon = (hash % 3600) / 3600 * Math.PI * 2;
@@ -1680,6 +1811,10 @@ function animate(now) {
   placeMoon();
   placeSun();
   const u = planet.material.uniforms;
+  const wantId = state.peek?.id || state.centre;
+  if (wantId && wantId !== lit.id) applyLit(wantId);
+  lit.amt += (lit.want - lit.amt) * Math.min(1, dt * 5);
+  u.uLitAmt.value = lit.amt;
   u.uQuiet.value = look.quiet;
   if (state.earthBorn) u.uReady.value = smooth(0, 1, (now - state.earthBorn) / 900);
   if (stars) stars.material.uniforms.uBright.value = 1 - .45 * look.quiet;

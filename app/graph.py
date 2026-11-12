@@ -157,7 +157,8 @@ def build(include_private=True, geo=None):
         for point in geo_points:
             if point["id"] in points:
                 # A hand-written topic of the same id (Singapore) keeps its words and gains its place.
-                points[point["id"]].update({k: point[k] for k in ("shape", "where", "at", "tiny") if k in point})
+                keep = ("shape", "where", "at", "tiny", "status")
+                points[point["id"]].update({k: point[k] for k in keep if k in point})
             else:
                 add_point(point)
         for kind, source, target, why in geo_links:
