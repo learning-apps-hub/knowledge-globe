@@ -17,7 +17,7 @@ Run it once on a new server, and again when a layer is added:
 Fetching needs only the standard library; deriving needs Pillow and numpy
 (build tools, not app dependencies: the app itself stays stdlib-only).
 
-Every source is public domain. Each layer's credit and year are written to
+Every source is public domain or free to use. Each layer's credit and year are written to
 `derived/manifest.json`, which the app shows beside the globe.
 """
 import argparse
@@ -91,6 +91,30 @@ SOURCES = {
     "shelves": {
         "file": "ne_10m_antarctic_ice_shelves_polys.geojson",
         "urls": [f"{NE}/ne_10m_antarctic_ice_shelves_polys.geojson"],
+    },
+    "stars": {
+        "file": "bsc5-catalog.gz",
+        "urls": [
+            "https://cdsarc.cds.unistra.fr/ftp/V/50/catalog.gz",
+            # The same CDS file on its Harvard mirror (the Strasbourg host times out from this server).
+            "https://vizier.cfa.harvard.edu/ftp/cats/V/50/catalog.gz",
+        ],
+        "credit": "Yale Bright Star Catalogue, 5th edition (D. Hoffleit, W. H. Warren Jr.), via CDS",
+        "what": "Every star the eye can see (to magnitude 6.5): place, brightness, colour",
+        "years": "Positions for the year 2000",
+        "licence": "Free to use (CDS / NASA ADC)",
+    },
+    "moon": {
+        "file": "lroc-color-poles-2k.tif",
+        "urls": [
+            "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_2k.tif",
+            "https://web.archive.org/web/2023id_/"
+            "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_2k.tif",
+        ],
+        "credit": "NASA Scientific Visualization Studio, CGI Moon Kit (E. Wright; LRO camera)",
+        "what": "The Moon's surface",
+        "years": "LRO, 2009 onward",
+        "licence": "Public domain (NASA)",
     },
 }
 
@@ -218,7 +242,7 @@ def _sea_room(land_small):
     return room
 
 
-def derive(source_dir, out_dir):
+def derive(source_dir, out_dir, parts=("earth", "sky")):
     try:
         import numpy as np
         from PIL import Image
@@ -236,6 +260,12 @@ def derive(source_dir, out_dir):
         image.save(path, **options)
         log(f"  wrote  {name}  {os.path.getsize(path) / 1e6:.2f} MB")
         return name
+
+    if "sky" in parts:
+        files.update(_derive_sky(source_dir, out_dir, save, Image))
+    if "earth" not in parts:
+        _write_manifest(out_dir, files)
+        return
 
     # Day colour. 4K is the light version served everywhere; 8K is kept for
     # desktop zoom (Owner's decision, 2026-11-12).
@@ -279,34 +309,82 @@ def derive(source_dir, out_dir):
     sea = Image.fromarray(np.clip(np.round(room / SEA_UNIT), 0, 255).astype(np.uint8), "L")
     files["sea"] = save(sea, f"sea-{SEA_W}.{VERSION}.png", optimize=True)
 
+    _write_manifest(out_dir, files)
+
+
+LAYERS = ("day", "night", "clouds", "land", "stars", "moon")
+
+
+def _write_manifest(out_dir, files):
+    """Merge into the existing manifest, so deriving one part keeps the others."""
+    path = os.path.join(out_dir, "manifest.json")
+    old = {}
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as fh:
+            old = json.load(fh)
     manifest = {
         "version": VERSION,
-        "files": files,
+        "files": {**old.get("files", {}), **files},
         "sea": {"width": SEA_W, "height": SEA_H, "unit_degrees": SEA_UNIT},
         "layers": [
             {key: SOURCES[name][key] for key in ("what", "credit", "years", "licence")}
-            for name in ("day", "night", "clouds", "land")
+            for name in LAYERS
         ],
     }
-    with open(os.path.join(out_dir, "manifest.json"), "w", encoding="utf-8") as fh:
+    with open(path, "w", encoding="utf-8") as fh:
         json.dump(manifest, fh, indent=2, ensure_ascii=False)
         fh.write("\n")
     log("  wrote  manifest.json")
 
 
+def _derive_sky(source_dir, out_dir, save, Image):
+    """The stars as a small list, and the Moon's surface picture."""
+    import gzip
+    files = {}
+
+    # Yale Bright Star Catalogue, fixed-width (CDS V/50 ReadMe). Each star is
+    # four numbers: right ascension and declination in degrees (J2000),
+    # visual magnitude, B-V colour (0.6 = Sun-like when the catalogue has none).
+    stars = []
+    with gzip.open(os.path.join(source_dir, SOURCES["stars"]["file"]), "rt", encoding="ascii") as fh:
+        for line in fh:
+            line = line.rstrip("\n").ljust(114)
+            if not line[75:77].strip() or not line[102:107].strip():
+                continue   # a few entries are novae or galaxies with no position or magnitude
+            ra = (int(line[75:77]) + int(line[77:79]) / 60 + float(line[79:83]) / 3600) * 15
+            dec = int(line[84:86]) + int(line[86:88]) / 60 + int(line[88:90]) / 3600
+            if line[83] == "-":
+                dec = -dec
+            bv = float(line[109:114]) if line[109:114].strip() else 0.6
+            stars.append([round(ra, 3), round(dec, 3), float(line[102:107]), bv])
+    stars.sort(key=lambda star: star[2])   # brightest first, so a phone can stop early
+    name = f"stars.{VERSION}.json"
+    with open(os.path.join(out_dir, name), "w", encoding="utf-8") as fh:
+        json.dump({"fields": ["ra", "dec", "mag", "bv"], "stars": stars}, fh, separators=(",", ":"))
+    log(f"  wrote  {name}  {len(stars)} stars  {os.path.getsize(os.path.join(out_dir, name)) / 1e6:.2f} MB")
+    files["stars"] = name
+
+    # The Moon is small on screen: 2K is plenty.
+    moon = Image.open(os.path.join(source_dir, SOURCES["moon"]["file"])).convert("RGB")
+    moon = moon.resize((2048, 1024), Image.LANCZOS)
+    files["moon"] = save(moon, f"moon-2048.{VERSION}.jpg", quality=86, optimize=True, progressive=True)
+    return files
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--data", default=DEFAULT_DIR, help=f"data folder (default: {DEFAULT_DIR})")
-    parser.add_argument("--only", choices=("fetch", "derive"), help="run one half")
+    parser.add_argument("--only", choices=("fetch", "derive", "sky"),
+                        help="run one half; 'sky' re-derives only the stars and the Moon")
     args = parser.parse_args()
     source_dir = os.path.join(args.data, "source")
     out_dir = os.path.join(args.data, "derived")
-    if args.only != "derive":
+    if args.only not in ("derive", "sky"):
         log(f"Sources -> {source_dir}")
         fetch(source_dir)
     if args.only != "fetch":
         log(f"Derived -> {out_dir}")
-        derive(source_dir, out_dir)
+        derive(source_dir, out_dir, ("sky",) if args.only == "sky" else ("earth", "sky"))
     total = sum(os.path.getsize(os.path.join(root, name))
                 for root, _, names in os.walk(args.data) if ".venv" not in root for name in names)
     log(f"Earth data on disk: {total / 1e9:.2f} GB (budget: 6 GB)")

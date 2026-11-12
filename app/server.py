@@ -7,6 +7,13 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from . import graph, subjects
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# The Earth's pictures are big and live outside git, in a server data folder
+# shared by the dev and prod trees (scripts/build_earth.py writes it).
+EARTH_DIR = os.path.join(
+    os.environ.get("KG_EARTH_DIR") or os.path.join(os.path.dirname(REPO_DIR), "earth-data"), "derived")
+# File names carry their version (day-4096.v1.jpg), so a browser keeps them for good.
+FOREVER = "public, max-age=31536000, immutable"
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -19,6 +26,10 @@ class Handler(BaseHTTPRequestHandler):
             return self._send_viewer()
         if path.startswith("/static/"):
             return self._send_static(path[len("/static/"):])
+        if path.startswith("/earth/"):
+            name = path[len("/earth/"):]
+            cache = "no-cache" if name == "manifest.json" else FOREVER
+            return self._send_file(EARTH_DIR, name, cache)
         if path == "/explore":
             return self._send_viewer("explore.html")
         if path == "/api/graph":
@@ -45,8 +56,12 @@ class Handler(BaseHTTPRequestHandler):
 
     def _send_static(self, relative_path):
         """Serve versioned frontend assets without exposing arbitrary files."""
-        target = os.path.realpath(os.path.join(STATIC_DIR, relative_path))
-        static_root = os.path.realpath(STATIC_DIR) + os.sep
+        return self._send_file(STATIC_DIR, relative_path, "public, max-age=86400")
+
+    def _send_file(self, root, relative_path, cache):
+        """Serve one file from under `root`, never anything outside it."""
+        target = os.path.realpath(os.path.join(root, relative_path))
+        static_root = os.path.realpath(root) + os.sep
         if not target.startswith(static_root) or not os.path.isfile(target):
             return self._send_json(404, {"error": "not found"})
         with open(target, "rb") as fh:
@@ -55,7 +70,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Cache-Control", "public, max-age=86400")
+        self.send_header("Cache-Control", cache)
         self.end_headers()
         self.wfile.write(body)
 

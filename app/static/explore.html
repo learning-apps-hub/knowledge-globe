@@ -48,8 +48,8 @@
     grid-template-columns: minmax(0, 1fr) var(--panel);
     grid-template-rows: 58px 40px minmax(0, 1fr);
     background:
-      radial-gradient(120% 70% at 50% 0%, rgba(20, 70, 84, .34), transparent 62%),
-      var(--night);
+      radial-gradient(120% 70% at 50% 0%, rgba(14, 34, 58, .30), transparent 62%),
+      #02060b;
   }
   #globe { grid-column: 1; grid-row: 1 / -1; width: 100%; height: 100%; min-width: 0; min-height: 0; }
 
@@ -310,6 +310,55 @@
     .tok.centre .init { font-size: 26px; }
     .init { font-size: 15px; }
   }
+  /* The Sun's glow at the stage edge on the Sun's side (placed by placeSun()). */
+  #sun-glow {
+    position: absolute; left: 0; top: 0; width: 70vmin; height: 70vmin; border-radius: 50%;
+    pointer-events: none; opacity: 0; will-change: transform, opacity; mix-blend-mode: screen;
+    background: radial-gradient(closest-side, rgba(255, 246, 225, .55), rgba(255, 214, 160, .2) 28%,
+      rgba(255, 180, 120, .06) 60%, transparent);
+  }
+  /* The clock: the moment the Earth shows. Tap for what is real and the credits. */
+  .clock {
+    grid-column: 1; grid-row: 3; align-self: end; justify-self: start; margin: 0 0 14px 14px; z-index: 4;
+    display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 6px 0 11px;
+    border: 1px solid var(--line); border-radius: 99px; background: rgba(9, 23, 31, .62);
+    backdrop-filter: blur(8px); color: var(--ink-soft); font-size: 12px; white-space: nowrap;
+  }
+  #clock-day { margin-right: -3px; }
+  .clock svg { width: 14px; height: 14px; flex: none; }
+  .clock small { color: var(--ink-dim); font-size: 11px; padding-right: 5px; }
+  .clock.fast small { color: var(--gold); }
+  .clock.fast svg { color: var(--gold); }
+  .clock-now {
+    padding: 3px 9px; border-radius: 99px; background: rgba(85, 228, 209, .16); color: var(--aqua); font-weight: 600;
+  }
+  .sky-box {
+    position: absolute; left: 14px; bottom: 56px; z-index: 5; display: none;
+    width: min(360px, calc(100% - 28px)); max-height: calc(100% - 180px); overflow: auto;
+    padding: 14px 16px 10px; border: 1px solid var(--line-strong); border-radius: 14px;
+    background: var(--glass-strong); box-shadow: 0 22px 70px rgba(0, 0, 0, .5); font-size: 13px; line-height: 1.45;
+  }
+  .sky-box.open { display: block; }
+  .sky-box p { margin: 0 28px 7px 0; color: var(--ink-soft); }
+  .sky-box h4 { margin: 12px 0 6px; color: var(--ink-dim); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+  .sky-box ul { margin: 0; padding: 0; list-style: none; }
+  .sky-box li { margin-bottom: 6px; color: var(--ink-dim); font-size: 12px; }
+  .sky-box li strong { color: var(--ink-soft); font-weight: 600; }
+  .sky-close {
+    position: absolute; right: 4px; top: 4px; width: 40px; height: 40px;
+    border: 0; background: none; color: var(--ink-soft); font-size: 20px;
+  }
+  @media (max-width: 680px) {
+    /* Phones: the clock sits at the right end of the trail row, clear of the
+       question ring and the card sheet; just the time and its speed. */
+    .clock {
+      grid-row: 2; align-self: center; justify-self: end; margin: 0 12px 0 0;
+      height: 28px; padding: 0 4px 0 9px; gap: 5px; font-size: 11.5px; background: #0a1922;
+    }
+    .clock small { font-size: 10.5px; padding-right: 3px; }
+    #clock-day { display: none; }
+    .sky-box { left: 10px; right: 10px; top: 94px; bottom: auto; width: auto; max-height: 58%; background: #0a1922; }
+  }
   @media (prefers-reduced-motion: reduce) {
     :root { --move: 0s; }
     .tok, .panel { transition: none; }
@@ -339,8 +388,22 @@
   <nav class="trail" id="trail" aria-label="The way you came"></nav>
 
   <main id="stage">
+    <div id="sun-glow" aria-hidden="true"></div>
     <svg id="links" aria-hidden="true"></svg>
   </main>
+
+    <button class="clock" id="clock" type="button" aria-expanded="false" aria-controls="sky-box"
+      aria-label="The time the Earth is showing">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span id="clock-day"></span><span id="clock-time"></span><small id="clock-speed"></small>
+      <span class="clock-now" id="clock-now" role="button" tabindex="0" hidden>Now</span>
+    </button>
+    <div class="sky-box" id="sky-box" role="dialog" aria-label="The Earth, Sun, Moon and stars">
+      <button class="sky-close" id="sky-close" type="button" aria-label="Close">×</button>
+      <div id="sky-facts"></div>
+      <h4>Pictures and data</h4>
+      <ul id="sky-credits"></ul>
+    </div>
 
   <aside class="panel" id="panel" aria-live="polite">
     <span class="panel-grip"></span>
@@ -351,6 +414,7 @@
 
 <script type="module">
 import * as THREE from "./static/vendor/three.module.min.js";
+import { SIDEREAL_DAY, fromRaDec, gmst, moonDir, moonLit, overhead, starColor, sunDir } from "./static/sky.js";
 
 // The nine link kinds. Each is one question from each end; `out` is asked on
 // the link's `from` point and `back` on its `to` point (see app/graph.py).
@@ -414,8 +478,7 @@ const state = {
 };
 const toks = new Map(); // slot ("centre" or a question key) → element
 const pins = new Set(); // every pin element still on the stage, leaving ones too
-const IDLE_MS = 7000;   // quiet time on the home point before the globe starts its resting spin
-const SPIN = .055;      // radians a second: the old viewer's resting spin
+const IDLE_MS = 7000;   // quiet time on my topic before the Earth starts its time-lapse
 
 /* ---------- data ---------- */
 
@@ -1013,6 +1076,7 @@ function bindUI() {
   for (const type of ["pointerdown", "keydown", "wheel", "focusin"]) {
     document.addEventListener(type, touched, { capture: true, passive: true });
   }
+  bindClock();
   new ResizeObserver(() => { resizeGlobe(); drawTrail(); layout(); }).observe(stage);
   // Size the app to the part of the screen the browser really shows, so a
   // phone browser's own toolbar never sits over the card (iOS Chrome does).
@@ -1026,144 +1090,298 @@ function bindUI() {
   addEventListener("resize", fit);
 }
 
-/* ---------- the globe behind: same look as the viewer's door mode ---------- */
+/* ---------- the globe behind: the real Earth, Sun, Moon and stars ---------- */
 
-let scene, camera, renderer, world, globeGroup, planet, starfield;
+let scene, camera, renderer, world, globeGroup, planet, atmosphere, sky, stars, moon;
 let turn = null;
 const globeQ = new THREE.Quaternion(); // the globe's turn; pins are placed from it every frame
+const skyQ = new THREE.Quaternion();   // the sky's turn: the globe's, less the Earth's own turn (GMST)
+const sunW = new THREE.Vector3(1, 0, 0);
+const moonW = new THREE.Vector3();
 let lastFrame = performance.now();
 const FOV = 37;
 
-function texture() {
-  const canvas = document.createElement("canvas");
-  canvas.width = 1024;
-  canvas.height = 512;
-  const ctx = canvas.getContext("2d");
-  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  gradient.addColorStop(0, "#0b536e");
-  gradient.addColorStop(.45, "#06374e");
-  gradient.addColorStop(1, "#031a2a");
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.globalAlpha = .13;
-  ctx.strokeStyle = "#bffcff";
-  ctx.lineWidth = 2;
-  for (let y = 28; y < 330; y += 32) {
-    ctx.beginPath();
-    for (let x = -30; x <= canvas.width + 30; x += 18) {
-      const wave = y + Math.sin(x * .024 + y * .033) * 13;
-      if (x === -30) ctx.moveTo(x, wave); else ctx.lineTo(x, wave);
-    }
-    ctx.stroke();
+// Every look setting in one place, so the first look on dev can be tuned fast.
+const LOOK = {
+  night: .028,      // how much day colour stays on the night side (moon- and starlight)
+  lights: 2.1,      // city-light brightness
+  lightsGamma: 1.5, // > 1 keeps only the real light cores, not their spill
+  clouds: .92,      // cloud thickness
+  glint: .7,        // the Sun's sparkle on water
+  rim: .85,         // atmosphere glow at the edge
+  quietDim: .30,    // exploring: the Earth dims this much...
+  quietGrey: .40,   // ...and loses this much colour, so the pins pop
+  quietClouds: .60, // ...and its clouds thin this much
+  starSize: 1,      // star size and brightness
+  moonAt: 1.9,      // the Moon's distance in Earth radii (really about 60: not to scale)
+  moonR: .13,       // the Moon's size in Earth radii (really 0.27, seen from far away)
+};
+
+// One turn of the Earth against the stars while resting = this many seconds.
+const DAY_SECONDS = 90;
+const LAPSE = SIDEREAL_DAY / DAY_SECONDS;  // the clock's speed while resting
+// `?at=2026-11-24T22:00+08:00` opens on another moment (for checking a full
+// Moon or a solstice; the time machine will do this properly).
+const AT = Date.parse(new URLSearchParams(location.search).get("at") || "");
+const clock = {
+  t: Number.isFinite(AT) ? AT : Date.now(),  // the moment the Earth, Sun, Moon and stars show
+  rate: 1,        // clock seconds per real second
+  back: null,     // easing back to now: { from, started }
+};
+const look = { quiet: 1 };  // 0 = resting (full show), 1 = exploring (Earth quiet)
+
+const ATMOSPHERE_FRAG = `
+  uniform vec3 uSun;
+  uniform float uRim;
+  varying vec3 vNormal;
+  void main() {
+    vec3 n = normalize(vNormal);
+    // Seen from outside, a back face's normal points away: -n.z is 0 at the
+    // shell's outer edge and about 0.36 where the Earth's own edge hides it.
+    float s = clamp(-n.z / 0.36, 0.0, 1.0);
+    float edge = pow(s, 3.2);
+    float mu = dot(n, uSun);
+    vec3 blue = vec3(0.16, 0.38, 1.0);
+    vec3 dusk = vec3(1.0, 0.40, 0.12);
+    vec3 col = mix(dusk, blue, smoothstep(-0.02, 0.22, mu)) * smoothstep(-0.20, 0.02, mu);
+    // Backlit: with the Sun behind the Earth, the whole rim glows.
+    col += vec3(1.0, 0.75, 0.5) * pow(max(-uSun.z, 0.0), 6.0) * 0.5;
+    gl_FragColor = vec4(col * edge * uRim * 0.9, 1.0);
+    #include <colorspace_fragment>
   }
-  const map = new THREE.CanvasTexture(canvas);
-  map.colorSpace = THREE.SRGBColorSpace;
-  map.wrapS = THREE.RepeatWrapping;
-  return map;
-}
+`;
+
+const PLANET_FRAG = `
+  uniform sampler2D uDay;
+  uniform sampler2D uPack;
+  uniform vec3 uSun;
+  uniform float uReady, uQuiet;
+  uniform float uNight, uLights, uLightsGamma, uClouds, uGlint, uRim, uQuietDim, uQuietGrey, uQuietClouds;
+  varying vec3 vNormal;
+  varying vec3 vView;
+  varying vec2 vUv;
+  void main() {
+    vec3 n = normalize(vNormal);
+    vec3 v = normalize(vView);
+    float mu = dot(n, uSun);
+    vec3 dayc = texture2D(uDay, vUv).rgb;
+    vec3 pack = texture2D(uPack, vUv).rgb;    // r city lights, g clouds, b water
+    float lit = clamp((mu + 0.04) / 1.04, 0.0, 1.0);
+    // A warm band where day turns to night.
+    float dusk = smoothstep(0.28, 0.0, mu) * smoothstep(-0.08, 0.02, mu);
+    vec3 sunCol = mix(vec3(1.0), vec3(1.0, 0.55, 0.32), dusk * 0.7);
+    vec3 col = dayc * (uNight + lit * 1.08 * sunCol);
+    vec3 h = normalize(uSun + v);
+    float nh = max(dot(n, h), 0.0);
+    float glint = (pow(nh, 90.0) * 1.2 + pow(nh, 12.0) * 0.05) * pack.b * smoothstep(0.0, 0.15, mu);
+    float cloud = pow(pack.g, 1.15) * uClouds * (1.0 - uQuietClouds * uQuiet);
+    col += vec3(1.0, 0.9, 0.75) * glint * uGlint * (1.0 - cloud);
+    col = mix(col, vec3(0.92) * (uNight * 0.6 + lit * sunCol), cloud * 0.92);
+    float dark = 1.0 - smoothstep(-0.16, 0.05, mu);
+    col += vec3(1.0, 0.64, 0.30) * pow(pack.r, uLightsGamma) * uLights * dark * (1.0 - cloud * 0.75);
+    float fres = pow(1.0 - max(dot(n, v), 0.0), 3.0);
+    col += vec3(0.25, 0.5, 1.0) * fres * smoothstep(-0.2, 0.4, mu) * uRim * 0.8;
+    float g = dot(col, vec3(0.2126, 0.7152, 0.0722));
+    col = mix(col, vec3(g), uQuietGrey * uQuiet) * (1.0 - uQuietDim * uQuiet);
+    // Until the pictures arrive: a plain lit ball.
+    col = mix(vec3(0.010, 0.035, 0.06) * (0.25 + lit), col, uReady);
+    gl_FragColor = vec4(col, 1.0);
+    #include <colorspace_fragment>
+  }
+`;
+
+const VIEW_VERT = `
+  varying vec3 vNormal;
+  varying vec3 vView;
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    vNormal = normalize(normalMatrix * normal);
+    vec4 at = modelViewMatrix * vec4(position, 1.0);
+    vView = -at.xyz;
+    gl_Position = projectionMatrix * at;
+  }
+`;
+
+const MOON_FRAG = `
+  uniform sampler2D uMap;
+  uniform vec3 uSun;
+  uniform float uReady, uAlpha;
+  varying vec3 vNormal;
+  varying vec2 vUv;
+  void main() {
+    vec3 n = normalize(vNormal);
+    float lit = max(dot(n, uSun), 0.0);
+    vec3 surface = mix(vec3(0.42), texture2D(uMap, vUv).rgb, uReady);
+    // A trace of earthshine keeps the dark part just visible, as it really is.
+    vec3 col = surface * (0.012 + lit * 1.1);
+    gl_FragColor = vec4(col, uAlpha);
+    #include <colorspace_fragment>
+  }
+`;
+
+const STAR_VERT = `
+  attribute float aSize;
+  attribute vec3 aColor;
+  uniform float uScale;
+  varying vec3 vColor;
+  varying float vSize;
+  void main() {
+    vColor = aColor;
+    vSize = aSize * uScale;
+    gl_PointSize = max(vSize, 1.5);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+const STAR_FRAG = `
+  uniform float uBright;
+  varying vec3 vColor;
+  varying float vSize;
+  void main() {
+    float d = length(gl_PointCoord - 0.5) * 2.0;
+    float core = smoothstep(1.0, 0.0, d);
+    // A star smaller than its dot keeps its light: fainter, not cut off.
+    float fade = clamp(vSize / 1.5, 0.0, 1.0);
+    gl_FragColor = vec4(vColor * core * fade * uBright, 1.0);
+    #include <colorspace_fragment>
+  }
+`;
 
 function initGlobe() {
   try {
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(FOV, 1, .1, 100);
-    renderer = new THREE.WebGLRenderer({ canvas: $("globe"), antialias: true, alpha: true });
+    camera = new THREE.PerspectiveCamera(FOV, 1, .1, 200);
+    // Opaque: space is black, and the atmosphere's added light needs a real
+    // background under it (a see-through canvas showed a dark ring there).
+    renderer = new THREE.WebGLRenderer({ canvas: $("globe"), antialias: true });
+    renderer.setClearColor("#02060b");
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     world = new THREE.Group();
     scene.add(world);
     globeGroup = new THREE.Group();
     world.add(globeGroup);
-    planet = new THREE.Mesh(new THREE.SphereGeometry(1, 96, 96), new THREE.ShaderMaterial({
+
+    // Turned so the picture's longitude 0 faces +z and 90° east faces +x: the
+    // same frame as every spot the page works out (homeSpot, restFor, sky.js).
+    const ball = new THREE.SphereGeometry(1, 128, 96);
+    ball.rotateY(-Math.PI / 2);
+    planet = new THREE.Mesh(ball, new THREE.ShaderMaterial({
       uniforms: {
-        uTime: { value: 0 },
-        uDeep: { value: new THREE.Color("#052f46") },
-        uShallow: { value: new THREE.Color("#0b7f8e") },
-        uGlow: { value: new THREE.Color("#55e4d1") },
-        uThemeMap: { value: texture() },
+        uDay: { value: null }, uPack: { value: null },
+        uSun: { value: sunW }, uReady: { value: 0 }, uQuiet: { value: 1 },
+        uNight: { value: LOOK.night }, uLights: { value: LOOK.lights }, uLightsGamma: { value: LOOK.lightsGamma },
+        uClouds: { value: LOOK.clouds }, uGlint: { value: LOOK.glint }, uRim: { value: LOOK.rim },
+        uQuietDim: { value: LOOK.quietDim }, uQuietGrey: { value: LOOK.quietGrey },
+        uQuietClouds: { value: LOOK.quietClouds },
       },
-      vertexShader: `
-        varying vec3 vNormal;
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          vNormal = normalize(normalMatrix * normal);
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform float uTime;
-        uniform vec3 uDeep;
-        uniform vec3 uShallow;
-        uniform vec3 uGlow;
-        uniform sampler2D uThemeMap;
-        varying vec3 vNormal;
-        varying vec2 vUv;
-        float lines(float value, float count, float width) {
-          float wave = abs(sin(value * 3.14159265 * count));
-          return 1.0 - smoothstep(0.0, width, wave);
-        }
-        void main() {
-          vec3 lightDir = normalize(vec3(-0.7, 0.65, 1.1));
-          float light = max(dot(vNormal, lightDir), 0.0);
-          float fresnel = pow(1.0 - max(dot(vNormal, vec3(0.0, 0.0, 1.0)), 0.0), 2.5);
-          float current = sin(vUv.y * 50.0 + sin(vUv.x * 19.0 + uTime * .28) * 2.2) * .5 + .5;
-          float grid = max(lines(vUv.x, 18.0, .055), lines(vUv.y, 9.0, .055)) * .09;
-          vec3 theme = texture2D(uThemeMap, vec2(fract(vUv.x + uTime * .0015), vUv.y)).rgb;
-          vec3 color = mix(uDeep, uShallow, light * .72 + current * .09);
-          color = mix(color, theme, .48);
-          color += uGlow * (fresnel * .25 + grid);
-          color *= .44 + light * .76;
-          gl_FragColor = vec4(color, 1.0);
-        }
-      `,
+      vertexShader: VIEW_VERT,
+      fragmentShader: PLANET_FRAG,
     }));
     globeGroup.add(planet);
-    globeGroup.add(new THREE.Mesh(
-      new THREE.SphereGeometry(1.006, 36, 18),
-      new THREE.MeshBasicMaterial({ color: "#8cece0", transparent: true, opacity: .045, wireframe: true }),
-    ));
-    world.add(new THREE.Mesh(
-      new THREE.SphereGeometry(1.09, 64, 64),
+
+    atmosphere = new THREE.Mesh(
+      new THREE.SphereGeometry(1.07, 96, 64),
       new THREE.ShaderMaterial({
         transparent: true, side: THREE.BackSide, blending: THREE.AdditiveBlending, depthWrite: false,
-        vertexShader: `
-          varying vec3 vNormal;
-          void main() {
-            vNormal = normalize(normalMatrix * normal);
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          varying vec3 vNormal;
-          void main() {
-            float intensity = pow(0.72 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.0);
-            gl_FragColor = vec4(0.22, 0.87, 0.86, 1.0) * intensity * .6;
-          }
-        `,
+        uniforms: { uSun: { value: sunW }, uRim: { value: LOOK.rim } },
+        vertexShader: VIEW_VERT,
+        fragmentShader: ATMOSPHERE_FRAG,
       }),
-    ));
-    const count = 950;
-    const positions = new Float32Array(count * 3);
-    for (let i = 0; i < count; i += 1) {
-      const radius = 9 + Math.random() * 20;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i * 3 + 1] = radius * Math.cos(phi);
-      positions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
-    }
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    starfield = new THREE.Points(geometry, new THREE.PointsMaterial({ color: "#d7f2f2", size: .018, transparent: true, opacity: .7 }));
-    scene.add(starfield);
+    );
+    world.add(atmosphere);
+
+    // The sky: real stars, turned with the globe and the clock.
+    sky = new THREE.Group();
+    world.add(sky);
+
+    const moonBall = new THREE.SphereGeometry(LOOK.moonR, 48, 32);
+    moonBall.rotateY(-Math.PI / 2);   // the near side (longitude 0) faces +z, then lookAt turns it to us
+    moon = new THREE.Mesh(moonBall, new THREE.ShaderMaterial({
+      transparent: true,
+      uniforms: { uMap: { value: null }, uSun: { value: sunW }, uReady: { value: 0 }, uAlpha: { value: 0 } },
+      vertexShader: VIEW_VERT,
+      fragmentShader: MOON_FRAG,
+    }));
+    world.add(moon);
+
     resizeGlobe();
     renderer.setAnimationLoop(animate);
+    loadEarth();
   } catch (error) {
     console.error(error);
     renderer = null;
     const loop = (now) => { animate(now); requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
   }
+}
+
+// The pictures live on the server (not in git): /earth/manifest.json names them.
+async function loadEarth() {
+  let manifest;
+  try {
+    const response = await fetch("./earth/manifest.json");
+    if (!response.ok) throw new Error(`manifest ${response.status}`);
+    manifest = await response.json();
+  } catch (error) {
+    console.warn("No Earth pictures on this server; showing a plain globe.", error);
+    return;
+  }
+  state.earthLayers = manifest.layers || [];
+  drawSkyCredits();
+  const files = manifest.files;
+  const loader = new THREE.TextureLoader();
+  const aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  const load = (name, srgb) => new Promise((resolve, reject) => {
+    loader.load(`./earth/${name}`, (tex) => {
+      tex.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+      tex.anisotropy = aniso;
+      resolve(tex);
+    }, undefined, reject);
+  });
+  if (files.stars) loadStars(files.stars);
+  if (files.moon) {
+    load(files.moon, true).then((tex) => {
+      moon.material.uniforms.uMap.value = tex;
+      moon.material.uniforms.uReady.value = 1;
+    }).catch((error) => console.warn(error));
+  }
+  try {
+    const [day, pack] = await Promise.all([load(files.day4096, true), load(files.pack4096, false)]);
+    planet.material.uniforms.uDay.value = day;
+    planet.material.uniforms.uPack.value = pack;
+    state.earthBorn = performance.now();
+  } catch (error) {
+    console.warn("Earth pictures did not load.", error);
+  }
+}
+
+async function loadStars(name) {
+  const response = await fetch(`./earth/${name}`);
+  if (!response.ok) return;
+  const list = (await response.json()).stars;
+  const positions = new Float32Array(list.length * 3);
+  const sizes = new Float32Array(list.length);
+  const colors = new Float32Array(list.length * 3);
+  const v = [0, 0, 0];
+  const RAD = Math.PI / 180;
+  list.forEach(([ra, dec, mag, bv], i) => {
+    fromRaDec(ra * RAD, dec * RAD, v);
+    positions.set([v[0] * 90, v[1] * 90, v[2] * 90], i * 3);
+    // Brightness doubles about every 0.75 magnitudes; a dot's area carries it.
+    sizes[i] = 4.4 * Math.pow(10, -0.124 * (mag + 1.46)) + .5;
+    colors.set(starColor(bv), i * 3);
+  });
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
+  geometry.setAttribute("aColor", new THREE.BufferAttribute(colors, 3));
+  stars = new THREE.Points(geometry, new THREE.ShaderMaterial({
+    uniforms: { uScale: { value: renderer.getPixelRatio() * LOOK.starSize }, uBright: { value: 1 } },
+    vertexShader: STAR_VERT, fragmentShader: STAR_FRAG,
+    transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
+  }));
+  sky.add(stars);
 }
 
 // Where the whole globe sits on the stage, in stage pixels.
@@ -1339,28 +1557,156 @@ function touched() {
 
 const spinStep = new THREE.Quaternion();
 const UP = new THREE.Vector3(0, 1, 0);
+const skyStep = new THREE.Quaternion();
+const sunSky = new THREE.Vector3();
+const moonSky = new THREE.Vector3();
+
+// Resting = on my topic, untouched for a while, nothing open on a phone.
+// (With reduced motion the Earth still brightens at rest, but stays still.)
+function resting(now) {
+  return state.centre && state.centre === state.home
+    && !(state.peek && stage.clientWidth <= 680 && $("panel").classList.contains("open"))
+    && !$("results").classList.contains("open")
+    && !$("sky-box").classList.contains("open")
+    && now - state.lastTouch > IDLE_MS;
+}
+
 function animate(now) {
   const dt = Math.min((now - lastFrame) / 1000, .05);
   lastFrame = now;
+  const rest = resting(now);
   if (turn) {
     const progress = Math.min(1, (now - turn.started) / turn.duration);
     globeQ.slerpQuaternions(turn.from, turn.to, 1 - Math.pow(1 - progress, 3));
     if (progress === 1) turn = null;
-  } else if (!reduced && state.centre && state.centre === state.home
-      && !(state.peek && stage.clientWidth <= 680 && $("panel").classList.contains("open"))
-      && !$("results").classList.contains("open")
-      && now - state.lastTouch > IDLE_MS) {
-    // The old viewer's resting spin, about the globe's own north, easing in.
+  } else if (rest && !reduced) {
+    // The time-lapse: the Earth turns on its own axis at the clock's speed,
+    // so the Sun, Moon and stars stay put while the ground turns under them.
     state.spin = Math.min(1, state.spin + dt / 2.5);
-    globeQ.multiply(spinStep.setFromAxisAngle(UP, SPIN * state.spin * dt));
+    globeQ.multiply(spinStep.setFromAxisAngle(UP, 2 * Math.PI / DAY_SECONDS * state.spin * dt));
     state.spun = true;
   }
+  tickClock(now, dt, rest && !turn && !reduced);
+  look.quiet = clamp(look.quiet + (rest ? -dt / 1.2 : dt / .5), 0, 1);
   place(now);
   if (!renderer) return;
   globeGroup.quaternion.copy(globeQ);
-  planet.material.uniforms.uTime.value = reduced ? 0 : now / 1000;
-  starfield.rotation.y += dt * .002;
+  // The sky frame → the globe's frame: turn back by how far the Earth has turned.
+  skyQ.copy(globeQ).multiply(skyStep.setFromAxisAngle(UP, -gmst(clock.t)));
+  sky.quaternion.copy(skyQ);
+  sunW.fromArray(sunDir(clock.t)).applyQuaternion(skyQ);
+  moonSky.fromArray(moonDir(clock.t));
+  moonW.copy(moonSky).applyQuaternion(skyQ);
+  placeMoon();
+  placeSun();
+  const u = planet.material.uniforms;
+  u.uQuiet.value = look.quiet;
+  if (state.earthBorn) u.uReady.value = smooth(0, 1, (now - state.earthBorn) / 900);
+  if (stars) stars.material.uniforms.uBright.value = 1 - .45 * look.quiet;
   renderer.render(scene, camera);
+}
+
+// The Moon at its real direction, closer and bigger than life so it fits.
+// It steps aside (fades) rather than cover the Earth's face.
+function placeMoon() {
+  moon.position.copy(moonW).multiplyScalar(LOOK.moonAt);
+  moon.lookAt(world.position);
+  const across = Math.hypot(moonW.x, moonW.y) * LOOK.moonAt;
+  const inFront = moonW.z > 0 ? smooth(1.05, 1.3, across) : 1;
+  moon.material.uniforms.uAlpha.value = inFront * (1 - .4 * look.quiet);
+  moon.visible = inFront > .01;
+}
+
+// The Sun is far off screen: a soft glow at the stage's edge on its side.
+function placeSun() {
+  const el = $("sun-glow");
+  const across = Math.hypot(sunW.x, sunW.y);
+  const alpha = smooth(.08, .5, across) * (1 - .4 * look.quiet);
+  el.style.opacity = alpha.toFixed(3);
+  if (alpha < .01) return;
+  const frame = globeFrame();
+  const W = stage.clientWidth;
+  const H = stage.clientHeight;
+  const ux = sunW.x / across;
+  const uy = -sunW.y / across;
+  const tx = ux > 0 ? (W - frame.x) / ux : ux < 0 ? -frame.x / ux : Infinity;
+  const ty = uy > 0 ? (H - frame.y) / uy : uy < 0 ? -frame.y / uy : Infinity;
+  const t = Math.min(tx, ty);
+  el.style.transform = `translate3d(${(frame.x + ux * t).toFixed(1)}px, ${(frame.y + uy * t).toFixed(1)}px, 0) translate(-50%, -50%)`;
+}
+
+/* ---------- the clock: what moment the Earth shows ---------- */
+
+function tickClock(now, dt, lapsing) {
+  if (clock.back) {
+    const p = clamp((now - clock.back.started) / 1200, 0, 1);
+    const e = p * p * (3 - 2 * p);
+    clock.t = clock.back.from + (Date.now() - clock.back.from) * e;
+    if (p === 1) clock.back = null;
+  } else {
+    clock.rate = lapsing ? 1 + (LAPSE - 1) * state.spin : 1;
+    clock.t += dt * 1000 * clock.rate;
+  }
+  if (now - (clock.drawn || 0) > 250) {
+    clock.drawn = now;
+    drawClock();
+  }
+}
+
+const DAY_FMT = new Intl.DateTimeFormat(undefined, { weekday: "short", day: "numeric", month: "short" });
+const TIME_FMT = new Intl.DateTimeFormat(undefined, { hour: "2-digit", minute: "2-digit" });
+const ZONE = new Intl.DateTimeFormat(undefined, { timeZoneName: "short" })
+  .formatToParts(new Date()).find((part) => part.type === "timeZoneName")?.value || "";
+
+function drawClock() {
+  const shown = new Date(clock.t);
+  const fast = clock.rate > 2;
+  const live = !fast && Math.abs(clock.t - Date.now()) < 90000;
+  $("clock-day").textContent = `${DAY_FMT.format(shown)} ·`;
+  $("clock-time").textContent = TIME_FMT.format(shown);
+  $("clock-speed").textContent = fast ? `1 day ≈ ${DAY_SECONDS} s` : live ? "now" : "real speed";
+  $("clock").classList.toggle("fast", fast);
+  $("clock-now").hidden = live || !!clock.back;
+  if ($("sky-box").classList.contains("open")) drawSkyFacts();
+}
+
+function drawSkyFacts() {
+  const sun = overhead(sunDir(clock.t), clock.t);
+  const lit = Math.round(moonLit(clock.t) * 100);
+  const where = ({ lat, lon }) => `${Math.abs(lat).toFixed(0)}° ${lat >= 0 ? "N" : "S"}, ${Math.abs(lon).toFixed(0)}° ${lon >= 0 ? "E" : "W"}`;
+  $("sky-facts").replaceChildren(
+    node("p", "", `Showing ${DAY_FMT.format(new Date(clock.t))}, ${TIME_FMT.format(new Date(clock.t))} ${ZONE}.`),
+    node("p", "", `The Sun is straight overhead at ${where(sun)}. Day and night are where they really are.`),
+    node("p", "", `The Moon is ${lit}% lit, in its real direction; it is drawn closer and bigger than life so it fits.`),
+    node("p", "", "The stars are every star you can see with your eyes, at their real places."),
+  );
+}
+
+function drawSkyCredits() {
+  const list = $("sky-credits");
+  list.replaceChildren(...(state.earthLayers || []).map((layer) => {
+    const item = node("li", "");
+    item.append(node("strong", "", layer.what), node("span", "", ` ${layer.credit}, ${layer.years}. ${layer.licence}.`));
+    return item;
+  }));
+}
+
+function bindClock() {
+  $("clock").addEventListener("click", () => {
+    const box = $("sky-box");
+    const open = !box.classList.contains("open");
+    box.classList.toggle("open", open);
+    $("clock").setAttribute("aria-expanded", String(open));
+    if (open) drawSkyFacts();
+  });
+  $("clock-now").addEventListener("click", (event) => {
+    event.stopPropagation();
+    clock.back = { from: clock.t, started: performance.now() };
+  });
+  $("sky-close").addEventListener("click", () => {
+    $("sky-box").classList.remove("open");
+    $("clock").setAttribute("aria-expanded", "false");
+  });
 }
 boot().catch((error) => {
   console.error(error);

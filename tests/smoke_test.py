@@ -197,6 +197,23 @@ try:
         check("path traversal → 404", status == 404, f"got {status}")
         status, _ = get("/static/../server.py")
         check("static path traversal → 404", status == 404, f"got {status}")
+        status, _ = get("/earth/../../run.py")
+        check("earth path traversal → 404", status == 404, f"got {status}")
+
+        print("\n--- Earth pictures (server data folder, not in git) ---")
+        status, body = get("/earth/manifest.json")
+        if status == 404:
+            print("  [SKIP] no earth-data folder here (scripts/build_earth.py builds it)")
+        else:
+            manifest = json.loads(body) if status == 200 else {}
+            files = manifest.get("files", {})
+            check("earth: manifest lists the day, pack, stars and Moon files",
+                  all(key in files for key in ("day4096", "pack4096", "stars", "moon")), str(files))
+            check("earth: every layer names its credit and licence",
+                  all(layer.get("credit") and layer.get("licence") for layer in manifest.get("layers", [])))
+            for key in ("day4096", "stars"):
+                status, body = get(f"/earth/{files.get(key, 'missing')}")
+                check(f"earth: {key} served", status == 200 and len(body) > 1000, f"got {status}")
 
 finally:
     if proc:
