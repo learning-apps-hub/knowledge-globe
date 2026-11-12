@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Knowledge Globe — Explore preview</title>
 <!--
-  PREVIEW, not the viewer. One graph of points, nine questions, one centre.
+  PREVIEW, not the viewer. One graph of points, nine questions, one centre. Earth view only so far.
   Design: working files/ONE_GRAPH_DESIGN.md (vault). Served only by the LAN app
   at /explore; the Pages build does not copy this file.
 -->
@@ -132,8 +132,8 @@
   .tok.dot .face:hover { transform: scale(1.06); }
   .tok.peeked .face { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 45%, transparent), 0 0 34px var(--accent); }
   .tok.centre .face {
-    border-width: 1px; border-radius: 8px 8px 4px 4px;
-    box-shadow: 0 0 70px color-mix(in srgb, var(--accent) 26%, transparent), 0 34px 80px rgba(0, 0, 0, .55);
+    border-width: 3px;
+    box-shadow: 0 0 0 6px rgba(85, 228, 209, .16), 0 0 60px rgba(85, 228, 209, .5), 0 18px 40px rgba(0, 0, 0, .55);
   }
   .face img {
     position: absolute; inset: 0; width: 100%; height: 100%;
@@ -146,7 +146,7 @@
     font: 700 20px/1 "Manrope", sans-serif; letter-spacing: .02em;
   }
   .tok.has-photo .init { display: none; }
-  .tok.centre .init { font-size: 44px; padding-bottom: 20%; }
+  .tok.centre .init { font-size: 34px; }
   .cap {
     position: absolute; left: 50%; top: 100%;
     width: var(--capw, 150px); margin-top: 5px; transform: translateX(-50%);
@@ -158,17 +158,7 @@
     text-shadow: 0 1px 8px #000, 0 0 14px #000;
   }
   .cap small { display: none; }
-  .tok.centre .cap {
-    top: auto; bottom: 0; left: 0; width: 100%; margin: 0; transform: none;
-    padding: 34px 14px 12px; text-align: left;
-    border-radius: 0 0 4px 4px;
-    background: linear-gradient(180deg, rgba(4, 12, 18, 0) 0%, rgba(4, 12, 18, .93) 46%);
-  }
-  .tok.centre .cap strong { font-size: 17px; -webkit-line-clamp: 2; }
-  .tok.centre .cap small {
-    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-    margin-top: 4px; color: var(--ink-soft); font-size: 12px; line-height: 1.35;
-  }
+  .tok.centre .cap strong { font-size: 16px; }
 
   .q {
     position: absolute;
@@ -278,10 +268,8 @@
     .trail button { max-width: 104px; }
     .q { font-size: 10.5px; }
     .cap strong { font-size: 11.5px; }
-    .tok.centre .cap { padding: 26px 9px 8px; }
     .tok.centre .cap strong { font-size: 14px; }
-    .tok.centre .cap small { font-size: 11px; -webkit-line-clamp: 2; }
-    .tok.centre .init { font-size: 30px; }
+    .tok.centre .init { font-size: 26px; }
     .init { font-size: 15px; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -335,9 +323,9 @@ const KIND_COLOR = {
 // Every question has a fixed home. Up = bigger things, down = smaller things,
 // left = what comes before or feeds it, right = what follows from it.
 const HOMES = [
-  { key: "place.out", side: "up", slot: 0 },
-  { key: "inside.back", side: "up", slot: 1 },
-  { key: "kind.out", side: "up", slot: 2 },
+  { key: "place.out", side: "up" },
+  { key: "inside.back", side: "up" },
+  { key: "kind.out", side: "up" },
   { key: "time.back", side: "left" },
   { key: "need.out", side: "left" },
   { key: "effect.back", side: "left" },
@@ -348,13 +336,21 @@ const HOMES = [
   { key: "effect.out", side: "right" },
   { key: "who.back", side: "right" },
   { key: "happened.out", side: "right" },
-  { key: "place.back", side: "down", slot: 0 },
-  { key: "inside.out", side: "down", slot: 1 },
-  { key: "kind.back", side: "down", slot: 2 },
-  { key: "like.out", side: "down", slot: 3 },
+  { key: "place.back", side: "down" },
+  { key: "inside.out", side: "down" },
+  { key: "kind.back", side: "down" },
+  { key: "like.out", side: "down" },
 ];
-const ROW_SLOTS = { up: 3, down: 4 };
-const DOOR_RATIO = 424 / 300;
+// Earth view: the centre and its answers are pins on the globe's surface.
+// Each side of the centre owns a stretch of one ring around it; `turn` is the
+// direction the side's homes are listed in (-1 = clockwise on screen).
+const SIDES = {
+  up: { axis: 90, turn: -1 },
+  right: { axis: 0, turn: -1 },
+  down: { axis: 270, turn: 1 },
+  left: { axis: 180, turn: 1 },
+};
+const RING = 54;        // degrees from the centre pin to the ring of answers
 
 const $ = (id) => document.getElementById(id);
 const stage = $("stage");
@@ -531,46 +527,46 @@ function layout() {
   const answers = state.answers.get(state.centre);
   const shown = HOMES.filter((home) => answers.has(home.key));
 
-  const labelH = phone ? 30 : 34;
-  const nameH = phone ? 32 : 36;
-  let D = phone ? 58 : H < 640 ? 66 : 84;
-  const blockH = labelH + D + nameH;
-  const upY = phone ? 2 : 8;
-  const downY = H - blockH - (phone ? 6 : 14);
-  const midTop = upY + blockH + 6;
-  const midBot = downY - 6;
-  const cx = W / 2;
-  const cy = (midTop + midBot) / 2;
-  let dw = phone ? clamp(W * .37, 118, 176) : clamp(W * .24, 170, 300);
-  let dh = dw * DOOR_RATIO;
-  if (dh > midBot - midTop) { dh = midBot - midTop; dw = dh / DOOR_RATIO; }
-  const door = { x: cx - dw / 2, y: cy - dh / 2, w: dw, h: dh };
-  // On a phone the door is narrow, so the rows close in around it instead of
-  // sitting at the far edges of a tall screen.
-  const rowUp = phone ? Math.max(upY, door.y - blockH - 44) : upY;
-  const rowDown = phone ? Math.min(downY, door.y + dh + 44) : downY;
+  const labelH = phone ? 28 : 32;
+  const frame = globeFrame();
+  const cx = frame.x;
+  const cy = frame.y;
+  const R = frame.r;
+  const cd = clamp(R * (phone ? .46 : .42), 80, 190);
+  const door = { x: cx - cd / 2, y: cy - cd / 2, w: cd, h: cd };
+  const D = clamp(R * (phone ? .27 : .22), 44, 84);
+  const blockW = phone ? 104 : 168;
+  const gap = phone ? 42 : 32; // degrees between neighbours on the ring
 
-  const sideGap = phone ? (W - dw) / 4 : clamp((W - dw) / 4, 110, 220);
-  const blockW = phone ? (W - dw) / 2 - 8 : 176;
-  const rowW = phone ? W : Math.min(W, 920);
-
-  const blocks = [];
-  for (const side of ["left", "right"]) {
+  // Each home's own direction first, then neighbours are eased apart until
+  // their labels have room. The order around the centre never changes.
+  const spots = [];
+  for (const [side, { axis, turn }] of Object.entries(SIDES)) {
     const homes = shown.filter((home) => home.side === side);
-    const pitch = Math.min(blockH + (phone ? 2 : 16), (midBot - midTop) / Math.max(1, homes.length));
-    const size = clamp(pitch - labelH - nameH, 34, D);
+    const step = homes.length > 1 ? Math.min(gap, 84 / (homes.length - 1)) : 0;
     homes.forEach((home, i) => {
-      const top = cy - (pitch * homes.length) / 2 + i * pitch + (pitch - (labelH + size + nameH)) / 2;
-      const x = side === "left" ? door.x - sideGap : door.x + dw + sideGap;
-      blocks.push({ home, x, top, size, width: blockW });
+      spots.push({ home, az: (axis + turn * (i - (homes.length - 1) / 2) * step + 360) % 360 });
     });
   }
-  for (const side of ["up", "down"]) {
-    const pitch = rowW / ROW_SLOTS[side];
-    for (const home of shown.filter((item) => item.side === side)) {
-      const x = cx - rowW / 2 + pitch * (home.slot + .5);
-      blocks.push({ home, x, top: side === "up" ? rowUp : rowDown, size: D, width: Math.min(pitch - 16, 200) });
+  spots.sort((a, b) => a.az - b.az);
+  const room = Math.min(gap, 360 / Math.max(1, spots.length));
+  for (let pass = 0; pass < 40 && spots.length > 1; pass += 1) {
+    for (let i = 0; i < spots.length; i += 1) {
+      const a = spots[i];
+      const b = spots[(i + 1) % spots.length];
+      const apart = (b.az - a.az + 360) % 360 || 360;
+      if (apart < room) {
+        a.az -= (room - apart) / 2;
+        b.az += (room - apart) / 2;
+      }
     }
+  }
+  const blocks = [];
+  for (const { home, az } of spots) {
+    const spot = onGlobe(az, RING);
+    // Keep the label on the screen where the ring comes close to the edge.
+    const x = clamp(spot.x, blockW / 2 + 4, W - blockW / 2 - 4);
+    blocks.push({ home, x, top: spot.y - D / 2 - labelH, size: D, width: blockW });
   }
 
   // Tokens: reuse the element already showing a point, so it travels to its new home.
@@ -595,7 +591,7 @@ function layout() {
     el.classList.toggle("dot", !isCentre);
     el.classList.remove("peeked");
     el.style.zIndex = isCentre ? "1" : "2";
-    el.style.setProperty("--capw", `${item.width || 150}px`);
+    el.style.setProperty("--capw", `${item.width || 190}px`);
     el.querySelector(".face").style.setProperty("--accent", isCentre ? "#55e4d1" : KIND_COLOR[kindOf(item.slot)]);
     const point = state.points.get(item.id);
     el.querySelector(".face").setAttribute("aria-label", isCentre ? `${point.name}. Open its card.` : `${question(item.slot)} ${point.name}`);
@@ -661,15 +657,10 @@ function layout() {
   layout.timer = setTimeout(() => svg.classList.add("on"), reduced ? 0 : 520);
 }
 
-// Where the line from the door's middle to (x, y) leaves the door.
+// Where the line from the centre pin's middle to (x, y) leaves the pin.
 function doorEdge(door, cx, cy, x, y) {
-  const dx = x - cx;
-  const dy = y - cy;
-  const scale = Math.min(
-    dx ? (door.w / 2) / Math.abs(dx) : Infinity,
-    dy ? (door.h / 2) / Math.abs(dy) : Infinity,
-  );
-  return { x: cx + dx * scale, y: cy + dy * scale };
+  const reach = Math.hypot(x - cx, y - cy) || 1;
+  return { x: cx + (x - cx) * (door.w / 2 + 3) / reach, y: cy + (y - cy) * (door.w / 2 + 3) / reach };
 }
 
 /* ---------- the card: peek before go ---------- */
@@ -905,9 +896,7 @@ function bindUI() {
 let scene, camera, renderer, world, globeGroup, planet, starfield;
 let turn = null;
 let lastFrame = performance.now();
-const WORLD_Y = -1.5;
-const CAMERA_Z = 2.62;
-const TILT = 1.16;
+const FOV = 37;
 
 function texture() {
   const canvas = document.createElement("canvas");
@@ -940,14 +929,11 @@ function texture() {
 function initGlobe() {
   try {
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(37, 1, .1, 100);
-    camera.position.z = CAMERA_Z;
+    camera = new THREE.PerspectiveCamera(FOV, 1, .1, 100);
     renderer = new THREE.WebGLRenderer({ canvas: $("globe"), antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     world = new THREE.Group();
-    world.position.y = WORLD_Y;
-    world.rotation.x = -TILT;
     scene.add(world);
     globeGroup = new THREE.Group();
     world.add(globeGroup);
@@ -1042,6 +1028,15 @@ function initGlobe() {
   }
 }
 
+// Where the whole globe sits on the stage, in stage pixels.
+function globeFrame() {
+  const W = stage.clientWidth;
+  const H = stage.clientHeight;
+  const phone = W <= 680;
+  const r = Math.min(H * (phone ? .4 : .43), W * (phone ? .47 : .36));
+  return { x: W / 2, y: phone ? H * .47 : H * .5, r };
+}
+
 function resizeGlobe() {
   if (!renderer) return;
   const canvas = $("globe");
@@ -1050,7 +1045,44 @@ function resizeGlobe() {
   if (!width || !height) return;
   renderer.setSize(width, height, false);
   camera.aspect = width / height;
+  // Pull the camera back until the globe is `frame.r` pixels across, then
+  // slide the globe so its middle is the middle of the stage.
+  const frame = globeFrame();
+  const half = Math.tan(THREE.MathUtils.degToRad(FOV / 2));
+  const t = frame.r * 2 * half / height;
+  camera.position.z = Math.sqrt(1 + t * t) / t;
   camera.updateProjectionMatrix();
+  camera.updateMatrixWorld();
+  const perPx = 2 * camera.position.z * half / height;
+  const box = canvas.getBoundingClientRect();
+  const at = stage.getBoundingClientRect();
+  world.position.set(
+    (at.left + frame.x - (box.left + width / 2)) * perPx,
+    -(at.top + frame.y - (box.top + height / 2)) * perPx,
+    0,
+  );
+  world.updateMatrixWorld();
+}
+
+// A spot on the globe's surface, `far` degrees from the centre pin in the
+// screen direction `az` (0 = right, 90 = up), as stage pixels.
+function onGlobe(az, far) {
+  const a = THREE.MathUtils.degToRad(az);
+  const f = THREE.MathUtils.degToRad(far);
+  const frame = globeFrame();
+  if (!renderer) {
+    return { x: frame.x + frame.r * Math.sin(f) * Math.cos(a), y: frame.y - frame.r * Math.sin(f) * Math.sin(a) };
+  }
+  const canvas = $("globe");
+  const box = canvas.getBoundingClientRect();
+  const at = stage.getBoundingClientRect();
+  const v = new THREE.Vector3(Math.sin(f) * Math.cos(a), Math.sin(f) * Math.sin(a), Math.cos(f))
+    .add(world.position)
+    .project(camera);
+  return {
+    x: (v.x + 1) / 2 * box.width + box.left - at.left,
+    y: (1 - v.y) / 2 * box.height + box.top - at.top,
+  };
 }
 
 // Every point keeps one place on the globe (from its id), so the globe turns
