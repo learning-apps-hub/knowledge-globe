@@ -258,6 +258,22 @@
     }
     .shot { aspect-ratio: 16 / 8; }
   }
+  .tap-hint { display: none; }
+  @media (max-width: 680px) {
+    /* A low, compact sheet: the globe above stays free to tap. */
+    .panel { max-height: 31%; }
+    .panel-body { padding: 8px 16px calc(12px + env(safe-area-inset-bottom)); }
+    .panel-kicker { margin: 0 44px 6px 0; font-size: 9.5px; }
+    .shot { float: left; width: 76px; aspect-ratio: 1; margin: 0 12px 6px 0; border-radius: 10px; }
+    .shot figcaption { display: none; }
+    .panel h2 { font-size: 18px; margin-bottom: 3px; }
+    .panel .lead { font-size: 13.5px; line-height: 1.35; margin-bottom: 8px; }
+    .why { clear: both; margin-bottom: 8px; padding: 7px 10px; font-size: 13px; }
+    .actions .go { display: none; }
+    .tap-hint { display: block; clear: both; margin: 0 0 6px; }
+    .actions { margin: 0 0 8px; }
+    .actions .btn { min-height: 40px; }
+  }
   @media (max-width: 680px) {
     .app { grid-template-rows: 54px 34px minmax(0, 1fr); }
     .top { padding: 0 16px; gap: 8px; }
@@ -508,6 +524,11 @@ function makeTok(point) {
   el.querySelector(".face").addEventListener("click", () => {
     if (el.dataset.slot === "centre") showCard(point.id);
     else peekAt(point.id, el.dataset.slot);
+  });
+  el.querySelector(".face").addEventListener("dblclick", () => {
+    if (el.dataset.slot === "centre") return;
+    $("panel").classList.remove("open");
+    go(point.id);
   });
   const img = el.querySelector("img");
   visualFor(point).then((visual) => {
@@ -763,6 +784,7 @@ function peekAt(id, key) {
     body.append(why);
   }
   const actions = node("div", "actions");
+  body.append(node("p", "hint tap-hint", "Double-tap the pin to go there."));
   const goBtn = node("button", "btn go", "Go there");
   goBtn.type = "button";
   goBtn.addEventListener("click", () => { $("panel").classList.remove("open"); go(id); });
@@ -1034,7 +1056,7 @@ function globeFrame() {
   const H = stage.clientHeight;
   const phone = W <= 680;
   const r = Math.min(H * (phone ? .4 : .43), W * (phone ? .47 : .36));
-  return { x: W / 2, y: phone ? H * .47 : H * .5, r };
+  return { x: W / 2, y: phone ? H * .36 : H * .5, r };
 }
 
 function resizeGlobe() {
