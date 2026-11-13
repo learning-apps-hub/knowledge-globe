@@ -189,6 +189,13 @@ try:
             check("graph: every start point exists", all(start in ids for start in graph["starts"]))
             check("graph: each kind carries a question for both ends",
                   all(kind.get("out") and kind.get("back") for kind in graph["kinds"].values()))
+            pinned = [point["visual"] for point in graph["points"] if isinstance(point.get("visual"), dict)]
+            check("graph: every pinned picture is a Wikimedia file with its page, credit and licence",
+                  all(v.get("src", "").startswith(("https://upload.wikimedia.org/", "https://thumb.wikimedia.org/"))
+                      and v.get("page", "").startswith("https://commons.wikimedia.org/wiki/File:")
+                      and v.get("credit") and v.get("licence") for v in pinned))
+            check("graph: a kind topic still has no picture",
+                  all(point.get("visual") is False for point in graph["points"] if point["id"].startswith("kind-")))
             shaped = [point for point in graph["points"] if point.get("shape")]
             if shaped:
                 shapes = {"pin": {"lat", "lon"}, "line": None, "area": None}

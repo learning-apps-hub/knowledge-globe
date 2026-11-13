@@ -12,6 +12,7 @@ import os
 from . import geography, subjects
 
 EXTRA_PATH = os.path.join(os.path.dirname(subjects.DATA_DIR), "graph_extra.json")
+VISUALS_PATH = os.path.join(os.path.dirname(subjects.DATA_DIR), "visuals.json")
 
 # One link kind = one question from each end. `out` is asked on the link's
 # `from` point, `back` on its `to` point. `like` and `next` read the same both ways (out == back).
@@ -34,11 +35,21 @@ class GraphError(Exception):
     pass
 
 
-def build(geo=None):
+def _visuals():
+    """{topic id: picture} pinned by scripts/build_visuals.py (each topic's Wikidata image), or {}."""
+    try:
+        with open(VISUALS_PATH, encoding="utf-8") as fh:
+            return json.load(fh).get("visuals", {})
+    except (OSError, ValueError):
+        return {}
+
+
+def build(geo=None, visuals=None):
     """Return {"kinds", "starts", "points", "links"}.
 
     `geo` is the geography JSON from the Earth data folder (geography.load); without it there are no
-    geography topics, only the hand-written extras that stand on their own.
+    geography topics, only the hand-written extras that stand on their own. `visuals` is the pinned
+    pictures (default: `data/visuals.json`); a topic without one is searched for by name in the viewer.
     """
     points = {}
     links = []
@@ -94,6 +105,10 @@ def build(geo=None):
     if shared:
         raise GraphError(f"a who-answer is shared by several topics: {shared}")
     starts = [i for i in extra.get("starts", []) if i in points]
+    for point_id, visual in (_visuals() if visuals is None else visuals).items():
+        # A topic that says "no picture" (a kind: visual False) keeps saying so.
+        if point_id in points and "visual" not in points[point_id] and visual.get("src"):
+            points[point_id]["visual"] = {k: visual[k] for k in ("src", "page", "credit", "licence") if k in visual}
 
     return {
         "kinds": LINK_KINDS,
