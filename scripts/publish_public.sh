@@ -3,10 +3,9 @@
 # Publish the public Knowledge Globe site.
 #
 # The `public` branch is a DERIVED ARTIFACT, rebuilt from `main` on every
-# release. It is never hand-edited and never merged back — that is what keeps
-# a long-lived divergent branch from drifting. Private subject maps under
-# data/subjects/private/ are stripped here, so they exist only in the private
-# repo and on the LAN server.
+# release. It is never hand-edited and never merged back. The derived branch
+# also carries the credited Earth bundle needed by the Pages build; the large
+# source pictures remain server-only.
 #
 # Usage: scripts/publish_public.sh [--yes]
 #
@@ -56,13 +55,12 @@ echo
 python3 - <<'PY'
 import sys
 sys.path.insert(0, ".")
-from app import subjects
+from app import geography, graph, subjects
+from scripts.build_pages import EXTERNAL_EARTH_DIR
 
-public = subjects.list_subjects(include_private=False)
 private = sorted(subjects.private_ids())
-print(f"PUBLISHING {len(public)} subject(s) to the public site:")
-for summary in public:
-    print(f"  + {summary['id']:<28} {summary['title']}")
+snapshot = graph.build(geography.load(str(EXTERNAL_EARTH_DIR)))
+print(f"PUBLISHING Explore with {len(snapshot['points'])} topics and {len(snapshot['links'])} links")
 print(f"WITHHELD {len(private)} private subject(s):")
 for subject_id in private:
     print(f"  - {subject_id}")
@@ -80,9 +78,22 @@ fi
 git checkout --quiet -B public "$SOURCE_BRANCH"
 # Not --cached: leaving the files on disk untracked blocks the checkout back.
 git rm -r --quiet --ignore-unmatch data/subjects/private/
-if ! git diff --cached --quiet; then
-  git commit --quiet -m "public: exclude private subjects"
-fi
+rm -rf earth-data/derived
+mkdir -p earth-data/derived
+python3 - <<'PY'
+import json
+import shutil
+from pathlib import Path
+from scripts.build_pages import EXTERNAL_EARTH_DIR
+
+target = Path("earth-data/derived")
+manifest = json.loads((EXTERNAL_EARTH_DIR / "manifest.json").read_text(encoding="utf-8"))
+shutil.copy2(EXTERNAL_EARTH_DIR / "manifest.json", target / "manifest.json")
+for name in sorted(set(manifest["files"].values())):
+    shutil.copy2(EXTERNAL_EARTH_DIR / name, target / name)
+PY
+git add earth-data/derived
+git commit --quiet -m "public: prepare static Explore release"
 
 # Force-push is correct: the org repo's main is a published mirror of a derived
 # branch, not a place where work happens.

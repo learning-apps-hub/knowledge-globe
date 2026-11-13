@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Verify the generated GitHub Pages artifact is complete and self-contained."""
+"""Verify the generated GitHub Pages Explore artifact is complete and safe."""
 import json
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -10,6 +11,7 @@ SITE = ROOT / "_site"
 sys.path.insert(0, str(ROOT))
 
 from app import subjects  # noqa: E402
+from scripts.build_pages import _assert_no_private  # noqa: E402
 
 
 def require(condition, message):
@@ -23,24 +25,26 @@ require(
     'from "./static/vendor/three.module.min.js"' in index,
     "Three.js import is not Pages-relative",
 )
-require("./data/subjects/index.json" in index, "static subject index is not wired")
+require("./data/graph.json" in index, "static graph snapshot is not wired")
 require((SITE / ".nojekyll").is_file(), ".nojekyll is missing")
 require(
     (SITE / "static" / "vendor" / "three.module.min.js").is_file(),
     "Three.js bundle is missing",
 )
 
-listing = json.loads((SITE / "data" / "subjects" / "index.json").read_text())
-require(listing, "subject listing is empty")
-for summary in listing:
-    path = SITE / "data" / "subjects" / f"{summary['id']}.json"
-    require(path.is_file(), f"subject file is missing: {summary['id']}")
-    subject = json.loads(path.read_text())
-    require(subject["id"] == summary["id"], f"subject id mismatch: {summary['id']}")
-    require(
-        all("zoom_level" in node for node in subject["nodes"]),
-        f"derived zoom levels are missing: {summary['id']}",
-    )
+graph = json.loads((SITE / "data" / "graph.json").read_text())
+require(len(graph.get("points", [])) >= 500, "static graph is incomplete")
+require(len(graph.get("links", [])) >= 2000, "static graph links are incomplete")
+require(graph.get("starts"), "static graph has no starting points")
+
+manifest = json.loads((SITE / "earth" / "manifest.json").read_text())
+require(manifest.get("layers"), "Earth credits are missing")
+require(
+    all(layer.get("credit") and layer.get("licence") for layer in manifest["layers"]),
+    "an Earth layer is missing its credit or licence",
+)
+for name in manifest.get("files", {}).values():
+    require((SITE / "earth" / name).is_file(), f"Earth asset is missing: {name}")
 
 require(
     not any(path.is_symlink() for path in SITE.rglob("*")),
@@ -54,21 +58,28 @@ require(
     not (SITE / "data" / "subjects" / "private").exists(),
     "private subject directory is present in the artifact",
 )
-published_ids = {summary["id"] for summary in listing}
-require(
-    not (withheld & published_ids),
-    f"private subjects are listed publicly: {sorted(withheld & published_ids)}",
-)
-for generated in [SITE / "index.html", *(SITE / "data" / "subjects").glob("*.json")]:
+for generated in [path for path in SITE.rglob("*") if path.is_file() and path.suffix in {".html", ".json", ".js"}]:
     text = generated.read_text(encoding="utf-8")
     for subject_id in sorted(withheld):
         require(
             subject_id not in text,
-            f"private subject {subject_id!r} appears in {generated.name}",
+            f"private subject {subject_id!r} appears in {generated}",
         )
 
+# Keep the private-content assertion non-vacuous even when the private folder is
+# empty: prove the scanner rejects a canary id placed in generated output.
+with tempfile.TemporaryDirectory() as directory:
+    probe = Path(directory)
+    (probe / "index.html").write_text("private-leak-canary", encoding="utf-8")
+    try:
+        _assert_no_private(probe, {"private-leak-canary"})
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("private-content scanner did not reject its leak canary")
+
 print(
-    f"GitHub Pages artifact verified: {len(listing)} subjects, "
-    f"{len(withheld)} private withheld"
+    f"GitHub Pages artifact verified: {len(graph['points'])} topics, "
+    f"{len(graph['links'])} links, {len(withheld)} private ids withheld"
 )
 sys.exit(0)
