@@ -14,7 +14,8 @@ from . import geography, subjects
 EXTRA_PATH = os.path.join(os.path.dirname(subjects.DATA_DIR), "graph_extra.json")
 
 # One link kind = one question from each end. `out` is asked on the link's
-# `from` point, `back` on its `to` point. `like` reads the same both ways.
+# `from` point, `back` on its `to` point. `like` and `next` read the same both ways (out == back).
+# `next` (neighbours) added 2026-11-13, Owner's yes: a real link that fits none of the other nine.
 LINK_KINDS = {
     "time": {"out": "What does it become?", "back": "What was it before?"},
     "inside": {"out": "What is inside it?", "back": "What does it belong to?"},
@@ -25,6 +26,7 @@ LINK_KINDS = {
     "kind": {"out": "What kind of thing is it?", "back": "What kinds are there?"},
     "who": {"out": "Who made, found or leads it?", "back": "What did they make, find or lead?"},
     "happened": {"out": "What happened to it?", "back": "What was part of this?"},
+    "next": {"out": "What is next to it?", "back": "What is next to it?"},
 }
 
 

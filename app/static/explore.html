@@ -271,6 +271,7 @@
   .sources { margin: 14px 0 0; padding: 0; list-style: none; font-size: 12px; }
   .sources a { color: var(--ink-soft); }
   .hint { color: var(--ink-dim); font-size: 12px; }
+  .earth-link { display: inline-block; margin: 0 0 12px; color: var(--ink-soft); font-size: 13px; }
   .close { display: none; }
 
   @media (max-width: 1040px) {
@@ -440,11 +441,11 @@
 import * as THREE from "./static/vendor/three.module.min.js";
 import { SIDEREAL_DAY, fromRaDec, gmst, moonDir, moonLit, overhead, starColor, sunDir } from "./static/sky.js";
 
-// The nine link kinds. Each is one question from each end; `out` is asked on
+// The ten link kinds. Each is one question from each end; `out` is asked on
 // the link's `from` point and `back` on its `to` point (see app/graph.py).
 const KIND_COLOR = {
   time: "#bd86ff", inside: "#55e4d1", place: "#38bdf8", need: "#64a8ff", effect: "#ff8b62",
-  like: "#a9bcc6", kind: "#ffd57a", who: "#ffad5d", happened: "#65e696",
+  like: "#a9bcc6", kind: "#ffd57a", who: "#ffad5d", happened: "#65e696", next: "#e9a6c8",
 };
 // Every question has a fixed home. Up = bigger things, down = smaller things,
 // left = what comes before or feeds it, right = what follows from it.
@@ -466,6 +467,7 @@ const HOMES = [
   { key: "inside.out", side: "down" },
   { key: "kind.back", side: "down" },
   { key: "like.out", side: "down" },
+  { key: "next.out", side: "down" },
 ];
 // Earth view: the questions and their answers sit on the question ring, a
 // flat ring on the screen around the globe. Each side owns a stretch of it;
@@ -526,9 +528,10 @@ async function boot() {
     if (!map.get(key).some((a) => a.id === other)) map.get(key).push({ id: other, why: link.why, mark: link.mark });
   };
   for (const link of graph.links) {
-    if (link.kind === "like") {
-      put(link.from, "like.out", link.to, link);
-      put(link.to, "like.out", link.from, link);
+    const both = state.kinds[link.kind]?.out === state.kinds[link.kind]?.back;   // like, next: same both ways
+    if (both) {
+      put(link.from, `${link.kind}.out`, link.to, link);
+      put(link.to, `${link.kind}.out`, link.from, link);
     } else {
       put(link.from, `${link.kind}.out`, link.to, link);
       put(link.to, `${link.kind}.back`, link.from, link);
@@ -576,6 +579,7 @@ function plain(value) {
   return box.textContent.trim();
 }
 function visualFor(point) {
+  if (point.visual === false) return Promise.resolve(null);   // no photo fits (a kind: "Country", "Ocean")
   if (point.visual?.src) return Promise.resolve(point.visual);
   if (visuals.has(point.id)) return visuals.get(point.id);
   const task = queued(async () => {
@@ -680,16 +684,34 @@ function makeTok(point) {
 function isSet(list) {
   return list.length > 1 && list.every((a) => state.points.get(a.id)?.at);
 }
+// What a located topic is, for counting: [one, many].
+function sortOf(p) {
+  if (p.shape === "pin") return p.id.endsWith("-pole") ? ["pole", "poles"] : ["city", "cities"];
+  if (p.shape === "line") return ["line", "lines"];
+  if (p.where?.hemisphere) return ["hemisphere", "hemispheres"];
+  if (p.where?.ocean) return ["ocean", "oceans"];
+  if (p.status === "country") return ["country", "countries"];
+  if (p.status) return ["territory", "territories"];
+  return ["continent", "continents"];
+}
 function setWords(list) {
   const points = list.map((a) => state.points.get(a.id));
   if (points.length <= 3) return points.map((p) => p.name).join(" · ");
-  const n = points.length;
-  if (points.every((p) => p.shape === "pin" && !p.id.endsWith("-pole"))) return `${n} cities`;
-  if (points.every((p) => p.shape === "area" && p.status)) {
-    return points.every((p) => p.status === "country") ? `${n} countries` : `${n} countries and territories`;
+  const counts = new Map();
+  for (const p of points) {
+    const [one, many] = sortOf(p);
+    const kind = one === "territory" || one === "country" ? "land" : one;
+    const entry = counts.get(kind) || { n: 0, one, many, mixed: false, name: p.name };
+    if (entry.n && entry.one !== one) entry.mixed = true;
+    entry.n += 1;
+    counts.set(kind, entry);
   }
-  if (points.every((p) => p.shape === "line")) return `${n} lines`;
-  return `${n} topics`;
+  // "59 countries and territories" stays one phrase; different sorts are joined: "5 continents · 158 countries".
+  const words = [...counts.values()].sort((a, b) => b.n - a.n).map((e) => {
+    if (e.mixed) return `${e.n} countries and territories`;
+    return e.n === 1 ? e.name : `${e.n} ${e.many}`;
+  });
+  return words.slice(0, 3).join(" · ");
 }
 function makeSet(id, slot, list) {
   const el = document.createElement("div");
@@ -1045,6 +1067,15 @@ function cardInto(body, point) {
   });
   body.append(node("h2", "", point.name));
   if (point.line) body.append(node("p", "lead", point.line));
+  if (point.shape === "pin" && Number.isFinite(point.where?.lat)) {
+    // Close up, in 3D and at street level: Google Earth, outside this app (Owner, 2026-11-13: tier A + link).
+    const { lat, lon } = point.where;
+    const out = node("a", "earth-link", "See it close up in Google Earth ↗");
+    out.href = `https://earth.google.com/web/@${lat},${lon},0a,${Math.abs(lat) > 89 ? 3000000 : 20000}d,35y,0h,0t,0r`;
+    out.target = "_blank";
+    out.rel = "noopener noreferrer";
+    body.append(out);
+  }
   if (point.stub) body.append(node("p", "hint", "Only a name so far. This point is waiting for its own answers."));
 }
 
@@ -1363,6 +1394,7 @@ const PLANET_FRAG = `
   // globe), 1 the current topic, 2 what it holds (the answers below), 3 the answer you are looking at. The area picture
   // (red/green = country code, blue = ocean) is looked up in a table: one channel per layer.
   uniform sampler2D uAreas;
+  uniform vec2 uAreaSize;     // the area picture's size: 4096 x 2048, or 8192 x 4096 once zoomed in
   uniform sampler2D uLit;
   uniform float uLitDash;     // layer 1 only: a disputed area's dashed edge
   uniform vec4 uLayerAmt;     // each layer's fade
@@ -1459,7 +1491,7 @@ const PLANET_FRAG = `
     // Light-up: what was chosen glows, bright edge and a soft fill. Drawn after the dimming, so it pops.
     if (dot(uLayerAmt, vec4(1.0)) > 0.001) {
       // Edges about 1.5 screen pixels wide at any zoom (never under half a pixel of the area picture).
-      vec2 px = max(fwidth(vUv) * 1.5, vec2(0.5 / 4096.0, 0.5 / 2048.0));
+      vec2 px = max(fwidth(vUv) * 1.5, 0.5 / uAreaSize);
       float c0 = areaAt(vUv);
       float cE = areaAt(vUv + vec2(px.x, 0.0));
       float cW = areaAt(vUv - vec2(px.x, 0.0));
@@ -1470,7 +1502,7 @@ const PLANET_FRAG = `
       vec4 outer = max(max(abs(lE - l0), abs(lW - l0)), max(abs(lN - l0), abs(lS - l0)));
       vec4 inner = max(max(step(0.5, abs(cE - c0)) * max(lE, l0), step(0.5, abs(cW - c0)) * max(lW, l0)),
                        max(step(0.5, abs(cN - c0)) * max(lN, l0), step(0.5, abs(cS - c0)) * max(lS, l0)));
-      float dash = mix(1.0, step(0.5, fract((vUv.x * 4096.0 + vUv.y * 2048.0) / 10.0)), uLitDash);
+      float dash = mix(1.0, step(0.5, fract((vUv.x * 4096.0 + vUv.y * 2048.0) / 10.0)), uLitDash);   // 4096: same dash at any picture size
       float lat = asin(clamp(p.y, -1.0, 1.0));
       float lon = atan(p.x, p.z);
       float wLat = fwidth(p.y) / max(cos(lat), 0.05);
@@ -1698,7 +1730,8 @@ function initGlobe() {
         uGlint: { value: LOOK.glint }, uRim: { value: LOOK.rim },
         uQuietDim: { value: LOOK.quietDim }, uQuietGrey: { value: LOOK.quietGrey },
         uQuietClouds: { value: LOOK.quietClouds },
-        uAreas: { value: null }, uLit: { value: litTable }, uLitDash: { value: 0 },
+        uAreas: { value: null }, uAreaSize: { value: new THREE.Vector2(4096, 2048) },
+        uLit: { value: litTable }, uLitDash: { value: 0 },
         uLayerAmt: { value: new THREE.Vector4() },
         uCol: { value: [0, 1, 2, 3].map(() => new THREE.Color(HERE_COLOR)) },
         uStyle: { value: LAYER_STYLE.map((st) => new THREE.Vector4(...st)) },
@@ -1790,7 +1823,9 @@ async function loadEarth() {
         tex.magFilter = THREE.NearestFilter;
         tex.minFilter = THREE.NearestFilter;
         tex.generateMipmaps = false;
+        if (planet.material.uniforms.uAreaSize.value.x > tex.image.width) return tex.dispose();   // sharp one won
         planet.material.uniforms.uAreas.value = tex;
+        planet.material.uniforms.uAreaSize.value.set(tex.image.width, tex.image.height);
         lit.dirty = true;   // light the current topic now that the picture is here
       }, undefined, (error) => console.warn("Area picture did not load.", error));
     }
@@ -1908,7 +1943,42 @@ function setZoom(value) {
   view.zoomAnim = null;
   if (Math.abs(next - view.zoom) < 1e-4) return;
   view.zoom = next;
+  if (next > SHARP_AT) loadSharp();
   applyCamera();
+}
+
+// Zoomed in, the 4096 pictures go soft: swap in the 8192 day picture and area picture, once, only on a device
+// that can hold them (tier A, Owner 2026-11-13). Never on the first look: a phone that never zooms never pays.
+const SHARP_AT = 1.6;
+let sharpAsked = false;
+function loadSharp() {
+  const files = state.earthFiles;
+  if (sharpAsked || !files || !planet?.material.uniforms.uDay.value) return;   // after the first pictures
+  if (renderer.capabilities.maxTextureSize < 8192) return;
+  sharpAsked = true;
+  const loader = new THREE.TextureLoader();
+  if (files.day8192) {
+    loader.load(`./earth/${files.day8192}`, (tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+      const old = planet.material.uniforms.uDay.value;
+      planet.material.uniforms.uDay.value = tex;
+      if (old && old !== tex) old.dispose();
+    }, undefined, (error) => console.warn("Sharp day picture did not load.", error));
+  }
+  if (files.areas8192) {
+    loader.load(`./earth/${files.areas8192}`, (tex) => {
+      tex.colorSpace = THREE.NoColorSpace;
+      tex.magFilter = THREE.NearestFilter;
+      tex.minFilter = THREE.NearestFilter;
+      tex.generateMipmaps = false;
+      const old = planet.material.uniforms.uAreas.value;
+      planet.material.uniforms.uAreas.value = tex;
+      planet.material.uniforms.uAreaSize.value.set(tex.image.width, tex.image.height);
+      if (old && old !== tex) old.dispose();
+      lit.dirty = true;
+    }, undefined, (error) => console.warn("Sharp area picture did not load.", error));
+  }
 }
 
 // A spot in the globe's own frame → stage pixels, and how squarely it faces
@@ -2224,6 +2294,7 @@ function animate(now) {
   if (view.zoomAnim) {
     const p = Math.min(1, (now - view.zoomAnim.started) / 600);
     view.zoom = view.zoomAnim.from + (view.zoomAnim.to - view.zoomAnim.from) * (1 - Math.pow(1 - p, 3));
+    if (view.zoom > SHARP_AT) loadSharp();
     if (p === 1) view.zoomAnim = null;
     applyCamera();
   }

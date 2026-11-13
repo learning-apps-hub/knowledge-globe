@@ -374,6 +374,8 @@ def _write_manifest(out_dir, files):
 # ---------- geography: countries, oceans, lines, cities ----------
 
 AREA_W, AREA_H = 4096, 2048
+AREA_BIG = 8192        # a sharper copy of the area picture, for zoomed-in light-up edges (tier A, 2026-11-13)
+GEO_VERSION = "v2"     # geo JSON and area pictures; v2 = 2026-11-13 (all-questions build)
 TINY_PIXELS = 64      # an area drawn smaller than this gets a ring marker as well as its outline
 OCEANS = [(1, "Pacific Ocean", ("North Pacific Ocean", "South Pacific Ocean")),
           (2, "Atlantic Ocean", ("North Atlantic Ocean", "South Atlantic Ocean")),
@@ -399,6 +401,95 @@ OWN_GOVERNMENT = {
 }
 UN_OBSERVER_OR_ODD = {"Palestine", "Israel", "Vatican", "Norway"}   # sovereign, though a field says otherwise
 
+# Natural Earth v5.1.2 gives the Spratly Islands the English name "Wake Island" (a real, different island, which
+# Natural Earth keeps inside the US Minor Outlying Islands). Found 2026-11-13.
+NAME_FIX = {"Spratly Is.": "Spratly Islands"}
+
+# Names that read with "the" in a sentence ("Belongs to the Netherlands").
+THE = {"United Kingdom", "United States of America", "Netherlands", "Philippines", "Bahamas", "Gambia",
+       "Maldives", "Czech Republic", "Central African Republic", "Dominican Republic", "United Arab Emirates",
+       "Comoros", "Marshall Islands", "Solomon Islands", "Seychelles", "Democratic Republic of the Congo",
+       "Republic of the Congo", "People's Republic of China", "Falkland Islands", "Faroe Islands",
+       "Cayman Islands", "British Virgin Islands", "United States Virgin Islands", "Turks and Caicos Islands",
+       "Cook Islands", "Pitcairn Islands", "Northern Mariana Islands", "Federated States of Micronesia",
+       "Spratly Islands", "Cocos (Keeling) Islands", "Åland Islands", "Isle of Man", "Vatican",
+       "French Southern and Antarctic Lands", "Heard Island and McDonald Islands", "Southern Patagonian Ice Field",
+       "Siachen Glacier", "United Nations Buffer Zone in Cyprus", "Turkish Republic of Northern Cyprus",
+       "United States Minor Outlying Islands", "British Indian Ocean Territory", "Sahrawi Arab Democratic Republic",
+       "Guantanamo Bay Naval Base", "Akrotiri Sovereign Base Area", "Dhekelia Cantonment",
+       "South Georgia and the South Sandwich Islands", "Bajo Nuevo Bank", "Serranilla Bank", "Scarborough Shoal"}
+
+
+def _the(name):
+    return f"the {name}" if name in THE else name
+
+
+# Disputed and leased areas, by Natural Earth NAME: (status, the card's sentence, the country it belongs to on
+# the ground, or None). Only the country that actually runs it gets a "What does it belong to?" link; the other
+# claimants are named in the sentence, never drawn as owners (Owner, 2026-11-13: follow the recommendation).
+# Facts as of November 2026 -- re-read when a dispute moves (BIOT: 2025 UK-Mauritius treaty).
+DISPUTES = {
+    "Baikonur": ("leased", "Kazakhstan rents this land to Russia, which runs a space launch site here.",
+                 "Kazakhstan", "Kazakhstan rents it to Russia."),
+    "USNB Guantanamo Bay": ("disputed", "Cuba rents this land to the United States, which runs a naval base here. "
+                            "Cuba says the lease is not valid and wants it back.",
+                            "Cuba", "Cuba rents it to the United States, and wants it back."),
+    "Gibraltar": ("disputed", "Governed by the United Kingdom. Spain also claims it.",
+                  "United Kingdom", "The United Kingdom governs it. Spain also claims it."),
+    "Falkland Is.": ("disputed", "Governed by the United Kingdom. Argentina also claims the islands, which it calls "
+                     "the Islas Malvinas.", "United Kingdom",
+                     "The United Kingdom governs it. Argentina also claims it."),
+    "Br. Indian Ocean Ter.": ("disputed", "Governed by the United Kingdom. Mauritius claims these islands, and in "
+                              "2025 the two countries signed a treaty to hand them to Mauritius, with the UK "
+                              "keeping a military base on Diego Garcia.", "United Kingdom",
+                              "The United Kingdom governs it. Mauritius claims it."),
+    "Siachen Glacier": ("disputed", "A high mountain glacier. India controls it; Pakistan also claims it. Their "
+                        "armies have faced each other here since 1984.", "India",
+                        "India controls it. Pakistan also claims it."),
+    "Southern Patagonian Ice Field": ("disputed", "A great ice field on the border of Chile and Argentina. In 1998 "
+                                      "they agreed how to divide most of it, but part of the line is still not "
+                                      "drawn.", None, ""),
+    "Brazilian I.": ("disputed", "A small river island where Brazil, Uruguay and Argentina meet. Brazil governs "
+                     "it; Uruguay also claims it.", "Brazil", "Brazil governs it. Uruguay also claims it."),
+    "Bir Tawil": ("disputed", "Land between Egypt and Sudan that neither country claims: each claims a different "
+                  "piece of land next to it instead.", None, ""),
+    "Cyprus U.N. Buffer Zone": ("disputed", "A strip between the north and the south of Cyprus, patrolled by "
+                                "United Nations peacekeepers since 1974.", "Cyprus",
+                                "Cyprus counts it as part of Cyprus. UN peacekeepers patrol it."),
+    "Spratly Is.": ("disputed", "Small reefs and islands in the South China Sea. China, Taiwan, Vietnam, "
+                    "Malaysia, the Philippines and Brunei claim some or all of them, and several hold some.",
+                    None, ""),
+    "Scarborough Reef": ("disputed", "A reef in the South China Sea. China, the Philippines and Taiwan all claim "
+                         "it; China has kept ships there since 2012.", None, ""),
+    "Bajo Nuevo Bank": ("disputed", "A small reef in the Caribbean Sea, run by Colombia. The United States also "
+                        "claims it.", "Colombia", "Colombia runs it. The United States also claims it."),
+    "Serranilla Bank": ("disputed", "A small reef in the Caribbean Sea, run by Colombia. The United States also "
+                        "claims it.", "Colombia", "Colombia runs it. The United States also claims it."),
+}
+
+
+# Natural Earth (default view) draws the part of Western Sahara that Morocco holds inside Morocco's polygon, and
+# "W. Sahara" as only the strip east of the sand wall. The territory's northern border is the line 27 deg 40' N,
+# so every Morocco pixel south of it is drawn as Western Sahara: choosing it lights the whole territory, as its
+# card sentence says (found 2026-11-13).
+SAHARA_NORTH = 27 + 40 / 60
+
+
+def _whole_sahara(codes, features, np):
+    names = [f["properties"]["NAME"] for f in features]
+    morocco, sahara = names.index("Morocco") + 1, names.index("W. Sahara") + 1
+    height, width = codes.shape
+    lat = 90.0 - (np.arange(height) + .5) * 180.0 / height
+    south = (lat < SAHARA_NORTH)[:, None] & (codes == morocco)
+    codes[south] = sahara
+    return codes
+
+
+def _tilt(year):
+    """The Earth's axial tilt in degrees for a year (IAU 2006, enough for a picture)."""
+    t = (year - 2000) / 100.0
+    return 23.439291 - 0.0130042 * t
+
 
 def _slug(text):
     import re
@@ -408,21 +499,19 @@ def _slug(text):
 
 
 def _area_status(props):
-    """(status, sentence). status: country | own-government | territory | disputed | unowned."""
+    """(status, sentence). status: country | own-government | territory | disputed | leased | unowned."""
     name, admin, sovereign, kind = props["NAME"], props["ADMIN"], props["SOVEREIGNT"], props["TYPE"]
     if name in OWN_GOVERNMENT:
         return "own-government", OWN_GOVERNMENT[name]
+    if name in DISPUTES:
+        return DISPUTES[name][0], DISPUTES[name][1]
     if name == "Antarctica":
         return "unowned", "No country owns it. A treaty sets it aside for peace and science."
     if name in UN_OBSERVER_OR_ODD or (kind in ("Sovereign country", "Sovereignty", "Country") and admin == sovereign):
         return "country", ""
     if kind in ("Country", "Dependency") and admin != sovereign:
-        return "territory", f"Belongs to {sovereign}."
-    if kind == "Lease":
-        return "disputed", f"Land leased by {sovereign}'s lessee; it is not a country."
-    if kind == "Disputed":
-        return "disputed", f"Governed by {sovereign}. Its status is disputed."
-    return "disputed", "No country's claim to this area is settled."
+        return "territory", f"Belongs to {_the(sovereign)}."
+    raise ValueError(f"{name}: disputed or leased area with no sentence in DISPUTES")
 
 
 def _fill(draw, geometry, value, to_px):
@@ -485,7 +574,7 @@ def _derive_geo(source_dir, out_dir, save, Image):
     order = sorted(range(len(features)), key=lambda i: -_geom_area(features[i]["geometry"]))
     for i in order:                                  # big first, so an enclave drawn later stays on top
         _fill(draw, features[i]["geometry"], i + 1, to_px)
-    codes = np.asarray(code, np.int32)
+    codes = _whole_sahara(np.asarray(code, np.int32).copy(), features, np)
 
     # Oceans: five, each merged from Natural Earth's northern and southern halves.
     sea = Image.new("L", (AREA_W, AREA_H), 0)
@@ -501,7 +590,27 @@ def _derive_geo(source_dir, out_dir, save, Image):
     seas = _spread_oceans(seas, codes == 0, np)
 
     rgb = np.stack([codes & 255, codes >> 8, seas], 2).astype(np.uint8)
-    areas_file = save(Image.fromarray(rgb, "RGB"), f"areas-{AREA_W}.{VERSION}.png", optimize=True)
+    areas_file = save(Image.fromarray(rgb, "RGB"), f"areas-{AREA_W}.{GEO_VERSION}.png", optimize=True)
+
+    # The same codes drawn at 8192 (sharper edges when zoomed in). Oceans come from the 4096 picture, grown a
+    # few pixels into the water the finer coast uncovers; land codes are the same numbers.
+    scale = AREA_BIG / AREA_W
+    big = Image.new("I", (AREA_BIG, AREA_BIG // 2), 0)
+    big_draw = ImageDraw.Draw(big)
+    for i in order:
+        _fill(big_draw, features[i]["geometry"], i + 1, lambda ring: [(x * scale, y * scale) for x, y in to_px(ring)])
+    big_codes = _whole_sahara(np.asarray(big, np.int32).copy(), features, np)
+    big_seas = np.repeat(np.repeat(seas, 2, 0), 2, 1)
+    big_seas[big_codes > 0] = 0
+    open_water = big_codes == 0
+    for _ in range(4):
+        for axis, shift in ((0, 1), (0, -1), (1, 1), (1, -1)):
+            near = np.roll(big_seas, shift, axis)
+            take = open_water & (big_seas == 0) & (near > 0)
+            big_seas[take] = near[take]
+    big_rgb = np.stack([big_codes & 255, big_codes >> 8, big_seas], 2).astype(np.uint8)
+    big_file = save(Image.fromarray(big_rgb, "RGB"), f"areas-{AREA_BIG}.{GEO_VERSION}.png", optimize=True)
+    del big, big_codes, big_seas, big_rgb, open_water
     gap = float(np.mean((codes == 0) & (seas == 0)))
     log(f"  areas: {int(codes.max())} codes, {gap * 100:.1f}% of the picture is neither country nor ocean")
 
@@ -511,14 +620,20 @@ def _derive_geo(source_dir, out_dir, save, Image):
         props = feature["properties"]
         status, sentence = _area_status(props)
         continent = props["CONTINENT"] if props["CONTINENT"] in CONTINENTS else None
+        dispute = DISPUTES.get(props["NAME"])
         area = {
             "code": i + 1, "id": _slug(props["ADM0_A3"] + "-" + props["NAME"]) if props["ADM0_A3"] in by_a3
-            else _slug(props["NAME_EN"] or props["NAME"]),
-            "name": props["NAME_EN"] or props["NAME"], "sovereign": props["SOVEREIGNT"], "status": status,
+            else _slug(NAME_FIX.get(props["NAME"]) or props["NAME_EN"] or props["NAME"]),
+            "name": NAME_FIX.get(props["NAME"]) or props["NAME_EN"] or props["NAME"],
+            "sovereign": props["SOVEREIGNT"], "status": status,
             "sentence": sentence, "continent": continent, "population": props["POP_EST"],
             "label": [round(props["LABEL_X"], 3), round(props["LABEL_Y"], 3)],
             "tiny": int(pixels[i + 1]) < TINY_PIXELS,
         }
+        if area["name"] in THE:
+            area["the"] = True                    # reads "the X" inside a sentence
+        if dispute and dispute[2]:
+            area["belongs"] = {"name": dispute[2], "why": dispute[3]}
         by_a3.setdefault(props["ADM0_A3"], area)
         areas.append(area)
     ids = [a["id"] for a in areas]
@@ -550,10 +665,118 @@ def _derive_geo(source_dir, out_dir, save, Image):
             parts = [[[round(x, 3), round(y, 3)] for x, y, *_ in part] for part in geometry["coordinates"]]
             lines["date-line"] = {"name": props["name"], "paths": parts}
 
-    # How much of each continent's land lies north and east of the Equator and the Prime Meridian (by true area).
+    # Natural Earth's tropics and polar circles are rounded and do not mirror (23.5 / -23.56 / 66.55 / -66.55).
+    # They really sit at the Earth's tilt, which drifts slowly: use this year's value.
+    import datetime
+    tilt = _tilt(datetime.date.today().year)
+    for key, lat in (("tropic-of-cancer", tilt), ("tropic-of-capricorn", -tilt),
+                     ("arctic-circle", 90 - tilt), ("antarctic-circle", tilt - 90)):
+        if key in lines:
+            lines[key]["lat"] = round(lat, 4)
+    lines["prime-meridian"] = {"name": "Prime Meridian", "lon": 0.0}
+
+    # What each line runs across: the countries (area codes) and oceans under it.
+    def row_of(lat):
+        return min(AREA_H - 1, max(0, int((90.0 - lat) / 180.0 * AREA_H)))
+
+    def col_of(lon):
+        return min(AREA_W - 1, max(0, int((lon + 180.0) / 360.0 * AREA_W)))
+
+    def under(rows, cols, least=3):
+        """Countries and oceans along a line of pixels. Each pixel counts once, and a country needs `least`
+        pixels (~30 km) so a line grazing a border or an island's edge does not count as running across it."""
+        cells = np.unique(np.stack([rows, cols], 1), axis=0)
+        land = codes[cells[:, 0], cells[:, 1]]
+        water = seas[cells[:, 0], cells[:, 1]]
+        found, count = np.unique(land[land > 0], return_counts=True)
+        wet, wet_count = np.unique(water[(land == 0) & (water > 0)], return_counts=True)
+        return {"areas": sorted(int(c) for c, n in zip(found, count) if n >= least),
+                "oceans": sorted(int(o) for o, n in zip(wet, wet_count) if n >= least)}
+
+    for key, entry in lines.items():
+        if "lat" in entry:
+            cols = np.arange(AREA_W)
+            entry["crosses"] = under(np.full(AREA_W, row_of(entry["lat"])), cols)
+        elif "lon" in entry:
+            rows = np.arange(AREA_H)
+            entry["crosses"] = under(rows, np.full(AREA_H, col_of(entry["lon"])))
+        else:
+            points = []
+            for part in entry["paths"]:
+                for (x1, y1), (x2, y2) in zip(part, part[1:]):
+                    steps = max(1, int(max(abs(x2 - x1), abs(y2 - y1)) / 0.04))
+                    points += [(x1 + (x2 - x1) * k / steps, y1 + (y2 - y1) * k / steps) for k in range(steps + 1)]
+            entry["crosses"] = under(np.array([row_of(y) for _, y in points]),
+                                     np.array([col_of(((x + 180.0) % 360.0) - 180.0) for x, _ in points]))
+
+    # How much of each area, continent and ocean lies north and east of the Equator and the Prime Meridian
+    # (by true area on the globe, not by picture pixels).
     weight = np.cos(np.radians(90.0 - (np.arange(AREA_H) + .5) * 180.0 / AREA_H))[:, None] * np.ones((1, AREA_W))
     north = (np.arange(AREA_H) < AREA_H // 2)[:, None] * np.ones((1, AREA_W), bool)
     east = (np.arange(AREA_W) >= AREA_W // 2)[None, :] * np.ones((AREA_H, 1), bool)
+    size = len(features) + 1
+    total = np.bincount(codes.ravel(), weight.ravel(), size)
+    in_north = np.bincount(codes.ravel(), (weight * north).ravel(), size)
+    in_east = np.bincount(codes.ravel(), (weight * east).ravel(), size)
+    for area in areas:
+        c = area["code"]
+        if total[c] > 0:
+            area["north"], area["east"] = round(in_north[c] / total[c], 3), round(in_east[c] / total[c], 3)
+        else:                                     # too small to draw: its label point decides
+            area["north"] = 1.0 if area["label"][1] >= 0 else 0.0
+            area["east"] = 1.0 if area["label"][0] >= 0 else 0.0
+    ocean_water = np.where(codes == 0, seas, 0).astype(np.int32)
+    o_total = np.bincount(ocean_water.ravel(), weight.ravel(), 8)
+    o_north = np.bincount(ocean_water.ravel(), (weight * north).ravel(), 8)
+    o_east = np.bincount(ocean_water.ravel(), (weight * east).ravel(), 8)
+    ocean_share = {n: (round(o_north[n] / o_total[n], 3), round(o_east[n] / o_total[n], 3)) for n, _, _ in OCEANS}
+
+    # An area far from any continent lies in an ocean: the ocean nearest its label point.
+    for area in areas:
+        if area["continent"]:
+            continue
+        r, c = row_of(area["label"][1]), col_of(area["label"][0])
+        for reach in range(2, 200, 2):
+            window = seas[max(0, r - reach):r + reach + 1, max(0, c - reach):c + reach + 1]
+            found = window[window > 0]
+            if found.size:
+                area["ocean"] = int(np.bincount(found).argmax())
+                break
+
+    # Neighbours: two countries are next to each other when their borders share points. Natural Earth draws a
+    # shared border once and uses it for both sides, so the points match exactly; a coast never does.
+    owners = {}
+    for i, feature in enumerate(features):
+        geometry = feature["geometry"]
+        polygons = geometry["coordinates"] if geometry["type"] == "MultiPolygon" else [geometry["coordinates"]]
+        for polygon in polygons:
+            for ring in polygon:
+                for x, y, *_ in ring:
+                    owners.setdefault((round(x, 6), round(y, 6)), set()).add(i + 1)
+    shared = {}
+    for codes_here in owners.values():
+        if len(codes_here) > 1:
+            for a in codes_here:
+                for b in codes_here:
+                    if a < b:
+                        shared[(a, b)] = shared.get((a, b), 0) + 1
+    by_code = {a["code"]: a for a in areas}
+    for (a, b), count in shared.items():
+        if count >= 2:
+            by_code[a].setdefault("next", []).append(b)
+            by_code[b].setdefault("next", []).append(a)
+    for area in areas:
+        if "next" in area:
+            area["next"].sort()
+    del owners
+
+    # Oceans whose waters meet (pixels side by side, one ocean each).
+    ocean_next = set()
+    for axis in (0, 1):
+        a, b = seas, np.roll(seas, 1, axis)
+        meet = (a > 0) & (b > 0) & (a != b)
+        for x, y in zip(a[meet].ravel(), b[meet].ravel()):
+            ocean_next.add((int(min(x, y)), int(max(x, y))))
     continents = []
     for name in CONTINENTS:
         member = np.zeros(len(areas) + 1, bool)
@@ -564,13 +787,20 @@ def _derive_geo(source_dir, out_dir, save, Image):
         continents.append({"name": name, "north": round(float((weight * land * north).sum()) / total, 3),
                            "east": round(float((weight * land * east).sum()) / total, 3)})
 
-    geo = {"version": VERSION, "size": [AREA_W, AREA_H], "areas": areas, "places": places, "lines": lines,
-           "oceans": [{"number": n, "name": label} for n, label, _ in OCEANS], "continents": continents}
-    path = os.path.join(out_dir, f"geo.{VERSION}.json")
+    oceans = []
+    for n, label, _ in OCEANS:
+        oceans.append({"number": n, "name": label, "north": ocean_share[n][0], "east": ocean_share[n][1],
+                       "next": sorted({b for a, b in ocean_next if a == n} | {a for a, b in ocean_next if b == n})})
+    geo = {"version": GEO_VERSION, "size": [AREA_W, AREA_H], "tilt": round(tilt, 4), "areas": areas,
+           "places": places, "lines": lines, "oceans": oceans, "continents": continents}
+    path = os.path.join(out_dir, f"geo.{GEO_VERSION}.json")
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(geo, fh, ensure_ascii=False, separators=(",", ":"))
-    log(f"  wrote  geo.{VERSION}.json  {os.path.getsize(path) / 1e3:.0f} KB")
-    return {"areas": areas_file, "geo": f"geo.{VERSION}.json"}
+    log(f"  wrote  geo.{GEO_VERSION}.json  {os.path.getsize(path) / 1e3:.0f} KB")
+    crossed = ", ".join(f"{k} {len(v['crosses']['areas'])}+{len(v['crosses']['oceans'])}" for k, v in lines.items())
+    log(f"  lines cross: {crossed}")
+    log(f"  neighbours: {sum(1 for (a, b), n in shared.items() if n >= 2)} pairs; oceans meeting: {len(ocean_next)}")
+    return {"areas": areas_file, "areas8192": big_file, "geo": f"geo.{GEO_VERSION}.json"}
 
 
 def _geom_area(geometry):
