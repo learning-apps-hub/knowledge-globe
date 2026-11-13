@@ -548,6 +548,8 @@ function queued(task) {
 function plain(value) {
   const box = document.createElement("div");
   box.innerHTML = value || "";
+  // Commons hides a duplicate in some credits ("Unknown author" twice).
+  for (const el of box.querySelectorAll("[style*='display:none' i], [style*='display: none' i]")) el.remove();
   return box.textContent.trim();
 }
 function visualFor(point) {
