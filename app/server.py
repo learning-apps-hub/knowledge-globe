@@ -33,7 +33,7 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/explore":
             return self._send_viewer("explore.html")
         if path == "/api/graph":
-            return self._send_json(200, graph.build(geo=geography.load(EARTH_DIR)))
+            return self._send_json(200, graph.build(geography.load(EARTH_DIR)))
         if path == "/api/subjects":
             return self._send_json(200, subjects.list_subjects())
         if path.startswith("/api/subjects/"):

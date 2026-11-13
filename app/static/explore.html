@@ -111,7 +111,10 @@
   .trail button.here { border-color: color-mix(in srgb, var(--aqua) 60%, transparent); color: var(--ink); }
   .trail i { flex: none; font-style: normal; opacity: .6; }
 
-  #stage { grid-column: 1; grid-row: 3; position: relative; z-index: 1; min-width: 0; min-height: 0; overflow: hidden; }
+  /* The globe takes the reader's own drag, pinch and wheel, not the browser's page zoom or scroll. */
+  #stage { grid-column: 1; grid-row: 3; position: relative; z-index: 1; min-width: 0; min-height: 0; overflow: hidden;
+    touch-action: none; cursor: grab; -webkit-user-select: none; user-select: none; }
+  #stage.grabbing { cursor: grabbing; }
   #links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
   /* Answers on the question ring are flat pictures, placed by place() every
@@ -153,6 +156,9 @@
     transition: border-radius var(--move), box-shadow .3s ease, transform .2s ease;
   }
   .tok.dot .face:hover { transform: scale(1.06); }
+  /* A set: every answer has a place, so the globe shows them all and the ring shows how many. */
+  .tok.set .face { border-style: dashed; }
+  .tok.set.count .init { font: 800 22px/1 "Manrope", sans-serif; color: color-mix(in srgb, var(--accent) 85%, white); }
   .tok.peeked .face { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 45%, transparent), 0 0 34px var(--accent); }
   .tok.centre .face {
     border-width: 3px;
@@ -506,9 +512,13 @@ async function boot() {
   const graph = await response.json();
   state.kinds = graph.kinds;
   state.starts = graph.starts;
+  state.byArea = new Map();   // area-picture index → topic (a tap on the globe)
   for (const point of graph.points) {
     state.points.set(point.id, point);
     state.answers.set(point.id, new Map());
+    const where = point.where;
+    if (where?.codes?.length === 1 && !state.byArea.has(where.codes[0])) state.byArea.set(where.codes[0], point.id);
+    if (where?.ocean) state.byArea.set(300 + where.ocean, point.id);
   }
   const put = (owner, key, other, link) => {
     const map = state.answers.get(owner);
@@ -619,6 +629,10 @@ function go(id, { fresh = false, back = false } = {}) {
   state.peek = null;
   history.replaceState(null, "", `#${encodeURIComponent(id)}`);
   turnGlobe(spot, fresh);
+  // Close up is kept for a country or a city; a bigger topic (a continent, an ocean, a line, half the
+  // Earth) eases back out so it fits.
+  const big = !(state.points.get(id).shape === "pin" || state.points.get(id).where?.codes?.length === 1);
+  if (big && view.zoom > 1.05) view.zoomAnim = { from: view.zoom, to: 1, started: performance.now() };
   drawTrail();
   layout();
   // The card always comes with the point, on a phone too: at rest, after a
@@ -655,6 +669,51 @@ function makeTok(point) {
     img.addEventListener("load", () => el.classList.add("has-photo"), { once: true });
     img.src = visual.src;
   });
+  el.style.opacity = "0";
+  stage.append(el);
+  pins.add(el);
+  return el;
+}
+
+// Several answers that all have a place are one set: the globe shows every one of them, and the ring
+// shows the set as one count tile ("59 countries and territories"), not one answer and "+58".
+function isSet(list) {
+  return list.length > 1 && list.every((a) => state.points.get(a.id)?.at);
+}
+function setWords(list) {
+  const points = list.map((a) => state.points.get(a.id));
+  if (points.length <= 3) return points.map((p) => p.name).join(" · ");
+  const n = points.length;
+  if (points.every((p) => p.shape === "pin" && !p.id.endsWith("-pole"))) return `${n} cities`;
+  if (points.every((p) => p.shape === "area" && p.status)) {
+    return points.every((p) => p.status === "country") ? `${n} countries` : `${n} countries and territories`;
+  }
+  if (points.every((p) => p.shape === "line")) return `${n} lines`;
+  return `${n} topics`;
+}
+function makeSet(id, slot, list) {
+  const el = document.createElement("div");
+  el.className = "tok set";
+  el.dataset.id = id;
+  el.innerHTML = `<button class="face" type="button"><span class="init"></span><img alt="" decoding="async" referrerpolicy="no-referrer"></button>
+    <span class="cap"><strong></strong></span>`;
+  const words = setWords(list);
+  el.querySelector(".cap strong").textContent = words;
+  el.querySelector(".face").setAttribute("aria-label", `${question(slot)} ${words}. Show them all.`);
+  el.querySelector(".face").addEventListener("click", () => showList(el.dataset.slot));
+  if (list.length > 3) {
+    el.querySelector(".init").textContent = String(list.length);
+    el.classList.add("count");
+  } else {
+    const point = state.points.get(headline(list).id);
+    el.querySelector(".init").textContent = initials(point.name);
+    const img = el.querySelector("img");
+    visualFor(point).then((visual) => {
+      if (!visual) return;
+      img.addEventListener("load", () => el.classList.add("has-photo"), { once: true });
+      img.src = visual.src;
+    });
+  }
   el.style.opacity = "0";
   stage.append(el);
   pins.add(el);
@@ -763,9 +822,10 @@ function layout() {
   const blocks = [];
   for (const { home, az } of spots) {
     const list = answers.get(home.key);
-    const answer = headline(list);
-    blocks.push({ slot: home.key, count: list.length, width: frame.blockW, born: now + delay });
-    want.push({ slot: home.key, id: answer.id, width: frame.blockW, size: frame.D, to: ringAt(az, frame) });
+    const set = isSet(list);
+    const id = set ? `set:${state.centre}:${home.key}` : headline(list).id;
+    blocks.push({ slot: home.key, count: list.length, set, width: frame.blockW, born: now + delay });
+    want.push({ slot: home.key, id, set: set ? list : null, width: frame.blockW, size: frame.D, to: ringAt(az, frame) });
   }
 
   // Reuse the picture already showing a topic: it glides round the ring to
@@ -774,7 +834,8 @@ function layout() {
   toks.clear();
   for (const item of want) {
     const at = spare.findIndex((el) => el.dataset.id === item.id);
-    const el = at >= 0 ? spare.splice(at, 1)[0] : makeTok(state.points.get(item.id));
+    const el = at >= 0 ? spare.splice(at, 1)[0]
+      : item.set ? makeSet(item.id, item.slot, item.set) : makeTok(state.points.get(item.id));
     if (!el.pos) {
       el.pos = { ...item.to };
       el.born = now + delay;
@@ -794,8 +855,10 @@ function layout() {
     el.size = item.size;
     el.style.setProperty("--capw", `${item.width || 190}px`);
     el.style.setProperty("--accent", isCentre ? "#55e4d1" : KIND_COLOR[kindOf(item.slot)]);
-    const point = state.points.get(item.id);
-    el.querySelector(".face").setAttribute("aria-label", isCentre ? `${point.name}. Open its card.` : `${question(item.slot)} ${point.name}`);
+    if (!item.set) {
+      const point = state.points.get(item.id);
+      el.querySelector(".face").setAttribute("aria-label", isCentre ? `${point.name}. Open its card.` : `${question(item.slot)} ${point.name}`);
+    }
     toks.set(item.slot, el);
   }
   for (const el of spare) {
@@ -817,7 +880,7 @@ function layout() {
     block.label.style.setProperty("--accent", color);
     Object.assign(block.label.style, { width: `${block.width}px`, height: `${labelH}px`, opacity: "0" });
     stage.append(block.label);
-    if (block.count > 1) {
+    if (block.count > 1 && !block.set) {
       block.more = node("button", "more", `+${block.count - 1}`);
       block.more.type = "button";
       block.more.style.setProperty("--accent", color);
@@ -832,25 +895,36 @@ function layout() {
   place(now);
 }
 
-// Pins and beams. The current topic's pin carries its name. Each answer on
-// the ring with a real place gets a pin and a beam from the pin to it. While
-// a question's whole list is open, its other answers with a place get a
-// small pin too (no beam: they are not on the ring).
+// Pins and beams. The current topic's mark carries its name. Only a pin (a city, a pole) or a single
+// country gets a beam to its answer on the ring: an area that holds the current topic, a set, a line or
+// half the Earth is drawn on the globe instead (applyLit), never pointed at. Every pin of a set, and
+// every area of a set too small to see, gets a mark.
+function pointable(point, slot) {
+  if (point.shape === "pin") return true;
+  if (point.shape !== "area") return false;
+  return point.tiny || (kindOf(slot) !== "place" && point.where?.codes?.length === 1);
+}
+function peekColor() {
+  return state.peek?.key ? KIND_COLOR[kindOf(state.peek.key)] : "#55e4d1";
+}
 function drawMarks(born = performance.now()) {
+  lit.dirty = true;
   const svg = $("links");
   svg.setAttribute("viewBox", `0 0 ${stage.clientWidth} ${stage.clientHeight}`);
   svg.replaceChildren();
   for (const mark of state.marks) mark.el.remove();
   state.marks = [];
+  const marked = new Set();
   const add = (point, { slot = null, color = "#55e4d1", here = false, soft = false } = {}) => {
-    if (!point?.at) return;
+    if (!point?.at || marked.has(point.id)) return;
+    marked.add(point.id);
     const el = node("div", `mark${here ? " here" : ""}${soft ? " soft" : ""}${point.shape === "pin" ? " is-pin" : ""}`);
     el.style.setProperty("--accent", color);
     el.append(node("i"));
     if (here) el.append(node("b", "", point.name));
     el.style.opacity = "0";
     stage.append(el);
-    const mark = { el, slot, born, anchor: vecAt(point.at.lat, point.at.lon) };
+    const mark = { el, slot, born, id: point.id, anchor: vecAt(point.at.lat, point.at.lon) };
     if (slot) {
       mark.beam = document.createElementNS("http://www.w3.org/2000/svg", "g");
       mark.beam.setAttribute("class", "beam");
@@ -866,18 +940,23 @@ function drawMarks(born = performance.now()) {
   };
   const centre = state.points.get(state.centre);
   add(centre, { here: true });
+  const answers = state.answers.get(state.centre);
+  const lookId = state.peek?.id;
+  if (lookId) add(state.points.get(lookId), { color: peekColor() });
   for (const [slot, el] of toks) {
-    if (slot !== "centre") add(state.points.get(el.dataset.id), { slot, color: KIND_COLOR[kindOf(slot)] });
-  }
-  const listKey = state.peek?.list;
-  const onRing = new Set([...toks.values()].map((el) => el.dataset.id));
-  if (listKey) {
-    for (const answer of state.answers.get(state.centre).get(listKey) || []) {
-      if (!onRing.has(answer.id)) add(state.points.get(answer.id), { color: KIND_COLOR[kindOf(listKey)], soft: true });
+    if (slot === "centre") continue;
+    const color = KIND_COLOR[kindOf(slot)];
+    if (el.classList.contains("set")) {
+      for (const answer of answers.get(slot) || []) {
+        const point = state.points.get(answer.id);
+        if (point.shape === "pin") add(point, { color });
+        else if (point.tiny) add(point, { color, soft: true });
+      }
+    } else {
+      const point = state.points.get(el.dataset.id);
+      if (point && pointable(point, slot)) add(point, { slot, color });
     }
   }
-  const lookId = state.peek?.id;
-  if (lookId && !onRing.has(lookId)) add(state.points.get(lookId), { color: KIND_COLOR[kindOf(state.peek.key)] });
 }
 
 // While you look at an answer with a place, the globe turns to show it (with
@@ -887,7 +966,14 @@ function aimGlobe() {
   if (!state.restQ) return;
   let want = state.restQ;
   const point = state.peek?.id && state.points.get(state.peek.id);
-  if (point?.at) {
+  // Once the reader has turned the globe by hand, it stays where they put it: it turns only to show an
+  // answer that is out of sight.
+  if (state.userTurned) {
+    if (!point?.at) return;
+    const there = vecAt(point.at.lat, point.at.lon);
+    if (there.clone().applyQuaternion(globeQ).z > .35) return;
+    want = restFor(there);
+  } else if (point?.at) {
     const there = vecAt(point.at.lat, point.at.lon);
     const seen = there.clone().applyQuaternion(state.restQ).z;
     if (seen < .55) {
@@ -1010,13 +1096,14 @@ function showCard(id) {
   openPanel();
 }
 
-function peekAt(id, key) {
+// `key` is the question it answers; null when it was tapped on the globe and answers none.
+function peekAt(id, key = null) {
   const point = state.points.get(id);
   const centre = state.points.get(state.centre);
-  const answer = state.answers.get(state.centre).get(key)?.find((a) => a.id === id);
-  const color = KIND_COLOR[kindOf(key)];
+  const answer = key && state.answers.get(state.centre).get(key)?.find((a) => a.id === id);
+  const color = key ? KIND_COLOR[kindOf(key)] : "#55e4d1";
   const body = $("panel-body");
-  body.replaceChildren(node("p", "panel-kicker", `${centre.name} · ${question(key)}`));
+  body.replaceChildren(node("p", "panel-kicker", key ? `${centre.name} · ${question(key)}` : "On the globe"));
   cardInto(body, point);
   // Going is the first thing under the name: on a phone the sheet covers the
   // globe, so the pin may not be there to double-tap.
@@ -1025,7 +1112,7 @@ function peekAt(id, key) {
   goBtn.type = "button";
   goBtn.addEventListener("click", () => go(id));
   actions.append(goBtn);
-  const list = state.answers.get(state.centre).get(key) || [];
+  const list = (key && state.answers.get(state.centre).get(key)) || [];
   if (list.length > 1) {
     const all = node("button", "btn", `All ${list.length} answers`);
     all.type = "button";
@@ -1040,14 +1127,14 @@ function peekAt(id, key) {
     why.append(node("b", "", mark), answer.why);
     body.append(why);
   }
-  body.append(node("p", "hint tap-hint", "Or double-tap it on the question ring."));
+  body.append(node("p", "hint tap-hint", key ? "Or double-tap it on the question ring or the globe." : "Or double-tap it on the globe."));
   if (point.fact) {
     const fact = node("p", "fact");
     fact.append(node("b", "", "Did you know"), point.fact);
     body.append(fact);
   }
   body.scrollTop = 0;
-  for (const [slot, el] of toks) el.classList.toggle("peeked", slot === key && el.dataset.id === id);
+  for (const [slot, el] of toks) el.classList.toggle("peeked", slot === key);
   state.peek = { id, key };
   drawMarks();
   aimGlobe();
@@ -1087,7 +1174,7 @@ function showList(key) {
   body.append(rows);
   body.scrollTop = 0;
   $("panel").classList.add("tall");
-  for (const el of toks.values()) el.classList.remove("peeked");
+  for (const [slot, el] of toks) el.classList.toggle("peeked", slot === key);
   state.peek = { list: key };
   drawMarks();
   aimGlobe();
@@ -1169,6 +1256,7 @@ function bindUI() {
     document.addEventListener(type, touched, { capture: true, passive: true });
   }
   bindClock();
+  bindGestures();
   new ResizeObserver(() => { resizeGlobe(); drawTrail(); layout(); }).observe(stage);
   // Size the app to the part of the screen the browser really shows, so a
   // phone browser's own toolbar never sits over the card (iOS Chrome does).
@@ -1271,27 +1359,30 @@ const PLANET_FRAG = `
   uniform float uReady, uQuiet;
   uniform float uNight, uVivid, uSunlight, uHaze, uLights, uLightsGamma, uLightsGlow;
   uniform float uClouds, uShadow, uGlint, uRim, uQuietDim, uQuietGrey, uQuietClouds;
-  // Light-up: the area picture (red/green = country code, blue = ocean), a table of which codes are lit,
-  // half the Earth, one line of latitude and/or longitude, and a ring for an area too small to see.
+  // Light-up, in four layers, drawn in this order: 0 what holds the current topic (the answers above the
+  // globe), 1 the current topic, 2 what it holds (the answers below), 3 the answer you are looking at. The area picture
+  // (red/green = country code, blue = ocean) is looked up in a table: one channel per layer.
   uniform sampler2D uAreas;
   uniform sampler2D uLit;
-  uniform float uLitAmt, uLitDash;
-  uniform vec4 uHemi;     // north, south, east, west: 1 for the one chosen
-  uniform vec2 uLineAt;   // latitude, longitude in radians; 9 = none
-  uniform vec4 uMark;     // ring centre (xyz) and 1 when shown
+  uniform float uLitDash;     // layer 1 only: a disputed area's dashed edge
+  uniform vec4 uLayerAmt;     // each layer's fade
+  uniform vec3 uCol[4];
+  uniform vec4 uStyle[4];     // fill, edge, half-Earth wash, 1 = every border inside the set
+  uniform vec4 uHemi[4];      // north, south, east, west: 1 for each half lit
+  uniform vec3 uLines[8];     // (1 = latitude / 2 = longitude, radians, layer)
+  uniform vec4 uMark;         // ring centre (xyz) and 1 when shown
   varying vec3 vNormal;
   varying vec3 vView;
   varying vec3 vLocal;
   varying vec2 vUv;
   const vec3 LUMA = vec3(0.2126, 0.7152, 0.0722);
-  const vec3 LIT = vec3(1.0, 0.80, 0.42);
   float cloudAt(vec2 uv) { return pow(texture2D(uPack, uv).g, 1.25); }
-  float litAt(vec2 uv) {
+  float areaAt(vec2 uv) {
     vec3 a = floor(texture2D(uAreas, uv).rgb * 255.0 + 0.5);
     float code = a.r + 256.0 * a.g;
-    float idx = code > 0.5 ? code : (mod(a.b, 8.0) > 0.5 ? 300.0 + mod(a.b, 8.0) : 0.0);
-    return idx > 0.5 ? texture2D(uLit, vec2((idx + 0.5) / 512.0, 0.5)).r : 0.0;
+    return code > 0.5 ? code : (mod(a.b, 8.0) > 0.5 ? 300.0 + mod(a.b, 8.0) : 0.0);
   }
+  vec4 litOf(float idx) { return idx > 0.5 ? texture2D(uLit, vec2((idx + 0.5) / 512.0, 0.5)) : vec4(0.0); }
   float lineNear(float d, float w) { return 1.0 - smoothstep(w * 0.6, w * 1.6, d); }
   void main() {
     vec3 n = normalize(vNormal);
@@ -1366,34 +1457,51 @@ const PLANET_FRAG = `
     // Bright cloud tops roll off softly rather than cut to flat white.
     col = mix(col, 0.78 + (1.0 - exp(-(col - 0.78) * 3.2)) * 0.22, step(0.78, col));
     // Light-up: what was chosen glows, bright edge and a soft fill. Drawn after the dimming, so it pops.
-    if (uLitAmt > 0.001) {
-      float here = litAt(vUv);
-      vec2 px = vec2(1.5 / 4096.0, 1.5 / 2048.0);
-      float edge = max(max(abs(litAt(vUv + vec2(px.x, 0.0)) - here), abs(litAt(vUv - vec2(px.x, 0.0)) - here)),
-                       max(abs(litAt(vUv + vec2(0.0, px.y)) - here), abs(litAt(vUv - vec2(0.0, px.y)) - here)));
+    if (dot(uLayerAmt, vec4(1.0)) > 0.001) {
+      // Edges about 1.5 screen pixels wide at any zoom (never under half a pixel of the area picture).
+      vec2 px = max(fwidth(vUv) * 1.5, vec2(0.5 / 4096.0, 0.5 / 2048.0));
+      float c0 = areaAt(vUv);
+      float cE = areaAt(vUv + vec2(px.x, 0.0));
+      float cW = areaAt(vUv - vec2(px.x, 0.0));
+      float cN = areaAt(vUv + vec2(0.0, px.y));
+      float cS = areaAt(vUv - vec2(0.0, px.y));
+      vec4 l0 = litOf(c0), lE = litOf(cE), lW = litOf(cW), lN = litOf(cN), lS = litOf(cS);
+      // Outer edge: where a layer's set ends. Inner: every border touching the set (its countries apart).
+      vec4 outer = max(max(abs(lE - l0), abs(lW - l0)), max(abs(lN - l0), abs(lS - l0)));
+      vec4 inner = max(max(step(0.5, abs(cE - c0)) * max(lE, l0), step(0.5, abs(cW - c0)) * max(lW, l0)),
+                       max(step(0.5, abs(cN - c0)) * max(lN, l0), step(0.5, abs(cS - c0)) * max(lS, l0)));
       float dash = mix(1.0, step(0.5, fract((vUv.x * 4096.0 + vUv.y * 2048.0) / 10.0)), uLitDash);
-      float fill = here * 0.34 + min(edge * 2.2, 1.0) * 0.9 * dash;
-      // Half the Earth, with its dividing line.
       float lat = asin(clamp(p.y, -1.0, 1.0));
-      float half_ = uHemi.x * step(0.0, p.y) + uHemi.y * step(p.y, 0.0) + uHemi.z * step(0.0, p.x) + uHemi.w * step(p.x, 0.0);
-      fill += half_ * 0.12;
+      float lon = atan(p.x, p.z);
       float wLat = fwidth(p.y) / max(cos(lat), 0.05);
       float wLon = length(fwidth(p.xz)) / max(length(p.xz), 0.05);
-      float lon = atan(p.x, p.z);
-      float line = 0.0;
-      if (uLineAt.x < 8.0) line = max(line, lineNear(abs(lat - uLineAt.x), wLat));
-      if (uLineAt.y < 8.0) line = max(line, lineNear(abs(mod(lon - uLineAt.y + 3.14159265, 6.2831853) - 3.14159265), wLon));
-      if (uHemi.x + uHemi.y > 0.5) line = max(line, lineNear(abs(lat), wLat));
-      if (uHemi.z + uHemi.w > 0.5) {
-        line = max(line, lineNear(abs(lon), wLon));
-        line = max(line, lineNear(3.14159265 - abs(lon), wLon * 0.5));
+      vec4 sides = vec4(step(0.0, p.y), step(p.y, 0.0), step(0.0, p.x), step(p.x, 0.0));
+      float equator = lineNear(abs(lat), wLat);
+      float meridian = max(lineNear(abs(lon), wLon), lineNear(3.14159265 - abs(lon), wLon * 0.5));
+      for (int i = 0; i < 4; i++) {
+        float amt = uLayerAmt[i];
+        if (amt < 0.001) continue;
+        vec4 st = uStyle[i];
+        float edge = mix(outer[i], inner[i], st.w);
+        float fill = l0[i] * st.x + min(edge * 2.2, 1.0) * st.y * (i == 1 ? dash : 1.0);
+        vec4 hemi = uHemi[i];
+        fill += dot(hemi, sides) * st.z;
+        float line = 0.0;
+        if (hemi.x + hemi.y > 0.5) line = max(line, equator);
+        if (hemi.z + hemi.w > 0.5) line = max(line, meridian);
+        for (int j = 0; j < 8; j++) {
+          vec3 l = uLines[j];
+          if (abs(l.z - float(i)) > 0.5 || l.x < 0.5) continue;
+          if (l.x < 1.5) line = max(line, lineNear(abs(lat - l.y), wLat));
+          else line = max(line, lineNear(abs(mod(lon - l.y + 3.14159265, 6.2831853) - 3.14159265), wLon));
+        }
+        fill += line * 0.9;
+        if (i == 1 && uMark.w > 0.5) {
+          float ang = acos(clamp(dot(p, uMark.xyz), -1.0, 1.0));
+          fill += lineNear(abs(ang - 0.04), max(fwidth(ang), 0.002)) * 0.95;
+        }
+        col = mix(col, uCol[i], clamp(fill, 0.0, 1.0) * amt * uReady);
       }
-      fill += line * 0.9;
-      if (uMark.w > 0.5) {
-        float ang = acos(clamp(dot(p, uMark.xyz), -1.0, 1.0));
-        fill += lineNear(abs(ang - 0.04), max(fwidth(ang), 0.002)) * 0.95;
-      }
-      col = mix(col, LIT, clamp(fill, 0.0, 1.0) * uLitAmt * uReady);
     }
     // Until the pictures arrive: a plain lit ball.
     col = mix(vec3(0.010, 0.035, 0.06) * (0.25 + lit), col, uReady);
@@ -1462,13 +1570,26 @@ const STAR_FRAG = `
   }
 `;
 
-// Which areas glow. A 512-wide table indexed by area code (countries 1..258) or 300 + ocean number.
+// Which areas glow. A 512-wide table indexed by area code (countries 1..258) or 300 + ocean number;
+// each of its four channels is one light-up layer (see PLANET_FRAG).
 const litTable = new THREE.DataTexture(new Uint8Array(512 * 4), 512, 1, THREE.RGBAFormat);
 litTable.magFilter = THREE.NearestFilter;
 litTable.minFilter = THREE.NearestFilter;
 litTable.generateMipmaps = false;
-const lit = { id: null, amt: 0, want: 0 };
+// Each layer: fill, edge, half-Earth wash, 1 = every border inside the set lights (a continent's countries).
+// The layers are drawn in this order, so what the current topic holds shows on top of it.
+const L = { up: 0, here: 1, down: 2, look: 3 };
+const LAYER_STYLE = [
+  [.05, .75, .035, 0], // up: what holds it, as an outline round the current topic
+  [.30, .9, .06, 0],   // here: the current topic
+  [.10, .7, .035, 1],  // down: what it holds, every one of them, borders and all
+  [.28, 1, .07, 0],    // look: the answer you are looking at
+];
+const HERE_COLOR = "#ffcc6b";
+const lit = { dirty: true, keys: ["", "", "", ""], amt: [0, 0, 0, 0], want: [0, 0, 0, 0] };
 let dateLine = null;
+const HOME_SIDE = new Map(HOMES.map((home) => [home.key, home.side]));
+const LAYER_OF_SIDE = { up: L.up, down: L.down };
 
 function vecAt(latDeg, lonDeg, radius = 1) {
   const lat = latDeg * Math.PI / 180;
@@ -1476,47 +1597,70 @@ function vecAt(latDeg, lonDeg, radius = 1) {
   return new THREE.Vector3(Math.cos(lat) * Math.sin(lon), Math.sin(lat), Math.cos(lat) * Math.cos(lon)).multiplyScalar(radius);
 }
 
-// Light up what the topic is: an area, a line, half the Earth, or a ring round a place too small to see.
-function applyLit(id) {
-  lit.id = id;
-  const point = state.points.get(id);
+// Light up, in each answer's own shape: the current topic; what holds it (an outline round it); what it
+// holds (all of them at once); and the answer you are looking at. Areas, lines and halves of the Earth
+// are drawn, never pointed at; only pins get beams (drawMarks).
+function applyLit() {
+  lit.dirty = false;
+  if (!planet) return;
   const u = planet.material.uniforms;
-  litTable.image.data.fill(0);
-  u.uHemi.value.set(0, 0, 0, 0);
-  u.uLineAt.value.set(9, 9);
+  const data = litTable.image.data;
+  data.fill(0);
+  for (const v of u.uHemi.value) v.set(0, 0, 0, 0);
+  for (const v of u.uLines.value) v.set(0, 0, 0);
   u.uMark.value.set(0, 0, 0, 0);
   u.uLitDash.value = 0;
-  if (dateLine) dateLine.visible = false;
-  lit.want = 0;
-  const where = point?.where;
-  if (where && point.shape !== "pin") {
-    lit.want = 1;
+  let lineAt = 0;
+  let dateLayer = -1;
+  const keys = ["", "", "", ""];
+  const colors = [null, HERE_COLOR, null, null];
+  const paint = (i, point, color) => {
+    const where = point?.where;
+    if (!where || point.shape === "pin") return;
+    keys[i] += `${point.id},`;
+    colors[i] ||= color;
     if (where.codes) {
-      for (const code of where.codes) litTable.image.data[code * 4] = 255;
-      if (point.status === "disputed") u.uLitDash.value = 1;
-      if (point.tiny && point.at) u.uMark.value.set(...vecAt(point.at.lat, point.at.lon).toArray(), 1);
+      for (const code of where.codes) data[code * 4 + i] = 255;
     } else if (where.ocean) {
-      litTable.image.data[(300 + where.ocean) * 4] = 120;   // an ocean is huge: a lighter wash
+      data[(300 + where.ocean) * 4 + i] = 120;   // an ocean is huge: a lighter wash
     } else if (where.hemisphere) {
-      const slot = { north: 0, south: 1, east: 2, west: 3 }[where.hemisphere];
-      const flags = [0, 0, 0, 0];
-      flags[slot] = 1;
-      u.uHemi.value.set(...flags);
-    } else if (where.lat !== undefined) {
-      u.uLineAt.value.x = where.lat * Math.PI / 180;
-    } else if (where.lon !== undefined) {
-      u.uLineAt.value.y = where.lon * Math.PI / 180;
-    } else if (where.path && dateLine) {
-      dateLine.visible = true;
+      const slot = { north: "x", south: "y", east: "z", west: "w" }[where.hemisphere];
+      u.uHemi.value[i][slot] = 1;
+    } else if ((where.lat !== undefined || where.lon !== undefined) && lineAt < 8) {
+      const isLat = where.lat !== undefined;
+      u.uLines.value[lineAt].set(isLat ? 1 : 2, (isLat ? where.lat : where.lon) * Math.PI / 180, i);
+      lineAt += 1;
+    } else if (where.path) {
+      dateLayer = Math.max(dateLayer, i);
     }
+  };
+  const centre = state.points.get(state.centre);
+  paint(L.here, centre);
+  if (centre?.status === "disputed") u.uLitDash.value = 1;
+  if (centre?.tiny && centre.at) u.uMark.value.set(...vecAt(centre.at.lat, centre.at.lon).toArray(), 1);
+  const answers = state.answers.get(state.centre);
+  for (const block of state.blocks) {
+    const i = LAYER_OF_SIDE[HOME_SIDE.get(block.slot)];
+    if (i === undefined) continue;
+    for (const answer of answers.get(block.slot) || []) paint(i, state.points.get(answer.id), KIND_COLOR[kindOf(block.slot)]);
+  }
+  if (state.peek?.id) paint(L.look, state.points.get(state.peek.id), peekColor());
+  for (let i = 0; i < 4; i += 1) {
+    u.uCol.value[i].set(colors[i] || HERE_COLOR);
+    if (keys[i] !== lit.keys[i]) lit.amt[i] = 0;   // a new choice fades in again
+    lit.keys[i] = keys[i];
+    lit.want[i] = keys[i] ? 1 : 0;
+  }
+  if (dateLine) {
+    dateLine.visible = dateLayer >= 0;
+    if (dateLayer >= 0) dateLine.children[0]?.material.color.set(colors[dateLayer] || HERE_COLOR);
   }
   litTable.needsUpdate = true;
-  lit.amt = 0;   // fades in again for each new choice
 }
 
 function buildDateLine(paths) {
   dateLine = new THREE.Group();
-  const material = new THREE.LineBasicMaterial({ color: 0xffcc6b, transparent: true, opacity: .95 });
+  const material = new THREE.LineBasicMaterial({ color: HERE_COLOR, transparent: true, opacity: .95 });
   for (const path of paths) {
     const points = path.map(([lon, lat]) => vecAt(lat, lon, 1.002));
     dateLine.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), material));
@@ -1528,7 +1672,7 @@ function buildDateLine(paths) {
 function initGlobe() {
   try {
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(FOV, 1, .1, 200);
+    camera = new THREE.PerspectiveCamera(FOV, 1, .02, 200);   // close: a zoomed-in camera is near the ground
     // Opaque: space is black, and the atmosphere's added light needs a real
     // background under it (a see-through canvas showed a dark ring there).
     renderer = new THREE.WebGLRenderer({ canvas: $("globe"), antialias: true });
@@ -1554,8 +1698,12 @@ function initGlobe() {
         uGlint: { value: LOOK.glint }, uRim: { value: LOOK.rim },
         uQuietDim: { value: LOOK.quietDim }, uQuietGrey: { value: LOOK.quietGrey },
         uQuietClouds: { value: LOOK.quietClouds },
-        uAreas: { value: null }, uLit: { value: litTable }, uLitAmt: { value: 0 }, uLitDash: { value: 0 },
-        uHemi: { value: new THREE.Vector4() }, uLineAt: { value: new THREE.Vector2(9, 9) },
+        uAreas: { value: null }, uLit: { value: litTable }, uLitDash: { value: 0 },
+        uLayerAmt: { value: new THREE.Vector4() },
+        uCol: { value: [0, 1, 2, 3].map(() => new THREE.Color(HERE_COLOR)) },
+        uStyle: { value: LAYER_STYLE.map((st) => new THREE.Vector4(...st)) },
+        uHemi: { value: [0, 1, 2, 3].map(() => new THREE.Vector4()) },
+        uLines: { value: Array.from({ length: 8 }, () => new THREE.Vector3()) },
         uMark: { value: new THREE.Vector4() },
       },
       vertexShader: VIEW_VERT,
@@ -1613,6 +1761,7 @@ async function loadEarth() {
   state.earthLayers = manifest.layers || [];
   drawSkyCredits();
   const files = manifest.files;
+  state.earthFiles = files;
   const loader = new THREE.TextureLoader();
   const aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   const load = (name, srgb) => new Promise((resolve, reject) => {
@@ -1642,13 +1791,13 @@ async function loadEarth() {
         tex.minFilter = THREE.NearestFilter;
         tex.generateMipmaps = false;
         planet.material.uniforms.uAreas.value = tex;
-        lit.id = null;   // light the current topic now that the picture is here
+        lit.dirty = true;   // light the current topic now that the picture is here
       }, undefined, (error) => console.warn("Area picture did not load.", error));
     }
     if (files.geo) {
       fetch(`./earth/${files.geo}`).then((r) => r.json()).then((geo) => {
         if (geo.lines?.["date-line"]) buildDateLine(geo.lines["date-line"].paths);
-        lit.id = null;
+        lit.dirty = true;
       }).catch((error) => console.warn(error));
     }
   } catch (error) {
@@ -1710,8 +1859,11 @@ function globeFrame() {
   return frame;
 }
 
-// The canvas's offset from the stage, kept so place() reads no layout per frame.
-const view = { w: 1, h: 1, x: 0, y: 0 };
+// The canvas's offset from the stage, kept so place() reads no layout per frame. `zoom` is the
+// reader's own pinch or wheel zoom (1 = the whole globe inside the question ring).
+const view = { w: 1, h: 1, x: 0, y: 0, zoom: 1, zoomAnim: null };
+const ZOOM_MIN = .7;
+const ZOOM_MAX = 7;
 
 function resizeGlobe() {
   const canvas = $("globe");
@@ -1724,11 +1876,21 @@ function resizeGlobe() {
   if (!renderer) return;
   renderer.setSize(width, height, false);
   camera.aspect = width / height;
-  // Pull the camera back until the globe is `frame.r` pixels across, then
-  // slide the globe so its middle is the middle of the stage.
+  applyCamera();
+}
+
+// Pull the camera back until the globe's radius is `frame.r` × zoom pixels, then slide the globe so its
+// middle is the middle of the question ring.
+function applyCamera() {
+  if (!renderer) return;
+  const canvas = $("globe");
+  const box = canvas.getBoundingClientRect();
+  const at = stage.getBoundingClientRect();
+  const height = view.h;
+  const width = view.w;
   const frame = globeFrame();
   const half = Math.tan(THREE.MathUtils.degToRad(FOV / 2));
-  const t = frame.r * 2 * half / height;
+  const t = frame.r * view.zoom * 2 * half / height;
   camera.position.z = Math.sqrt(1 + t * t) / t;
   camera.updateProjectionMatrix();
   camera.updateMatrixWorld();
@@ -1739,6 +1901,14 @@ function resizeGlobe() {
     0,
   );
   world.updateMatrixWorld();
+}
+
+function setZoom(value) {
+  const next = clamp(value, ZOOM_MIN, ZOOM_MAX);
+  view.zoomAnim = null;
+  if (Math.abs(next - view.zoom) < 1e-4) return;
+  view.zoom = next;
+  applyCamera();
 }
 
 // A spot in the globe's own frame → stage pixels, and how squarely it faces
@@ -1804,9 +1974,14 @@ function place(now) {
       block.more.style.pointerEvents = alpha > .5 ? "" : "none";
     }
   }
+  // Close up, less of the globe shows: the horizon moves towards the front.
+  const horizon = renderer ? 1 / Math.max(1.0001, camera.position.distanceTo(world.position)) : 0;
   for (const mark of state.marks) {
     const spot = project(mark.anchor);
-    const alpha = smooth(.04, .3, spot.face) * fadeIn(mark.born, now);
+    const alpha = smooth(horizon + .04, horizon + .3 * (1 - horizon), spot.face) * fadeIn(mark.born, now);
+    mark.x = spot.x;
+    mark.y = spot.y;
+    mark.alpha = alpha;
     mark.el.style.transform = `translate3d(${spot.x.toFixed(1)}px, ${spot.y.toFixed(1)}px, 0)`;
     mark.el.style.opacity = alpha.toFixed(3);
     if (!mark.beam) continue;
@@ -1837,6 +2012,7 @@ function restFor(spot) {
 }
 
 function turnGlobe(spot, instant) {
+  state.userTurned = false;
   state.restQ = spot ? restFor(spot) : (turn ? turn.to.clone() : globeQ.clone());
   state.aimQ = state.restQ;
   state.spin = 0;
@@ -1850,14 +2026,179 @@ function turnGlobe(spot, instant) {
   turn = { from: globeQ.clone(), to: state.restQ.clone(), started: performance.now(), duration: clamp(500 + angle * 420, 700, 1500) };
 }
 
-// Any touch, key or wheel stops the resting spin and brings the centre back.
-function touched() {
+// Any touch, key or wheel stops the resting spin and brings the centre back; a touch on the bare globe
+// (the start of a turn or a zoom) only stops it, so the globe stays where the reader takes hold of it.
+function touched(event) {
   state.lastTouch = performance.now();
   if (!state.spun || !state.aimQ) return;
   state.spun = false;
   state.spin = 0;
+  if (event && bare(event.target)) return;
   const angle = globeQ.angleTo(state.aimQ);
   turn = { from: globeQ.clone(), to: state.aimQ.clone(), started: performance.now(), duration: clamp(500 + angle * 420, 600, 1500) };
+}
+
+/* ---------- the reader's own hands on the globe ---------- */
+
+// Drag turns the globe (north stays up), pinch or wheel zooms, a tap looks at what is under the finger,
+// a double-tap goes there. Only on the bare globe: the ring's pictures and buttons keep their own taps.
+const grab = { ids: new Map(), moved: false, start: null, pinch: 0, fling: null, lastMove: 0, lastTap: null };
+function bare(target) {
+  return target === stage || target?.id === "links" || target?.id === "sun-glow" || target?.id === "globe"
+    || !!target?.closest?.("#links");
+}
+// The globe's turn → the spot facing the reader, as latitude and longitude in radians.
+const facing = new THREE.Vector3();
+const unturnQ = new THREE.Quaternion();
+function turnBy(dx, dy) {
+  const r = globeFrame().r * view.zoom;
+  facing.set(0, 0, 1).applyQuaternion(unturnQ.copy(globeQ).invert());
+  const lat = clamp(Math.asin(clamp(facing.y, -1, 1)) + dy / r, -1.48, 1.48);
+  const lon = Math.atan2(facing.x, facing.z) - dx / r;
+  const spot = new THREE.Vector3(Math.cos(lat) * Math.sin(lon), Math.sin(lat), Math.cos(lat) * Math.cos(lon));
+  globeQ.copy(restFor(spot));
+  turn = null;
+  state.aimQ = globeQ.clone();   // the reader's turn is kept until they go somewhere
+  state.userTurned = true;
+}
+function bindGestures() {
+  stage.addEventListener("pointerdown", (event) => {
+    if (!bare(event.target) || (event.pointerType === "mouse" && event.button !== 0)) return;
+    stage.setPointerCapture?.(event.pointerId);
+    grab.ids.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    grab.fling = null;
+    if (grab.ids.size === 1) {
+      grab.moved = false;
+      grab.start = { x: event.clientX, y: event.clientY, t: performance.now() };
+    } else {
+      grab.moved = true;   // two fingers: a pinch, never a tap
+      const [a, b] = [...grab.ids.values()];
+      grab.pinch = Math.hypot(a.x - b.x, a.y - b.y);
+    }
+    stage.classList.add("grabbing");
+  });
+  stage.addEventListener("pointermove", (event) => {
+    const was = grab.ids.get(event.pointerId);
+    if (!was) return;
+    const now = { x: event.clientX, y: event.clientY };
+    grab.ids.set(event.pointerId, now);
+    state.lastTouch = performance.now();
+    if (grab.ids.size >= 2) {
+      const [a, b] = [...grab.ids.values()];
+      const d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (grab.pinch > 0 && d > 0) setZoom(view.zoom * d / grab.pinch);
+      grab.pinch = d;
+      return;
+    }
+    if (!grab.moved && Math.hypot(now.x - grab.start.x, now.y - grab.start.y) < 6) return;
+    grab.moved = true;
+    const dx = now.x - was.x;
+    const dy = now.y - was.y;
+    turnBy(dx, dy);
+    const t = performance.now();
+    const dt = Math.max(8, t - grab.lastMove) / 1000;
+    grab.lastMove = t;
+    grab.velocity = { x: dx / dt, y: dy / dt };
+  });
+  const release = (event) => {
+    if (!grab.ids.has(event.pointerId)) return;
+    grab.ids.delete(event.pointerId);
+    if (grab.ids.size) {
+      grab.pinch = 0;
+      return;
+    }
+    stage.classList.remove("grabbing");
+    if (event.type === "pointercancel") return;
+    if (!grab.moved && performance.now() - grab.start.t < 600) {
+      tapAt(event.clientX, event.clientY);
+    } else if (grab.moved && !reduced && grab.velocity && performance.now() - grab.lastMove < 80) {
+      grab.fling = { ...grab.velocity };
+    }
+    grab.velocity = null;
+  };
+  stage.addEventListener("pointerup", release);
+  stage.addEventListener("pointercancel", release);
+  // A mouse wheel, or a trackpad pinch (which browsers send as a wheel with Ctrl held).
+  stage.addEventListener("wheel", (event) => {
+    event.preventDefault();
+    const step = event.ctrlKey ? .01 : .0015;
+    const lines = event.deltaMode === 1 ? 16 : 1;
+    setZoom(view.zoom * Math.exp(-event.deltaY * lines * step));
+  }, { passive: false });
+  // Safari on a Mac sends a trackpad pinch as its own gesture events.
+  let gestureFrom = 1;
+  stage.addEventListener("gesturestart", (event) => { event.preventDefault(); gestureFrom = view.zoom; });
+  stage.addEventListener("gesturechange", (event) => {
+    event.preventDefault();
+    if (grab.ids.size < 2) setZoom(gestureFrom * event.scale);
+  });
+}
+
+// What is under the finger: a mark first (a city, a tiny country), else the area picture at that spot.
+const raycaster = new THREE.Raycaster();
+const ball = new THREE.Sphere(new THREE.Vector3(), 1);
+const hitAt = new THREE.Vector3();
+let areaPixels = null;   // the area picture, decoded once on the first tap
+function areaReader() {
+  if (areaPixels) return areaPixels;
+  const name = state.earthFiles?.areas;
+  if (!name) return Promise.resolve(null);
+  areaPixels = fetch(`./earth/${name}`)
+    .then((r) => r.blob())
+    .then((blob) => createImageBitmap(blob, { colorSpaceConversion: "none", premultiplyAlpha: "none" }))
+    .then((bitmap) => {
+      const canvas = document.createElement("canvas");
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      ctx.drawImage(bitmap, 0, 0);
+      return ctx;
+    })
+    .catch((error) => { console.warn("Area picture could not be read.", error); return null; });
+  return areaPixels;
+}
+async function topicUnder(clientX, clientY) {
+  const at = stage.getBoundingClientRect();
+  const x = clientX - at.left;
+  const y = clientY - at.top;
+  let best = null;
+  for (const mark of state.marks) {
+    const d = Math.hypot((mark.x ?? -99) - x, (mark.y ?? -99) - y);
+    if ((mark.alpha || 0) > .5 && d < 18 && (!best || d < best.d)) best = { d, id: mark.id };
+  }
+  if (best) return best.id;
+  if (!renderer) return null;
+  const box = $("globe").getBoundingClientRect();
+  raycaster.setFromCamera({ x: (clientX - box.left) / box.width * 2 - 1, y: -((clientY - box.top) / box.height * 2 - 1) }, camera);
+  ball.center.copy(world.position);
+  if (!raycaster.ray.intersectSphere(ball, hitAt)) return null;
+  hitAt.sub(world.position).applyQuaternion(unturnQ.copy(globeQ).invert());
+  const lat = Math.asin(clamp(hitAt.y, -1, 1)) * 180 / Math.PI;
+  const lon = Math.atan2(hitAt.x, hitAt.z) * 180 / Math.PI;
+  const ctx = await areaReader();
+  if (!ctx) return null;
+  const { width, height } = ctx.canvas;
+  const px = ctx.getImageData(clamp(Math.floor((lon + 180) / 360 * width), 0, width - 1),
+    clamp(Math.floor((90 - lat) / 180 * height), 0, height - 1), 1, 1).data;
+  const code = px[0] + 256 * px[1];
+  const index = code > 0 ? code : (px[2] % 8 ? 300 + (px[2] % 8) : 0);
+  return state.byArea.get(index) || null;
+}
+async function tapAt(clientX, clientY) {
+  const id = await topicUnder(clientX, clientY);
+  const now = performance.now();
+  const again = grab.lastTap && grab.lastTap.id === id && now - grab.lastTap.t < 400;
+  grab.lastTap = { id, t: now };
+  if (!id) return;
+  if (again) {
+    grab.lastTap = null;
+    closePanel();
+    return go(id);
+  }
+  if (id === state.centre) return showCard(id);
+  const answers = state.answers.get(state.centre);
+  const key = [...answers.keys()].find((k) => answers.get(k).some((a) => a.id === id));
+  peekAt(id, key || null);
 }
 
 const spinStep = new THREE.Quaternion();
@@ -1880,11 +2221,24 @@ function animate(now) {
   const dt = Math.min((now - lastFrame) / 1000, .05);
   lastFrame = now;
   const rest = resting(now);
+  if (view.zoomAnim) {
+    const p = Math.min(1, (now - view.zoomAnim.started) / 600);
+    view.zoom = view.zoomAnim.from + (view.zoomAnim.to - view.zoomAnim.from) * (1 - Math.pow(1 - p, 3));
+    if (p === 1) view.zoomAnim = null;
+    applyCamera();
+  }
+  if (grab.fling && !grab.ids.size) {
+    turnBy(grab.fling.x * dt, grab.fling.y * dt);
+    const keep = Math.exp(-dt * 4);
+    grab.fling.x *= keep;
+    grab.fling.y *= keep;
+    if (Math.hypot(grab.fling.x, grab.fling.y) < 8) grab.fling = null;
+  }
   if (turn) {
     const progress = Math.min(1, (now - turn.started) / turn.duration);
     globeQ.slerpQuaternions(turn.from, turn.to, 1 - Math.pow(1 - progress, 3));
     if (progress === 1) turn = null;
-  } else if (rest && !reduced) {
+  } else if (rest && !reduced && !grab.ids.size && !grab.fling) {
     // The time-lapse: the Earth turns on its own axis at the clock's speed,
     // so the Sun, Moon and stars stay put while the ground turns under them.
     state.spin = Math.min(1, state.spin + dt / 2.5);
@@ -1906,10 +2260,9 @@ function animate(now) {
   placeMoon();
   placeSun();
   const u = planet.material.uniforms;
-  const wantId = state.peek?.id || state.centre;
-  if (wantId && wantId !== lit.id) applyLit(wantId);
-  lit.amt += (lit.want - lit.amt) * Math.min(1, dt * 5);
-  u.uLitAmt.value = lit.amt;
+  if (lit.dirty) applyLit();
+  for (let i = 0; i < 4; i += 1) lit.amt[i] += (lit.want[i] - lit.amt[i]) * Math.min(1, dt * 5);
+  u.uLayerAmt.value.set(...lit.amt);
   u.uQuiet.value = look.quiet;
   if (state.earthBorn) u.uReady.value = smooth(0, 1, (now - state.earthBorn) / 900);
   if (stars) stars.material.uniforms.uBright.value = 1 - .45 * look.quiet;
