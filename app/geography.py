@@ -183,12 +183,17 @@ def build(geo):
         point_id = _slug(name)
         if point_id in ids:                       # never meets a country's id; guard anyway
             point_id += "-continent"
-        count = len(members)
+        # The count is the answers to "What is found here?": a country on two continents counts in both.
+        shared = [a for a in areas if name in TWO_CONTINENTS.get(a["name"], {})]
+        count = len(members) + sum(1 for a in shared if a["continent"] != name)
+        fact = f"It holds {count} countries and territories."
+        if shared:
+            fact += (" One of them lies" if len(shared) == 1 else f" {len(shared)} of them lie") + \
+                " partly on another continent."
         line = "One of Earth's seven continents." if name != "Antarctica" else \
             "The continent around the South Pole. No country owns it."
         continent_ids[name] = add(point_id, name, line, "area", {"codes": [a["code"] for a in members]},
-                                  CONTINENT_AT[name], fact=f"It holds {count} countries and territories." if
-                                  name != "Antarctica" else "")
+                                  CONTINENT_AT[name], fact=fact if name != "Antarctica" else "")
         kind_of(continent_ids[name], "continent")
         for side, why in _halves(shares[name]["north"], shares[name]["east"]):
             links.append(("place", continent_ids[name], hemisphere_ids[side], why))
