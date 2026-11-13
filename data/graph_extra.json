@@ -1,5 +1,5 @@
 {
-  "note": "Hand-written words and starting topics for the Explore preview. Each is a plain, checkable fact. Real geography only: no dummy subject data (Owner, 2026-11-13). 'Who found it?' (continents, oceans; Owner's yes 2026-11-13): the first people to reach or cross it, not a later arrival from far away, with dates hedged to what is widely agreed.",
+  "note": "Hand-written words and starting topics for the Explore preview. Each is a plain, checkable fact. Real geography only: no dummy subject data (Owner, 2026-11-13). 'Who found it?' (continents, oceans; Owner's yes 2026-11-13): the first people to reach or cross it, not a later arrival from far away, with dates hedged to what is widely agreed. A who-answer must belong to that one topic: an answer shared by several (early humans for Africa, Asia and Europe) says nothing, so the topic gets no 'Who found it?' at all (Owner, 2026-11-13).",
   "starts": [
     "singapore",
     "asia",
@@ -18,24 +18,9 @@
       "visual_query": "Singapore skyline Marina Bay"
     },
     {
-      "id": "early-humans",
-      "name": "Early humans",
-      "line": "The first people of our own kind, Homo sapiens. They appeared in Africa about 300,000 years ago and later spread across the world."
-    },
-    {
       "id": "first-peoples-of-australia",
       "name": "First Peoples of Australia",
       "line": "Aboriginal and Torres Strait Islander peoples, whose ancestors reached Australia at least 50,000 years ago."
-    },
-    {
-      "id": "first-peoples-of-the-americas",
-      "name": "First Peoples of the Americas",
-      "line": "The ancestors of the Native peoples of North and South America. They came from Asia and spread across both continents."
-    },
-    {
-      "id": "austronesian-voyagers",
-      "name": "Austronesian voyagers",
-      "line": "Seafaring peoples from Taiwan and Southeast Asia who, over thousands of years, sailed outrigger canoes to settle islands from Madagascar to Rapa Nui (Easter Island)."
     },
     {
       "id": "norse-sailors",
@@ -66,45 +51,9 @@
   "links": [
     {
       "kind": "who",
-      "from": "africa",
-      "to": "early-humans",
-      "why": "Our own kind of human first appeared here, about 300,000 years ago. Nobody came to find Africa: people began here."
-    },
-    {
-      "kind": "who",
-      "from": "asia",
-      "to": "early-humans",
-      "why": "Modern humans reached Asia from Africa at least 50,000 years ago. Older kinds of humans lived here long before."
-    },
-    {
-      "kind": "who",
-      "from": "europe",
-      "to": "early-humans",
-      "why": "Modern humans reached Europe about 45,000 years ago. Neanderthals already lived here."
-    },
-    {
-      "kind": "who",
       "from": "oceania",
       "to": "first-peoples-of-australia",
       "why": "Their ancestors reached Australia at least 50,000 years ago."
-    },
-    {
-      "kind": "who",
-      "from": "oceania",
-      "to": "austronesian-voyagers",
-      "why": "Their descendants, the Pacific Islanders, found and settled the islands of the Pacific, from about 3,000 years ago."
-    },
-    {
-      "kind": "who",
-      "from": "north-america",
-      "to": "first-peoples-of-the-americas",
-      "why": "They came from Asia at least 15,000 years ago, and maybe more than 20,000."
-    },
-    {
-      "kind": "who",
-      "from": "south-america",
-      "to": "first-peoples-of-the-americas",
-      "why": "They were living in South America at least 14,000 years ago."
     },
     {
       "kind": "who",
@@ -117,18 +66,6 @@
       "from": "antarctica",
       "to": "edward-bransfield",
       "why": "He sighted the Antarctic mainland on 30 January 1820, three days later. Which of them saw Antarctica first is still argued about."
-    },
-    {
-      "kind": "who",
-      "from": "pacific-ocean",
-      "to": "austronesian-voyagers",
-      "why": "Their descendants, the Pacific Islanders, crossed the Pacific and settled its islands from about 3,000 years ago, finding their way by the stars, the waves and the birds."
-    },
-    {
-      "kind": "who",
-      "from": "indian-ocean",
-      "to": "austronesian-voyagers",
-      "why": "They sailed across the Indian Ocean to settle Madagascar, more than 1,000 years ago."
     },
     {
       "kind": "who",

@@ -84,6 +84,15 @@ def build(geo=None):
 
     for link in extra.get("links", []):
         add_link(link["kind"], link["from"], link["to"], link.get("why"), link.get("mark"))
+    # "Who found it?" must answer for that one topic. One answer shared by several topics (early
+    # humans for Africa, Asia and Europe) says nothing, so it is not a valid answer (Owner, 2026-11-13).
+    who_from = {}
+    for link in links:
+        if link["kind"] == "who":
+            who_from.setdefault(link["to"], []).append(link["from"])
+    shared = {to: sources for to, sources in who_from.items() if len(sources) > 1}
+    if shared:
+        raise GraphError(f"a who-answer is shared by several topics: {shared}")
     starts = [i for i in extra.get("starts", []) if i in points]
 
     return {

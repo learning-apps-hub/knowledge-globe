@@ -198,6 +198,8 @@
     text-shadow: 0 1px 8px #000, 0 0 14px #000;
     pointer-events: none;
   }
+  /* With a mouse, pointing at a question lights its answers (Owner, 2026-11-13). */
+  @media (hover: hover) { .q { pointer-events: auto; cursor: default; } }
   .more {
     position: absolute; left: 0; top: 0; z-index: 2;
     min-width: 30px; height: 24px; padding: 0 7px;
@@ -494,6 +496,7 @@ const state = {
   home: null,
   trail: [],
   peek: null,        // { id, key } or { list: key }
+  hover: null,       // { slot, id } the mouse is pointing at: a question on the ring, or one row of its list
   blocks: [],        // one per question on the ring: label, chip
   marks: [],         // pins on the globe (and their beams to the ring)
   restQ: null,       // the globe's resting turn for the current topic
@@ -631,6 +634,7 @@ function go(id, { fresh = false, back = false } = {}) {
     state.trail.push(id);
   }
   state.peek = null;
+  state.hover = null;
   history.replaceState(null, "", `#${encodeURIComponent(id)}`);
   turnGlobe(spot, fresh);
   // Close up is kept for a country or a city; a bigger topic (a continent, an ocean, a line, half the
@@ -899,11 +903,13 @@ function layout() {
     const color = KIND_COLOR[kindOf(block.slot)];
     block.labelH = labelH;
     block.label = node("div", "q", question(block.slot));
+    block.label.dataset.slot = block.slot;
     block.label.style.setProperty("--accent", color);
     Object.assign(block.label.style, { width: `${block.width}px`, height: `${labelH}px`, opacity: "0" });
     stage.append(block.label);
     if (block.count > 1 && !block.set) {
       block.more = node("button", "more", `+${block.count - 1}`);
+      block.more.dataset.slot = block.slot;
       block.more.type = "button";
       block.more.style.setProperty("--accent", color);
       block.more.style.opacity = "0";
@@ -1186,6 +1192,8 @@ function showList(key) {
   for (const answer of list) {
     const point = state.points.get(answer.id);
     const item = node("li");
+    item.dataset.slot = key;
+    item.dataset.hid = answer.id;
     const button = node("button", "row");
     button.type = "button";
     const disc = node("span", "disc", initials(point.name));
@@ -1288,6 +1296,7 @@ function bindUI() {
   }
   bindClock();
   bindGestures();
+  bindHover();
   new ResizeObserver(() => { resizeGlobe(); drawTrail(); layout(); }).observe(stage);
   // Size the app to the part of the screen the browser really shows, so a
   // phone browser's own toolbar never sits over the card (iOS Chrome does).
@@ -1670,12 +1679,18 @@ function applyLit() {
   paint(L.here, centre);
   if (centre?.status === "disputed") u.uLitDash.value = 1;
   if (centre?.tiny && centre.at) u.uMark.value.set(...vecAt(centre.at.lat, centre.at.lon).toArray(), 1);
+  // Only the current topic is lit by default. A question's answers light while you point at it (mouse)
+  // or while its list is open (tap, on a phone); one answer lights while you point at its row or look
+  // at it (Owner, 2026-11-13).
   const answers = state.answers.get(state.centre);
-  for (const block of state.blocks) {
-    const i = LAYER_OF_SIDE[HOME_SIDE.get(block.slot)];
-    if (i === undefined) continue;
-    for (const answer of answers.get(block.slot) || []) paint(i, state.points.get(answer.id), KIND_COLOR[kindOf(block.slot)]);
-  }
+  const lightSlot = (slot, only = null) => {
+    const i = only ? L.look : (LAYER_OF_SIDE[HOME_SIDE.get(slot)] ?? L.look);
+    for (const answer of answers?.get(slot) || []) {
+      if (!only || answer.id === only) paint(i, state.points.get(answer.id), KIND_COLOR[kindOf(slot)]);
+    }
+  };
+  if (state.peek?.list) lightSlot(state.peek.list);
+  if (state.hover) lightSlot(state.hover.slot, state.hover.id);
   if (state.peek?.id) paint(L.look, state.points.get(state.peek.id), peekColor());
   for (let i = 0; i < 4; i += 1) {
     u.uCol.value[i].set(colors[i] || HERE_COLOR);
@@ -2131,6 +2146,26 @@ function turnBy(dx, dy) {
   state.aimQ = globeQ.clone();   // the reader's turn is kept until they go somewhere
   state.userTurned = true;
 }
+// Pointing with a mouse (or pen) at a question on the ring, its "+N" chip or one row of its list lights
+// those answers on the globe; moving off puts the light out. Touch has no hover: a tap looks instead.
+function setHover(hover) {
+  const key = hover ? `${hover.slot}|${hover.id || ""}` : "";
+  const was = state.hover ? `${state.hover.slot}|${state.hover.id || ""}` : "";
+  if (key === was) return;
+  state.hover = hover;
+  lit.dirty = true;
+}
+function bindHover() {
+  document.addEventListener("pointerover", (event) => {
+    if (event.pointerType === "touch") return;
+    const el = event.target.closest?.("[data-slot]");
+    const slot = el?.dataset.slot;
+    setHover(slot && slot !== "centre" && state.answers.get(state.centre)?.has(slot)
+      ? { slot, id: el.dataset.hid || null } : null);
+  });
+  document.documentElement.addEventListener("pointerleave", () => setHover(null));
+}
+
 function bindGestures() {
   stage.addEventListener("pointerdown", (event) => {
     if (!bare(event.target) || (event.pointerType === "mouse" && event.button !== 0)) return;
