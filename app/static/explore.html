@@ -286,7 +286,10 @@
       transform: translateY(105%); transition: transform .35s cubic-bezier(.22, .8, .24, 1);
     }
     .panel.open { transform: none; }
-    .panel-grip { display: block; flex: none; width: 44px; height: 4px; margin: 9px auto 0; border-radius: 9px; background: var(--line-strong); }
+    /* The grip is a button: tap it to make the sheet taller, tap again to lower it. */
+    .panel-grip { display: block; flex: none; width: 96px; height: 24px; margin: 0 auto; padding: 0; border: 0; background: none; cursor: pointer; }
+    .panel-grip span { display: block; width: 44px; height: 4px; margin: 9px auto 0; border-radius: 9px; background: var(--line-strong); }
+    .panel.tall .panel-grip span { background: var(--ink-soft); }
     .panel-body { padding: 12px 16px calc(18px + env(safe-area-inset-bottom)); }
     .close {
       display: grid; place-items: center; position: absolute; right: 8px; top: 8px;
@@ -299,10 +302,10 @@
   .panel-body.more-below { -webkit-mask-image: linear-gradient(#000 calc(100% - 44px), transparent); mask-image: linear-gradient(#000 calc(100% - 44px), transparent); }
   .tap-hint { display: none; }
   @media (max-width: 680px) {
-    /* A low, compact sheet: the globe above stays free to tap. */
-    .panel { max-height: 31%; }
-    /* Choosing from a list needs the room more than the globe does. */
-    .panel.tall { max-height: 62%; }
+    /* The sheet always opens at one low height, a long list too: the globe above stays in view and
+       free to tap; the list scrolls inside. Its grip makes it taller on request (Owner, 2026-11-13). */
+    .panel { max-height: 34%; }
+    .panel.tall { max-height: 68%; }
     .panel-body { padding: 8px 16px calc(12px + env(safe-area-inset-bottom)); }
     .panel-kicker { margin: 0 44px 6px 0; font-size: 9.5px; }
     .shot { float: left; width: 76px; aspect-ratio: 1; margin: 0 12px 6px 0; border-radius: 10px; }
@@ -433,7 +436,7 @@
     </div>
 
   <aside class="panel" id="panel" aria-live="polite">
-    <span class="panel-grip"></span>
+    <button class="panel-grip" id="panel-grip" type="button" aria-expanded="false" aria-label="Make the card taller"><span></span></button>
     <button class="close" id="close" type="button" aria-label="Close">×</button>
     <div class="panel-body" id="panel-body"></div>
   </aside>
@@ -1023,9 +1026,15 @@ function aimGlobe() {
 }
 /* ---------- the card: peek before go ---------- */
 
+function setTall(tall) {
+  $("panel").classList.toggle("tall", tall);
+  $("panel-grip").setAttribute("aria-expanded", String(tall));
+  $("panel-grip").setAttribute("aria-label", tall ? "Make the card lower" : "Make the card taller");
+  requestAnimationFrame(moreBelow);
+}
 function openPanel() {
   $("panel").classList.add("open");
-  if (!state.peek?.list) $("panel").classList.remove("tall");
+  setTall(false);
   requestAnimationFrame(moreBelow);
 }
 // A fade at the sheet's foot while there is more to scroll.
@@ -1212,7 +1221,6 @@ function showList(key) {
   }
   body.append(rows);
   body.scrollTop = 0;
-  $("panel").classList.add("tall");
   for (const [slot, el] of toks) el.classList.toggle("peeked", slot === key);
   state.peek = { list: key };
   drawMarks();
@@ -1280,6 +1288,7 @@ function bindUI() {
   $("home").addEventListener("click", () => { closePanel(); go(state.home); });
   $("close").addEventListener("click", closePanel);
   $("panel-body").addEventListener("scroll", moreBelow, { passive: true });
+  $("panel-grip").addEventListener("click", () => setTall(!$("panel").classList.contains("tall")));
   const search = $("search");
   search.addEventListener("focus", () => drawResults(search.value));
   search.addEventListener("input", () => drawResults(search.value));
