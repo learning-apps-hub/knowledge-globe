@@ -947,14 +947,14 @@ function layout() {
   place(now);
 }
 
-// Pins and beams. The current topic's mark carries its name. Only a pin (a city, a pole) or a single
-// country gets a beam to its answer on the ring: an area that holds the current topic, a set, a line or
-// half the Earth is drawn on the globe instead (applyLit), never pointed at. Every pin of a set, and
-// every area of a set too small to see, gets a mark.
-function pointable(point, slot) {
-  if (point.shape === "pin") return true;
-  if (point.shape !== "area") return false;
-  return point.tiny || (kindOf(slot) !== "place" && point.where?.codes?.length === 1);
+// Pins and beams. The current topic's mark carries its name. Only an answer with no border to see gets
+// a pin and a beam to its picture on the ring: a pin (a city, a pole) or an area too small to see. A
+// country, a set, a line or half the Earth is drawn on the globe instead (applyLit): its lit border is
+// the light, so it is never pointed at. Every pin of a set, and every tiny area of a set, gets a mark.
+// Like the light, an answer's mark and beam show only while it is pointed at or looked at: on arrival
+// only the current topic shows (Owner, 2026-11-13).
+function pointable(point) {
+  return point.shape === "pin" || (point.shape === "area" && !!point.tiny);
 }
 function peekColor() {
   return state.peek?.key ? KIND_COLOR[kindOf(state.peek.key)] : "#55e4d1";
@@ -1007,8 +1007,14 @@ function drawMarks(born = performance.now()) {
   const centre = state.points.get(state.centre);
   add(centre, { here: true });
   const answers = state.answers.get(state.centre);
-  const lookId = state.peek?.id;
-  if (lookId) add(state.points.get(lookId), { color: peekColor() });
+  // The answer you are looking at: its pin, and its beam too when it is the one on the ring (a tap, on a
+  // phone). A country you look at lights up whole, so it gets no pin.
+  const look = state.peek?.id && state.points.get(state.peek.id);
+  if (look && pointable(look)) {
+    const tok = toks.get(state.peek.key);
+    const onRing = tok && !tok.classList.contains("set") && tok.dataset.id === look.id;
+    add(look, { slot: onRing ? state.peek.key : null, color: peekColor() });
+  }
   for (const [slot, el] of toks) {
     if (slot === "centre") continue;
     const color = KIND_COLOR[kindOf(slot)];
@@ -1020,7 +1026,7 @@ function drawMarks(born = performance.now()) {
       }
     } else {
       const point = state.points.get(el.dataset.id);
-      if (point && pointable(point, slot)) add(point, { slot, color });
+      if (point && pointable(point)) add(point, { slot, of: slot, color });
     }
   }
 }
@@ -2114,8 +2120,8 @@ function place(now) {
   const horizon = renderer ? 1 / Math.max(1.0001, camera.position.distanceTo(world.position)) : 0;
   for (const mark of state.marks) {
     const spot = project(mark.anchor);
-    // A set's marks light with the set: while its question is pointed at or its list is open, or one
-    // alone while its row is pointed at. On arrival only the current topic shows.
+    // An answer's mark (and its beam) lights with its question: while that is pointed at or its list is
+    // open, or one alone while its row is pointed at. On arrival only the current topic shows.
     if (mark.of) {
       const on = state.peek?.list === mark.of
         || (state.hover?.slot === mark.of && (!state.hover.id || state.hover.id === mark.id));
