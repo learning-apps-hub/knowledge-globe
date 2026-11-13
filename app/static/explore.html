@@ -137,15 +137,23 @@
   .mark.here i { display: none; }
   .mark.here.is-pin i { display: block; }
   .mark b {
-    position: absolute; left: 0; bottom: 9px; transform: translateX(-50%);
+    position: absolute; left: 0; bottom: var(--lift, 9px); transform: translateX(-50%);
     padding: 3px 9px; border-radius: 99px; white-space: nowrap;
     background: rgba(4, 16, 22, .72); border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
     color: var(--ink); font: 700 13px/1.2 "Manrope", sans-serif;
   }
+  /* One country (or an area too small to see): the name stands clear of it, on a thin stem. */
+  .mark.lift b::after {
+    content: ""; position: absolute; left: 50%; top: calc(100% + 1px); width: 1.5px; margin-left: -.75px;
+    height: calc(var(--lift, 9px) - 3px); border-radius: 1px;
+    background: linear-gradient(color-mix(in srgb, var(--accent) 75%, transparent), color-mix(in srgb, var(--accent) 25%, transparent));
+  }
   .beam { transition: none; }
-  .beam line { stroke: var(--accent); stroke-linecap: round; }
-  .beam .glow { stroke-width: 6; stroke-opacity: .16; }
-  .beam .core { stroke-width: 1.4; stroke-opacity: .9; }
+  /* Bright at the place, fading towards the ring: it starts somewhere real and only leads the eye out. */
+  .beam line { stroke-linecap: round; }
+  .beam stop { stop-color: var(--accent); }
+  .beam .glow { stroke-width: 5; stroke-opacity: .2; }
+  .beam .core { stroke-width: 1.25; }
   .face {
     position: absolute; inset: 0;
     display: block; padding: 0; overflow: hidden;
@@ -158,6 +166,7 @@
   .tok.dot .face:hover { transform: scale(1.06); }
   /* A set: every answer has a place, so the globe shows them all and the ring shows how many. */
   .tok.set .face { border-style: dashed; }
+  .tok.set .cap strong { -webkit-line-clamp: 3; }
   .tok.set.count .init { font: 800 22px/1 "Manrope", sans-serif; color: color-mix(in srgb, var(--accent) 85%, white); }
   .tok.peeked .face { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 45%, transparent), 0 0 34px var(--accent); }
   .tok.centre .face {
@@ -703,7 +712,16 @@ function sortOf(p) {
 }
 function setWords(list) {
   const points = list.map((a) => state.points.get(a.id));
-  if (points.length <= 3) return points.map((p) => p.name).join(" · ");
+  if (points.length <= 3) {
+    // "Northern · Eastern Hemisphere": names that share a last word say it once, at the end.
+    const names = points.map((p) => p.name);
+    const lastOf = (n) => (n.includes(" ") ? n.split(" ").pop() : "");
+    const last = names.map(lastOf).find((w, i, all) => w && all.indexOf(w) !== i);
+    if (!last) return names.join(" · ");
+    const own = names.filter((n) => lastOf(n) !== last);
+    const sharing = names.filter((n) => lastOf(n) === last).map((n) => n.slice(0, -last.length - 1));
+    return `${[...own, ...sharing].join(" · ")} ${last}`;
+  }
   const counts = new Map();
   for (const p of points) {
     const [one, many] = sortOf(p);
@@ -718,7 +736,10 @@ function setWords(list) {
     if (e.mixed) return `${e.n} countries and territories`;
     return e.n === 1 ? e.name : `${e.n} ${e.many}`;
   });
-  return words.slice(0, 3).join(" · ");
+  // Room for about three short lines under the tile: past that, the biggest sort and how many more.
+  const all = words.join(" · ");
+  if (words.length < 2 || all.length <= 34) return all;
+  return `${words[0]} · ${points.length - [...counts.values()].sort((a, b) => b.n - a.n)[0].n} more`;
 }
 function makeSet(id, slot, list) {
   const el = document.createElement("div");
@@ -946,23 +967,37 @@ function drawMarks(born = performance.now()) {
   for (const mark of state.marks) mark.el.remove();
   state.marks = [];
   const marked = new Set();
-  const add = (point, { slot = null, color = "#55e4d1", here = false, soft = false } = {}) => {
+  const add = (point, { slot = null, of = null, color = "#55e4d1", here = false, soft = false } = {}) => {
     if (!point?.at || marked.has(point.id)) return;
     marked.add(point.id);
-    const el = node("div", `mark${here ? " here" : ""}${soft ? " soft" : ""}${point.shape === "pin" ? " is-pin" : ""}`);
+    // The current topic's name stands above one country (about 4 degrees up) or above a tiny area's ring.
+    const lift = !here || point.shape !== "area" ? 0 : point.tiny ? .052 : point.where?.codes?.length === 1 ? .07 : 0;
+    const el = node("div", `mark${here ? " here" : ""}${soft ? " soft" : ""}${point.shape === "pin" ? " is-pin" : ""}${lift ? " lift" : ""}`);
     el.style.setProperty("--accent", color);
     el.append(node("i"));
     if (here) el.append(node("b", "", point.name));
     el.style.opacity = "0";
     stage.append(el);
-    const mark = { el, slot, born, id: point.id, anchor: vecAt(point.at.lat, point.at.lon) };
+    const mark = { el, slot, of, born, id: point.id, anchor: vecAt(point.at.lat, point.at.lon), show: of ? 0 : 1 };
+    if (lift) mark.above = vecAt(point.at.lat + lift * 180 / Math.PI, point.at.lon);
     if (slot) {
       mark.beam = document.createElementNS("http://www.w3.org/2000/svg", "g");
       mark.beam.setAttribute("class", "beam");
       mark.beam.style.setProperty("--accent", color);
+      const fade = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
+      fade.id = `beam-${state.marks.length}`;
+      fade.setAttribute("gradientUnits", "userSpaceOnUse");
+      for (const [offset, opacity] of [[0, .95], [.55, .55], [1, .3]]) {
+        const stop = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+        stop.setAttribute("offset", offset);
+        stop.setAttribute("stop-opacity", opacity);
+        fade.append(stop);
+      }
+      mark.beam.append(fade);
       for (const kind of ["glow", "core"]) {
         const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line.setAttribute("class", kind);
+        line.setAttribute("stroke", `url(#${fade.id})`);
         mark.beam.append(line);
       }
       svg.append(mark.beam);
@@ -980,8 +1015,8 @@ function drawMarks(born = performance.now()) {
     if (el.classList.contains("set")) {
       for (const answer of answers.get(slot) || []) {
         const point = state.points.get(answer.id);
-        if (point.shape === "pin") add(point, { color });
-        else if (point.tiny) add(point, { color, soft: true });
+        if (point.shape === "pin") add(point, { of: slot, color });
+        else if (point.tiny) add(point, { of: slot, color, soft: true });
       }
     } else {
       const point = state.points.get(el.dataset.id);
@@ -1417,7 +1452,7 @@ const PLANET_FRAG = `
   uniform float uLitDash;     // layer 1 only: a disputed area's dashed edge
   uniform vec4 uLayerAmt;     // each layer's fade
   uniform vec3 uCol[4];
-  uniform vec4 uStyle[4];     // fill, edge, half-Earth wash, 1 = every border inside the set
+  uniform vec4 uStyle[4];     // fill, edge, half-Earth glow, 1 = every border inside the set
   uniform vec4 uHemi[4];      // north, south, east, west: 1 for each half lit
   uniform vec3 uLines[8];     // (1 = latitude / 2 = longitude, radians, layer)
   uniform vec4 uMark;         // ring centre (xyz) and 1 when shown
@@ -1528,6 +1563,8 @@ const PLANET_FRAG = `
       vec4 sides = vec4(step(0.0, p.y), step(p.y, 0.0), step(0.0, p.x), step(p.x, 0.0));
       float equator = lineNear(abs(lat), wLat);
       float meridian = max(lineNear(abs(lon), wLon), lineNear(3.14159265 - abs(lon), wLon * 0.5));
+      // How far from the Equator (north, south) and from the 0 / 180 degree circle (east, west).
+      vec4 lean = exp(-vec4(vec2(abs(lat)), vec2(asin(clamp(abs(p.x), 0.0, 1.0)))) / 0.15);
       for (int i = 0; i < 4; i++) {
         float amt = uLayerAmt[i];
         if (amt < 0.001) continue;
@@ -1535,7 +1572,10 @@ const PLANET_FRAG = `
         float edge = mix(outer[i], inner[i], st.w);
         float fill = l0[i] * st.x + min(edge * 2.2, 1.0) * st.y * (i == 1 ? dash : 1.0);
         vec4 hemi = uHemi[i];
-        fill += dot(hemi, sides) * st.z;
+        // Half the Earth: its dividing line, a glow that leans into the lit side and dies away within
+        // about 25 degrees, and only a breath of colour over the rest. (A flat wash over the whole half
+        // turned the night side brown and hid the ground; two halves glow twice in their shared quarter.)
+        fill += dot(hemi * sides, lean) * st.z + dot(hemi, sides) * 0.014;
         float line = 0.0;
         if (hemi.x + hemi.y > 0.5) line = max(line, equator);
         if (hemi.z + hemi.w > 0.5) line = max(line, meridian);
@@ -1626,14 +1666,15 @@ const litTable = new THREE.DataTexture(new Uint8Array(512 * 4), 512, 1, THREE.RG
 litTable.magFilter = THREE.NearestFilter;
 litTable.minFilter = THREE.NearestFilter;
 litTable.generateMipmaps = false;
-// Each layer: fill, edge, half-Earth wash, 1 = every border inside the set lights (a continent's countries).
+// Each layer: fill, edge, half-Earth glow beside its dividing line, 1 = every border inside the set lights
+// (a continent's countries).
 // The layers are drawn in this order, so what the current topic holds shows on top of it.
 const L = { up: 0, here: 1, down: 2, look: 3 };
 const LAYER_STYLE = [
-  [.05, .75, .035, 0], // up: what holds it, as an outline round the current topic
-  [.30, .9, .06, 0],   // here: the current topic
-  [.10, .7, .035, 1],  // down: what it holds, every one of them, borders and all
-  [.28, 1, .07, 0],    // look: the answer you are looking at
+  [.05, .75, .22, 0],  // up: what holds it, as an outline round the current topic
+  [.22, .9, .30, 0],   // here: the current topic (thin enough that its ground still shows)
+  [.10, .7, .22, 1],   // down: what it holds, every one of them, borders and all
+  [.26, 1, .30, 0],    // look: the answer you are looking at
 ];
 const HERE_COLOR = "#ffcc6b";
 const lit = { dirty: true, keys: ["", "", "", ""], amt: [0, 0, 0, 0], want: [0, 0, 0, 0] };
@@ -1904,7 +1945,8 @@ function globeFrame() {
   const above = phone ? 30 : 36;  // room over a top answer for its question
   const below = phone ? 34 : 40;  // room under a bottom answer for its name
   const appH = $("panel").offsetParent?.clientHeight || H;
-  const bottom = phone ? H - appH * .31 : H;
+  // A phone's sheet opens at 34% of the screen: the ring's lowest names must stay clear of it.
+  const bottom = phone ? H - appH * .345 : H;
   let D = phone ? 46 : 64;
   let frame;
   for (let pass = 0; pass < 3; pass += 1) {
@@ -2052,7 +2094,7 @@ function place(now) {
     el.style.transform = `translate3d(${el.pos.x.toFixed(1)}px, ${el.pos.y.toFixed(1)}px, 0) translate(-50%, -50%)`;
     el.style.opacity = alpha.toFixed(3);
     el.style.pointerEvents = alpha > .5 ? "" : "none";
-    if (!el.dying && el.dataset.slot) at.set(el.dataset.slot, { x: el.pos.x, y: el.pos.y, r: el.size / 2, alpha });
+    if (!el.dying && el.dataset.slot) at.set(el.dataset.slot, { x: el.pos.x, y: el.pos.y, r: el.size / 2, alpha, labelH: 30 });
   }
   const W = stage.clientWidth;
   for (const block of state.blocks) {
@@ -2072,7 +2114,19 @@ function place(now) {
   const horizon = renderer ? 1 / Math.max(1.0001, camera.position.distanceTo(world.position)) : 0;
   for (const mark of state.marks) {
     const spot = project(mark.anchor);
-    const alpha = smooth(horizon + .04, horizon + .3 * (1 - horizon), spot.face) * fadeIn(mark.born, now);
+    // A set's marks light with the set: while its question is pointed at or its list is open, or one
+    // alone while its row is pointed at. On arrival only the current topic shows.
+    if (mark.of) {
+      const on = state.peek?.list === mark.of
+        || (state.hover?.slot === mark.of && (!state.hover.id || state.hover.id === mark.id));
+      mark.show = reduced ? +on : clamp(mark.show + (on ? .16 : -.16), 0, 1);
+    }
+    const alpha = smooth(horizon + .04, horizon + .3 * (1 - horizon), spot.face) * fadeIn(mark.born, now) * mark.show;
+    if (mark.above) {
+      const up = project(mark.above);
+      const lift = Math.round(clamp(Math.hypot(up.x - spot.x, up.y - spot.y), 12, 110));
+      if (lift !== mark.lift) mark.el.style.setProperty("--lift", `${mark.lift = lift}px`);
+    }
     mark.x = spot.x;
     mark.y = spot.y;
     mark.alpha = alpha;
@@ -2087,7 +2141,11 @@ function place(now) {
     const dy = dot.y - spot.y;
     const reach = Math.hypot(dx, dy) || 1;
     const from = Math.min(.5, 5 / reach);
-    const to = Math.max(from, 1 - (dot.r + 2) / reach);
+    // Stop short of the question over the picture (coming down) or the name under it (coming up),
+    // not on top of the words.
+    const clear = dot.r + (dy > 0 ? dot.labelH : 34) + 3;
+    const slope = Math.abs(dy) / reach;
+    const to = Math.max(from, 1 - (slope > .5 ? clear / slope : dot.r + 2) / reach);
     for (const line of mark.beam.children) {
       line.setAttribute("x1", (spot.x + dx * from).toFixed(1));
       line.setAttribute("y1", (spot.y + dy * from).toFixed(1));
