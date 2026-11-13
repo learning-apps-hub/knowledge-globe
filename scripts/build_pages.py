@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a validated static Knowledge Globe bundle for GitHub Pages."""
+"""Build a validated static Explore bundle for GitHub Pages."""
 import argparse
 import json
 import os
@@ -13,7 +13,11 @@ ROOT = Path(__file__).resolve().parents[1]
 STATIC_DIR = ROOT / "app" / "static"
 sys.path.insert(0, str(ROOT))
 
-from app import subjects  # noqa: E402
+from app import geography, graph, subjects  # noqa: E402
+
+
+EXTERNAL_EARTH_DIR = ROOT.parent / "earth-data" / "derived"
+PUBLIC_BRANCH_EARTH_DIR = ROOT / "earth-data" / "derived"
 
 
 def write_json(path, payload):
@@ -33,7 +37,7 @@ def _assert_no_private(stage, withheld):
         raise ValueError("private subject directory leaked into the artifact")
     if not withheld:
         return
-    generated = [stage / "index.html", *(stage / "data" / "subjects").glob("*.json")]
+    generated = [path for path in stage.rglob("*") if path.is_file() and path.suffix in {".html", ".json", ".js"}]
     for path in generated:
         text = path.read_text(encoding="utf-8")
         for subject_id in sorted(withheld):
@@ -51,30 +55,41 @@ def build(destination):
     destination.parent.mkdir(parents=True, exist_ok=True)
     stage = Path(tempfile.mkdtemp(prefix=".pages-build-", dir=destination.parent))
     try:
-        shutil.copytree(STATIC_DIR / "vendor", stage / "static" / "vendor")
+        earth_dir = EXTERNAL_EARTH_DIR if EXTERNAL_EARTH_DIR.is_dir() else PUBLIC_BRANCH_EARTH_DIR
+        manifest_path = earth_dir / "manifest.json"
+        if not manifest_path.is_file():
+            raise ValueError("Earth bundle is missing (expected earth-data/derived/manifest.json)")
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
 
-        source_html = (STATIC_DIR / "index.html").read_text(encoding="utf-8")
+        shutil.copytree(STATIC_DIR / "vendor", stage / "static" / "vendor")
+        shutil.copy2(STATIC_DIR / "sky.js", stage / "static" / "sky.js")
+
+        source_html = (STATIC_DIR / "explore.html").read_text(encoding="utf-8")
         marker = 'data-static-build="false"'
         if source_html.count(marker) != 1:
             raise ValueError("viewer is missing its static-build marker")
+        graph_url = 'fetch("./api/graph")'
+        if source_html.count(graph_url) != 1:
+            raise ValueError("viewer graph endpoint changed; static rewrite is unsafe")
         (stage / "index.html").write_text(
-            source_html.replace(marker, 'data-static-build="true"'),
+            source_html.replace(marker, 'data-static-build="true"').replace(
+                graph_url, 'fetch("./data/graph.json")'
+            ),
             encoding="utf-8",
         )
 
-        data_dir = stage / "data" / "subjects"
-        data_dir.mkdir(parents=True)
-        listing = subjects.list_subjects(include_private=False)
-        write_json(
-            data_dir / "index.json",
-            [{k: s[k] for k in ("id", "title", "summary")} for s in listing],
-        )
-        for summary in listing:
-            subject = subjects.get_subject(summary["id"])
-            problems = subjects.validate(subject)
-            if problems:
-                raise ValueError(f"invalid subject {summary['id']}: {'; '.join(problems)}")
-            write_json(data_dir / f"{summary['id']}.json", subject)
+        data_dir = stage / "data"
+        data_dir.mkdir()
+        write_json(data_dir / "graph.json", graph.build(geography.load(str(earth_dir))))
+
+        earth_out = stage / "earth"
+        earth_out.mkdir()
+        shutil.copy2(manifest_path, earth_out / "manifest.json")
+        for name in sorted(set(manifest.get("files", {}).values())):
+            source = earth_dir / name
+            if not source.is_file():
+                raise ValueError(f"Earth bundle file is missing: {name}")
+            shutil.copy2(source, earth_out / name)
 
         withheld = subjects.private_ids()
         _assert_no_private(stage, withheld)
@@ -89,6 +104,7 @@ def build(destination):
 
     withheld = sorted(subjects.private_ids())
     print(f"Built GitHub Pages site at {destination}")
+    print("Bundled one static graph and the credited Earth pictures/data")
     if withheld:
         print(f"Withheld {len(withheld)} private subject(s): {', '.join(withheld)}")
 

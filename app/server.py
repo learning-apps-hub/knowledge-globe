@@ -23,7 +23,7 @@ class Handler(BaseHTTPRequestHandler):
         path = self.path.split("?", 1)[0].rstrip("/") or "/"
 
         if path == "/":
-            return self._send_viewer()
+            return self._send_viewer("explore.html")
         if path.startswith("/static/"):
             return self._send_static(path[len("/static/"):])
         if path.startswith("/earth/"):

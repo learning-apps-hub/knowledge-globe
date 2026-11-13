@@ -30,7 +30,7 @@ dependency.
   an accident of scaffolding. Don't reach for Flask/FastAPI.
 - **No CDN fetches.** The viewer must work on a LAN with no internet. Any
   library gets vendored into the repo.
-- **The viewer is one file** — `app/static/index.html`, inline CSS and JS.
+- **The viewer is one file** — `app/static/explore.html`, inline CSS and JS.
 - **`zoom_level` is derived, never authored.** If you find yourself writing it
   into a JSON file, that's a bug.
 - **Edge types are a closed vocabulary.** `EDGE_TYPES` in `app/subjects.py` is

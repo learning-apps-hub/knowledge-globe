@@ -1,17 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-static-build="false">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Knowledge Globe — Explore preview</title>
-<!--
-  PREVIEW, not the viewer. One graph of points, nine questions, one centre. Earth view only so far.
-  Design: working files/ONE_GRAPH_DESIGN.md (vault). Served only by the LAN app
-  at /explore; the Pages build does not copy this file.
--->
+<title>Knowledge Globe — Explore</title>
+<!-- One graph of points and questions. Design: working files/ONE_GRAPH_DESIGN.md (vault). -->
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap");
-
   :root {
     color-scheme: dark;
     --night: #061017;
@@ -409,7 +403,7 @@
   <canvas id="globe" aria-hidden="true"></canvas>
 
   <header class="top">
-    <div class="brand">Knowledge Globe<small>Explore preview</small></div>
+    <div class="brand">Knowledge Globe<small>Explore</small></div>
     <button class="pill" id="home" type="button" aria-label="Back to my topic">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
       <span id="home-name">Home</span><small id="home-steps"></small>
