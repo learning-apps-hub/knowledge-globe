@@ -230,12 +230,18 @@
   }
   .btn.go { border-color: transparent; background: var(--aqua); color: #04222a; }
   .rows { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
-  .rows button {
+  .rows li { display: flex; gap: 6px; align-items: stretch; }
+  .rows .row {
+    flex: 1; min-width: 0;
     display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 11px; align-items: center;
     width: 100%; min-height: 54px; padding: 7px 10px;
     border: 1px solid var(--line); border-radius: 12px; background: rgba(255, 255, 255, .03); text-align: left;
   }
-  .rows button:hover { border-color: var(--line-strong); }
+  .rows .row:hover { border-color: var(--line-strong); }
+  .rows .row-go {
+    flex: none; min-width: 52px; padding: 0 12px;
+    border: 0; border-radius: 12px; background: var(--aqua); color: #04222a; font-weight: 700;
+  }
   .rows .disc {
     display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
     border: 1px solid color-mix(in srgb, var(--accent, var(--aqua)) 60%, transparent);
@@ -282,9 +288,8 @@
     .panel h2 { font-size: 18px; margin-bottom: 3px; }
     .panel .lead { font-size: 13.5px; line-height: 1.35; margin-bottom: 8px; }
     .why { clear: both; margin-bottom: 8px; padding: 7px 10px; font-size: 13px; }
-    .actions .go { display: none; }
     .tap-hint { display: block; clear: both; margin: 0 0 6px; }
-    .actions { margin: 0 0 8px; }
+    .actions { clear: both; margin: 0 0 8px; }
     .actions .btn { min-height: 40px; }
   }
   @media (max-width: 680px) {
@@ -936,15 +941,9 @@ function peekAt(id, key) {
   const body = $("panel-body");
   body.replaceChildren(node("p", "panel-kicker", `${centre.name} · ${question(key)}`));
   cardInto(body, point);
-  if (answer?.why) {
-    const why = node("p", "why");
-    why.style.setProperty("--accent", color);
-    const mark = answer.mark === "helps" ? "It helps, because" : answer.mark === "harms" ? "It harms, because" : "Because";
-    why.append(node("b", "", mark), answer.why);
-    body.append(why);
-  }
+  // Going is the first thing under the name: on a phone the sheet covers the
+  // globe, so the pin may not be there to double-tap.
   const actions = node("div", "actions");
-  body.append(node("p", "hint tap-hint", "Double-tap the pin to go there."));
   const goBtn = node("button", "btn go", "Go there");
   goBtn.type = "button";
   goBtn.addEventListener("click", () => go(id));
@@ -957,6 +956,14 @@ function peekAt(id, key) {
     actions.append(all);
   }
   body.append(actions);
+  if (answer?.why) {
+    const why = node("p", "why");
+    why.style.setProperty("--accent", color);
+    const mark = answer.mark === "helps" ? "It helps, because" : answer.mark === "harms" ? "It harms, because" : "Because";
+    why.append(node("b", "", mark), answer.why);
+    body.append(why);
+  }
+  body.append(node("p", "hint tap-hint", "Or double-tap its pin on the globe."));
   if (point.fact) {
     const fact = node("p", "fact");
     fact.append(node("b", "", "Did you know"), point.fact);
@@ -976,13 +983,13 @@ function showList(key) {
   body.replaceChildren(
     node("p", "panel-kicker", centre.name),
     node("h2", "", question(key)),
-    node("p", "hint", `${list.length} answers. Tap one to look at it without leaving ${centre.name}.`),
+    node("p", "hint", `${list.length} answers. Tap one to look at it without leaving ${centre.name}, or Go to move there.`),
   );
   const rows = node("ul", "rows");
   for (const answer of list) {
     const point = state.points.get(answer.id);
     const item = node("li");
-    const button = node("button");
+    const button = node("button", "row");
     button.type = "button";
     const disc = node("span", "disc", initials(point.name));
     disc.style.setProperty("--accent", color);
@@ -991,7 +998,11 @@ function showList(key) {
     if (answer.why || point.line) text.append(node("small", "", answer.why || point.line));
     button.append(disc, text);
     button.addEventListener("click", () => peekAt(answer.id, key));
-    item.append(button);
+    const goRow = node("button", "row-go", "Go");
+    goRow.type = "button";
+    goRow.setAttribute("aria-label", `Go to ${point.name}`);
+    goRow.addEventListener("click", () => go(answer.id));
+    item.append(button, goRow);
     rows.append(item);
   }
   body.append(rows);
