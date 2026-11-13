@@ -1,0 +1,63 @@
+{
+  "version": "v1",
+  "files": {
+    "day8192": "day-8192.v1.jpg",
+    "day4096": "day-4096.v1.jpg",
+    "pack4096": "pack-4096.v1.jpg",
+    "sea": "sea-720.v1.png",
+    "stars": "stars.v1.json",
+    "moon": "moon-2048.v1.jpg",
+    "areas": "areas-4096.v2.png",
+    "geo": "geo.v2.json",
+    "areas8192": "areas-8192.v2.png"
+  },
+  "sea": {
+    "width": 720,
+    "height": 360,
+    "unit_degrees": 0.25
+  },
+  "layers": [
+    {
+      "what": "Land, sea floor and ice, cloud-free",
+      "credit": "NASA Earth Observatory, Blue Marble: Next Generation (R. Stöckli)",
+      "years": "August 2004",
+      "licence": "Public domain (NASA)"
+    },
+    {
+      "what": "City lights at night",
+      "credit": "NASA Earth Observatory, Black Marble (J. Stevens, M. Román; Suomi NPP VIIRS)",
+      "years": "2016",
+      "licence": "Public domain (NASA)"
+    },
+    {
+      "what": "One real day of cloud cover",
+      "credit": "NASA Earth Observatory, Blue Marble clouds (R. Stöckli; MODIS)",
+      "years": "2001–2002 composite",
+      "licence": "Public domain (NASA)"
+    },
+    {
+      "what": "Coastlines (which parts are sea)",
+      "credit": "Natural Earth",
+      "years": "v5.1.2",
+      "licence": "Public domain (Natural Earth)"
+    },
+    {
+      "what": "Countries, continents, oceans, the named lines, capitals and the biggest cities",
+      "credit": "Natural Earth",
+      "years": "v5.1.2",
+      "licence": "Public domain (Natural Earth)"
+    },
+    {
+      "what": "Every star the eye can see (to magnitude 6.5): place, brightness, colour",
+      "credit": "Yale Bright Star Catalogue, 5th edition (D. Hoffleit, W. H. Warren Jr.), via CDS",
+      "years": "Positions for the year 2000",
+      "licence": "Free to use (CDS / NASA ADC)"
+    },
+    {
+      "what": "The Moon's surface",
+      "credit": "NASA Scientific Visualization Studio, CGI Moon Kit (E. Wright; LRO camera)",
+      "years": "LRO, 2009 onward",
+      "licence": "Public domain (NASA)"
+    }
+  ]
+}
