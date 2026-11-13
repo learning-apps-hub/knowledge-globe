@@ -114,22 +114,35 @@
   #stage { grid-column: 1; grid-row: 3; position: relative; z-index: 1; min-width: 0; min-height: 0; overflow: hidden; }
   #links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
-  /* Pins are placed by place() every frame from their spot on the globe, so
-     only their size eases here. */
+  /* Answers on the question ring are flat pictures, placed by place() every
+     frame, so only their size eases here. */
   .tok {
     --accent: var(--aqua);
     position: absolute; left: 0; top: 0;
     will-change: transform, opacity;
     transition: width var(--move), height var(--move);
   }
-  /* The pin's footprint on the globe: flattened toward the rim like a disc
-     lying on a ball, so the pin reads as sitting on the surface. */
-  .base {
-    position: absolute; left: 50%; top: 50%; width: 138%; height: 138%;
-    border-radius: 50%; pointer-events: none;
-    transform: translate(-50%, -50%) rotate(var(--tilt, 0rad)) scaleX(var(--squash, 1));
-    background: radial-gradient(closest-side, rgba(1, 10, 16, .75) 56%, color-mix(in srgb, var(--accent) 55%, transparent) 70%, color-mix(in srgb, var(--accent) 12%, transparent) 84%, transparent 100%);
+  /* A pin: the mark at a topic's true place on Earth. The current topic's pin
+     carries its name. Beams run from a pin to its answer on the ring. */
+  .mark { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; will-change: transform, opacity; }
+  .mark i {
+    position: absolute; left: -4.5px; top: -4.5px; width: 9px; height: 9px; border-radius: 50%;
+    background: color-mix(in srgb, var(--accent) 55%, white);
+    box-shadow: 0 0 0 2px rgba(1, 10, 16, .75), 0 0 12px 2px var(--accent);
   }
+  .mark.soft i { left: -3px; top: -3px; width: 6px; height: 6px; box-shadow: 0 0 0 1.5px rgba(1, 10, 16, .7), 0 0 8px var(--accent); }
+  .mark.here i { display: none; }
+  .mark.here.is-pin i { display: block; }
+  .mark b {
+    position: absolute; left: 0; bottom: 9px; transform: translateX(-50%);
+    padding: 3px 9px; border-radius: 99px; white-space: nowrap;
+    background: rgba(4, 16, 22, .72); border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+    color: var(--ink); font: 700 13px/1.2 "Manrope", sans-serif;
+  }
+  .beam { transition: none; }
+  .beam line { stroke: var(--accent); stroke-linecap: round; }
+  .beam .glow { stroke-width: 6; stroke-opacity: .16; }
+  .beam .core { stroke-width: 1.4; stroke-opacity: .9; }
   .face {
     position: absolute; inset: 0;
     display: block; padding: 0; overflow: hidden;
@@ -448,16 +461,15 @@ const HOMES = [
   { key: "kind.back", side: "down" },
   { key: "like.out", side: "down" },
 ];
-// Earth view: the centre and its answers are pins on the globe's surface.
-// Each side of the centre owns a stretch of one ring around it; `turn` is the
-// direction the side's homes are listed in (-1 = clockwise on screen).
+// Earth view: the questions and their answers sit on the question ring, a
+// flat ring on the screen around the globe. Each side owns a stretch of it;
+// `turn` is the direction its questions are listed in (-1 = clockwise).
 const SIDES = {
   up: { axis: 90, turn: -1 },
   right: { axis: 0, turn: -1 },
   down: { axis: 270, turn: 1 },
   left: { axis: 180, turn: 1 },
 };
-const RING = 54;        // degrees from the centre pin to the ring of answers
 
 const $ = (id) => document.getElementById(id);
 const stage = $("stage");
@@ -474,15 +486,16 @@ const state = {
   home: null,
   trail: [],
   peek: null,        // { id, key } or { list: key }
-  blocks: [],        // one per question on the ring: label, chip, line
-  spots: new Map(),  // point id → its spot on the globe, once it has been the centre
-  restQ: null,       // the globe's resting turn for the current centre
+  blocks: [],        // one per question on the ring: label, chip
+  marks: [],         // pins on the globe (and their beams to the ring)
+  restQ: null,       // the globe's resting turn for the current topic
+  aimQ: null,        // the turn it is heading for (rest, or showing an answer you look at)
   lastTouch: performance.now(),
   spin: 0,           // 0..1, the resting spin easing in
   spun: false,       // the globe has spun off its resting turn
 };
-const toks = new Map(); // slot ("centre" or a question key) → element
-const pins = new Set(); // every pin element still on the stage, leaving ones too
+const toks = new Map(); // slot ("centre" or a question key) → picture element
+const pins = new Set(); // every picture still on the stage, leaving ones too
 const IDLE_MS = 7000;   // quiet time on my topic before the Earth starts its time-lapse
 
 /* ---------- data ---------- */
@@ -592,11 +605,10 @@ function go(id, { fresh = false, back = false } = {}) {
   if (!state.points.has(id)) return;
   const from = state.centre;
   if (id === from && !fresh) return showCard(id);
-  // The new centre stays where it sits on the globe: the pin just tapped keeps
-  // its own spot, a point met before goes back to its spot, a new one gets one.
-  const pin = [...toks.values()].find((el) => el.dataset.id === id);
-  const spot = pin?.anchor?.clone() || state.spots.get(id) || homeSpot(id);
-  state.spots.set(id, spot);
+  // A topic with a real place turns the globe to it; one without (an idea)
+  // leaves the globe where it is: it has no place to show.
+  const at = state.points.get(id).at;
+  const spot = at ? vecAt(at.lat, at.lon) : null;
   state.cameFrom = from;
   state.centre = id;
   if (!back) {
@@ -624,7 +636,7 @@ function makeTok(point) {
   const el = document.createElement("div");
   el.className = "tok";
   el.dataset.id = point.id;
-  el.innerHTML = `<span class="base"></span><button class="face" type="button"><span class="init"></span><img alt="" decoding="async" referrerpolicy="no-referrer"></button>
+  el.innerHTML = `<button class="face" type="button"><span class="init"></span><img alt="" decoding="async" referrerpolicy="no-referrer"></button>
     <span class="cap"><strong></strong><small></small></span>`;
   el.querySelector(".init").textContent = initials(point.name);
   el.querySelector(".cap strong").textContent = point.name;
@@ -649,16 +661,15 @@ function makeTok(point) {
   return el;
 }
 
-// A spot on the globe, `far` degrees from the front in the screen direction
-// `az` (0 = right, 90 = up), with the globe at rest on the centre.
-function frontVec(az, far) {
+// Where an answer sits on the question ring: `az` is the screen direction
+// from the globe's middle (0 = right, 90 = up).
+function ringAt(az, frame) {
   const a = THREE.MathUtils.degToRad(az);
-  const f = THREE.MathUtils.degToRad(far);
-  return new THREE.Vector3(Math.sin(f) * Math.cos(a), Math.sin(f) * Math.sin(a), Math.cos(f));
+  return { x: frame.x + frame.rx * Math.cos(a), y: frame.y - frame.ry * Math.sin(a) };
 }
 
 // Neighbours on the ring are eased apart until no question label sits on
-// another pin's name or picture (measured at rest, on the screen).
+// another answer's name or picture.
 const meter = document.createElement("canvas").getContext("2d");
 function textBox(text, font, max, lineH) {
   meter.font = font;
@@ -666,24 +677,17 @@ function textBox(text, font, max, lineH) {
   const lines = Math.min(2, Math.ceil(w / max));
   return { w: Math.min(w, max), h: lines * lineH };
 }
-function restScreen(v) {
-  if (!renderer) {
-    const frame = globeFrame();
-    return { x: frame.x + frame.r * v.x, y: frame.y - frame.r * v.y };
-  }
-  scratch.copy(v).add(world.position).project(camera);
-  return { x: (scratch.x + 1) / 2 * view.w + view.x, y: (1 - scratch.y) / 2 * view.h + view.y };
-}
-function ease(spots, { phone, D, blockW, answers }) {
+function ease(spots, { phone, frame, answers }) {
   if (spots.length < 2) return;
   const W = stage.clientWidth;
+  const { D, blockW } = frame;
   for (const spot of spots) {
     const name = state.points.get(headline(answers.get(spot.home.key)).id).name;
     spot.q = textBox(question(spot.home.key), `700 ${phone ? 10.5 : 11.5}px "DM Sans"`, blockW - 4, phone ? 13 : 14);
     spot.cap = textBox(name, `600 ${phone ? 11.5 : 12.5}px Manrope`, blockW, phone ? 14.5 : 16);
   }
   const boxes = (spot) => {
-    const at = restScreen(frontVec(spot.az, RING));
+    const at = ringAt(spot.az, frame);
     const qx = clamp(at.x, blockW / 2 + 4, W - blockW / 2 - 4);
     return [
       { x0: qx - spot.q.w / 2, x1: qx + spot.q.w / 2, y0: at.y - D / 2 - 5 - spot.q.h, y1: at.y - D / 2 - 3 },
@@ -691,7 +695,7 @@ function ease(spots, { phone, D, blockW, answers }) {
       { x0: at.x - spot.cap.w / 2, x1: at.x + spot.cap.w / 2, y0: at.y + D / 2 + 4, y1: at.y + D / 2 + 6 + spot.cap.h },
     ];
   };
-  const pad = 4; // breathing room between one pin's words and the next
+  const pad = 4; // breathing room between one answer's words and the next
   const hit = (a, b) => a.some((p) => b.some((q) => p.x0 < q.x1 + pad && q.x0 < p.x1 + pad && p.y0 < q.y1 + pad && q.y0 < p.y1 + pad));
   for (let pass = 0; pass < 60; pass += 1) {
     let moved = false;
@@ -707,25 +711,24 @@ function ease(spots, { phone, D, blockW, answers }) {
   }
 }
 
-// Works out every pin's spot ON the globe (in the globe's own frame), its
-// size and its label. Where it shows on the screen is worked out every frame
-// by place(), so a pin rides the globe wherever the globe turns.
+// Works out every answer's place on the question ring, its size and its
+// label. The ring is flat on the screen and does not turn with the globe;
+// only pins and beams ride the globe (place() moves them every frame).
 function layout() {
   const W = stage.clientWidth;
   const H = stage.clientHeight;
   if (!W || !H || !state.centre || !state.restQ) return;
   const phone = W <= 680;
+  const frame = globeFrame();
   const answers = state.answers.get(state.centre);
   const shown = HOMES.filter((home) => answers.has(home.key));
+  const centre = state.points.get(state.centre);
 
-  const R = globeFrame().r;
-  const cd = clamp(R * (phone ? .46 : .42), 80, 190);
-  const D = clamp(R * (phone ? .27 : .22), 44, 84);
-  const blockW = phone ? 104 : 168;
+  const cd = clamp(frame.r * (phone ? .5 : .42), 80, 190);
   const gap = phone ? 42 : 32; // degrees between neighbours on the ring
 
-  // Each home's own direction first, then neighbours are eased apart until
-  // their labels have room. The order around the centre never changes.
+  // Each question's own direction first, then neighbours are eased apart
+  // until their labels have room. The order around the globe never changes.
   const spots = [];
   for (const [side, { axis, turn: way }] of Object.entries(SIDES)) {
     const homes = shown.filter((home) => home.side === side);
@@ -748,44 +751,40 @@ function layout() {
     }
   }
 
-  ease(spots, { phone, D, blockW, labelH: phone ? 28 : 32, answers });
+  ease(spots, { phone, frame, answers });
 
   const now = performance.now();
-  // New pins wait until the globe has nearly finished turning to the centre.
-  const delay = turn ? turn.duration * .55 : 0;
-  const toGlobe = state.restQ.clone().invert();
-  const want = [{ slot: "centre", id: state.centre, size: cd, anchor: state.spots.get(state.centre), restFace: 1 }];
+  // New answers wait until the globe has nearly finished turning.
+  const delay = turn ? turn.duration * .45 : 0;
+  // A topic with a real place IS its place: the globe turns to it and lights
+  // it up, and no picture covers it. A topic without one (an idea) floats in
+  // front of the globe as a picture, never as a pin.
+  const want = centre.at ? [] : [{ slot: "centre", id: state.centre, size: cd, to: { x: frame.x, y: frame.y } }];
   const blocks = [];
   for (const { home, az } of spots) {
     const list = answers.get(home.key);
     const answer = headline(list);
-    const block = { slot: home.key, count: list.length, width: blockW, born: now + delay };
-    blocks.push(block);
-    want.push({
-      slot: home.key, id: answer.id, width: blockW, size: D,
-      anchor: frontVec(az, RING).applyQuaternion(toGlobe), restFace: Math.cos(THREE.MathUtils.degToRad(RING)),
-    });
+    blocks.push({ slot: home.key, count: list.length, width: frame.blockW, born: now + delay });
+    want.push({ slot: home.key, id: answer.id, width: frame.blockW, size: frame.D, to: ringAt(az, frame) });
   }
 
-  // Reuse the pin already showing a point: it slides along the surface to its
-  // new spot while the globe turns, instead of popping out and back in.
+  // Reuse the picture already showing a topic: it glides round the ring to
+  // its new place instead of popping out and back in.
   const spare = [...toks.values()];
   toks.clear();
   for (const item of want) {
     const at = spare.findIndex((el) => el.dataset.id === item.id);
     const el = at >= 0 ? spare.splice(at, 1)[0] : makeTok(state.points.get(item.id));
-    if (!el.anchor) {
-      el.anchor = item.anchor.clone();
+    if (!el.pos) {
+      el.pos = { ...item.to };
       el.born = now + delay;
-    } else if (turn) {
-      el.slide = { from: el.anchor.clone(), to: item.anchor.clone(), started: turn.started, duration: turn.duration };
-    } else {
-      el.anchor = item.anchor.clone();
-      el.slide = null;
+    } else if (!reduced) {
+      el.move = { from: { ...el.pos }, started: now, duration: 650 };
     }
+    el.target = { ...item.to };
+    if (reduced) el.pos = { ...item.to };
     const isCentre = item.slot === "centre";
     el.dataset.slot = item.slot;
-    el.restFace = item.restFace;
     el.classList.toggle("centre", isCentre);
     el.classList.toggle("dot", !isCentre);
     el.classList.remove("peeked");
@@ -805,15 +804,11 @@ function layout() {
     el.style.zIndex = "0";
   }
 
-  // Question labels, "+N" chips and the link lines are rebuilt, then ride
-  // their pin every frame like the pin does.
+  // Question labels and "+N" chips are rebuilt, then follow their answer.
   for (const block of state.blocks) {
     block.label.remove();
     block.more?.remove();
   }
-  const svg = $("links");
-  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-  svg.replaceChildren();
   const labelH = phone ? 28 : 32;
   for (const block of blocks) {
     const color = KIND_COLOR[kindOf(block.slot)];
@@ -831,16 +826,86 @@ function layout() {
       block.more.addEventListener("click", () => showList(block.slot));
       stage.append(block.more);
     }
-    block.line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    block.line.setAttribute("stroke", color);
-    block.line.setAttribute("stroke-width", "1.5");
-    block.line.setAttribute("stroke-dasharray", "2 5");
-    block.line.setAttribute("stroke-linecap", "round");
-    block.line.setAttribute("stroke-opacity", "0");
-    svg.append(block.line);
   }
   state.blocks = blocks;
+  drawMarks(now + delay);
   place(now);
+}
+
+// Pins and beams. The current topic's pin carries its name. Each answer on
+// the ring with a real place gets a pin and a beam from the pin to it. While
+// a question's whole list is open, its other answers with a place get a
+// small pin too (no beam: they are not on the ring).
+function drawMarks(born = performance.now()) {
+  const svg = $("links");
+  svg.setAttribute("viewBox", `0 0 ${stage.clientWidth} ${stage.clientHeight}`);
+  svg.replaceChildren();
+  for (const mark of state.marks) mark.el.remove();
+  state.marks = [];
+  const add = (point, { slot = null, color = "#55e4d1", here = false, soft = false } = {}) => {
+    if (!point?.at) return;
+    const el = node("div", `mark${here ? " here" : ""}${soft ? " soft" : ""}${point.shape === "pin" ? " is-pin" : ""}`);
+    el.style.setProperty("--accent", color);
+    el.append(node("i"));
+    if (here) el.append(node("b", "", point.name));
+    el.style.opacity = "0";
+    stage.append(el);
+    const mark = { el, slot, born, anchor: vecAt(point.at.lat, point.at.lon) };
+    if (slot) {
+      mark.beam = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      mark.beam.setAttribute("class", "beam");
+      mark.beam.style.setProperty("--accent", color);
+      for (const kind of ["glow", "core"]) {
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("class", kind);
+        mark.beam.append(line);
+      }
+      svg.append(mark.beam);
+    }
+    state.marks.push(mark);
+  };
+  const centre = state.points.get(state.centre);
+  add(centre, { here: true });
+  for (const [slot, el] of toks) {
+    if (slot !== "centre") add(state.points.get(el.dataset.id), { slot, color: KIND_COLOR[kindOf(slot)] });
+  }
+  const listKey = state.peek?.list;
+  const onRing = new Set([...toks.values()].map((el) => el.dataset.id));
+  if (listKey) {
+    for (const answer of state.answers.get(state.centre).get(listKey) || []) {
+      if (!onRing.has(answer.id)) add(state.points.get(answer.id), { color: KIND_COLOR[kindOf(listKey)], soft: true });
+    }
+  }
+  const lookId = state.peek?.id;
+  if (lookId && !onRing.has(lookId)) add(state.points.get(lookId), { color: KIND_COLOR[kindOf(state.peek.key)] });
+}
+
+// While you look at an answer with a place, the globe turns to show it (with
+// the current topic too, when both fit on the front). Otherwise the globe
+// rests on the current topic.
+function aimGlobe() {
+  if (!state.restQ) return;
+  let want = state.restQ;
+  const point = state.peek?.id && state.points.get(state.peek.id);
+  if (point?.at) {
+    const there = vecAt(point.at.lat, point.at.lon);
+    const seen = there.clone().applyQuaternion(state.restQ).z;
+    if (seen < .55) {
+      const centre = state.points.get(state.centre);
+      const here = centre.at && vecAt(centre.at.lat, centre.at.lon);
+      want = restFor(here && here.angleTo(there) < 1.4 ? here.add(there).normalize() : there);
+    }
+  }
+  if (state.aimQ && state.aimQ.equals(want)) return;
+  state.aimQ = want;
+  if (reduced) {
+    globeQ.copy(want);
+    turn = null;
+    return;
+  }
+  const angle = globeQ.angleTo(want);
+  if (angle < .002) return;
+  turn = { from: globeQ.clone(), to: want.clone(), started: performance.now(), duration: clamp(500 + angle * 420, 600, 1400) };
 }
 /* ---------- the card: peek before go ---------- */
 
@@ -857,7 +922,12 @@ function moreBelow() {
 function closePanel() {
   $("panel").classList.remove("open");
   for (const el of toks.values()) el.classList.remove("peeked");
+  const had = state.peek;
   state.peek = null;
+  if (had) {
+    drawMarks();
+    aimGlobe();
+  }
 }
 
 function node(tag, className, text) {
@@ -931,7 +1001,12 @@ function showCard(id) {
   }
   body.scrollTop = 0;
   for (const el of toks.values()) el.classList.remove("peeked");
+  const had = state.peek;
   state.peek = null;
+  if (had) {
+    drawMarks();
+    aimGlobe();
+  }
   openPanel();
 }
 
@@ -965,7 +1040,7 @@ function peekAt(id, key) {
     why.append(node("b", "", mark), answer.why);
     body.append(why);
   }
-  body.append(node("p", "hint tap-hint", "Or double-tap its pin on the globe."));
+  body.append(node("p", "hint tap-hint", "Or double-tap it on the question ring."));
   if (point.fact) {
     const fact = node("p", "fact");
     fact.append(node("b", "", "Did you know"), point.fact);
@@ -974,6 +1049,8 @@ function peekAt(id, key) {
   body.scrollTop = 0;
   for (const [slot, el] of toks) el.classList.toggle("peeked", slot === key && el.dataset.id === id);
   state.peek = { id, key };
+  drawMarks();
+  aimGlobe();
   openPanel();
 }
 
@@ -1012,6 +1089,8 @@ function showList(key) {
   $("panel").classList.add("tall");
   for (const el of toks.values()) el.classList.remove("peeked");
   state.peek = { list: key };
+  drawMarks();
+  aimGlobe();
   openPanel();
 }
 
@@ -1462,7 +1541,7 @@ function initGlobe() {
     world.add(globeGroup);
 
     // Turned so the picture's longitude 0 faces +z and 90° east faces +x: the
-    // same frame as every spot the page works out (homeSpot, restFor, sky.js).
+    // same frame as every spot the page works out (restFor, vecAt, sky.js).
     const ball = new THREE.SphereGeometry(1, 128, 96);
     ball.rotateY(-Math.PI / 2);
     planet = new THREE.Mesh(ball, new THREE.ShaderMaterial({
@@ -1606,21 +1685,29 @@ async function loadStars(name) {
 }
 
 // Where the whole globe sits on the stage, in stage pixels.
+// Where the globe and the question ring sit on the stage. The ring is an
+// oval round the globe, flat to the screen; the globe takes the room the
+// ring leaves. On a phone it all fits above the card sheet.
 function globeFrame() {
   const W = stage.clientWidth;
   const H = stage.clientHeight;
-  if (W > 680) return { x: W / 2, y: H * .5, r: Math.min(H * .43, W * .36) };
-  // Phone: the whole ring (top label to bottom caption) fits between the top
-  // of the stage and the top of the card sheet (31% of the app's height).
-  // The ring sits on the near side of the ball, so perspective pushes it
-  // about a tenth further out than its flat distance.
-  const reach = Math.sin(THREE.MathUtils.degToRad(RING)) * 1.11;
-  const above = 58;  // room over the top pin's middle for its question
-  const below = 48;  // room under the bottom pin's middle for its name
+  const phone = W <= 680;
+  const blockW = phone ? 104 : 168;
+  const above = phone ? 30 : 36;  // room over a top answer for its question
+  const below = phone ? 34 : 40;  // room under a bottom answer for its name
   const appH = $("panel").offsetParent?.clientHeight || H;
-  const sheetTop = H - appH * .31;
-  const r = clamp(Math.min(W * .47, (sheetTop - above - below) / (2 * reach)), 90, W * .47);
-  return { x: W / 2, y: above + r * reach, r };
+  const bottom = phone ? H - appH * .31 : H;
+  let D = phone ? 46 : 64;
+  let frame;
+  for (let pass = 0; pass < 3; pass += 1) {
+    const ry = Math.max(60, (bottom - above - below - D) / 2 - 4);
+    const rx = phone ? W / 2 - blockW / 2 - 4 : Math.min(W / 2 - blockW / 2 - 12, ry * 1.55);
+    // A phone is narrow: the side answers may sit a little over the globe's edge.
+    const r = phone ? Math.min(rx - D * .2, ry - D / 2 - 8) : Math.min(ry - D / 2 - 24, rx - D / 2 - 18);
+    frame = { x: W / 2, y: above + D / 2 + 4 + ry, r: Math.max(70, r), rx, ry, D, blockW };
+    D = clamp(frame.r * (phone ? .3 : .22), 44, 84);
+  }
+  return frame;
 }
 
 // The canvas's offset from the stage, kept so place() reads no layout per frame.
@@ -1674,22 +1761,21 @@ const smooth = (lo, hi, v) => {
 };
 const fadeIn = (born, now) => (born ? smooth(0, 1, (now - born) / 450) : 1);
 
-// Every frame: put each pin, label, chip and line where its spot on the globe
-// is now. Pins round the back fade out; pins near the rim shrink and their
-// footprint flattens, as a disc lying on a ball would.
+// Every frame: the ring pictures glide to their places, labels and chips
+// follow them, and pins ride the globe wherever it has turned. A pin round
+// the back fades out, and so does its beam, until the globe turns to it.
 function place(now) {
   if (!state.centre) return;
-  const middle = project(new THREE.Vector3(0, 0, 0));
   const at = new Map();
   for (const el of pins) {
-    if (el.slide) {
-      const p = clamp((now - el.slide.started) / el.slide.duration, 0, 1);
+    if (el.move) {
+      const p = clamp((now - el.move.started) / el.move.duration, 0, 1);
       const e = 1 - Math.pow(1 - p, 3);
-      el.anchor.copy(el.slide.from).lerp(el.slide.to, e).normalize();
-      if (p === 1) el.slide = null;
+      el.pos.x = el.move.from.x + (el.target.x - el.move.from.x) * e;
+      el.pos.y = el.move.from.y + (el.target.y - el.move.from.y) * e;
+      if (p === 1) el.move = null;
     }
-    const spot = project(el.anchor);
-    let alpha = smooth(.06, .3, spot.face) * fadeIn(el.born, now);
+    let alpha = fadeIn(el.born, now);
     if (el.dying) {
       const p = (now - el.dying) / 450;
       if (p >= 1) {
@@ -1699,17 +1785,12 @@ function place(now) {
       }
       alpha *= 1 - smooth(0, 1, p);
     }
-    const scale = clamp((.5 + .5 * spot.face) / (.5 + .5 * el.restFace), .35, 1.15);
-    el.style.transform = `translate3d(${spot.x.toFixed(1)}px, ${spot.y.toFixed(1)}px, 0) translate(-50%, -50%) scale(${scale.toFixed(3)})`;
+    el.style.transform = `translate3d(${el.pos.x.toFixed(1)}px, ${el.pos.y.toFixed(1)}px, 0) translate(-50%, -50%)`;
     el.style.opacity = alpha.toFixed(3);
     el.style.pointerEvents = alpha > .5 ? "" : "none";
-    const tilt = Math.atan2(spot.y - middle.y, spot.x - middle.x);
-    el.style.setProperty("--tilt", `${tilt.toFixed(3)}rad`);
-    el.style.setProperty("--squash", Math.max(.2, spot.face).toFixed(3));
-    if (!el.dying && el.dataset.slot) at.set(el.dataset.slot, { x: spot.x, y: spot.y, r: el.size * scale / 2, alpha });
+    if (!el.dying && el.dataset.slot) at.set(el.dataset.slot, { x: el.pos.x, y: el.pos.y, r: el.size / 2, alpha });
   }
   const W = stage.clientWidth;
-  const centre = at.get("centre");
   for (const block of state.blocks) {
     const dot = at.get(block.slot);
     if (!dot) continue;
@@ -1722,29 +1803,29 @@ function place(now) {
       block.more.style.opacity = alpha.toFixed(3);
       block.more.style.pointerEvents = alpha > .5 ? "" : "none";
     }
-    if (!centre) continue;
-    const dx = dot.x - centre.x;
-    const dy = dot.y - centre.y;
-    const reach = Math.hypot(dx, dy) || 1;
-    const from = (centre.r + 3) / reach;
-    const to = Math.max(from, 1 - (dot.r + 3) / reach);
-    block.line.setAttribute("x1", (centre.x + dx * from).toFixed(1));
-    block.line.setAttribute("y1", (centre.y + dy * from).toFixed(1));
-    block.line.setAttribute("x2", (centre.x + dx * to).toFixed(1));
-    block.line.setAttribute("y2", (centre.y + dy * to).toFixed(1));
-    block.line.setAttribute("stroke-opacity", (.5 * Math.min(alpha, centre.alpha)).toFixed(3));
   }
-}
-
-// A point never centred before gets a spot on the globe from its id.
-function homeSpot(id) {
-  const at = state.points.get(id)?.at;   // a geography topic sits at its true place
-  if (at) return vecAt(at.lat, at.lon);
-  let hash = 2166136261;
-  for (let i = 0; i < id.length; i += 1) hash = Math.imul(hash ^ id.charCodeAt(i), 16777619) >>> 0;
-  const lon = (hash % 3600) / 3600 * Math.PI * 2;
-  const lat = (((hash >>> 12) % 1000) / 1000 - .5) * 1.2;
-  return new THREE.Vector3(Math.cos(lat) * Math.sin(lon), Math.sin(lat), Math.cos(lat) * Math.cos(lon));
+  for (const mark of state.marks) {
+    const spot = project(mark.anchor);
+    const alpha = smooth(.04, .3, spot.face) * fadeIn(mark.born, now);
+    mark.el.style.transform = `translate3d(${spot.x.toFixed(1)}px, ${spot.y.toFixed(1)}px, 0)`;
+    mark.el.style.opacity = alpha.toFixed(3);
+    if (!mark.beam) continue;
+    const dot = at.get(mark.slot);
+    const show = dot ? Math.min(alpha, dot.alpha) : 0;
+    mark.beam.style.opacity = show.toFixed(3);
+    if (!dot || show < .01) continue;
+    const dx = dot.x - spot.x;
+    const dy = dot.y - spot.y;
+    const reach = Math.hypot(dx, dy) || 1;
+    const from = Math.min(.5, 5 / reach);
+    const to = Math.max(from, 1 - (dot.r + 2) / reach);
+    for (const line of mark.beam.children) {
+      line.setAttribute("x1", (spot.x + dx * from).toFixed(1));
+      line.setAttribute("y1", (spot.y + dy * from).toFixed(1));
+      line.setAttribute("x2", (spot.x + dx * to).toFixed(1));
+      line.setAttribute("y2", (spot.y + dy * to).toFixed(1));
+    }
+  }
 }
 
 // The globe's resting turn for a spot: that spot faces the viewer and the
@@ -1756,7 +1837,8 @@ function restFor(spot) {
 }
 
 function turnGlobe(spot, instant) {
-  state.restQ = restFor(spot);
+  state.restQ = spot ? restFor(spot) : (turn ? turn.to.clone() : globeQ.clone());
+  state.aimQ = state.restQ;
   state.spin = 0;
   state.spun = false;
   if (instant || reduced) {
@@ -1771,11 +1853,11 @@ function turnGlobe(spot, instant) {
 // Any touch, key or wheel stops the resting spin and brings the centre back.
 function touched() {
   state.lastTouch = performance.now();
-  if (!state.spun || !state.restQ) return;
+  if (!state.spun || !state.aimQ) return;
   state.spun = false;
   state.spin = 0;
-  const angle = globeQ.angleTo(state.restQ);
-  turn = { from: globeQ.clone(), to: state.restQ.clone(), started: performance.now(), duration: clamp(500 + angle * 420, 600, 1500) };
+  const angle = globeQ.angleTo(state.aimQ);
+  turn = { from: globeQ.clone(), to: state.aimQ.clone(), started: performance.now(), duration: clamp(500 + angle * 420, 600, 1500) };
 }
 
 const spinStep = new THREE.Quaternion();
