@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+_site/
+
+# Environment variables — never commit
+.env
+
+# Database — runtime state
+# NOTE: data/ is deliberately NOT ignored — subject maps are curated content
+# that ships with the app (DESIGN_v0.1.md §3), not runtime state.
+*.db
+*.db-shm
+*.db-wal
+
+# Editor
+*.code-workspace
+.claude/
+
+# macOS metadata
+._*
+.DS_Store

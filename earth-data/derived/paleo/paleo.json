@@ -1,0 +1,172 @@
+{
+ "what": "The Earth's past (the opening)",
+ "credit": "PALEOMAP PaleoAtlas, C. R. Scotese 2016 (Zenodo)",
+ "licence": "CC BY 4.0",
+ "years": "750 million years ago to now",
+ "made": "Painted maps of the past by a geologist, from rocks and fossils: land, sea, ice and where plants grew. Today's borders, drawn on the maps, are taken out. Nothing is mapped before 750 million years ago, so the young Earth is drawn, not mapped.",
+ "eras": [
+  {
+   "age": 750,
+   "name": "Cryogenian",
+   "file": "paleo/paleo-750.v2.jpg",
+   "lon": 156.0
+  },
+  {
+   "age": 690,
+   "name": "Cryogenian, the ice Earth",
+   "file": "paleo/paleo-690.v2.jpg",
+   "lon": 160.5
+  },
+  {
+   "age": 600,
+   "name": "Ediacaran",
+   "file": "paleo/paleo-600.v2.jpg",
+   "lon": 154.6
+  },
+  {
+   "age": 540,
+   "name": "Cambrian",
+   "file": "paleo/paleo-540.v2.jpg",
+   "lon": -171.4
+  },
+  {
+   "age": 480,
+   "name": "Ordovician",
+   "file": "paleo/paleo-480.v2.jpg",
+   "lon": -174.1
+  },
+  {
+   "age": 420,
+   "name": "Silurian",
+   "file": "paleo/paleo-420.v2.jpg",
+   "lon": 138.3
+  },
+  {
+   "age": 360,
+   "name": "Devonian",
+   "file": "paleo/paleo-360.v2.jpg",
+   "lon": 30.5
+  },
+  {
+   "age": 300,
+   "name": "Carboniferous",
+   "file": "paleo/paleo-300.v2.jpg",
+   "lon": 10.6
+  },
+  {
+   "age": 250,
+   "name": "Pangaea, one land",
+   "file": "paleo/paleo-250.v2.jpg",
+   "lon": 23.4
+  },
+  {
+   "age": 200,
+   "name": "Triassic and Jurassic",
+   "file": "paleo/paleo-200.v2.jpg",
+   "lon": 18.3
+  },
+  {
+   "age": 150,
+   "name": "Jurassic",
+   "file": "paleo/paleo-150.v2.jpg",
+   "lon": 21.3
+  },
+  {
+   "age": 100,
+   "name": "Cretaceous",
+   "file": "paleo/paleo-100.v2.jpg",
+   "lon": 20.9
+  },
+  {
+   "age": 66,
+   "name": "End of the Cretaceous",
+   "file": "paleo/paleo-66.v2.jpg",
+   "lon": 20.7
+  },
+  {
+   "age": 30,
+   "name": "Oligocene",
+   "file": "paleo/paleo-30.v2.jpg",
+   "lon": 26.3
+  }
+ ],
+ "faces": {
+  "lat": -38,
+  "step": 5,
+  "from": 360,
+  "land": [
+   0.105,
+   0.098,
+   0.093,
+   0.088,
+   0.084,
+   0.081,
+   0.079,
+   0.078,
+   0.079,
+   0.08,
+   0.083,
+   0.088,
+   0.094,
+   0.102,
+   0.112,
+   0.123,
+   0.136,
+   0.15,
+   0.166,
+   0.183,
+   0.202,
+   0.222,
+   0.244,
+   0.266,
+   0.289,
+   0.312,
+   0.335,
+   0.358,
+   0.38,
+   0.4,
+   0.419,
+   0.436,
+   0.451,
+   0.464,
+   0.474,
+   0.482,
+   0.487,
+   0.49,
+   0.49,
+   0.488,
+   0.483,
+   0.477,
+   0.468,
+   0.458,
+   0.447,
+   0.435,
+   0.421,
+   0.407,
+   0.393,
+   0.378,
+   0.363,
+   0.348,
+   0.334,
+   0.319,
+   0.305,
+   0.291,
+   0.277,
+   0.263,
+   0.25,
+   0.238,
+   0.225,
+   0.213,
+   0.201,
+   0.19,
+   0.179,
+   0.167,
+   0.157,
+   0.147,
+   0.137,
+   0.128,
+   0.119,
+   0.112
+  ]
+ }
+}

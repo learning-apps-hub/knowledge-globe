@@ -1,0 +1,4525 @@
+{
+ "note": "Built by scripts/build_lang_wikidata.py from Wikidata labels (CC0). Do not edit by hand. words: one entry per English word of the fact, null = no label in this language.",
+ "names": {
+  "abidjan": "Abidżan",
+  "abu-dhabi": "Abu Zabi",
+  "abuja": "Abudża",
+  "accra": "Akra",
+  "addis-ababa": "Addis Abeba",
+  "afghanistan": "Afganistan",
+  "africa": "Afryka",
+  "ahmedabad": "Ahmadabad",
+  "akrotiri-sovereign-base-area": "Akrotiri",
+  "aland": "Wyspy Alandzkie",
+  "albania": "Albania",
+  "algeria": "Algieria",
+  "algiers": "Algier",
+  "amaravati": "Amaravati",
+  "american-samoa": "Samoa Amerykańskie",
+  "amman": "Amman",
+  "amsterdam": "Amsterdam",
+  "andorra": "Andora",
+  "angola": "Angola",
+  "anguilla": "Anguilla",
+  "ankara": "Ankara",
+  "antananarivo": "Antananarywa",
+  "antarctic-circle": "koło podbiegunowe południowe",
+  "antarctica": "Antarktyda",
+  "antigua-and-barbuda": "Antigua i Barbuda",
+  "apia": "Apia",
+  "arctic-circle": "północne koło podbiegunowe",
+  "arctic-ocean": "Ocean Arktyczny",
+  "argentina": "Argentyna",
+  "armenia": "Armenia",
+  "aruba": "Aruba",
+  "ashgabat": "Aszchabad",
+  "ashmore-and-cartier-islands": "Wyspy Ashmore i Cartiera",
+  "asia": "Azja",
+  "asmara": "Asmara",
+  "asuncion": "Asunción",
+  "athens": "Ateny",
+  "atlantic-ocean": "Ocean Atlantycki",
+  "australia": "Australia",
+  "austria": "Austria",
+  "azerbaijan": "Azerbejdżan",
+  "baghdad": "Bagdad",
+  "baguio": "Baguio",
+  "bahrain": "Bahrajn",
+  "baikonur": "Bajkonur",
+  "bajo-nuevo-bank": "Bajo Nuevo",
+  "baku": "Baku",
+  "bamako": "Bamako",
+  "bandar-seri-begawan": "Bandar Seri Begawan",
+  "bangkok": "Bangkok",
+  "bangladesh": "Bangladesz",
+  "bangui": "Bangi",
+  "banjul": "Bandżul",
+  "barbados": "Barbados",
+  "basseterre": "Basseterre",
+  "beijing": "Pekin",
+  "beirut": "Bejrut",
+  "belarus": "Białoruś",
+  "belgium": "Belgia",
+  "belgrade": "Belgrad",
+  "belize": "Belize",
+  "belmopan": "Belmopan",
+  "belo-horizonte": "Belo Horizonte",
+  "bengaluru": "Bengaluru",
+  "benin": "Benin",
+  "berlin": "Berlin",
+  "bermuda": "Bermudy",
+  "bern": "Berno",
+  "bhutan": "Bhutan",
+  "bir-lehlou": "Al-Bir al-Hilw",
+  "bir-tawil": "Bir Tawil",
+  "bishkek": "Biszkek",
+  "bissau": "Bissau",
+  "bloemfontein": "Bloemfontein",
+  "bogota": "Bogota",
+  "bolivia": "Boliwia",
+  "bosnia-and-herzegovina": "Bośnia i Hercegowina",
+  "botswana": "Botswana",
+  "brasilia": "Brasília",
+  "bratislava": "Bratysława",
+  "brazil": "Brazylia",
+  "brazzaville": "Brazzaville",
+  "bridgetown": "Bridgetown",
+  "british-indian-ocean-territory": "Brytyjskie Terytorium Oceanu Indyjskiego",
+  "british-virgin-islands": "Brytyjskie Wyspy Dziewicze",
+  "brunei": "Brunei",
+  "brussels": "Region Stołeczny Brukseli",
+  "bucharest": "Bukareszt",
+  "budapest": "Budapeszt",
+  "buenos-aires": "Buenos Aires",
+  "bujumbura": "Bużumbura",
+  "bulgaria": "Bułgaria",
+  "burkina-faso": "Burkina Faso",
+  "burundi": "Burundi",
+  "cairo": "Kair",
+  "cambodia": "Kambodża",
+  "cameroon": "Kamerun",
+  "canada": "Kanada",
+  "canberra": "Canberra",
+  "cape-town": "Kapsztad",
+  "cape-verde": "Republika Zielonego Przylądka",
+  "caracas": "Caracas",
+  "castries": "Castries",
+  "cayman-islands": "Kajmany",
+  "central-african-republic": "Republika Środkowoafrykańska",
+  "chad": "Czad",
+  "chennai": "Ćennaj",
+  "chicago": "Chicago",
+  "chile": "Chile",
+  "chisinau": "Kiszyniów",
+  "chongqing": "Chongqing",
+  "clipperton-island": "Wyspa Clippertona",
+  "colombia": "Kolumbia",
+  "colombo": "Kolombo",
+  "comoros": "Komory",
+  "conakry": "Konakry",
+  "cook-islands": "Wyspy Cooka",
+  "coral-sea-islands": "Wyspy Morza Koralowego",
+  "costa-rica": "Kostaryka",
+  "cotonou": "Kotonu",
+  "croatia": "Chorwacja",
+  "cuba": "Kuba",
+  "curacao": "Curaçao",
+  "cyprus": "Cypr",
+  "czech-republic": "Czechy",
+  "dakar": "Dakar",
+  "damascus": "Damaszek",
+  "dar-es-salaam": "Dar es Salaam",
+  "date-line": "Międzynarodowa linia zmiany daty",
+  "delhi": "Delhi",
+  "democratic-republic-of-the-congo": "Demokratyczna Republika Konga",
+  "denmark": "Dania",
+  "dhaka": "Dhaka",
+  "dhekelia-cantonment": "Dhekelia",
+  "dili": "Dili",
+  "djibouti": "Dżibuti",
+  "dodoma": "Dodoma",
+  "doha": "Doha",
+  "dominica": "Dominika",
+  "dominican-republic": "Dominikana",
+  "dublin": "Dublin",
+  "dushanbe": "Duszanbe",
+  "east-timor": "Timor Wschodni",
+  "eastern-hemisphere": "półkula wschodnia",
+  "ecuador": "Ekwador",
+  "egypt": "Egipt",
+  "el-salvador": "Salwador",
+  "equator": "równik",
+  "equatorial-guinea": "Gwinea Równikowa",
+  "eritrea": "Erytrea",
+  "estonia": "Estonia",
+  "eswatini": "Eswatini",
+  "ethiopia": "Etiopia",
+  "europe": "Europa",
+  "fabian-von-bellingshausen": "Fabian Bellingshausen",
+  "falkland-islands": "Falklandy",
+  "faroe-islands": "Wyspy Owcze",
+  "federated-states-of-micronesia": "Mikronezja",
+  "fiji": "Fidżi",
+  "finland": "Finlandia",
+  "france": "Francja",
+  "freetown": "Freetown",
+  "french-polynesia": "Polinezja Francuska",
+  "french-southern-and-antarctic-lands": "Francuskie Terytoria Południowe i Antarktyczne",
+  "funafuti": "Funafuti",
+  "gabon": "Gabon",
+  "gaborone": "Gaborone",
+  "georgetown": "Georgetown",
+  "georgia": "Gruzja",
+  "germany": "Niemcy",
+  "ghana": "Ghana",
+  "gibraltar": "Gibraltar",
+  "greece": "Grecja",
+  "greenland": "Grenlandia",
+  "grenada": "Grenada",
+  "guam": "Guam",
+  "guangzhou": "Kanton",
+  "guantanamo-bay-naval-base": "Naval Station Guantanamo Bay",
+  "guatemala": "Gwatemala",
+  "guatemala-city": "Gwatemala",
+  "guernsey": "Guernsey",
+  "guinea": "Gwinea",
+  "guinea-bissau": "Gwinea Bissau",
+  "guyana": "Gujana",
+  "haiti": "Haiti",
+  "hanoi": "Hanoi",
+  "harare": "Harare",
+  "hargeisa": "Hargejsa",
+  "havana": "Hawana",
+  "heard-island-and-mcdonald-islands": "Wyspy Heard i McDonalda",
+  "helsinki": "Helsinki",
+  "ho-chi-minh-city": "Ho Chi Minh",
+  "honduras": "Honduras",
+  "hong-kong": "Hongkong",
+  "honiara": "Honiara",
+  "hungary": "Węgry",
+  "hyderabad": "Hajdarabad",
+  "iceland": "Islandia",
+  "india": "Indie",
+  "indian-ocean": "Ocean Indyjski",
+  "indonesia": "Indonezja",
+  "iran": "Iran",
+  "iraq": "Irak",
+  "ireland": "Irlandia",
+  "islamabad": "Islamabad",
+  "isle-of-man": "Wyspa Man",
+  "israel": "Izrael",
+  "istanbul": "Stambuł",
+  "italy": "Włochy",
+  "ivory-coast": "Wybrzeże Kości Słoniowej",
+  "jakarta": "Dżakarta",
+  "jamaica": "Jamajka",
+  "james-cook": "James Cook",
+  "japan": "Japonia",
+  "jersey": "Jersey",
+  "jerusalem": "Jerozolima",
+  "johannesburg": "Johannesburg",
+  "jordan": "Jordania",
+  "juba": "Dżuba",
+  "kabul": "Kabul",
+  "kampala": "Kampala",
+  "karachi": "Karaczi",
+  "kathmandu": "Katmandu",
+  "kazakhstan": "Kazachstan",
+  "kbenhavn": "Kopenhaga",
+  "kenya": "Kenia",
+  "khartoum": "Chartum",
+  "kigali": "Kigali",
+  "kingston": "Kingston",
+  "kingstown": "Kingstown",
+  "kinshasa": "Kinszasa",
+  "kiribati": "Kiribati",
+  "kolkata": "Kolkata",
+  "kosovo": "Kosowo",
+  "kuala-lumpur": "Kuala Lumpur",
+  "kuwait": "Kuwejt",
+  "kuwait-city": "Kuwejt",
+  "kyiv": "Kijów",
+  "kyoto": "Kioto",
+  "kyrgyzstan": "Kirgistan",
+  "la-paz": "La Paz",
+  "laayoune": "Al-Ujun",
+  "lagos": "Lagos",
+  "lahore": "Lahaur",
+  "laos": "Laos",
+  "latvia": "Łotwa",
+  "lebanon": "Liban",
+  "lesotho": "Lesotho",
+  "liberia": "Liberia",
+  "libreville": "Libreville",
+  "libya": "Libia",
+  "liechtenstein": "Liechtenstein",
+  "lilongwe": "Lilongwe",
+  "lima": "Lima",
+  "lisbon": "Lizbona",
+  "lithuania": "Litwa",
+  "ljubljana": "Lublana",
+  "lobamba": "Lobamba",
+  "lome": "Lomé",
+  "london": "Londyn",
+  "los-angeles": "Los Angeles",
+  "luanda": "Luanda",
+  "lusaka": "Lusaka",
+  "luxembourg": "Luksemburg",
+  "macau": "Makau",
+  "madagascar": "Madagaskar",
+  "madrid": "Madryt",
+  "majuro": "Majuro",
+  "malabo": "Malabo",
+  "malawi": "Malawi",
+  "malaysia": "Malezja",
+  "maldives": "Malediwy",
+  "male": "Male",
+  "mali": "Mali",
+  "malta": "Malta",
+  "managua": "Managua",
+  "manama": "Manama",
+  "manila": "Manila",
+  "maputo": "Maputo",
+  "marshall-islands": "Wyspy Marshalla",
+  "maseru": "Maseru",
+  "mauritania": "Mauretania",
+  "mauritius": "Mauritius",
+  "mbabane": "Mbabane",
+  "melekeok": "Melekeok",
+  "mexico": "Meksyk",
+  "mexico-city": "Meksyk",
+  "miami": "Miami",
+  "minsk": "Mińsk",
+  "mogadishu": "Mogadiszu",
+  "moldova": "Mołdawia",
+  "monaco": "Monako",
+  "mongolia": "Mongolia",
+  "monrovia": "Monrovia",
+  "montenegro": "Czarnogóra",
+  "montevideo": "Montevideo",
+  "montserrat": "Montserrat",
+  "morocco": "Maroko",
+  "moroni": "Moroni",
+  "moscow": "Moskwa",
+  "mozambique": "Mozambik",
+  "mumbai": "Mumbaj",
+  "muscat": "Maskat",
+  "myanmar": "Mjanma",
+  "n-djamena": "Ndżamena",
+  "nairobi": "Nairobi",
+  "namibia": "Namibia",
+  "nassau": "Nassau",
+  "nauru": "Naoero",
+  "naypyidaw": "Naypyidaw",
+  "nepal": "Nepal",
+  "netherlands": "Holandia",
+  "new-caledonia": "Nowa Kaledonia",
+  "new-delhi": "Nowe Delhi",
+  "new-york": "Nowy Jork",
+  "new-zealand": "Nowa Zelandia",
+  "niamey": "Niamey",
+  "nicaragua": "Nikaragua",
+  "nicosia": "Nikozja",
+  "niger": "Niger",
+  "nigeria": "Nigeria",
+  "niue": "Niue",
+  "norfolk-island": "Norfolk",
+  "north-america": "Ameryka Północna",
+  "north-korea": "Korea Północna",
+  "north-macedonia": "Macedonia Północna",
+  "north-pole": "biegun północny",
+  "northern-hemisphere": "półkula północna",
+  "northern-mariana-islands": "Mariany Północne",
+  "norway": "Norwegia",
+  "nouakchott": "Nawakszut",
+  "nuku-alofa": "Nukuʻalofa",
+  "nur-sultan": "Astana",
+  "oceania": "Oceania i Australia",
+  "oman": "Oman",
+  "osaka": "Osaka",
+  "oslo": "Oslo",
+  "ottawa": "Ottawa",
+  "ouagadougou": "Wagadugu",
+  "pacific-ocean": "Ocean Spokojny",
+  "pakistan": "Pakistan",
+  "palau": "Palau",
+  "palestine": "Palestyna",
+  "palikir": "Palikir",
+  "panama": "Panama",
+  "panama-city": "Panama",
+  "papua-new-guinea": "Papua-Nowa Gwinea",
+  "paraguay": "Paragwaj",
+  "paramaribo": "Paramaribo",
+  "paris": "Paryż",
+  "people-s-republic-of-china": "Chińska Republika Ludowa",
+  "peru": "Peru",
+  "philadelphia": "Filadelfia",
+  "philippines": "Filipiny",
+  "phnom-penh": "Phnom Penh",
+  "pitcairn-islands": "Pitcairn",
+  "podgorica": "Podgorica",
+  "poland": "Polska",
+  "port-au-prince": "Port-au-Prince",
+  "port-louis": "Port Louis",
+  "port-moresby": "Port Moresby",
+  "port-of-spain": "Port of Spain",
+  "port-vila": "Port Vila",
+  "porto-novo": "Porto-Novo",
+  "portugal": "Portugalia",
+  "prague": "Praga",
+  "praia": "Praia",
+  "pretoria": "Pretoria",
+  "prime-meridian": "południk zerowy",
+  "pristina": "Prisztina",
+  "puerto-rico": "Portoryko",
+  "putrajaya": "Putrajaya",
+  "pyongyang": "Pjongjang",
+  "qatar": "Katar",
+  "quito": "Quito",
+  "rabat": "Rabat",
+  "republic-of-the-congo": "Kongo",
+  "reykjavik": "Reykjavík",
+  "riga": "Ryga",
+  "rio-de-janeiro": "Rio de Janeiro",
+  "riyadh": "Rijad",
+  "romania": "Rumunia",
+  "rome": "Rzym",
+  "roseau": "Roseau",
+  "russia": "Rosja",
+  "rwanda": "Rwanda",
+  "saint-barthelemy": "Saint-Barthélemy",
+  "saint-george-s": "Saint George's",
+  "saint-helena": "Wyspa Świętej Heleny",
+  "saint-john-s": "Saint John’s",
+  "saint-kitts-and-nevis": "Saint Kitts i Nevis",
+  "saint-lucia": "Saint Lucia",
+  "saint-martin": "Saint-Martin",
+  "saint-pierre-and-miquelon": "Saint-Pierre i Miquelon",
+  "saint-vincent-and-the-grenadines": "Saint Vincent i Grenadyny",
+  "samoa": "Samoa",
+  "san-jose": "San José",
+  "san-marino": "San Marino",
+  "san-salvador": "San Salvador",
+  "sanaa": "Sana",
+  "santiago": "Santiago",
+  "santo-domingo": "Santo Domingo",
+  "sao-paulo": "São Paulo",
+  "sao-tome": "São Tomé",
+  "sao-tome-and-principe": "Wyspy Świętego Tomasza i Książęca",
+  "sarajevo": "Sarajewo",
+  "saudi-arabia": "Arabia Saudyjska",
+  "scarborough-shoal": "Huangyan Dao",
+  "senegal": "Senegal",
+  "seoul": "Seul",
+  "serbia": "Serbia",
+  "serranilla-bank": "Isla Serranilla",
+  "seychelles": "Seszele",
+  "shanghai": "Szanghaj",
+  "shenzhen": "Shenzhen",
+  "siachen-glacier": "Lodowiec Siachen",
+  "sierra-leone": "Sierra Leone",
+  "singapore": "Singapur",
+  "sint-maarten": "Sint Maarten",
+  "skopje": "Skopje",
+  "slovakia": "Słowacja",
+  "slovenia": "Słowenia",
+  "sofia": "Sofia",
+  "solomon-islands": "Wyspy Salomona",
+  "somalia": "Somalia",
+  "somaliland": "Somaliland",
+  "south-africa": "Południowa Afryka",
+  "south-america": "Ameryka Południowa",
+  "south-georgia-and-the-south-sandwich-islands": "Georgia Południowa i Sandwich Południowy",
+  "south-korea": "Korea Południowa",
+  "south-pole": "biegun południowy",
+  "south-sudan": "Sudan Południowy",
+  "southern-hemisphere": "półkula południowa",
+  "southern-ocean": "Ocean Południowy",
+  "southern-patagonian-ice-field": "Południowy Lądolód Patagoński",
+  "spain": "Hiszpania",
+  "spratly-islands": "Wake",
+  "sri-jayawardenepura-kotte": "Sri Dźajawardanapura Kotte",
+  "sri-lanka": "Sri Lanka",
+  "stockholm": "Sztokholm",
+  "sucre": "Sucre",
+  "sudan": "Sudan",
+  "suriname": "Surinam",
+  "suva": "Suva",
+  "sweden": "Szwecja",
+  "switzerland": "Szwajcaria",
+  "syria": "Syria",
+  "taipei": "Tajpej",
+  "taiwan": "Republika Chińska",
+  "tajikistan": "Tadżykistan",
+  "tallinn": "Tallinn",
+  "tanzania": "Tanzania",
+  "tarawa": "Tarawa",
+  "tashkent": "Taszkent",
+  "tbilisi": "Tbilisi",
+  "tegucigalpa": "Tegucigalpa",
+  "tehran": "Teheran",
+  "tel-aviv": "Tel Awiw-Jafa",
+  "thailand": "Tajlandia",
+  "the-bahamas": "Bahamy",
+  "the-gambia": "Gambia",
+  "the-hague": "Haga",
+  "thimphu": "Thimphu",
+  "tianjin": "Tiencin",
+  "tirana": "Tirana",
+  "togo": "Togo",
+  "tokyo": "Tokio",
+  "tonga": "Tonga",
+  "toronto": "Toronto",
+  "trinidad-and-tobago": "Trynidad i Tobago",
+  "tripoli": "Trypolis",
+  "tropic-of-cancer": "zwrotnik Raka",
+  "tropic-of-capricorn": "zwrotnik Koziorożca",
+  "tunis": "Tunis",
+  "tunisia": "Tunezja",
+  "turkey": "Turcja",
+  "turkish-republic-of-northern-cyprus": "Cypr Północny",
+  "turkmenistan": "Turkmenistan",
+  "turks-and-caicos-islands": "Turks i Caicos",
+  "tuvalu": "Tuvalu",
+  "uganda": "Uganda",
+  "ukraine": "Ukraina",
+  "ulaanbaatar": "Ułan Bator",
+  "united-arab-emirates": "Zjednoczone Emiraty Arabskie",
+  "united-kingdom": "Wielka Brytania",
+  "united-nations-buffer-zone-in-cyprus": "Zielona linia",
+  "united-states-minor-outlying-islands": "Dalekie Wyspy Mniejsze Stanów Zjednoczonych",
+  "united-states-of-america": "Stany Zjednoczone",
+  "united-states-virgin-islands": "Wyspy Dziewicze Stanów Zjednoczonych",
+  "uruguay": "Urugwaj",
+  "uzbekistan": "Uzbekistan",
+  "vaduz": "Vaduz",
+  "valletta": "Valletta",
+  "valparaiso": "Valparaíso",
+  "vanuatu": "Vanuatu",
+  "vatican-city": "Watykan",
+  "venezuela": "Wenezuela",
+  "victoria": "Victoria",
+  "vienna": "Wiedeń",
+  "vientiane": "Wientian",
+  "vietnam": "Wietnam",
+  "vilnius": "Wilno",
+  "wallis-and-futuna": "Wallis i Futuna",
+  "warsaw": "Warszawa",
+  "washington-d-c": "Waszyngton",
+  "wellington": "Wellington",
+  "western-hemisphere": "półkula zachodnia",
+  "western-sahara": "Sahara Zachodnia",
+  "windhoek": "Windhuk",
+  "wuhan": "Wuhan",
+  "yamoussoukro": "Jamusukro",
+  "yangon": "Rangun",
+  "yaounde": "Jaunde",
+  "yemen": "Jemen",
+  "yerevan": "Erywań",
+  "zagreb": "Zagrzeb",
+  "zambia": "Zambia",
+  "zimbabwe": "Zimbabwe"
+ },
+ "words": {
+  "afghanistan": {
+   "languages": [
+    "Dari",
+    "język paszto",
+    "język turkmeński"
+   ],
+   "money": [
+    "Afgani"
+   ],
+   "highest": [
+    "Noszak"
+   ],
+   "government": [
+    "Emirat",
+    null,
+    "państwo unitarne"
+   ],
+   "head": [
+    "Hibatullah Achundzada"
+   ]
+  },
+  "aland": {
+   "languages": [
+    "język szwedzki"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Orrdalsklint"
+   ]
+  },
+  "albania": {
+   "languages": [
+    "język albański"
+   ],
+   "money": [
+    "lek"
+   ],
+   "highest": [
+    "Korab"
+   ],
+   "government": [
+    "system parlamentarny"
+   ],
+   "head": [
+    "Bajram Begaj"
+   ]
+  },
+  "algeria": {
+   "languages": [
+    "język arabski",
+    null
+   ],
+   "money": [
+    "dinar algierski"
+   ],
+   "highest": [
+    "Tahat"
+   ],
+   "government": [
+    "republika ludowa",
+    "system semiprezydencki"
+   ],
+   "head": [
+    "Abd al-Madżid Tabbun"
+   ]
+  },
+  "american-samoa": {
+   "languages": [
+    "język angielski",
+    "język samoański"
+   ],
+   "money": [
+    "dolar amerykański"
+   ],
+   "highest": [
+    "Lata"
+   ]
+  },
+  "andorra": {
+   "languages": [
+    "język kataloński"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Coma Pedrosa"
+   ],
+   "head": [
+    "Emmanuel Macron",
+    "Josep-Lluís Serrano Pentinat"
+   ]
+  },
+  "angola": {
+   "languages": [
+    "język portugalski"
+   ],
+   "money": [
+    "Kwanza"
+   ],
+   "highest": [
+    "Morro de Môco"
+   ],
+   "government": [
+    "system prezydencki",
+    "republika"
+   ],
+   "head": [
+    "João Lourenço"
+   ]
+  },
+  "anguilla": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar wschodniokaraibski"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ]
+  },
+  "antigua-and-barbuda": {
+   "languages": [
+    "język angielski",
+    "język hiszpański"
+   ],
+   "money": [
+    "Dolar wschodniokaraibski"
+   ],
+   "highest": [
+    "Mount Obama"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "argentina": {
+   "languages": [
+    "język hiszpański"
+   ],
+   "money": [
+    "Peso argentyńskie"
+   ],
+   "government": [
+    "republika federalna"
+   ],
+   "head": [
+    "Javier Milei"
+   ]
+  },
+  "armenia": {
+   "languages": [
+    "język ormiański"
+   ],
+   "money": [
+    "Dram"
+   ],
+   "highest": [
+    "Aragats"
+   ],
+   "government": [
+    "system parlamentarny",
+    "republika",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Wahagn Chaczaturian"
+   ]
+  },
+  "aruba": {
+   "languages": [
+    "język niderlandzki",
+    "język papiamento"
+   ],
+   "money": [
+    "Florin arubański"
+   ],
+   "highest": [
+    "Mount Jamanota"
+   ],
+   "government": [
+    "monarchia"
+   ],
+   "head": [
+    "Wilhelm Aleksander"
+   ]
+  },
+  "ashmore-and-cartier-islands": {
+   "languages": [
+    "język angielski"
+   ]
+  },
+  "australia": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "dolar australijski"
+   ],
+   "highest": [
+    "Mawson Peak"
+   ],
+   "government": [
+    "monarchia konstytucyjna",
+    "federacja",
+    "demokracja pośrednia"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "austria": {
+   "languages": [
+    "austriacki język migowy",
+    "język niemiecki"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Großglockner"
+   ],
+   "government": [
+    "federalna republika parlamentarna",
+    "republika",
+    "system semiprezydencki"
+   ],
+   "head": [
+    "Alexander Van der Bellen"
+   ]
+  },
+  "azerbaijan": {
+   "money": [
+    "Manat azerbejdżański"
+   ],
+   "highest": [
+    "Bazardüzü"
+   ],
+   "government": [
+    "republika",
+    "system semiprezydencki",
+    "państwo unitarne"
+   ],
+   "head": [
+    "İlham Əliyev"
+   ]
+  },
+  "bahrain": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "Dinar Bahrajnu"
+   ],
+   "highest": [
+    "Dżabal ad-Duchan"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Hamad ibn Isa al-Chalifa"
+   ]
+  },
+  "baikonur": {
+   "highest": [
+    "Bajkonur"
+   ]
+  },
+  "bangladesh": {
+   "languages": [
+    "język bengalski"
+   ],
+   "money": [
+    "taka"
+   ],
+   "highest": [
+    "Mowdok"
+   ],
+   "government": [
+    "republika parlamentarna",
+    "Model westminsterski"
+   ],
+   "head": [
+    "Shahabuddin Chuppu"
+   ]
+  },
+  "barbados": {
+   "languages": [
+    "język bajan",
+    "język angielski"
+   ],
+   "money": [
+    "Dolar barbadoski"
+   ],
+   "highest": [
+    "Mount Hillaby"
+   ],
+   "government": [
+    "republika parlamentarna",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Sandra Mason"
+   ]
+  },
+  "belarus": {
+   "languages": [
+    "język białoruski",
+    "język rosyjski"
+   ],
+   "highest": [
+    "Dzierżyńska Góra"
+   ],
+   "government": [
+    "system prezydencki",
+    "republika"
+   ],
+   "head": [
+    "Alaksandr Łukaszenka"
+   ]
+  },
+  "belgium": {
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Signal de Botrange"
+   ],
+   "government": [
+    "federacja"
+   ],
+   "head": [
+    "Filip I Koburg"
+   ]
+  },
+  "belize": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar Belize"
+   ],
+   "highest": [
+    "Doyle's Delight"
+   ],
+   "government": [
+    "monarchia konstytucyjna",
+    "monarchia parlamentarna"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "benin": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "frank CFA"
+   ],
+   "highest": [
+    "Sokbaro"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Romuald Wadagni"
+   ]
+  },
+  "bermuda": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar bermudzki"
+   ],
+   "government": [
+    "brytyjskie terytoria zamorskie",
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "John Rankin"
+   ]
+  },
+  "bhutan": {
+   "languages": [
+    "język dzongkha"
+   ],
+   "money": [
+    "ngultrum"
+   ],
+   "highest": [
+    "Gangkhar Puensum"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Jigme Khesar Namgyel Wangchuck"
+   ]
+  },
+  "bolivia": {
+   "languages": [
+    "język ajmara",
+    "język guarani",
+    "język keczua",
+    "język hiszpański"
+   ],
+   "money": [
+    "boliwiano"
+   ],
+   "highest": [
+    "Sajama"
+   ],
+   "government": [
+    "republika parlamentarna",
+    "republika"
+   ],
+   "head": [
+    "Rodrigo Paz"
+   ]
+  },
+  "bosnia-and-herzegovina": {
+   "languages": [
+    "język bośniacki",
+    "język chorwacki",
+    "język serbski"
+   ],
+   "money": [
+    "Marka zamienna"
+   ],
+   "highest": [
+    "Maglić"
+   ],
+   "government": [
+    "federalna republika parlamentarna"
+   ],
+   "head": [
+    "Denis Bećirović",
+    "Željka Cvijanović",
+    "Željko Komšić"
+   ]
+  },
+  "botswana": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Pula"
+   ],
+   "highest": [
+    "Otse Hill"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Duma Boko"
+   ]
+  },
+  "brazil": {
+   "languages": [
+    "język portugalski"
+   ],
+   "money": [
+    "real brazylijski"
+   ],
+   "highest": [
+    "Pico da Neblina"
+   ],
+   "government": [
+    "republika federalna",
+    "system prezydencki",
+    "demokracja pośrednia"
+   ],
+   "head": [
+    "Luiz Inácio Lula da Silva"
+   ]
+  },
+  "british-indian-ocean-territory": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "funt szterling",
+    "dolar amerykański"
+   ]
+  },
+  "british-virgin-islands": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "dolar amerykański"
+   ]
+  },
+  "brunei": {
+   "languages": [
+    "brytyjska odmiana języka angielskiego",
+    "język malajski"
+   ],
+   "money": [
+    "Dolar brunejski"
+   ],
+   "highest": [
+    "Pagonprick"
+   ],
+   "government": [
+    "monarchia absolutna",
+    "państwo islamskie",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Hassanal Bolkiah"
+   ]
+  },
+  "bulgaria": {
+   "languages": [
+    "język bułgarski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Musała"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Ilijana Jotowa"
+   ]
+  },
+  "burkina-faso": {
+   "languages": [
+    null,
+    "Język diula",
+    "Język mossi"
+   ],
+   "money": [
+    "frank CFA"
+   ],
+   "highest": [
+    "Pic de Nakourou"
+   ],
+   "head": [
+    "Ibrahim Traore"
+   ]
+  },
+  "burundi": {
+   "languages": [
+    "język angielski",
+    "język francuski",
+    "język rundi"
+   ],
+   "money": [
+    "frank burundyjski"
+   ],
+   "highest": [
+    "Heha"
+   ],
+   "government": [
+    "system prezydencki",
+    "demokracja pośrednia"
+   ],
+   "head": [
+    "Evariste Ndayishimiye"
+   ]
+  },
+  "cambodia": {
+   "languages": [
+    "język khmerski"
+   ],
+   "money": [
+    "Riel"
+   ],
+   "highest": [
+    "Aural"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Norodom Sihamoni"
+   ]
+  },
+  "cameroon": {
+   "languages": [
+    "język angielski",
+    "język francuski"
+   ],
+   "money": [
+    "frank CFA"
+   ],
+   "highest": [
+    "Kamerun"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Paul Biya"
+   ]
+  },
+  "canada": {
+   "languages": [
+    "język angielski",
+    "język francuski"
+   ],
+   "money": [
+    "dolar kanadyjski"
+   ],
+   "highest": [
+    "Logan"
+   ],
+   "government": [
+    "monarchia konstytucyjna",
+    "federacja",
+    "system parlamentarny"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "cape-verde": {
+   "languages": [
+    "język kreolski Wysp Zielonego Przylądka",
+    "język portugalski"
+   ],
+   "money": [
+    "escudo Zielonego Przylądka"
+   ],
+   "highest": [
+    "Pico do Fogo"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "José Maria Neves"
+   ]
+  },
+  "cayman-islands": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar kajmański"
+   ],
+   "government": [
+    "brytyjskie terytoria zamorskie"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "central-african-republic": {
+   "languages": [
+    "język francuski",
+    "język sango"
+   ],
+   "money": [
+    "frank CFA"
+   ],
+   "highest": [
+    "Mont Ngaoui"
+   ],
+   "head": [
+    "Faustin-Archange Touadéra"
+   ]
+  },
+  "chad": {
+   "languages": [
+    "język arabski",
+    "język francuski"
+   ],
+   "money": [
+    "frank CFA"
+   ],
+   "highest": [
+    "Emi Kussi"
+   ],
+   "head": [
+    "Mahamat Déby Itno"
+   ]
+  },
+  "chile": {
+   "languages": [
+    "język hiszpański"
+   ],
+   "money": [
+    "Peso chilijskie"
+   ],
+   "highest": [
+    "Ojos del Salado"
+   ],
+   "government": [
+    "republika demokratyczna"
+   ],
+   "head": [
+    "José Antonio Kast"
+   ]
+  },
+  "clipperton-island": {
+   "highest": [
+    "Rocher Clipperton"
+   ]
+  },
+  "colombia": {
+   "languages": [
+    "język hiszpański"
+   ],
+   "money": [
+    "Peso kolumbijskie"
+   ],
+   "highest": [
+    "Simón Bolívar"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Abelardo de La Espriella"
+   ]
+  },
+  "comoros": {
+   "languages": [
+    "język arabski",
+    "Język komoryjski",
+    "język francuski"
+   ],
+   "money": [
+    "frank Komorów"
+   ],
+   "highest": [
+    "Kartala"
+   ],
+   "government": [
+    "republika federalna"
+   ],
+   "head": [
+    "Azali Assoumani"
+   ]
+  },
+  "cook-islands": {
+   "languages": [
+    "język maoryski Wysp Cooka",
+    "język angielski"
+   ],
+   "money": [
+    "Dolar Wysp Cooka",
+    "dolar nowozelandzki"
+   ],
+   "highest": [
+    "Te Manga"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "coral-sea-islands": {
+   "languages": [
+    "język angielski"
+   ]
+  },
+  "costa-rica": {
+   "languages": [
+    "język hiszpański"
+   ],
+   "money": [
+    "Colon kostarykański"
+   ],
+   "highest": [
+    "Cerro Chirripó"
+   ],
+   "head": [
+    "Laura Fernández Delgado"
+   ]
+  },
+  "croatia": {
+   "languages": [
+    "język chorwacki"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Vrh Dinare"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Zoran Milanović"
+   ]
+  },
+  "cuba": {
+   "languages": [
+    "język hiszpański"
+   ],
+   "money": [
+    "Peso kubańskie"
+   ],
+   "highest": [
+    "Pico Turquino"
+   ],
+   "government": [
+    "państwo unitarne"
+   ],
+   "head": [
+    "Miguel Díaz-Canel"
+   ]
+  },
+  "curacao": {
+   "languages": [
+    "język niderlandzki",
+    "język angielski",
+    "język papiamento"
+   ],
+   "money": [
+    "Gulden karaibski"
+   ],
+   "government": [
+    "demokracja parlamentarna"
+   ],
+   "head": [
+    "Wilhelm Aleksander"
+   ]
+  },
+  "cyprus": {
+   "languages": [
+    "język nowogrecki",
+    "język turecki"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Olimbos"
+   ],
+   "government": [
+    "system prezydencki",
+    "republika"
+   ],
+   "head": [
+    "Nikos Christodulidis"
+   ]
+  },
+  "czech-republic": {
+   "languages": [
+    "język czeski"
+   ],
+   "money": [
+    "korona czeska"
+   ],
+   "highest": [
+    "Śnieżka"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Petr Pavel"
+   ]
+  },
+  "democratic-republic-of-the-congo": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "frank kongijski"
+   ],
+   "highest": [
+    "Góra Stanleya"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Félix Tshisekedi"
+   ]
+  },
+  "denmark": {
+   "languages": [
+    "język duński"
+   ],
+   "money": [
+    "korona duńska"
+   ],
+   "highest": [
+    "Møllehøj"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Fryderyk X"
+   ]
+  },
+  "djibouti": {
+   "languages": [
+    "język arabski",
+    "język francuski"
+   ],
+   "money": [
+    "frank Dżibuti"
+   ],
+   "highest": [
+    "Musa Ali"
+   ],
+   "head": [
+    "Ismail Omar Guelleh"
+   ]
+  },
+  "dominica": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar wschodniokaraibski"
+   ],
+   "highest": [
+    "Morne Diablotins"
+   ],
+   "head": [
+    "Sylvanie Burton"
+   ]
+  },
+  "dominican-republic": {
+   "languages": [
+    "język hiszpański"
+   ],
+   "money": [
+    "Peso dominikańskie"
+   ],
+   "highest": [
+    "Pico Duarte"
+   ],
+   "head": [
+    "Luis Abinader"
+   ]
+  },
+  "east-timor": {
+   "languages": [
+    "język portugalski",
+    "język tetum"
+   ],
+   "money": [
+    null,
+    "dolar amerykański"
+   ],
+   "highest": [
+    "Foho Tatamailau"
+   ],
+   "government": [
+    "republika",
+    "system semiprezydencki",
+    "państwo unitarne"
+   ],
+   "head": [
+    "José Ramos-Horta"
+   ]
+  },
+  "ecuador": {
+   "languages": [
+    null,
+    null,
+    "język hiszpański"
+   ],
+   "money": [
+    "dolar amerykański"
+   ],
+   "highest": [
+    "Chimborazo"
+   ],
+   "government": [
+    "system prezydencki",
+    "republika"
+   ],
+   "head": [
+    "Daniel Noboa Azín"
+   ]
+  },
+  "egypt": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "funt egipski"
+   ],
+   "highest": [
+    "Góra Świętej Katarzyny"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Abd al-Fattah as-Sisi"
+   ]
+  },
+  "el-salvador": {
+   "languages": [
+    "język hiszpański"
+   ],
+   "money": [
+    "Bitcoin",
+    "dolar amerykański"
+   ],
+   "highest": [
+    "El Pital"
+   ],
+   "government": [
+    "system prezydencki",
+    "demokracja pośrednia",
+    "republika"
+   ],
+   "head": [
+    "Nayib Bukele"
+   ]
+  },
+  "equatorial-guinea": {
+   "languages": [
+    "język francuski",
+    "język portugalski",
+    "język hiszpański"
+   ],
+   "money": [
+    "frank CFA"
+   ],
+   "highest": [
+    "Pico Basilé"
+   ],
+   "head": [
+    "Teodoro Obiang Nguema Mbasogo"
+   ]
+  },
+  "eritrea": {
+   "languages": [
+    "język arabski",
+    "język angielski",
+    "Język tigrinia"
+   ],
+   "money": [
+    "Nakfa"
+   ],
+   "highest": [
+    "Soira"
+   ],
+   "head": [
+    "Isajas Afewerki"
+   ]
+  },
+  "estonia": {
+   "languages": [
+    "język estoński"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Suur Munamägi"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Ülle Madise"
+   ]
+  },
+  "eswatini": {
+   "languages": [
+    "język angielski",
+    "Język suazi"
+   ],
+   "money": [
+    "Lilangeni"
+   ],
+   "highest": [
+    "Emlembe"
+   ],
+   "government": [
+    "monarchia absolutna"
+   ],
+   "head": [
+    "Mswati III"
+   ]
+  },
+  "ethiopia": {
+   "languages": [
+    "język amharski"
+   ],
+   "money": [
+    "Birr"
+   ],
+   "highest": [
+    "Ras Daszan"
+   ],
+   "government": [
+    "republika federalna"
+   ],
+   "head": [
+    "Taye Atske Selassie"
+   ]
+  },
+  "falkland-islands": {
+   "languages": [
+    "brytyjska odmiana języka angielskiego"
+   ],
+   "money": [
+    "Funt falklandzki"
+   ],
+   "highest": [
+    "Mount Usborne"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "faroe-islands": {
+   "languages": [
+    "język duński",
+    "język farerski"
+   ],
+   "money": [
+    "Korona Wysp Owczych"
+   ],
+   "highest": [
+    "Slættaratindur"
+   ],
+   "head": [
+    "Fryderyk X"
+   ]
+  },
+  "federated-states-of-micronesia": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "dolar amerykański"
+   ],
+   "highest": [
+    "Dolohmwar"
+   ],
+   "government": [
+    "republika federalna"
+   ],
+   "head": [
+    "Wesley Simina"
+   ]
+  },
+  "fiji": {
+   "languages": [
+    "język angielski",
+    "hindi fidżyjskie",
+    "Język fidżyjski"
+   ],
+   "money": [
+    "Dolar Fidżi"
+   ],
+   "highest": [
+    "Tomanivi"
+   ],
+   "head": [
+    "Wiliame Katonivere"
+   ]
+  },
+  "finland": {
+   "languages": [
+    "język fiński",
+    "język szwedzki"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Haltiatunturi"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Alexander Stubb"
+   ]
+  },
+  "france": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Mont Blanc"
+   ],
+   "government": [
+    "system semiprezydencki"
+   ],
+   "head": [
+    "Emmanuel Macron"
+   ]
+  },
+  "french-polynesia": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "Frank CFP"
+   ],
+   "highest": [
+    "Mont Orohena"
+   ]
+  },
+  "french-southern-and-antarctic-lands": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "euro"
+   ]
+  },
+  "gabon": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "frank CFA"
+   ],
+   "highest": [
+    "Mont Bengoué"
+   ],
+   "government": [
+    "system prezydencki"
+   ],
+   "head": [
+    "Brice Oligui Nguema"
+   ]
+  },
+  "georgia": {
+   "languages": [
+    "język gruziński"
+   ],
+   "money": [
+    "Lari"
+   ],
+   "highest": [
+    "Szchara"
+   ],
+   "government": [
+    "republika parlamentarna",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Micheil Kawelaszwili"
+   ]
+  },
+  "germany": {
+   "languages": [
+    "język niemiecki"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Zugspitze"
+   ],
+   "government": [
+    "federalna republika parlamentarna"
+   ],
+   "head": [
+    "Frank-Walter Steinmeier"
+   ]
+  },
+  "ghana": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Cedi"
+   ],
+   "highest": [
+    "Mount Afadjato"
+   ],
+   "government": [
+    "demokracja"
+   ],
+   "head": [
+    "John Dramani Mahama"
+   ]
+  },
+  "gibraltar": {
+   "languages": [
+    "brytyjska odmiana języka angielskiego"
+   ],
+   "money": [
+    "Funt gibraltarski"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "greece": {
+   "languages": [
+    "język grecki"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Olimp"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Konstandinos Tasulas"
+   ]
+  },
+  "greenland": {
+   "languages": [
+    "język grenlandzki"
+   ],
+   "money": [
+    "korona duńska"
+   ],
+   "highest": [
+    "Góra Gunnbjørna"
+   ],
+   "government": [
+    "monarchia parlamentarna"
+   ],
+   "head": [
+    "Fryderyk X"
+   ]
+  },
+  "grenada": {
+   "languages": [
+    "język angielski",
+    null
+   ],
+   "money": [
+    "Dolar wschodniokaraibski"
+   ],
+   "highest": [
+    "Mount Saint Catherine"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "guam": {
+   "languages": [
+    "język czamorro",
+    "język angielski"
+   ],
+   "money": [
+    "dolar amerykański"
+   ],
+   "highest": [
+    "Mount Lamlam"
+   ]
+  },
+  "guatemala": {
+   "languages": [
+    "język hiszpański"
+   ],
+   "money": [
+    "Quetzal"
+   ],
+   "highest": [
+    "Tajumulco"
+   ],
+   "government": [
+    "system prezydencki",
+    "demokracja pośrednia"
+   ],
+   "head": [
+    "Bernardo Arévalo"
+   ]
+  },
+  "guernsey": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Funt Guernsey",
+    "funt szterling"
+   ],
+   "highest": [
+    "Le Moulin"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "guinea": {
+   "languages": [
+    "język francuski",
+    null
+   ],
+   "money": [
+    "frank gwinejski"
+   ],
+   "highest": [
+    "Nimba"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Mamadi Doumbouya"
+   ]
+  },
+  "guinea-bissau": {
+   "languages": [
+    "język portugalski"
+   ],
+   "money": [
+    "frank CFA"
+   ]
+  },
+  "guyana": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "dolar gujański"
+   ],
+   "highest": [
+    "Roraima"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Irfaan Ali"
+   ]
+  },
+  "haiti": {
+   "languages": [
+    "język francuski",
+    "język kreolski haitański"
+   ],
+   "money": [
+    "gourde"
+   ],
+   "highest": [
+    "Pic la Selle"
+   ]
+  },
+  "heard-island-and-mcdonald-islands": {
+   "languages": [
+    "język angielski"
+   ],
+   "highest": [
+    "Mawson Peak"
+   ]
+  },
+  "honduras": {
+   "languages": [
+    "język hiszpański"
+   ],
+   "money": [
+    "Lempira"
+   ],
+   "highest": [
+    "Cerro Las Minas"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Nasry Asfura"
+   ]
+  },
+  "hong-kong": {
+   "languages": [
+    "standardowy język mandaryński"
+   ],
+   "money": [
+    "dolar Hongkongu"
+   ],
+   "highest": [
+    "Tai Mo Shan"
+   ]
+  },
+  "hungary": {
+   "languages": [
+    "język węgierski"
+   ],
+   "money": [
+    "forint"
+   ],
+   "highest": [
+    "Kékes"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "András Baka"
+   ]
+  },
+  "iceland": {
+   "languages": [
+    "język islandzki"
+   ],
+   "money": [
+    "Korona islandzka"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Halla Tómasdóttir"
+   ]
+  },
+  "india": {
+   "languages": [
+    "język angielski",
+    "język hindi"
+   ],
+   "money": [
+    "Rupia indyjska"
+   ],
+   "highest": [
+    "Kanczendzonga"
+   ],
+   "government": [
+    "republika konstytucyjna",
+    "republika demokratyczna",
+    "republika federalna",
+    "republika"
+   ],
+   "head": [
+    "Draupadi Murmu"
+   ]
+  },
+  "indonesia": {
+   "languages": [
+    "język indonezyjski"
+   ],
+   "money": [
+    "rupia indonezyjska"
+   ],
+   "highest": [
+    "Jaya"
+   ],
+   "government": [
+    "system prezydencki",
+    "republika"
+   ],
+   "head": [
+    "Prabowo Subianto"
+   ]
+  },
+  "iran": {
+   "languages": [
+    "język perski"
+   ],
+   "money": [
+    "Rial irański"
+   ],
+   "highest": [
+    "Demawend"
+   ],
+   "government": [
+    "republika islamska",
+    null,
+    "system prezydencki",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Modżtaba Chamenei"
+   ]
+  },
+  "iraq": {
+   "languages": [
+    "język arabski",
+    "język kurdyjski"
+   ],
+   "money": [
+    "Dinar iracki"
+   ],
+   "highest": [
+    "Cheekha Dar"
+   ],
+   "government": [
+    "republika federalna",
+    "federacja"
+   ],
+   "head": [
+    "Nizar Amidi"
+   ]
+  },
+  "ireland": {
+   "languages": [
+    "język angielski",
+    "język irlandzki"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Carrantuohill"
+   ],
+   "government": [
+    "republika parlamentarna",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Catherine Connolly"
+   ]
+  },
+  "isle-of-man": {
+   "languages": [
+    "język angielski",
+    "język manx"
+   ],
+   "money": [
+    "Funt manx"
+   ],
+   "highest": [
+    "Snaefell"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "israel": {
+   "languages": [
+    "język hebrajski"
+   ],
+   "money": [
+    "Nowy izraelski szekel"
+   ],
+   "highest": [
+    "Meron"
+   ],
+   "government": [
+    "republika parlamentarna",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Yitzhak Herzog"
+   ]
+  },
+  "italy": {
+   "languages": [
+    "język włoski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Mont Blanc"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Sergio Mattarella"
+   ]
+  },
+  "ivory-coast": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "frank CFA"
+   ],
+   "highest": [
+    "Nimba"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Alassane Ouattara"
+   ]
+  },
+  "jamaica": {
+   "languages": [
+    "język angielski",
+    "język jamajski"
+   ],
+   "money": [
+    "Dolar jamajski"
+   ],
+   "highest": [
+    "Blue Mountain Peak"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "japan": {
+   "languages": [
+    "język japoński"
+   ],
+   "money": [
+    "jen"
+   ],
+   "highest": [
+    "Fudżi"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Naruhito"
+   ]
+  },
+  "jersey": {
+   "languages": [
+    "język angielski",
+    null,
+    "jèrriais"
+   ],
+   "money": [
+    "Funt Jersey",
+    "funt szterling"
+   ],
+   "government": [
+    "monarchia konstytucyjna",
+    "demokracja parlamentarna",
+    "monarchia parlamentarna"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "jordan": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "Dinar jordański"
+   ],
+   "highest": [
+    "Dżabal Umm ad Dami"
+   ],
+   "head": [
+    "Abd Allah II ibn Husajn"
+   ]
+  },
+  "kazakhstan": {
+   "languages": [
+    "język kazachski",
+    "język rosyjski"
+   ],
+   "money": [
+    "Tenge"
+   ],
+   "highest": [
+    "Chan Tengri"
+   ],
+   "government": [
+    "system prezydencki"
+   ],
+   "head": [
+    "Kasym-Żomart Tokajew"
+   ]
+  },
+  "kenya": {
+   "languages": [
+    "język angielski",
+    "język suahili"
+   ],
+   "money": [
+    "Szyling kenijski"
+   ],
+   "highest": [
+    "Kenia"
+   ],
+   "head": [
+    "William Ruto"
+   ]
+  },
+  "kiribati": {
+   "languages": [
+    "język angielski",
+    "Język kiribati"
+   ],
+   "money": [
+    "dolar australijski",
+    "Dolar Kiribati"
+   ],
+   "highest": [
+    "Banaba"
+   ],
+   "head": [
+    "Taneti Maamau"
+   ]
+  },
+  "kosovo": {
+   "languages": [
+    "język albański",
+    "język serbski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Djeravica"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Albulena Haxhiu"
+   ]
+  },
+  "kuwait": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "Dinar kuwejcki"
+   ],
+   "highest": [
+    "Al-Mutla"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Miszal al-Ahmad al-Dżabir as-Sabah"
+   ]
+  },
+  "kyrgyzstan": {
+   "languages": [
+    "język kirgiski"
+   ],
+   "money": [
+    "som"
+   ],
+   "highest": [
+    "Szczyt Zwycięstwa"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Sadyr Dżaparow"
+   ]
+  },
+  "laos": {
+   "languages": [
+    "język laotański"
+   ],
+   "money": [
+    "Kip"
+   ],
+   "highest": [
+    "Phou Bia"
+   ],
+   "government": [
+    "komunistyczna dyktatura",
+    "republika ludowa"
+   ],
+   "head": [
+    "Thongloun Sisoulith"
+   ]
+  },
+  "latvia": {
+   "languages": [
+    "język łotewski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Gaizinkalns"
+   ],
+   "government": [
+    "republika parlamentarna",
+    "republika"
+   ],
+   "head": [
+    "Edgars Rinkēvičs"
+   ]
+  },
+  "lebanon": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "Funt libański"
+   ],
+   "highest": [
+    "Kurnat as-Sauda"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Joseph Khalil Aoun"
+   ]
+  },
+  "lesotho": {
+   "languages": [
+    "język angielski",
+    "język sotho"
+   ],
+   "money": [
+    "Loti",
+    "Rand"
+   ],
+   "highest": [
+    "Thabana Ntlenyana"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Letsie III"
+   ]
+  },
+  "liberia": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar liberyjski"
+   ],
+   "highest": [
+    "Mount Wuteve"
+   ],
+   "government": [
+    "republika konstytucyjna",
+    "system prezydencki",
+    "republika"
+   ],
+   "head": [
+    "Joseph Boakai"
+   ]
+  },
+  "libya": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "Dinar libijski"
+   ],
+   "highest": [
+    "Bikku Bitti"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Muhammad al-Manfi"
+   ]
+  },
+  "liechtenstein": {
+   "languages": [
+    "język niemiecki"
+   ],
+   "money": [
+    "frank szwajcarski"
+   ],
+   "highest": [
+    "Grauspitz"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Jan Adam II Liechtenstein"
+   ]
+  },
+  "lithuania": {
+   "languages": [
+    "język litewski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Wysoka Góra (Litwa)"
+   ],
+   "government": [
+    "republika parlamentarna",
+    "system semiprezydencki"
+   ],
+   "head": [
+    "Gitanas Nausėda"
+   ]
+  },
+  "luxembourg": {
+   "languages": [
+    "język francuski",
+    "język niemiecki",
+    "język luksemburski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Kneiff"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Wilhelm V"
+   ]
+  },
+  "macau": {
+   "languages": [
+    "standardowy język kantoński",
+    "język portugalski",
+    "standardowy język mandaryński"
+   ],
+   "money": [
+    "dolar Hongkongu",
+    "Pataca"
+   ],
+   "highest": [
+    "Alto de Coloane"
+   ]
+  },
+  "madagascar": {
+   "languages": [
+    "język francuski",
+    "język malgaski"
+   ],
+   "money": [
+    "Ariary"
+   ],
+   "highest": [
+    "Maromokotro"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Michael Randrianirina"
+   ]
+  },
+  "malawi": {
+   "languages": [
+    "język cziczewa",
+    "język angielski",
+    "Język tumbuka"
+   ],
+   "money": [
+    "Kwacha malawijska"
+   ],
+   "highest": [
+    "Mlandżi"
+   ],
+   "head": [
+    "Peter Mutharika"
+   ]
+  },
+  "malaysia": {
+   "languages": [
+    "język malajski"
+   ],
+   "money": [
+    "Ringgit"
+   ],
+   "highest": [
+    "Kinabalu"
+   ],
+   "government": [
+    "monarchia konstytucyjna",
+    "monarchia elekcyjna",
+    null,
+    "federacja",
+    "monarchia parlamentarna"
+   ],
+   "head": [
+    "Ibrahim Ismail"
+   ]
+  },
+  "maldives": {
+   "languages": [
+    "język malediwski"
+   ],
+   "money": [
+    "Rupia malediwska"
+   ],
+   "highest": [
+    "Villingili"
+   ],
+   "head": [
+    "Mohamed Muizzu"
+   ]
+  },
+  "mali": {
+   "languages": [
+    "język bambara",
+    null,
+    null,
+    "Język dogoński",
+    "język ful",
+    "Hassanija",
+    null,
+    "Język maninka",
+    null,
+    null,
+    "Języki songhaj",
+    "Język soninke",
+    null
+   ],
+   "money": [
+    "frank CFA"
+   ],
+   "highest": [
+    "Hombori Tondo"
+   ],
+   "head": [
+    "Assimi Goita"
+   ]
+  },
+  "malta": {
+   "languages": [
+    "język angielski",
+    "język maltański"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Ta'Dmejrek"
+   ],
+   "government": [
+    "demokracja parlamentarna"
+   ],
+   "head": [
+    "Myriam Spiteri Debono"
+   ]
+  },
+  "marshall-islands": {
+   "languages": [
+    "język angielski",
+    "Język marszalski"
+   ],
+   "money": [
+    null,
+    "dolar amerykański"
+   ],
+   "highest": [
+    "Likiep"
+   ],
+   "head": [
+    "Hilda Heine"
+   ]
+  },
+  "mauritania": {
+   "languages": [
+    "język arabski",
+    "język francuski"
+   ],
+   "money": [
+    "Ugija"
+   ],
+   "highest": [
+    "Kidjat Idżdżil"
+   ],
+   "government": [
+    "system prezydencki"
+   ],
+   "head": [
+    "Muhammad wuld al-Ghazwani"
+   ]
+  },
+  "mauritius": {
+   "languages": [
+    "język angielski",
+    "język francuski"
+   ],
+   "money": [
+    "Rupia Mauritiusu"
+   ],
+   "highest": [
+    "Piton de la Petite Rivière Noire"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Dharam Gokhool"
+   ]
+  },
+  "mexico": {
+   "languages": [
+    "język nahuatl",
+    "język hiszpański",
+    "język maya"
+   ],
+   "money": [
+    "Peso meksykańskie"
+   ],
+   "highest": [
+    "Pico de Orizaba"
+   ],
+   "government": [
+    "republika konstytucyjna",
+    "republika demokratyczna",
+    "republika federalna",
+    "system prezydencki"
+   ]
+  },
+  "moldova": {
+   "languages": [
+    "język rumuński"
+   ],
+   "money": [
+    "lej Mołdawii"
+   ],
+   "highest": [
+    "Dealul Bălănești"
+   ],
+   "government": [
+    "republika parlamentarna",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Maia Sandu"
+   ]
+  },
+  "monaco": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Chemin des Révoires"
+   ],
+   "government": [
+    "monarchia konstytucyjna",
+    "monarchia dziedziczna"
+   ],
+   "head": [
+    "Albert II Grimaldi"
+   ]
+  },
+  "mongolia": {
+   "languages": [
+    "język mongolski"
+   ],
+   "money": [
+    "tugrik"
+   ],
+   "highest": [
+    "Chüjten orgil"
+   ],
+   "government": [
+    "system parlamentarny"
+   ],
+   "head": [
+    "Uchnaagijn Chürelsüch"
+   ]
+  },
+  "montenegro": {
+   "languages": [
+    "język czarnogórski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Zla Kolata"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Jakov Milatović"
+   ]
+  },
+  "montserrat": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar wschodniokaraibski"
+   ],
+   "head": [
+    "Harriet Cross"
+   ]
+  },
+  "morocco": {
+   "languages": [
+    "język arabski",
+    null
+   ],
+   "money": [
+    "dirham marokański"
+   ],
+   "highest": [
+    "Tubkal"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Muhammad VI"
+   ]
+  },
+  "mozambique": {
+   "languages": [
+    "język portugalski"
+   ],
+   "money": [
+    "Metical"
+   ],
+   "highest": [
+    "Binga"
+   ],
+   "head": [
+    "Daniel Chapo"
+   ]
+  },
+  "myanmar": {
+   "languages": [
+    "język birmański"
+   ],
+   "money": [
+    "Kiat"
+   ],
+   "highest": [
+    "Kagaboyazi Taung"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Myint Swe"
+   ]
+  },
+  "namibia": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar namibijski",
+    "Rand"
+   ],
+   "highest": [
+    "Brandberg (góra)"
+   ],
+   "head": [
+    "Netumbo Nandi-Ndaitwah"
+   ]
+  },
+  "nauru": {
+   "languages": [
+    "język angielski",
+    "język naurański"
+   ],
+   "money": [
+    "dolar australijski"
+   ],
+   "highest": [
+    "Command Ridge"
+   ],
+   "head": [
+    "David Adeang"
+   ]
+  },
+  "nepal": {
+   "languages": [
+    "język nepalski"
+   ],
+   "money": [
+    "Rupia nepalska"
+   ],
+   "highest": [
+    "Mount Everest"
+   ],
+   "government": [
+    "republika federalna",
+    "republika ludowa"
+   ],
+   "head": [
+    "Ram Chandra Poudel"
+   ]
+  },
+  "netherlands": {
+   "languages": [
+    "język niderlandzki"
+   ],
+   "highest": [
+    "Mount Scenery"
+   ],
+   "government": [
+    "monarchia konstytucyjna",
+    "monarchia parlamentarna"
+   ],
+   "head": [
+    "Wilhelm Aleksander"
+   ]
+  },
+  "new-caledonia": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "Frank CFP"
+   ]
+  },
+  "new-zealand": {
+   "languages": [
+    "język angielski",
+    "język maoryski",
+    "nowozelandzki język migowy"
+   ],
+   "money": [
+    "dolar nowozelandzki"
+   ],
+   "highest": [
+    "Góra Cooka"
+   ],
+   "government": [
+    "monarchia parlamentarna"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "nicaragua": {
+   "languages": [
+    "język hiszpański"
+   ],
+   "money": [
+    "Cordoba oro"
+   ],
+   "highest": [
+    "Cerro Mogotón"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Daniel Ortega Saavedra"
+   ]
+  },
+  "niger": {
+   "languages": [
+    "język hausa"
+   ],
+   "money": [
+    "frank CFA"
+   ],
+   "highest": [
+    "Mont Idoukal-n-Taghès"
+   ],
+   "head": [
+    "Abdourahamane Tchiani"
+   ]
+  },
+  "nigeria": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Naira"
+   ],
+   "highest": [
+    "Chappal Waddi"
+   ],
+   "government": [
+    "republika federalna"
+   ],
+   "head": [
+    "Bola Tinubu"
+   ]
+  },
+  "niue": {
+   "languages": [
+    "język angielski",
+    "Język niue"
+   ],
+   "money": [
+    "dolar nowozelandzki",
+    null
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "norfolk-island": {
+   "languages": [
+    "język angielski",
+    null
+   ],
+   "money": [
+    "dolar australijski"
+   ]
+  },
+  "north-korea": {
+   "languages": [
+    "język koreański",
+    "Munhwaŏ"
+   ],
+   "money": [
+    "won północnokoreański"
+   ],
+   "highest": [
+    "Pektu-san"
+   ],
+   "government": [
+    "komunistyczna dyktatura",
+    "rodzinna dyktatura",
+    "Dżucze",
+    "system jednopartyjny",
+    "republika",
+    "państwo socjalistyczne",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Kim Dzong Un"
+   ]
+  },
+  "north-macedonia": {
+   "languages": [
+    "język albański",
+    "język macedoński"
+   ],
+   "money": [
+    "denar"
+   ],
+   "highest": [
+    "Korab"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Gordana Siłјanowska-Dawkowa"
+   ]
+  },
+  "northern-mariana-islands": {
+   "languages": [
+    "język karoliński",
+    "język czamorro",
+    "język angielski"
+   ],
+   "money": [
+    "dolar amerykański"
+   ]
+  },
+  "norway": {
+   "languages": [
+    "norweski (bokmål)",
+    "język norweski",
+    "norweski (nynorsk)",
+    "języki lapońskie"
+   ],
+   "money": [
+    "korona norweska"
+   ],
+   "highest": [
+    "Galdhøpiggen"
+   ],
+   "government": [
+    "monarchia konstytucyjna",
+    "system parlamentarny",
+    "demokracja pośrednia",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Haakon"
+   ]
+  },
+  "oman": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "Rial omański"
+   ],
+   "highest": [
+    "Dżabal Szam"
+   ],
+   "government": [
+    "monarchia absolutna"
+   ],
+   "head": [
+    "Hajsam ibn Tarik Al Sa’id"
+   ]
+  },
+  "pakistan": {
+   "languages": [
+    "język angielski",
+    "język urdu"
+   ],
+   "money": [
+    "rupia pakistańska"
+   ],
+   "highest": [
+    "K2"
+   ],
+   "government": [
+    "republika federalna",
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Asif Ali Zardari"
+   ]
+  },
+  "palau": {
+   "languages": [
+    "język angielski",
+    "Język palau"
+   ],
+   "money": [
+    "dolar amerykański"
+   ],
+   "highest": [
+    "Mount Ngerchelchuus"
+   ],
+   "head": [
+    "Surangel Whipps Jr."
+   ]
+  },
+  "panama": {
+   "languages": [
+    "język hiszpański"
+   ],
+   "money": [
+    "Balboa",
+    "dolar amerykański"
+   ],
+   "highest": [
+    "Volcan de Chiriqui"
+   ],
+   "government": [
+    "system prezydencki"
+   ],
+   "head": [
+    "José Raúl Mulino"
+   ]
+  },
+  "papua-new-guinea": {
+   "languages": [
+    "język angielski",
+    "Hiri motu",
+    null,
+    "tok pisin"
+   ],
+   "money": [
+    "Kina"
+   ],
+   "highest": [
+    "Góra Wilhelma"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "paraguay": {
+   "languages": [
+    "język guarani",
+    "język hiszpański"
+   ],
+   "money": [
+    "Guarani"
+   ],
+   "highest": [
+    "Cerro Tres Kandú"
+   ],
+   "head": [
+    "Pedro Alliana"
+   ]
+  },
+  "people-s-republic-of-china": {
+   "languages": [
+    "Mandaryński (Chiny)"
+   ],
+   "money": [
+    "renminbi"
+   ],
+   "highest": [
+    "Mount Everest"
+   ],
+   "government": [
+    "republika ludowa"
+   ],
+   "head": [
+    "Xi Jinping"
+   ]
+  },
+  "peru": {
+   "languages": [
+    "język ajmara",
+    "język keczua",
+    "język hiszpański"
+   ],
+   "money": [
+    "Sol"
+   ],
+   "highest": [
+    "Huascarán"
+   ],
+   "government": [
+    "system prezydencki"
+   ],
+   "head": [
+    "Keiko Fujimori"
+   ]
+  },
+  "philippines": {
+   "languages": [
+    "język angielski",
+    "Język filipiński",
+    null
+   ],
+   "money": [
+    "Peso filipińskie"
+   ],
+   "highest": [
+    "Apo"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Ferdinand Marcos Jr."
+   ]
+  },
+  "pitcairn-islands": {
+   "languages": [
+    "język angielski",
+    "Język pitkarnyjski"
+   ],
+   "money": [
+    "dolar nowozelandzki",
+    null
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "poland": {
+   "languages": [
+    "język polski"
+   ],
+   "money": [
+    "złoty"
+   ],
+   "highest": [
+    "Rysy"
+   ],
+   "government": [
+    "system parlamentarny",
+    "system semiprezydencki",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Karol Nawrocki"
+   ]
+  },
+  "portugal": {
+   "languages": [
+    "język portugalski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Pico"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "António José Seguro"
+   ]
+  },
+  "puerto-rico": {
+   "languages": [
+    "język angielski",
+    "język hiszpański"
+   ],
+   "money": [
+    "dolar amerykański"
+   ],
+   "highest": [
+    "Cerro de Punta"
+   ]
+  },
+  "qatar": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "Rial katarski"
+   ],
+   "highest": [
+    "Kurajn Abu al-Baul"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Tamim ibn Hamad Al Sani"
+   ]
+  },
+  "republic-of-the-congo": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "frank CFA"
+   ],
+   "highest": [
+    "Mont Nabeba"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Denis Sassou-Nguesso"
+   ]
+  },
+  "romania": {
+   "languages": [
+    "język rumuński"
+   ],
+   "money": [
+    "Lej rumuński"
+   ],
+   "highest": [
+    "Moldoveanu"
+   ],
+   "government": [
+    "system semiprezydencki",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Nicușor Dan"
+   ]
+  },
+  "russia": {
+   "languages": [
+    "język rosyjski"
+   ],
+   "money": [
+    "rubel rosyjski"
+   ],
+   "highest": [
+    "Elbrus"
+   ],
+   "head": [
+    "Władimir Putin"
+   ]
+  },
+  "rwanda": {
+   "languages": [
+    "język angielski",
+    "język francuski",
+    "język ruanda",
+    "język suahili"
+   ],
+   "money": [
+    "frank rwandyjski"
+   ],
+   "highest": [
+    "Karisimbi"
+   ],
+   "government": [
+    "system semiprezydencki"
+   ],
+   "head": [
+    "Paul Kagame"
+   ]
+  },
+  "saint-barthelemy": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Morne du Vitet"
+   ]
+  },
+  "saint-helena": {
+   "languages": [
+    "język angielski"
+   ],
+   "highest": [
+    "Diana's Peak"
+   ]
+  },
+  "saint-kitts-and-nevis": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar wschodniokaraibski"
+   ],
+   "highest": [
+    "Mount Liamuiga"
+   ],
+   "government": [
+    "monarchia konstytucyjna",
+    null
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "saint-lucia": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar wschodniokaraibski"
+   ],
+   "highest": [
+    "Mount Gimie"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "saint-martin": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Pic Paradis"
+   ]
+  },
+  "saint-pierre-and-miquelon": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Morne de la Grande Montagne"
+   ],
+   "government": [
+    "Wspólnota zamorska"
+   ]
+  },
+  "saint-vincent-and-the-grenadines": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar wschodniokaraibski"
+   ],
+   "highest": [
+    "Soufrière"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "samoa": {
+   "languages": [
+    "język angielski",
+    "język samoański"
+   ],
+   "money": [
+    "Tala"
+   ],
+   "highest": [
+    "Mauga Silisili"
+   ],
+   "head": [
+    "Tuimalealiʻifano Vaʻaletoa Sualauvi II"
+   ]
+  },
+  "san-marino": {
+   "languages": [
+    "język włoski"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Monte Titano"
+   ],
+   "government": [
+    "Diarchia",
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Denise Bronzetti",
+    "Italo Righi"
+   ]
+  },
+  "sao-tome-and-principe": {
+   "languages": [
+    "język portugalski"
+   ],
+   "money": [
+    "Dobra"
+   ],
+   "highest": [
+    "Pico de São Tomé"
+   ],
+   "head": [
+    "Carlos Vila Nova"
+   ]
+  },
+  "saudi-arabia": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "Rial saudyjski"
+   ],
+   "highest": [
+    "Dżabal as-Sauda"
+   ],
+   "government": [
+    "monarchia absolutna",
+    null,
+    "monarchia"
+   ],
+   "head": [
+    "Salman ibn Abd al-Aziz as-Saud"
+   ]
+  },
+  "senegal": {
+   "languages": [
+    null,
+    "Język balante",
+    "język francuski",
+    "język wolof"
+   ],
+   "money": [
+    "frank CFA"
+   ],
+   "government": [
+    "system prezydencki"
+   ],
+   "head": [
+    "Bassirou Diomaye Diakhar Faye"
+   ]
+  },
+  "serbia": {
+   "languages": [
+    "język serbski"
+   ],
+   "money": [
+    "Dinar serbski"
+   ],
+   "highest": [
+    "Rudoka"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Ana Brnabić"
+   ]
+  },
+  "seychelles": {
+   "languages": [
+    "język angielski",
+    "język francuski",
+    "Język kreolski seszelski"
+   ],
+   "money": [
+    "Rupia seszelska"
+   ],
+   "highest": [
+    "Morne Seychellois"
+   ],
+   "head": [
+    "Patrick Herminie"
+   ]
+  },
+  "sierra-leone": {
+   "languages": [
+    "język angielski",
+    "Język krio"
+   ],
+   "money": [
+    "leone"
+   ],
+   "highest": [
+    "Bintumani"
+   ],
+   "government": [
+    "system prezydencki"
+   ],
+   "head": [
+    "Julius Maada Bio"
+   ]
+  },
+  "singapore": {
+   "languages": [
+    "język angielski",
+    "język malajski",
+    "standardowy język mandaryński",
+    "język tamilski"
+   ],
+   "money": [
+    "Dolar singapurski"
+   ],
+   "highest": [
+    "Bukit Timah"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Tharman Shanmugaratnam"
+   ]
+  },
+  "sint-maarten": {
+   "languages": [
+    "język niderlandzki",
+    "język angielski"
+   ],
+   "money": [
+    "Gulden karaibski"
+   ],
+   "head": [
+    "Eugene Holiday",
+    "Wilhelm Aleksander"
+   ]
+  },
+  "slovakia": {
+   "languages": [
+    "język słowacki"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Gerlach"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Peter Pellegrini"
+   ]
+  },
+  "slovenia": {
+   "languages": [
+    "język słoweński"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Trzygłów"
+   ],
+   "government": [
+    "republika demokratyczna"
+   ],
+   "head": [
+    "Nataša Pirc Musar"
+   ]
+  },
+  "solomon-islands": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar Wysp Salomona"
+   ],
+   "highest": [
+    "Mount Popomanaseu"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "somalia": {
+   "languages": [
+    "język arabski",
+    "język somalijski"
+   ],
+   "money": [
+    "Szyling somalijski"
+   ],
+   "highest": [
+    "Shimbiris"
+   ],
+   "government": [
+    "republika federalna"
+   ],
+   "head": [
+    "Hassan Sheikh Mohamud"
+   ]
+  },
+  "somaliland": {
+   "languages": [
+    "język arabski",
+    "język angielski",
+    "język somalijski"
+   ],
+   "money": [
+    "Szyling Somalilandu"
+   ],
+   "highest": [
+    "Shimbiris"
+   ],
+   "head": [
+    "Abdirahman Mohamed Abdullahi"
+   ]
+  },
+  "south-africa": {
+   "languages": [
+    "język afrikaans",
+    "język angielski",
+    "język północny sotho",
+    "język sotho",
+    null,
+    "język ndebele południowy",
+    "Język suazi",
+    "Język tsonga",
+    "język tswana",
+    "język venda",
+    "język xhosa",
+    "język zulu"
+   ],
+   "money": [
+    "Rand"
+   ],
+   "highest": [
+    "Mafadi"
+   ],
+   "government": [
+    "republika parlamentarna",
+    "demokracja pośrednia"
+   ],
+   "head": [
+    "Cyril Ramaphosa"
+   ]
+  },
+  "south-georgia-and-the-south-sandwich-islands": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "funt szterling"
+   ],
+   "highest": [
+    "Mount Paget"
+   ]
+  },
+  "south-korea": {
+   "languages": [
+    "język koreański",
+    "Koreański język migowy"
+   ],
+   "money": [
+    "won południowokoreański"
+   ],
+   "highest": [
+    "Halla-san"
+   ],
+   "government": [
+    "system prezydencki",
+    "republika"
+   ],
+   "head": [
+    "Lee Jae-myung"
+   ]
+  },
+  "south-sudan": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Funt południowosudański"
+   ],
+   "highest": [
+    "Kinyeti"
+   ],
+   "government": [
+    "republika federalna"
+   ],
+   "head": [
+    "Salva Kiir Mayardit"
+   ]
+  },
+  "spain": {
+   "languages": [
+    "język hiszpański"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Teide"
+   ],
+   "government": [
+    "monarchia parlamentarna"
+   ],
+   "head": [
+    "Filip VI"
+   ]
+  },
+  "sri-lanka": {
+   "languages": [
+    "język syngaleski",
+    "język tamilski"
+   ],
+   "money": [
+    "Rupia lankijska"
+   ],
+   "highest": [
+    "Pidurutalagala"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Anura Kumara Dissanayaka"
+   ]
+  },
+  "sudan": {
+   "languages": [
+    "język arabski",
+    "język angielski"
+   ],
+   "money": [
+    "Funt sudański"
+   ],
+   "highest": [
+    "Deriba Caldera"
+   ],
+   "government": [
+    "republika federalna"
+   ],
+   "head": [
+    "Abd al-Fattah Abd er-Rahman Burhan"
+   ]
+  },
+  "suriname": {
+   "languages": [
+    "język niderlandzki"
+   ],
+   "money": [
+    "Dolar surinamski"
+   ],
+   "highest": [
+    "Juliana Top"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Jennifer Geerlings-Simons"
+   ]
+  },
+  "sweden": {
+   "languages": [
+    "język szwedzki"
+   ],
+   "money": [
+    "korona szwedzka"
+   ],
+   "highest": [
+    "Kebnekaise"
+   ],
+   "government": [
+    "monarchia konstytucyjna",
+    "demokracja pośrednia"
+   ],
+   "head": [
+    "Karol XVI Gustaw"
+   ]
+  },
+  "switzerland": {
+   "languages": [
+    "język francuski",
+    "język niemiecki",
+    "język włoski",
+    "język romansz"
+   ],
+   "money": [
+    "frank szwajcarski"
+   ],
+   "highest": [
+    "Dufourspitze"
+   ],
+   "government": [
+    "system parlamentarno-komitetowy",
+    "republika federalna"
+   ],
+   "head": [
+    "Szwajcarska Rada Związkowa"
+   ]
+  },
+  "syria": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "funt syryjski"
+   ],
+   "highest": [
+    "Hermon"
+   ],
+   "government": [
+    "rząd tymczasowy"
+   ],
+   "head": [
+    "Ahmad asz-Szara"
+   ]
+  },
+  "taiwan": {
+   "languages": [
+    "język amis",
+    null,
+    "Język bunun",
+    "język kanakanabu",
+    null,
+    null,
+    null,
+    "Paiwan",
+    null,
+    "Rukai",
+    null,
+    null,
+    "Sakizaya",
+    null,
+    "standardowy tajwański mandaryński",
+    null,
+    "język tajwański",
+    null,
+    null,
+    null,
+    null,
+    "Język yami"
+   ],
+   "highest": [
+    "Yu Shan"
+   ],
+   "government": [
+    "republika konstytucyjna",
+    "demokracja",
+    "republika demokratyczna",
+    "system semiprezydencki"
+   ],
+   "head": [
+    "Lai Ching-te"
+   ]
+  },
+  "tajikistan": {
+   "languages": [
+    "język tadżycki"
+   ],
+   "money": [
+    "Somoni"
+   ],
+   "highest": [
+    "Szczyt Ismaila Samaniego"
+   ],
+   "government": [
+    "system prezydencki"
+   ],
+   "head": [
+    "Emomali Rahmon"
+   ]
+  },
+  "tanzania": {
+   "languages": [
+    "język angielski",
+    "język suahili"
+   ],
+   "money": [
+    "Szyling tanzański"
+   ],
+   "highest": [
+    "Kibo"
+   ],
+   "head": [
+    "Samia Suluhu"
+   ]
+  },
+  "thailand": {
+   "languages": [
+    "język tajski"
+   ],
+   "money": [
+    "bat"
+   ],
+   "highest": [
+    "Doi Inthanon"
+   ],
+   "government": [
+    "monarchia konstytucyjna",
+    "monarchia parlamentarna"
+   ],
+   "head": [
+    "Maha Vajiralongkorn"
+   ]
+  },
+  "the-bahamas": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar bahamski"
+   ],
+   "highest": [
+    "Mount Alvernia"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "the-gambia": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dalasi"
+   ],
+   "government": [
+    "republika"
+   ],
+   "head": [
+    "Adama Barrow"
+   ]
+  },
+  "togo": {
+   "languages": [
+    "język francuski"
+   ],
+   "money": [
+    "frank CFA"
+   ],
+   "highest": [
+    "Mont Agou"
+   ],
+   "head": [
+    "Jean-Lucien Savi de Tové"
+   ]
+  },
+  "tonga": {
+   "languages": [
+    "język angielski",
+    "Język tonga"
+   ],
+   "money": [
+    "Pa'anga"
+   ],
+   "highest": [
+    "Kao"
+   ],
+   "head": [
+    "Tupou VI"
+   ]
+  },
+  "trinidad-and-tobago": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Dolar Trynidadu i Tobago"
+   ],
+   "highest": [
+    "El Cerro del Aripo"
+   ],
+   "government": [
+    "republika parlamentarna"
+   ],
+   "head": [
+    "Christine Kangaloo"
+   ]
+  },
+  "tunisia": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "Dinar tunezyjski"
+   ],
+   "highest": [
+    "Dżabal asz-Szanabi"
+   ],
+   "government": [
+    "republika parlamentarna",
+    "system prezydencki",
+    "system semiprezydencki"
+   ],
+   "head": [
+    "Kajs Su’ajjid"
+   ]
+  },
+  "turkey": {
+   "languages": [
+    "język turecki"
+   ],
+   "money": [
+    "lira turecka"
+   ],
+   "highest": [
+    "Ararat"
+   ],
+   "government": [
+    "system prezydencki",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Recep Tayyip Erdoğan"
+   ]
+  },
+  "turkish-republic-of-northern-cyprus": {
+   "languages": [
+    "język turecki"
+   ],
+   "money": [
+    "lira turecka"
+   ],
+   "government": [
+    "system semiprezydencki",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Tufan Erhürman"
+   ]
+  },
+  "turkmenistan": {
+   "languages": [
+    "język turkmeński"
+   ],
+   "money": [
+    "Manat turkmeński"
+   ],
+   "highest": [
+    "Ajribaba"
+   ],
+   "government": [
+    "system prezydencki",
+    "republika"
+   ],
+   "head": [
+    "Serdar Berdimuhamedow"
+   ]
+  },
+  "turks-and-caicos-islands": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "dolar amerykański"
+   ],
+   "highest": [
+    "Blue Hills"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "tuvalu": {
+   "languages": [
+    "język angielski",
+    "Język tuvalu"
+   ],
+   "money": [
+    "dolar australijski",
+    "Dolar Tuvalu"
+   ],
+   "highest": [
+    "Niulakita"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "uganda": {
+   "languages": [
+    "język angielski",
+    "język suahili"
+   ],
+   "money": [
+    "Szyling ugandyjski"
+   ],
+   "highest": [
+    "Góra Stanleya"
+   ],
+   "government": [
+    "system prezydencki"
+   ],
+   "head": [
+    "Yoweri Museveni"
+   ]
+  },
+  "ukraine": {
+   "languages": [
+    "język ukraiński"
+   ],
+   "money": [
+    "hrywna"
+   ],
+   "highest": [
+    "Howerla"
+   ],
+   "government": [
+    "system semiprezydencki"
+   ],
+   "head": [
+    "Wołodymyr Zełenski"
+   ]
+  },
+  "united-arab-emirates": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "dirham"
+   ],
+   "highest": [
+    "Dżabal al-Dżajs"
+   ],
+   "government": [
+    "monarchia absolutna",
+    "monarchia konstytucyjna",
+    null
+   ],
+   "head": [
+    "Muhammad ibn Zaid an-Nahajan"
+   ]
+  },
+  "united-kingdom": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "funt szterling"
+   ],
+   "highest": [
+    "Ben Nevis"
+   ],
+   "government": [
+    "monarchia konstytucyjna"
+   ],
+   "head": [
+    "Karol III"
+   ]
+  },
+  "united-states-minor-outlying-islands": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "dolar amerykański"
+   ]
+  },
+  "united-states-of-america": {
+   "money": [
+    "dolar amerykański"
+   ],
+   "government": [
+    "republika konstytucyjna",
+    "republika demokratyczna"
+   ],
+   "head": [
+    "Donald Trump"
+   ]
+  },
+  "united-states-virgin-islands": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "dolar amerykański"
+   ],
+   "highest": [
+    "Crown Mountain"
+   ]
+  },
+  "uruguay": {
+   "money": [
+    "Peso urugwajskie"
+   ],
+   "highest": [
+    "Catedral"
+   ],
+   "government": [
+    "Demokracja uczestnicząca",
+    "system prezydencki",
+    "republika"
+   ],
+   "head": [
+    "Yamandú Orsi"
+   ]
+  },
+  "uzbekistan": {
+   "languages": [
+    "język uzbecki"
+   ],
+   "money": [
+    "Sum"
+   ],
+   "highest": [
+    "Hazrat Sulton"
+   ],
+   "government": [
+    "system prezydencki"
+   ],
+   "head": [
+    "Shavkat Mirziyoyev"
+   ]
+  },
+  "vanuatu": {
+   "languages": [
+    "język bislama",
+    "język angielski",
+    "język francuski"
+   ],
+   "money": [
+    "Vatu"
+   ],
+   "highest": [
+    "Mount Tabwemasana"
+   ],
+   "head": [
+    "Nikenike Vurobaravu"
+   ]
+  },
+  "vatican-city": {
+   "languages": [
+    "język włoski",
+    "język łaciński"
+   ],
+   "money": [
+    "euro"
+   ],
+   "highest": [
+    "Wzgórze Watykańskie"
+   ],
+   "government": [
+    "monarchia konstytucyjna",
+    "papiestwo",
+    "teokracja"
+   ],
+   "head": [
+    "Leon XIV"
+   ]
+  },
+  "venezuela": {
+   "languages": [
+    "język hiszpański",
+    null
+   ],
+   "highest": [
+    "Bolívar"
+   ],
+   "government": [
+    "republika federalna",
+    "system prezydencki"
+   ],
+   "head": [
+    "Delcy Rodríguez"
+   ]
+  },
+  "vietnam": {
+   "languages": [
+    "język wietnamski"
+   ],
+   "money": [
+    "Dong"
+   ],
+   "highest": [
+    "Phan Xi Păng"
+   ],
+   "government": [
+    "system jednopartyjny",
+    "republika",
+    "państwo unitarne"
+   ],
+   "head": [
+    "Tô Lâm"
+   ]
+  },
+  "wallis-and-futuna": {
+   "languages": [
+    "język francuski",
+    "Język wschodniofutuński",
+    "Język uvea wschodni"
+   ],
+   "money": [
+    "Frank CFP"
+   ],
+   "highest": [
+    "Mont Puke"
+   ],
+   "government": [
+    "republika"
+   ]
+  },
+  "western-sahara": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "dirham marokański",
+    "Peseta saharyjska"
+   ]
+  },
+  "yemen": {
+   "languages": [
+    "język arabski"
+   ],
+   "money": [
+    "Rial jemeński"
+   ],
+   "highest": [
+    "Dżabal an-Nabi Szuajb"
+   ],
+   "government": [
+    "system prezydencki",
+    "republika"
+   ],
+   "head": [
+    "Raszad Al-Alimi"
+   ]
+  },
+  "zambia": {
+   "languages": [
+    "język angielski"
+   ],
+   "money": [
+    "Kwacha zambijska"
+   ],
+   "highest": [
+    "Mafinga"
+   ],
+   "government": [
+    "system prezydencki",
+    "demokracja pośrednia"
+   ],
+   "head": [
+    "Hakainde Hichilema"
+   ]
+  },
+  "zimbabwe": {
+   "languages": [
+    null,
+    "język cziczewa",
+    "język angielski",
+    "Język kalanga",
+    "języki khoisan",
+    null,
+    null,
+    "Język ndebele północny",
+    "język sotho",
+    "Język shona",
+    "Język tonga",
+    "Język tsonga",
+    "język tswana",
+    "język venda",
+    "język xhosa",
+    null
+   ],
+   "money": [
+    "dolar australijski",
+    "euro",
+    "Rupia indyjska",
+    "funt szterling",
+    "Rand",
+    "renminbi",
+    "dolar amerykański",
+    "jen",
+    "Złoto Zimbabwe",
+    "Dolar Zimbabwe"
+   ],
+   "highest": [
+    "Inyangani"
+   ],
+   "head": [
+    "Emmerson Mnangagwa"
+   ]
+  }
+ }
+}

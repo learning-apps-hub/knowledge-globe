@@ -1,0 +1,60 @@
+# This workflow ships in BOTH repos: it lives on `main` in the private repo and
+# is carried into the public repo by scripts/publish_public.sh, which derives
+# the public branch from `main`. Only the public repo can actually serve Pages
+# (GitHub does not host free Pages from a private repo), so the jobs are gated
+# on the repository name. Without that gate every push to the private `main`
+# produced a failed run, and a permanently red X hides real failures.
+#
+# Do not "fix" this by deleting the file — publish_public.sh would then strip it
+# from the public repo and the live site would stop deploying.
+
+name: Deploy production to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # Skipped in the private repo, which cannot serve Pages. `deploy` needs
+    # this job, so it skips with it.
+    if: github.repository == 'learning-apps-hub/knowledge-globe'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out production
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803  # v6
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: "3.12"
+      - name: Build static production site
+        run: python3 scripts/build_pages.py --output _site
+      - name: Verify production artifact
+        run: python3 tests/pages_build_test.py
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b  # v5
+      - name: Upload production artifact
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b  # v4
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e  # v4

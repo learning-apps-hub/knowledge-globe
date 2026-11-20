@@ -1,0 +1,4430 @@
+{
+ "note": "Built by scripts/build_lang_wikidata.py from Wikidata labels (CC0). Do not edit by hand. words: one entry per English word of the fact, null = no label in this language.",
+ "names": {
+  "abidjan": "阿比让",
+  "abu-dhabi": "阿布扎比",
+  "abuja": "阿布贾",
+  "accra": "阿克拉",
+  "addis-ababa": "亚的斯亚贝巴",
+  "afghanistan": "阿富汗",
+  "africa": "非洲",
+  "ahmedabad": "艾哈迈达巴德",
+  "akrotiri-sovereign-base-area": "阿克罗蒂里主权基地区",
+  "aland": "奥兰",
+  "albania": "阿尔巴尼亚",
+  "algeria": "阿尔及利亚",
+  "algiers": "阿尔及尔",
+  "amaravati": "阿默拉沃蒂",
+  "american-samoa": "美属萨摩亚",
+  "amman": "安曼",
+  "amsterdam": "阿姆斯特丹",
+  "andorra": "安道尔",
+  "angola": "安哥拉",
+  "anguilla": "安圭拉",
+  "ankara": "安卡拉",
+  "antananarivo": "塔那那利佛",
+  "antarctic-circle": "南极圈",
+  "antarctica": "南极洲",
+  "antigua-and-barbuda": "安提瓜和巴布达",
+  "apia": "阿皮亚",
+  "arctic-circle": "北极圈",
+  "arctic-ocean": "北冰洋",
+  "argentina": "阿根廷",
+  "armenia": "亚美尼亚",
+  "aruba": "阿鲁巴",
+  "ashgabat": "阿什哈巴德",
+  "ashmore-and-cartier-islands": "阿什莫尔和卡捷群岛",
+  "asia": "亚洲",
+  "asmara": "阿斯马拉",
+  "asuncion": "亚松森",
+  "athens": "雅典",
+  "atlantic-ocean": "大西洋",
+  "australia": "澳大利亚",
+  "austria": "奥地利",
+  "azerbaijan": "阿塞拜疆",
+  "baghdad": "巴格达",
+  "baguio": "碧瑶",
+  "bahrain": "巴林",
+  "baikonur": "拜科努尔",
+  "bajo-nuevo-bank": "巴霍努埃沃浅滩",
+  "baku": "巴库",
+  "bamako": "巴马科",
+  "bandar-seri-begawan": "斯里巴加湾市",
+  "bangkok": "曼谷",
+  "bangladesh": "孟加拉国",
+  "bangui": "班吉",
+  "banjul": "班珠尔",
+  "barbados": "巴巴多斯",
+  "basseterre": "巴斯特尔",
+  "beijing": "北京市",
+  "beirut": "贝鲁特",
+  "belarus": "白俄罗斯",
+  "belgium": "比利时",
+  "belgrade": "贝尔格莱德",
+  "belize": "伯利兹",
+  "belmopan": "贝尔墨邦",
+  "belo-horizonte": "贝洛奥里藏特",
+  "bengaluru": "班加罗尔",
+  "benin": "贝宁",
+  "berlin": "柏林",
+  "bermuda": "百慕大",
+  "bern": "伯尔尼",
+  "bhutan": "不丹",
+  "bir-lehlou": "比鄂-雷楼",
+  "bir-tawil": "比尔泰维勒",
+  "bishkek": "比什凯克",
+  "bissau": "比绍",
+  "bloemfontein": "布隆方丹",
+  "bogota": "波哥大",
+  "bolivia": "玻利维亚",
+  "bosnia-and-herzegovina": "波斯尼亚和黑塞哥维那",
+  "botswana": "博茨瓦纳",
+  "brasilia": "巴西利亚",
+  "bratislava": "布拉迪斯拉发",
+  "brazil": "巴西",
+  "brazilian-island": "巴西岛",
+  "brazzaville": "布拉柴维尔",
+  "bridgetown": "布里奇顿",
+  "british-indian-ocean-territory": "英属印度洋领地",
+  "british-virgin-islands": "英属维尔京群岛",
+  "brunei": "文莱",
+  "brussels": "布鲁塞尔首都大区",
+  "bucharest": "布加勒斯特",
+  "budapest": "布达佩斯",
+  "buenos-aires": "布宜诺斯艾利斯",
+  "bujumbura": "布琼布拉",
+  "bulgaria": "保加利亚",
+  "burkina-faso": "布基纳法索",
+  "burundi": "布隆迪",
+  "cairo": "开罗",
+  "cambodia": "柬埔寨",
+  "cameroon": "喀麦隆",
+  "canada": "加拿大",
+  "canberra": "堪培拉",
+  "cape-town": "开普敦",
+  "cape-verde": "佛得角",
+  "caracas": "加拉加斯",
+  "castries": "卡斯特里",
+  "cayman-islands": "开曼群岛",
+  "central-african-republic": "中非共和国",
+  "chad": "乍得",
+  "chennai": "金奈",
+  "chicago": "芝加哥",
+  "chile": "智利",
+  "chisinau": "基希讷乌",
+  "chongqing": "重庆市",
+  "clipperton-island": "克利珀顿岛",
+  "colombia": "哥伦比亚",
+  "colombo": "科伦坡",
+  "comoros": "科摩罗",
+  "conakry": "科纳克里",
+  "cook-islands": "库克群岛",
+  "coral-sea-islands": "珊瑚海群岛",
+  "costa-rica": "哥斯达黎加",
+  "cotonou": "科托努",
+  "croatia": "克罗地亚",
+  "cuba": "古巴",
+  "curacao": "库拉索",
+  "cyprus": "塞浦路斯",
+  "czech-republic": "捷克",
+  "dakar": "达喀尔",
+  "damascus": "大马士革",
+  "dar-es-salaam": "达累斯萨拉姆",
+  "date-line": "国际日期变更线",
+  "delhi": "德里",
+  "democratic-republic-of-the-congo": "刚果民主共和国",
+  "denmark": "丹麦",
+  "dhaka": "达卡市",
+  "dhekelia-cantonment": "泽凯利亚军营",
+  "dili": "帝力",
+  "djibouti": "吉布提",
+  "dodoma": "多多马",
+  "doha": "多哈",
+  "dominica": "多米尼克",
+  "dominican-republic": "多米尼加",
+  "dublin": "都柏林",
+  "dushanbe": "杜尚别",
+  "east-timor": "东帝汶",
+  "eastern-hemisphere": "东半球",
+  "ecuador": "厄瓜多尔",
+  "egypt": "埃及",
+  "el-salvador": "萨尔瓦多",
+  "equator": "赤道",
+  "equatorial-guinea": "赤道几内亚",
+  "eritrea": "厄立特里亚",
+  "estonia": "爱沙尼亚",
+  "eswatini": "斯威士兰",
+  "ethiopia": "埃塞俄比亚",
+  "europe": "欧洲",
+  "fabian-von-bellingshausen": "法比安·戈特利布·冯·别林斯高晋",
+  "falkland-islands": "福克兰群岛",
+  "faroe-islands": "法罗群岛",
+  "federated-states-of-micronesia": "密克罗尼西亚联邦",
+  "fiji": "斐济",
+  "finland": "芬兰",
+  "france": "法国",
+  "freetown": "弗里敦",
+  "french-polynesia": "法属波利尼西亚",
+  "french-southern-and-antarctic-lands": "法属南部和南极领地",
+  "funafuti": "富纳富提",
+  "gabon": "加蓬",
+  "gaborone": "哈博罗内",
+  "georgetown": "乔治敦",
+  "georgia": "格鲁吉亚",
+  "germany": "德国",
+  "ghana": "加纳",
+  "gibraltar": "直布罗陀",
+  "greece": "希腊",
+  "greenland": "格陵兰",
+  "grenada": "格林纳达",
+  "guam": "关岛",
+  "guangzhou": "广州市",
+  "guantanamo-bay-naval-base": "关塔那摩湾海军基地",
+  "guatemala": "危地马拉",
+  "guatemala-city": "危地马拉城",
+  "guernsey": "根西",
+  "guinea": "几内亚",
+  "guinea-bissau": "几内亚比绍",
+  "guyana": "圭亚那",
+  "haiti": "海地",
+  "hanoi": "河内",
+  "harare": "哈拉雷",
+  "hargeisa": "哈尔格萨",
+  "havana": "哈瓦那",
+  "heard-island-and-mcdonald-islands": "赫德岛和麦克唐纳群岛",
+  "helsinki": "赫尔辛基",
+  "ho-chi-minh-city": "胡志明市",
+  "honduras": "洪都拉斯",
+  "hong-kong": "香港",
+  "honiara": "霍尼亚拉",
+  "hungary": "匈牙利",
+  "hyderabad": "海得拉巴",
+  "iceland": "冰岛",
+  "india": "印度",
+  "indian-ocean": "印度洋",
+  "indonesia": "印度尼西亚",
+  "iran": "伊朗",
+  "iraq": "伊拉克",
+  "ireland": "爱尔兰",
+  "islamabad": "伊斯兰堡",
+  "isle-of-man": "马恩岛",
+  "israel": "以色列",
+  "istanbul": "伊斯坦布尔",
+  "italy": "意大利",
+  "ivory-coast": "科特迪瓦",
+  "jakarta": "雅加达",
+  "jamaica": "牙买加",
+  "james-cook": "詹姆斯·库克",
+  "japan": "日本",
+  "jersey": "泽西",
+  "jerusalem": "耶路撒冷",
+  "johannesburg": "约翰内斯堡",
+  "jordan": "约旦",
+  "juba": "朱巴",
+  "kabul": "喀布尔",
+  "kampala": "坎帕拉",
+  "karachi": "卡拉奇",
+  "kathmandu": "加德满都",
+  "kazakhstan": "哈萨克斯坦",
+  "kbenhavn": "哥本哈根",
+  "kenya": "肯尼亚",
+  "khartoum": "喀土穆",
+  "kigali": "基加利",
+  "kingston": "金斯敦",
+  "kingstown": "金斯敦",
+  "kinshasa": "金沙萨",
+  "kiribati": "基里巴斯",
+  "kolkata": "加尔各答",
+  "kosovo": "科索沃",
+  "kuala-lumpur": "吉隆坡",
+  "kuwait": "科威特",
+  "kuwait-city": "科威特城",
+  "kyiv": "基辅",
+  "kyoto": "京都市",
+  "kyrgyzstan": "吉尔吉斯斯坦",
+  "la-paz": "拉巴斯",
+  "laayoune": "阿尤恩",
+  "lagos": "拉各斯",
+  "lahore": "拉合尔",
+  "laos": "老挝",
+  "latvia": "拉脱维亚",
+  "lebanon": "黎巴嫩",
+  "lesotho": "莱索托",
+  "liberia": "利比里亚",
+  "libreville": "利伯维尔",
+  "libya": "利比亚",
+  "liechtenstein": "列支敦士登",
+  "lilongwe": "利隆圭",
+  "lima": "利马",
+  "lisbon": "里斯本",
+  "lithuania": "立陶宛",
+  "ljubljana": "卢布尔雅那",
+  "lobamba": "洛班巴",
+  "lome": "洛美",
+  "london": "伦敦",
+  "los-angeles": "洛杉矶",
+  "luanda": "罗安达",
+  "lusaka": "卢萨卡",
+  "luxembourg": "卢森堡",
+  "macau": "澳门",
+  "madagascar": "马达加斯加",
+  "madrid": "马德里",
+  "majuro": "马朱罗",
+  "malabo": "马拉博",
+  "malawi": "马拉维",
+  "malaysia": "马来西亚",
+  "maldives": "马尔代夫",
+  "male": "马累",
+  "mali": "马里",
+  "malta": "马耳他",
+  "managua": "马那瓜",
+  "manama": "麦纳麦",
+  "manila": "马尼拉",
+  "maputo": "马普托",
+  "marshall-islands": "马绍尔群岛",
+  "maseru": "马塞卢",
+  "mauritania": "毛里塔尼亚",
+  "mauritius": "毛里求斯",
+  "mbabane": "姆巴巴内",
+  "melekeok": "梅莱凯奥克州",
+  "mexico": "墨西哥",
+  "mexico-city": "墨西哥城",
+  "miami": "迈阿密",
+  "minsk": "明斯克",
+  "mogadishu": "摩加迪休",
+  "moldova": "摩尔多瓦",
+  "monaco": "摩纳哥",
+  "mongolia": "蒙古国",
+  "monrovia": "蒙罗维亚",
+  "montenegro": "黑山",
+  "montevideo": "蒙得维的亚",
+  "montserrat": "蒙特塞拉特",
+  "morocco": "摩洛哥",
+  "moroni": "莫洛尼",
+  "moscow": "莫斯科",
+  "mozambique": "莫桑比克",
+  "mumbai": "孟买",
+  "muscat": "马斯喀特",
+  "myanmar": "缅甸",
+  "n-djamena": "恩贾梅纳",
+  "nairobi": "内罗毕",
+  "namibia": "纳米比亚",
+  "nassau": "拿骚",
+  "nauru": "瑙鲁",
+  "naypyidaw": "内比都",
+  "nepal": "尼泊尔",
+  "netherlands": "荷兰",
+  "new-caledonia": "新喀里多尼亚",
+  "new-delhi": "新德里",
+  "new-york": "纽约",
+  "new-zealand": "新西兰",
+  "niamey": "尼亚美",
+  "nicaragua": "尼加拉瓜",
+  "nicosia": "尼科西亚",
+  "niger": "尼日尔",
+  "nigeria": "尼日利亚",
+  "niue": "纽埃",
+  "norfolk-island": "诺福克岛",
+  "north-america": "北美洲",
+  "north-korea": "朝鲜",
+  "north-macedonia": "北马其顿",
+  "north-pole": "北极点",
+  "northern-hemisphere": "北半球",
+  "northern-mariana-islands": "北马里亚纳群岛",
+  "norway": "挪威",
+  "nouakchott": "努瓦克肖特",
+  "nuku-alofa": "努库阿洛法",
+  "nur-sultan": "阿斯塔纳",
+  "oceania": "大洋洲",
+  "oman": "阿曼",
+  "osaka": "大阪市",
+  "oslo": "奥斯陆",
+  "ottawa": "渥太华",
+  "ouagadougou": "瓦加杜古",
+  "pacific-ocean": "太平洋",
+  "pakistan": "巴基斯坦",
+  "palau": "帕劳",
+  "palestine": "巴勒斯坦",
+  "palikir": "帕利基尔",
+  "panama": "巴拿马",
+  "panama-city": "巴拿马城",
+  "papua-new-guinea": "巴布亚新几内亚",
+  "paraguay": "巴拉圭",
+  "paramaribo": "帕拉马里博",
+  "paris": "巴黎",
+  "people-s-republic-of-china": "中国",
+  "peru": "秘鲁",
+  "philadelphia": "费城",
+  "philippines": "菲律宾",
+  "phnom-penh": "金边",
+  "pitcairn-islands": "皮特凯恩群岛",
+  "podgorica": "波德戈里察",
+  "poland": "波兰",
+  "port-au-prince": "太子港",
+  "port-louis": "路易港",
+  "port-moresby": "莫尔兹比港",
+  "port-of-spain": "西班牙港",
+  "port-vila": "维拉港",
+  "porto-novo": "波多诺伏",
+  "portugal": "葡萄牙",
+  "prague": "布拉格",
+  "praia": "普拉亚",
+  "pretoria": "比勒陀利亚",
+  "prime-meridian": "本初子午线",
+  "pristina": "普里什蒂纳",
+  "puerto-rico": "波多黎各",
+  "putrajaya": "布城",
+  "pyongyang": "平壤",
+  "qatar": "卡塔尔",
+  "quito": "基多",
+  "rabat": "拉巴特",
+  "republic-of-the-congo": "刚果共和国",
+  "reykjavik": "雷克雅未克",
+  "riga": "里加",
+  "rio-de-janeiro": "里约热内卢",
+  "riyadh": "利雅得",
+  "romania": "罗马尼亚",
+  "rome": "罗马",
+  "roseau": "罗索",
+  "russia": "俄罗斯",
+  "rwanda": "卢旺达",
+  "saint-barthelemy": "圣巴泰勒米",
+  "saint-george-s": "圣乔治",
+  "saint-helena": "圣赫勒拿",
+  "saint-john-s": "圣约翰",
+  "saint-kitts-and-nevis": "圣基茨和尼维斯",
+  "saint-lucia": "圣卢西亚",
+  "saint-martin": "法属圣马丁",
+  "saint-pierre-and-miquelon": "圣皮埃尔和密克隆",
+  "saint-vincent-and-the-grenadines": "圣文森特和格林纳丁斯",
+  "samoa": "萨摩亚",
+  "san-jose": "圣何塞",
+  "san-marino": "圣马力诺",
+  "san-salvador": "圣萨尔瓦多",
+  "sanaa": "萨那",
+  "santiago": "圣地亚哥",
+  "santo-domingo": "圣多明哥",
+  "sao-paulo": "圣保罗",
+  "sao-tome": "圣多美",
+  "sao-tome-and-principe": "圣多美和普林西比",
+  "sarajevo": "萨拉热窝",
+  "saudi-arabia": "沙特阿拉伯",
+  "scarborough-shoal": "黄岩岛",
+  "senegal": "塞内加尔",
+  "seoul": "首尔",
+  "serbia": "塞尔维亚",
+  "serranilla-bank": "塞拉尼拉浅滩",
+  "seychelles": "塞舌尔",
+  "shanghai": "上海市",
+  "shenzhen": "深圳市",
+  "siachen-glacier": "锡亚琴冰川",
+  "sierra-leone": "塞拉利昂",
+  "singapore": "新加坡",
+  "sint-maarten": "荷属圣马丁",
+  "skopje": "斯科普里",
+  "slovakia": "斯洛伐克",
+  "slovenia": "斯洛文尼亚",
+  "sofia": "索非亚",
+  "solomon-islands": "所罗门群岛",
+  "somalia": "索马里",
+  "somaliland": "索马里兰",
+  "south-africa": "南非",
+  "south-america": "南美洲",
+  "south-georgia-and-the-south-sandwich-islands": "南乔治亚和南桑威奇群岛",
+  "south-korea": "韩国",
+  "south-pole": "南极点",
+  "south-sudan": "南苏丹",
+  "southern-hemisphere": "南半球",
+  "southern-ocean": "南冰洋",
+  "southern-patagonian-ice-field": "南巴塔哥尼亚冰原",
+  "spain": "西班牙",
+  "spratly-islands": "威克岛",
+  "sri-jayawardenepura-kotte": "斯里贾亚瓦德纳普拉科特",
+  "sri-lanka": "斯里兰卡",
+  "stockholm": "斯德哥尔摩",
+  "sucre": "苏克雷",
+  "sudan": "苏丹",
+  "suriname": "苏里南",
+  "suva": "苏瓦",
+  "sweden": "瑞典",
+  "switzerland": "瑞士",
+  "syria": "叙利亚",
+  "taipei": "台北市",
+  "taiwan": "台湾",
+  "tajikistan": "塔吉克斯坦",
+  "tallinn": "塔林",
+  "tanzania": "坦桑尼亚",
+  "tarawa": "塔拉瓦环礁",
+  "tashkent": "塔什干",
+  "tbilisi": "第比利斯",
+  "tegucigalpa": "特古西加尔巴",
+  "tehran": "德黑兰",
+  "tel-aviv": "特拉维夫",
+  "thailand": "泰国",
+  "the-bahamas": "巴哈马",
+  "the-gambia": "冈比亚",
+  "the-hague": "海牙",
+  "thimphu": "廷布",
+  "tianjin": "天津市",
+  "tirana": "地拉那",
+  "togo": "多哥",
+  "tokyo": "东京都",
+  "tonga": "汤加",
+  "toronto": "多伦多",
+  "trinidad-and-tobago": "特立尼达和多巴哥",
+  "tripoli": "的黎波里",
+  "tropic-of-cancer": "北回归线",
+  "tropic-of-capricorn": "南回归线",
+  "tunis": "突尼斯市",
+  "tunisia": "突尼斯",
+  "turkey": "土耳其",
+  "turkish-republic-of-northern-cyprus": "北塞浦路斯",
+  "turkmenistan": "土库曼斯坦",
+  "turks-and-caicos-islands": "特克斯和凯科斯群岛",
+  "tuvalu": "图瓦卢",
+  "uganda": "乌干达",
+  "ukraine": "乌克兰",
+  "ulaanbaatar": "乌兰巴托",
+  "united-arab-emirates": "阿拉伯联合酋长国",
+  "united-kingdom": "英国",
+  "united-nations-buffer-zone-in-cyprus": "塞浦路斯联合国缓冲区",
+  "united-states-minor-outlying-islands": "美国本土外小岛屿",
+  "united-states-of-america": "美国",
+  "united-states-virgin-islands": "美属维尔京群岛",
+  "uruguay": "乌拉圭",
+  "uzbekistan": "乌兹别克斯坦",
+  "vaduz": "瓦杜兹",
+  "valletta": "瓦莱塔",
+  "valparaiso": "瓦尔帕莱索",
+  "vanuatu": "瓦努阿图",
+  "vatican-city": "梵蒂冈",
+  "venezuela": "委内瑞拉",
+  "victoria": "维多利亚",
+  "vienna": "维也纳",
+  "vientiane": "万象",
+  "vietnam": "越南",
+  "vilnius": "维尔纽斯",
+  "wallis-and-futuna": "瓦利斯和富图纳",
+  "warsaw": "华沙",
+  "washington-d-c": "华盛顿哥伦比亚特区",
+  "wellington": "惠灵顿",
+  "western-hemisphere": "西半球",
+  "western-sahara": "西撒哈拉",
+  "windhoek": "温得和克",
+  "wuhan": "武汉市",
+  "yamoussoukro": "亚穆苏克罗",
+  "yangon": "仰光",
+  "yaounde": "雅温得",
+  "yemen": "也门",
+  "yerevan": "埃里温",
+  "zagreb": "萨格勒布",
+  "zambia": "赞比亚",
+  "zimbabwe": "津巴布韦"
+ },
+ "words": {
+  "afghanistan": {
+   "languages": [
+    "达里语",
+    "普什图语",
+    "土库曼语"
+   ],
+   "money": [
+    "阿富汗尼"
+   ],
+   "highest": [
+    "诺沙克峰"
+   ],
+   "government": [
+    "酋长国",
+    null,
+    "单一制"
+   ],
+   "head": [
+    "海巴图拉·阿洪扎达"
+   ]
+  },
+  "aland": {
+   "languages": [
+    "瑞典语"
+   ],
+   "money": [
+    "欧元"
+   ]
+  },
+  "albania": {
+   "languages": [
+    "阿尔巴尼亚语"
+   ],
+   "money": [
+    "阿尔巴尼亚列克"
+   ],
+   "highest": [
+    "科拉比峰"
+   ],
+   "government": [
+    "议会制"
+   ],
+   "head": [
+    "巴伊拉姆·贝加伊"
+   ]
+  },
+  "algeria": {
+   "languages": [
+    "阿拉伯语",
+    "标准阿尔及利亚柏柏尔语"
+   ],
+   "money": [
+    "阿尔及利亚第纳尔"
+   ],
+   "highest": [
+    "塔哈特山"
+   ],
+   "government": [
+    "人民共和国",
+    "半总统制"
+   ],
+   "head": [
+    "阿卜杜勒马吉德·特本"
+   ]
+  },
+  "american-samoa": {
+   "languages": [
+    "英语",
+    "萨摩亚语"
+   ],
+   "money": [
+    "美元"
+   ],
+   "highest": [
+    "拉塔山"
+   ]
+  },
+  "andorra": {
+   "languages": [
+    "加泰罗尼亚语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "科马佩德罗萨山"
+   ],
+   "head": [
+    "埃马纽埃尔·马克龙",
+    "若瑟-类斯·塞拉诺·旁尼达"
+   ]
+  },
+  "angola": {
+   "languages": [
+    "葡萄牙语"
+   ],
+   "money": [
+    "安哥拉宽扎"
+   ],
+   "highest": [
+    "莫科山"
+   ],
+   "government": [
+    "总统制",
+    "共和制"
+   ],
+   "head": [
+    "若昂·洛伦索"
+   ]
+  },
+  "anguilla": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "东加勒比元"
+   ],
+   "government": [
+    "君主立宪制"
+   ]
+  },
+  "antigua-and-barbuda": {
+   "languages": [
+    "英语",
+    "西班牙语"
+   ],
+   "money": [
+    "东加勒比元"
+   ],
+   "highest": [
+    "奥巴马山"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "argentina": {
+   "languages": [
+    "西班牙语"
+   ],
+   "money": [
+    "阿根廷比索"
+   ],
+   "government": [
+    "联邦共和国"
+   ],
+   "head": [
+    "哈维尔·米莱"
+   ]
+  },
+  "armenia": {
+   "languages": [
+    "亚美尼亚语"
+   ],
+   "money": [
+    "亚美尼亚德拉姆"
+   ],
+   "highest": [
+    "阿拉加茨山"
+   ],
+   "government": [
+    "议会制",
+    "共和制",
+    "单一制"
+   ],
+   "head": [
+    "瓦哈根·哈恰图良"
+   ]
+  },
+  "aruba": {
+   "languages": [
+    "荷兰语",
+    "帕皮阿门托语"
+   ],
+   "money": [
+    "阿鲁巴弗罗林"
+   ],
+   "highest": [
+    "哈马诺塔山"
+   ],
+   "government": [
+    "君主制"
+   ],
+   "head": [
+    "威廉-亚历山大"
+   ]
+  },
+  "ashmore-and-cartier-islands": {
+   "languages": [
+    "英语"
+   ]
+  },
+  "australia": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "澳大利亚元"
+   ],
+   "highest": [
+    "莫森峰"
+   ],
+   "government": [
+    "君主立宪制",
+    "联邦制",
+    "代议民主制"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "austria": {
+   "languages": [
+    "奥地利手语",
+    "德语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "大格洛克纳山"
+   ],
+   "government": [
+    null,
+    "共和制",
+    "半总统制"
+   ],
+   "head": [
+    "亚历山大·范德贝伦"
+   ]
+  },
+  "azerbaijan": {
+   "money": [
+    "阿塞拜疆马纳特"
+   ],
+   "highest": [
+    "巴扎尔迪聚山"
+   ],
+   "government": [
+    "共和制",
+    "半总统制",
+    "单一制"
+   ],
+   "head": [
+    "伊利哈姆·阿利耶夫"
+   ]
+  },
+  "bahrain": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "巴林第纳尔"
+   ],
+   "highest": [
+    "烟雾山"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "哈迈德·本·伊萨·本·萨勒曼·阿勒哈利法"
+   ]
+  },
+  "baikonur": {
+   "highest": [
+    "拜科努尔航天发射场"
+   ]
+  },
+  "bangladesh": {
+   "languages": [
+    "孟加拉语"
+   ],
+   "money": [
+    "孟加拉塔卡"
+   ],
+   "highest": [
+    "毛多克穆阿尔山"
+   ],
+   "government": [
+    "议会共和制",
+    "威斯敏斯特体系"
+   ],
+   "head": [
+    "穆罕默德·谢哈布丁·楚普"
+   ]
+  },
+  "barbados": {
+   "languages": [
+    "巴詹克里奥尔语",
+    "英语"
+   ],
+   "money": [
+    "巴巴多斯元"
+   ],
+   "highest": [
+    "希拉比山"
+   ],
+   "government": [
+    "议会共和制",
+    "单一制"
+   ],
+   "head": [
+    "桑德拉·马森"
+   ]
+  },
+  "belarus": {
+   "languages": [
+    "白俄罗斯语",
+    "俄语"
+   ],
+   "highest": [
+    "捷尔任斯克山"
+   ],
+   "government": [
+    "总统制",
+    "共和制"
+   ],
+   "head": [
+    "亚历山大·卢卡申科"
+   ]
+  },
+  "belgium": {
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "博特朗日山"
+   ],
+   "government": [
+    "联邦制"
+   ],
+   "head": [
+    "菲利普王储"
+   ]
+  },
+  "belize": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "伯利兹元"
+   ],
+   "government": [
+    "君主立宪制",
+    "议会制君主立宪制"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "benin": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "西非非洲金融共同体法郎"
+   ],
+   "highest": [
+    "索克巴罗山"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "罗穆阿尔德·瓦达尼"
+   ]
+  },
+  "bermuda": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "百慕大元"
+   ],
+   "government": [
+    "英国海外领地",
+    "君主立宪制"
+   ],
+   "head": [
+    "约翰·蓝钦"
+   ]
+  },
+  "bhutan": {
+   "languages": [
+    "宗卡语"
+   ],
+   "money": [
+    "不丹努扎姆"
+   ],
+   "highest": [
+    "冈嘎本孙峰"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "吉格梅·凯萨尔·纳姆耶尔·旺楚克"
+   ]
+  },
+  "bolivia": {
+   "languages": [
+    "艾马拉语",
+    "瓜纳尼语",
+    "克丘亚语",
+    "西班牙语"
+   ],
+   "money": [
+    "玻利维亚玻利维亚诺"
+   ],
+   "highest": [
+    "萨哈马火山"
+   ],
+   "government": [
+    "议会共和制",
+    "共和制"
+   ],
+   "head": [
+    "罗德里戈·帕斯·佩雷拉"
+   ]
+  },
+  "bosnia-and-herzegovina": {
+   "languages": [
+    "波斯尼亚语",
+    "克罗地亚语",
+    "塞尔维亚语"
+   ],
+   "money": [
+    "波斯尼亚和黑塞哥维那可兑换马克"
+   ],
+   "highest": [
+    "马格利奇山"
+   ],
+   "head": [
+    "戴尼斯·贝契罗维奇",
+    "热莉卡·茨维亚诺维奇",
+    "泽利科·科姆希奇"
+   ]
+  },
+  "botswana": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "博茨瓦纳普拉"
+   ],
+   "highest": [
+    "奥德森山"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "杜马·博科"
+   ]
+  },
+  "brazil": {
+   "languages": [
+    "葡萄牙语"
+   ],
+   "money": [
+    "巴西雷亚尔"
+   ],
+   "highest": [
+    "内布利纳峰"
+   ],
+   "government": [
+    "联邦共和国",
+    "总统制",
+    "代议民主制"
+   ],
+   "head": [
+    "路易斯·伊纳西奥·卢拉·达席尔瓦"
+   ]
+  },
+  "british-indian-ocean-territory": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "英镑",
+    "美元"
+   ]
+  },
+  "british-virgin-islands": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "美元"
+   ]
+  },
+  "brunei": {
+   "languages": [
+    "英国英语",
+    "马来语"
+   ],
+   "money": [
+    "文莱元"
+   ],
+   "highest": [
+    "武吉帕弓"
+   ],
+   "government": [
+    "绝对君主制",
+    "伊斯兰国",
+    "单一制"
+   ],
+   "head": [
+    "哈桑纳尔·博尔基亚"
+   ]
+  },
+  "bulgaria": {
+   "languages": [
+    "保加利亚语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "穆萨拉峰"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "伊利安纳·依奥托娃"
+   ]
+  },
+  "burkina-faso": {
+   "languages": [
+    null,
+    "迪尤拉语",
+    "莫西语"
+   ],
+   "money": [
+    "西非非洲金融共同体法郎"
+   ],
+   "highest": [
+    "纳库鲁峰"
+   ],
+   "government": [
+    "军政府"
+   ],
+   "head": [
+    "易卜拉欣·特拉奥雷"
+   ]
+  },
+  "burundi": {
+   "languages": [
+    "英语",
+    "法语",
+    "基隆迪语"
+   ],
+   "money": [
+    "布隆迪法郎"
+   ],
+   "highest": [
+    "贺哈山"
+   ],
+   "government": [
+    "总统制",
+    "代议民主制"
+   ],
+   "head": [
+    "埃瓦里斯特·恩达伊希米耶"
+   ]
+  },
+  "cambodia": {
+   "languages": [
+    "高棉语"
+   ],
+   "money": [
+    "柬埔寨瑞尔"
+   ],
+   "highest": [
+    "奥拉尔山"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "诺罗敦·西哈莫尼"
+   ]
+  },
+  "cameroon": {
+   "languages": [
+    "英语",
+    "法语"
+   ],
+   "money": [
+    "中非非洲金融共同体法郎"
+   ],
+   "highest": [
+    "喀麦隆火山"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "保罗·比亚"
+   ]
+  },
+  "canada": {
+   "languages": [
+    "英语",
+    "法语"
+   ],
+   "money": [
+    "加拿大元"
+   ],
+   "highest": [
+    "洛根山"
+   ],
+   "government": [
+    "君主立宪制",
+    "联邦制",
+    "议会制"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "cape-verde": {
+   "languages": [
+    "佛得角克里奥尔语",
+    "葡萄牙语"
+   ],
+   "money": [
+    "佛得角埃斯库多"
+   ],
+   "highest": [
+    "福古火山"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "若泽·马里亚·内维斯"
+   ]
+  },
+  "cayman-islands": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "开曼群岛元"
+   ],
+   "government": [
+    "英国海外领地"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "central-african-republic": {
+   "languages": [
+    "法语",
+    "桑戈语"
+   ],
+   "money": [
+    "中非非洲金融共同体法郎"
+   ],
+   "highest": [
+    "恩加亚山"
+   ],
+   "head": [
+    "福斯坦-阿尔尚热·图瓦德拉"
+   ]
+  },
+  "chad": {
+   "languages": [
+    "阿拉伯语",
+    "法语"
+   ],
+   "money": [
+    "中非非洲金融共同体法郎"
+   ],
+   "highest": [
+    "库西山"
+   ],
+   "head": [
+    "穆罕默德·伊德里斯·德比"
+   ]
+  },
+  "chile": {
+   "languages": [
+    "西班牙语"
+   ],
+   "money": [
+    "智利比索"
+   ],
+   "highest": [
+    "奥霍斯-德尔萨拉多山"
+   ],
+   "government": [
+    "民主共和国"
+   ],
+   "head": [
+    "何塞·安东尼奥·卡斯特"
+   ]
+  },
+  "clipperton-island": {
+   "highest": [
+    "克利珀顿岩"
+   ]
+  },
+  "colombia": {
+   "languages": [
+    "西班牙语"
+   ],
+   "money": [
+    "哥伦比亚比索"
+   ],
+   "highest": [
+    "西蒙玻利瓦尔峰"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "阿韦拉多·德拉埃斯普列亚"
+   ]
+  },
+  "comoros": {
+   "languages": [
+    "阿拉伯语",
+    "科摩罗语",
+    "法语"
+   ],
+   "money": [
+    "科摩罗法郎"
+   ],
+   "highest": [
+    "苏苏瓦山"
+   ],
+   "government": [
+    "联邦共和国"
+   ],
+   "head": [
+    "阿扎利·阿苏马尼"
+   ]
+  },
+  "cook-islands": {
+   "languages": [
+    "库克群岛毛利语",
+    "英语"
+   ],
+   "money": [
+    "库克群岛元",
+    "新西兰元"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "coral-sea-islands": {
+   "languages": [
+    "英语"
+   ]
+  },
+  "costa-rica": {
+   "languages": [
+    "西班牙语"
+   ],
+   "money": [
+    "哥斯达黎加科朗"
+   ],
+   "highest": [
+    "奇里波峰"
+   ],
+   "head": [
+    "劳拉·费尔南德斯"
+   ]
+  },
+  "croatia": {
+   "languages": [
+    "克罗地亚语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "佐兰·米拉诺维奇"
+   ]
+  },
+  "cuba": {
+   "languages": [
+    "西班牙语"
+   ],
+   "money": [
+    "古巴比索"
+   ],
+   "highest": [
+    "图基诺峰"
+   ],
+   "government": [
+    "单一制"
+   ],
+   "head": [
+    "米格尔·迪亚斯-卡内尔"
+   ]
+  },
+  "curacao": {
+   "languages": [
+    "荷兰语",
+    "英语",
+    "帕皮阿门托语"
+   ],
+   "money": [
+    "加勒比盾"
+   ],
+   "government": [
+    "议会民主制"
+   ],
+   "head": [
+    "威廉-亚历山大"
+   ]
+  },
+  "cyprus": {
+   "languages": [
+    "现代希腊语",
+    "土耳其语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "奥林匹斯山"
+   ],
+   "government": [
+    "总统制",
+    "共和制"
+   ],
+   "head": [
+    "尼科斯·赫里斯托祖利季斯"
+   ]
+  },
+  "czech-republic": {
+   "languages": [
+    "捷克语"
+   ],
+   "money": [
+    "捷克克朗"
+   ],
+   "highest": [
+    "斯涅日卡山"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "彼得·帕维尔"
+   ]
+  },
+  "democratic-republic-of-the-congo": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "刚果法郎"
+   ],
+   "highest": [
+    "斯坦利山"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "菲利克斯·齐塞克迪"
+   ]
+  },
+  "denmark": {
+   "languages": [
+    "丹麦语"
+   ],
+   "money": [
+    "丹麦克朗"
+   ],
+   "highest": [
+    "莫来山"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "腓特烈十世"
+   ]
+  },
+  "djibouti": {
+   "languages": [
+    "阿拉伯语",
+    "法语"
+   ],
+   "money": [
+    "吉布提法郎"
+   ],
+   "highest": [
+    "阿里山 (非洲)"
+   ],
+   "head": [
+    "伊斯梅尔·奥马尔·盖莱"
+   ]
+  },
+  "dominica": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "东加勒比元"
+   ],
+   "highest": [
+    "迪亚布洛廷火山"
+   ],
+   "head": [
+    "西尔瓦妮·伯顿"
+   ]
+  },
+  "dominican-republic": {
+   "languages": [
+    "西班牙语"
+   ],
+   "money": [
+    "多米尼加比索"
+   ],
+   "highest": [
+    "杜阿尔特峰"
+   ],
+   "head": [
+    "路易斯·阿比纳德尔"
+   ]
+  },
+  "east-timor": {
+   "languages": [
+    "葡萄牙语",
+    "德顿语"
+   ],
+   "money": [
+    "东帝汶分币",
+    "美元"
+   ],
+   "highest": [
+    "塔塔迈劳山"
+   ],
+   "government": [
+    "共和制",
+    "半总统制",
+    "单一制"
+   ],
+   "head": [
+    "若泽·拉莫斯·奥尔塔"
+   ]
+  },
+  "ecuador": {
+   "languages": [
+    "Kichwa语",
+    "舒尔语",
+    "西班牙语"
+   ],
+   "money": [
+    "美元"
+   ],
+   "highest": [
+    "钦博拉索山"
+   ],
+   "government": [
+    "总统制",
+    "共和制"
+   ],
+   "head": [
+    "丹尼尔·诺沃亚"
+   ]
+  },
+  "egypt": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "埃及镑"
+   ],
+   "highest": [
+    "凯瑟琳山"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "阿卜杜勒-法塔赫·塞西"
+   ]
+  },
+  "el-salvador": {
+   "languages": [
+    "西班牙语"
+   ],
+   "money": [
+    "比特币",
+    "美元"
+   ],
+   "highest": [
+    "埃尔皮塔尔山"
+   ],
+   "government": [
+    "总统制",
+    "代议民主制",
+    "共和制"
+   ],
+   "head": [
+    "纳伊布·布克莱"
+   ]
+  },
+  "equatorial-guinea": {
+   "languages": [
+    "法语",
+    "葡萄牙语",
+    "西班牙语"
+   ],
+   "money": [
+    "中非非洲金融共同体法郎"
+   ],
+   "highest": [
+    "巴希莱峰"
+   ],
+   "head": [
+    "特奥多罗·奥比昂·恩圭马·姆巴索戈"
+   ]
+  },
+  "eritrea": {
+   "languages": [
+    "阿拉伯语",
+    "英语",
+    "提格雷尼亚语"
+   ],
+   "money": [
+    "厄立特里亚纳克法"
+   ],
+   "highest": [
+    "索伊拉山"
+   ],
+   "head": [
+    "萨巴·海尔"
+   ]
+  },
+  "estonia": {
+   "languages": [
+    "爱沙尼亚语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "苏尔穆纳山"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "于勒·马迪塞"
+   ]
+  },
+  "eswatini": {
+   "languages": [
+    "英语",
+    "斯瓦蒂语"
+   ],
+   "money": [
+    "斯威士兰里兰吉尼"
+   ],
+   "government": [
+    "绝对君主制"
+   ],
+   "head": [
+    "姆斯瓦蒂三世"
+   ]
+  },
+  "ethiopia": {
+   "languages": [
+    "阿姆哈拉语"
+   ],
+   "money": [
+    "埃塞俄比亚比尔"
+   ],
+   "highest": [
+    "达尚峰"
+   ],
+   "government": [
+    "联邦共和国"
+   ],
+   "head": [
+    "塔耶·阿茨克·塞拉西"
+   ]
+  },
+  "falkland-islands": {
+   "languages": [
+    "英国英语"
+   ],
+   "money": [
+    "福克兰群岛镑"
+   ],
+   "highest": [
+    "乌斯伯恩山"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "faroe-islands": {
+   "languages": [
+    "丹麦语",
+    "法罗语"
+   ],
+   "money": [
+    "法罗群岛克朗"
+   ],
+   "highest": [
+    "斯莱塔拉山"
+   ],
+   "head": [
+    "腓特烈十世"
+   ]
+  },
+  "federated-states-of-micronesia": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "美元"
+   ],
+   "government": [
+    "联邦共和国"
+   ],
+   "head": [
+    "韦斯利‧西米娜"
+   ]
+  },
+  "fiji": {
+   "languages": [
+    "英语",
+    "斐济印地语",
+    "斐济语"
+   ],
+   "money": [
+    "斐济元"
+   ],
+   "highest": [
+    "托马尼维山"
+   ],
+   "head": [
+    "维利亚姆·卡托尼韦雷"
+   ]
+  },
+  "finland": {
+   "languages": [
+    "芬兰语",
+    "瑞典语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "哈尔蒂山"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "亚历山大·斯图布"
+   ]
+  },
+  "france": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "勃朗峰"
+   ],
+   "government": [
+    "半总统制"
+   ],
+   "head": [
+    "埃马纽埃尔·马克龙"
+   ]
+  },
+  "french-polynesia": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "太平洋法郎"
+   ],
+   "highest": [
+    "奥罗黑纳山"
+   ]
+  },
+  "french-southern-and-antarctic-lands": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "罗斯山"
+   ]
+  },
+  "gabon": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "中非非洲金融共同体法郎"
+   ],
+   "highest": [
+    "本古埃山"
+   ],
+   "government": [
+    "总统制"
+   ],
+   "head": [
+    "布里斯·克洛泰尔·奥利吉·恩圭马"
+   ]
+  },
+  "georgia": {
+   "languages": [
+    "格鲁吉亚语"
+   ],
+   "money": [
+    "格鲁吉亚拉里"
+   ],
+   "highest": [
+    "什哈拉山"
+   ],
+   "government": [
+    "议会共和制",
+    "单一制"
+   ],
+   "head": [
+    "米哈伊尔·卡韦拉什维利"
+   ]
+  },
+  "germany": {
+   "languages": [
+    "德语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "楚格峰"
+   ],
+   "head": [
+    "弗兰克-瓦尔特·施泰因迈尔"
+   ]
+  },
+  "ghana": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "加纳塞地"
+   ],
+   "highest": [
+    "阿法贾托山"
+   ],
+   "government": [
+    "民主"
+   ],
+   "head": [
+    "约翰·德拉马尼·马哈马"
+   ]
+  },
+  "gibraltar": {
+   "languages": [
+    "英国英语"
+   ],
+   "money": [
+    "直布罗陀镑"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "greece": {
+   "languages": [
+    "希腊语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "奥林匹斯山"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "康斯坦丁诺斯·塔苏拉斯"
+   ]
+  },
+  "greenland": {
+   "languages": [
+    "格陵兰语"
+   ],
+   "money": [
+    "丹麦克朗"
+   ],
+   "highest": [
+    "贡比约恩山"
+   ],
+   "government": [
+    "议会制君主立宪制"
+   ],
+   "head": [
+    "腓特烈十世"
+   ]
+  },
+  "grenada": {
+   "languages": [
+    "英语",
+    "格林纳达克里奥尔语英语"
+   ],
+   "money": [
+    "东加勒比元"
+   ],
+   "highest": [
+    "圣凯瑟琳山"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "guam": {
+   "languages": [
+    "查莫罗语",
+    "英语"
+   ],
+   "money": [
+    "美元"
+   ],
+   "highest": [
+    "闪电山"
+   ]
+  },
+  "guatemala": {
+   "languages": [
+    "西班牙语"
+   ],
+   "money": [
+    "危地马拉格查尔"
+   ],
+   "highest": [
+    "塔胡木耳科火山"
+   ],
+   "government": [
+    "总统制",
+    "代议民主制"
+   ],
+   "head": [
+    "贝尔纳多·阿雷瓦洛·德莱昂"
+   ]
+  },
+  "guernsey": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "根西岛镑",
+    "英镑"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "guinea": {
+   "languages": [
+    "法语",
+    null
+   ],
+   "money": [
+    "几内亚法郎"
+   ],
+   "highest": [
+    "宁巴峰"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "马马迪·敦布亚"
+   ]
+  },
+  "guinea-bissau": {
+   "languages": [
+    "葡萄牙语"
+   ],
+   "money": [
+    "西非非洲金融共同体法郎"
+   ]
+  },
+  "guyana": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "圭亚那元"
+   ],
+   "highest": [
+    "罗赖马山"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "伊尔法安·阿里"
+   ]
+  },
+  "haiti": {
+   "languages": [
+    "法语",
+    "海地克里奥尔语"
+   ],
+   "money": [
+    "海地古德"
+   ],
+   "highest": [
+    "塞勒峰"
+   ],
+   "head": [
+    "过渡总统委员会"
+   ]
+  },
+  "heard-island-and-mcdonald-islands": {
+   "languages": [
+    "英语"
+   ],
+   "highest": [
+    "莫森峰"
+   ]
+  },
+  "honduras": {
+   "languages": [
+    "西班牙语"
+   ],
+   "money": [
+    "洪都拉斯伦皮拉"
+   ],
+   "highest": [
+    "拉斯米纳斯山"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "拿斯利·阿斯富拉"
+   ]
+  },
+  "hong-kong": {
+   "languages": [
+    "现代标准汉语"
+   ],
+   "money": [
+    "港币"
+   ],
+   "highest": [
+    "大帽山"
+   ]
+  },
+  "hungary": {
+   "languages": [
+    "匈牙利语"
+   ],
+   "money": [
+    "匈牙利福林"
+   ],
+   "highest": [
+    "凯凯什峰"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "鲍卡·安德拉什"
+   ]
+  },
+  "iceland": {
+   "languages": [
+    "冰岛语"
+   ],
+   "money": [
+    "冰岛克朗"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "哈德拉·托马斯多蒂尔"
+   ]
+  },
+  "india": {
+   "languages": [
+    "英语",
+    "印地语"
+   ],
+   "money": [
+    "印度卢比"
+   ],
+   "highest": [
+    "干城章嘉峰"
+   ],
+   "government": [
+    "共和立宪制",
+    "民主共和国",
+    "联邦共和国",
+    "共和制"
+   ],
+   "head": [
+    "德劳帕迪·穆尔穆"
+   ]
+  },
+  "indonesia": {
+   "languages": [
+    "印尼语"
+   ],
+   "money": [
+    "印度尼西亚卢比"
+   ],
+   "highest": [
+    "查亚峰"
+   ],
+   "government": [
+    "总统制",
+    "共和制"
+   ],
+   "head": [
+    "普拉博沃·苏比延多"
+   ]
+  },
+  "iran": {
+   "languages": [
+    "波斯语"
+   ],
+   "money": [
+    "伊朗里亚尔"
+   ],
+   "highest": [
+    "达马万德山"
+   ],
+   "government": [
+    "伊斯兰共和国",
+    null,
+    "总统制",
+    "单一制"
+   ],
+   "head": [
+    "穆杰塔巴·哈梅内伊"
+   ]
+  },
+  "iraq": {
+   "languages": [
+    "阿拉伯语",
+    "库尔德语"
+   ],
+   "money": [
+    "伊拉克第纳尔"
+   ],
+   "highest": [
+    "切克汗峰"
+   ],
+   "government": [
+    "联邦共和国",
+    "联邦制"
+   ],
+   "head": [
+    "尼扎尔·阿梅迪"
+   ]
+  },
+  "ireland": {
+   "languages": [
+    "英语",
+    "爱尔兰语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "卡朗突奥山"
+   ],
+   "government": [
+    "议会共和制",
+    "单一制"
+   ],
+   "head": [
+    "凯瑟琳·康诺利"
+   ]
+  },
+  "isle-of-man": {
+   "languages": [
+    "英语",
+    "马恩岛语"
+   ],
+   "money": [
+    "曼岛镑"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "israel": {
+   "languages": [
+    "希伯来语"
+   ],
+   "money": [
+    "以色列新谢克尔"
+   ],
+   "highest": [
+    "莫兰山"
+   ],
+   "government": [
+    "议会共和制",
+    "单一制"
+   ],
+   "head": [
+    "艾萨克·赫尔佐格"
+   ]
+  },
+  "italy": {
+   "languages": [
+    "意大利语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "勃朗峰"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "塞尔焦·马塔雷拉"
+   ]
+  },
+  "ivory-coast": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "西非非洲金融共同体法郎"
+   ],
+   "highest": [
+    "宁巴峰"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "阿拉萨内·瓦塔拉"
+   ]
+  },
+  "jamaica": {
+   "languages": [
+    "英语",
+    "牙买加克里奥尔语"
+   ],
+   "money": [
+    "牙买加元"
+   ],
+   "highest": [
+    "蓝山峰"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "japan": {
+   "languages": [
+    "日语"
+   ],
+   "money": [
+    "日圆"
+   ],
+   "highest": [
+    "富士山"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "德仁"
+   ]
+  },
+  "jersey": {
+   "languages": [
+    "英语",
+    null,
+    "泽西方言"
+   ],
+   "money": [
+    "泽西岛镑",
+    "英镑"
+   ],
+   "government": [
+    "君主立宪制",
+    "议会民主制",
+    "议会制君主立宪制"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "jordan": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "约旦第纳尔"
+   ],
+   "head": [
+    "阿卜杜拉二世"
+   ]
+  },
+  "kazakhstan": {
+   "languages": [
+    "哈萨克语",
+    "俄语"
+   ],
+   "money": [
+    "哈萨克斯坦坚戈"
+   ],
+   "highest": [
+    "汗腾格里峰"
+   ],
+   "government": [
+    "总统制"
+   ],
+   "head": [
+    "卡瑟姆若马尔特·托卡耶夫"
+   ]
+  },
+  "kenya": {
+   "languages": [
+    "英语",
+    "斯瓦希里语"
+   ],
+   "money": [
+    "肯尼亚先令"
+   ],
+   "highest": [
+    "肯尼亚山"
+   ],
+   "head": [
+    "威廉·鲁托"
+   ]
+  },
+  "kiribati": {
+   "languages": [
+    "英语",
+    "基里巴斯语"
+   ],
+   "money": [
+    "澳大利亚元",
+    "基里巴斯元"
+   ],
+   "highest": [
+    "巴纳巴岛"
+   ],
+   "head": [
+    "塔内希·马茂"
+   ]
+  },
+  "kosovo": {
+   "languages": [
+    "阿尔巴尼亚语",
+    "塞尔维亚语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "贾拉维察山"
+   ],
+   "government": [
+    "议会共和制"
+   ]
+  },
+  "kuwait": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "科威特第纳尔"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "米沙勒·艾哈迈德·贾比尔·萨巴赫"
+   ]
+  },
+  "kyrgyzstan": {
+   "languages": [
+    "柯尔克孜语"
+   ],
+   "money": [
+    "吉尔吉斯斯坦索姆"
+   ],
+   "highest": [
+    "托木尔峰"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "萨德尔·扎帕罗夫"
+   ]
+  },
+  "laos": {
+   "languages": [
+    "老挝语"
+   ],
+   "money": [
+    "老挝基普"
+   ],
+   "highest": [
+    "普比亚山"
+   ],
+   "government": [
+    "共产党独裁",
+    "人民共和国"
+   ],
+   "head": [
+    "通伦·西苏里"
+   ]
+  },
+  "latvia": {
+   "languages": [
+    "拉脱维亚语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "盖幸肯山"
+   ],
+   "government": [
+    "议会共和制",
+    "共和制"
+   ],
+   "head": [
+    "埃德加斯·林克维奇斯"
+   ]
+  },
+  "lebanon": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "黎巴嫩镑"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "约瑟夫·奥恩"
+   ]
+  },
+  "lesotho": {
+   "languages": [
+    "英语",
+    "索托语"
+   ],
+   "money": [
+    "莱索托洛蒂",
+    "南非兰特"
+   ],
+   "highest": [
+    "塔巴纳恩特莱尼亚纳山"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "莱齐耶三世"
+   ]
+  },
+  "liberia": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "利比里亚元"
+   ],
+   "highest": [
+    "武蒂维峰"
+   ],
+   "government": [
+    "共和立宪制",
+    "总统制",
+    "共和制"
+   ],
+   "head": [
+    "约瑟夫·博阿凯"
+   ]
+  },
+  "libya": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "利比亚第纳尔"
+   ],
+   "highest": [
+    "贝泰峰"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "穆罕默德·门菲"
+   ]
+  },
+  "liechtenstein": {
+   "languages": [
+    "德语"
+   ],
+   "money": [
+    "瑞士法郎"
+   ],
+   "highest": [
+    "灰尖峰"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "汉斯·亚当二世"
+   ]
+  },
+  "lithuania": {
+   "languages": [
+    "立陶宛语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "奥库斯托雅斯山"
+   ],
+   "government": [
+    "议会共和制",
+    "半总统制"
+   ],
+   "head": [
+    "吉塔纳斯·瑙塞达"
+   ]
+  },
+  "luxembourg": {
+   "languages": [
+    "法语",
+    "德语",
+    "卢森堡语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "克奈夫山"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "纪尧姆大公储"
+   ]
+  },
+  "macau": {
+   "languages": [
+    "广州话",
+    "葡萄牙语",
+    "现代标准汉语"
+   ],
+   "money": [
+    "港币",
+    "澳门元"
+   ],
+   "highest": [
+    "叠石塘山"
+   ]
+  },
+  "madagascar": {
+   "languages": [
+    "法语",
+    "马达加斯加语"
+   ],
+   "money": [
+    "马达加斯加阿里亚里"
+   ],
+   "highest": [
+    "马鲁穆库特鲁山"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "米夏埃尔·兰德里亚尼里纳"
+   ]
+  },
+  "malawi": {
+   "languages": [
+    "切瓦语",
+    "英语",
+    "通布卡语"
+   ],
+   "money": [
+    "马拉维克瓦查"
+   ],
+   "highest": [
+    "姆兰杰山"
+   ],
+   "head": [
+    "彼得·穆塔里卡"
+   ]
+  },
+  "malaysia": {
+   "languages": [
+    "马来语"
+   ],
+   "money": [
+    "马来西亚令吉"
+   ],
+   "highest": [
+    "基纳巴卢山"
+   ],
+   "government": [
+    "君主立宪制",
+    "选举君主制",
+    "联邦君主制",
+    "联邦制",
+    "议会制君主立宪制"
+   ],
+   "head": [
+    "苏丹易卜拉欣·伊斯梅尔"
+   ]
+  },
+  "maldives": {
+   "languages": [
+    "迪维希语"
+   ],
+   "money": [
+    "马尔代夫拉菲亚"
+   ],
+   "highest": [
+    "维林吉利岛"
+   ],
+   "head": [
+    "穆罕默德·穆伊祖"
+   ]
+  },
+  "mali": {
+   "languages": [
+    "班巴拉语",
+    null,
+    "博佐语",
+    "多贡诸语言",
+    "富拉语",
+    "哈桑语",
+    "哈松凯语",
+    "马宁卡语",
+    "明扬卡语",
+    "塞努福语支",
+    "桑海语族",
+    "索宁克语",
+    "廷巴克语"
+   ],
+   "money": [
+    "西非非洲金融共同体法郎"
+   ],
+   "head": [
+    "阿西米·戈伊塔"
+   ]
+  },
+  "malta": {
+   "languages": [
+    "英语",
+    "马耳他语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "government": [
+    "议会民主制"
+   ],
+   "head": [
+    "米丽娅姆·斯皮泰里·德博诺"
+   ]
+  },
+  "marshall-islands": {
+   "languages": [
+    "英语",
+    "马绍尔语"
+   ],
+   "money": [
+    null,
+    "美元"
+   ],
+   "highest": [
+    "利基普环礁"
+   ],
+   "head": [
+    "希尔达·海因"
+   ]
+  },
+  "mauritania": {
+   "languages": [
+    "阿拉伯语",
+    "法语"
+   ],
+   "money": [
+    "毛里塔尼亚乌吉亚"
+   ],
+   "government": [
+    "总统制"
+   ],
+   "head": [
+    "穆罕默德·乌尔德·加兹瓦尼"
+   ]
+  },
+  "mauritius": {
+   "languages": [
+    "英语",
+    "法语"
+   ],
+   "money": [
+    "毛里求斯卢比"
+   ],
+   "highest": [
+    "黑河峰"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "达朗·戈库尔"
+   ]
+  },
+  "mexico": {
+   "languages": [
+    "纳瓦特尔语",
+    "西班牙语",
+    "犹加敦马雅语"
+   ],
+   "money": [
+    "墨西哥比索"
+   ],
+   "highest": [
+    "奥里萨巴山"
+   ],
+   "government": [
+    "共和立宪制",
+    "民主共和国",
+    "联邦共和国",
+    "总统制"
+   ]
+  },
+  "moldova": {
+   "languages": [
+    "罗马尼亚语"
+   ],
+   "money": [
+    "摩尔多瓦列伊"
+   ],
+   "government": [
+    "议会共和制",
+    "单一制"
+   ],
+   "head": [
+    "玛雅·桑杜"
+   ]
+  },
+  "monaco": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "government": [
+    "君主立宪制",
+    "世袭君主制"
+   ],
+   "head": [
+    "阿尔贝二世"
+   ]
+  },
+  "mongolia": {
+   "languages": [
+    "蒙古语"
+   ],
+   "money": [
+    "蒙古图格里克"
+   ],
+   "highest": [
+    "友谊峰"
+   ],
+   "government": [
+    "议会制"
+   ],
+   "head": [
+    "乌赫那·呼日勒苏赫"
+   ]
+  },
+  "montenegro": {
+   "languages": [
+    "黑山语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "科拉塔山"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "雅科夫·米拉托维奇"
+   ]
+  },
+  "montserrat": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "东加勒比元"
+   ]
+  },
+  "morocco": {
+   "languages": [
+    "阿拉伯语",
+    "标准摩洛哥柏柏尔语"
+   ],
+   "money": [
+    "摩洛哥迪尔汗"
+   ],
+   "highest": [
+    "图卜卡勒峰"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "穆罕默德六世"
+   ]
+  },
+  "mozambique": {
+   "languages": [
+    "葡萄牙语"
+   ],
+   "money": [
+    "莫桑比克梅蒂卡尔"
+   ],
+   "highest": [
+    "宾加山"
+   ],
+   "head": [
+    "丹尼尔·查波"
+   ]
+  },
+  "myanmar": {
+   "languages": [
+    "缅甸语"
+   ],
+   "money": [
+    "缅甸元"
+   ],
+   "highest": [
+    "开加博峰"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "敏瑞"
+   ]
+  },
+  "namibia": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "纳米比亚元",
+    "南非兰特"
+   ],
+   "highest": [
+    "布兰德山"
+   ],
+   "head": [
+    "内通波·南迪-恩代特瓦赫"
+   ]
+  },
+  "nauru": {
+   "languages": [
+    "英语",
+    "瑙鲁语"
+   ],
+   "money": [
+    "澳大利亚元"
+   ],
+   "highest": [
+    "司令岭"
+   ],
+   "head": [
+    "戴维·阿迪昂"
+   ]
+  },
+  "nepal": {
+   "languages": [
+    "尼泊尔语"
+   ],
+   "money": [
+    "尼泊尔卢比"
+   ],
+   "highest": [
+    "珠穆朗玛峰"
+   ],
+   "government": [
+    "联邦共和国",
+    "人民共和国"
+   ],
+   "head": [
+    "拉姆·昌德拉·鲍德尔"
+   ]
+  },
+  "netherlands": {
+   "languages": [
+    "荷兰语"
+   ],
+   "highest": [
+    "锡纳里山"
+   ],
+   "government": [
+    "君主立宪制",
+    "议会制君主立宪制"
+   ],
+   "head": [
+    "威廉-亚历山大"
+   ]
+  },
+  "new-caledonia": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "太平洋法郎"
+   ]
+  },
+  "new-zealand": {
+   "languages": [
+    "英语",
+    "毛利语",
+    "新西兰手语"
+   ],
+   "money": [
+    "新西兰元"
+   ],
+   "highest": [
+    "库克山"
+   ],
+   "government": [
+    "议会制君主立宪制"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "nicaragua": {
+   "languages": [
+    "西班牙语"
+   ],
+   "money": [
+    "尼加拉瓜科多巴"
+   ],
+   "highest": [
+    "莫戈通山"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "丹尼尔·奥尔特加"
+   ]
+  },
+  "niger": {
+   "languages": [
+    "豪萨语"
+   ],
+   "money": [
+    "西非非洲金融共同体法郎"
+   ],
+   "head": [
+    "阿卜杜拉赫曼·奇亚尼"
+   ]
+  },
+  "nigeria": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "尼日利亚奈拉"
+   ],
+   "highest": [
+    "沙帕尔谷山"
+   ],
+   "government": [
+    "联邦共和国"
+   ],
+   "head": [
+    "博拉·蒂努布"
+   ]
+  },
+  "niue": {
+   "languages": [
+    "英语",
+    "纽埃语"
+   ],
+   "money": [
+    "新西兰元",
+    "纽埃元"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "norfolk-island": {
+   "languages": [
+    "英语",
+    "诺福克语"
+   ],
+   "money": [
+    "澳大利亚元"
+   ]
+  },
+  "north-korea": {
+   "languages": [
+    "朝鲜语",
+    "文化语"
+   ],
+   "money": [
+    "朝鲜圆"
+   ],
+   "highest": [
+    "长白山"
+   ],
+   "government": [
+    "共产党独裁",
+    "世袭专政",
+    "主体思想",
+    "一党制",
+    "共和制",
+    "社会主义国家",
+    "单一制"
+   ],
+   "head": [
+    "金正恩"
+   ]
+  },
+  "north-macedonia": {
+   "languages": [
+    "阿尔巴尼亚语",
+    "马其顿语"
+   ],
+   "money": [
+    "北马其顿代纳尔"
+   ],
+   "highest": [
+    "科拉比峰"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "戈尔达娜·斯利娅诺夫斯卡-达夫科娃"
+   ]
+  },
+  "northern-mariana-islands": {
+   "languages": [
+    "卡罗莱纳文",
+    "查莫罗语",
+    "英语"
+   ],
+   "money": [
+    "美元"
+   ]
+  },
+  "norway": {
+   "languages": [
+    "书面挪威语",
+    "挪威语",
+    "新挪威语",
+    "萨米语支"
+   ],
+   "money": [
+    "挪威克朗"
+   ],
+   "highest": [
+    "格利特峰"
+   ],
+   "government": [
+    "君主立宪制",
+    "议会制",
+    "代议民主制",
+    "单一制"
+   ],
+   "head": [
+    "哈康王储"
+   ]
+  },
+  "oman": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "阿曼里亚尔"
+   ],
+   "highest": [
+    "沙姆山"
+   ],
+   "government": [
+    "绝对君主制"
+   ],
+   "head": [
+    "海赛姆·本·塔里克·阿勒赛义德"
+   ]
+  },
+  "pakistan": {
+   "languages": [
+    "英语",
+    "乌尔都语"
+   ],
+   "money": [
+    "巴基斯坦卢比"
+   ],
+   "highest": [
+    "乔戈里峰"
+   ],
+   "government": [
+    "联邦共和国",
+    "议会共和制"
+   ],
+   "head": [
+    "阿西夫·阿里·扎尔达里"
+   ]
+  },
+  "palau": {
+   "languages": [
+    "英语",
+    "帕劳语"
+   ],
+   "money": [
+    "美元"
+   ],
+   "highest": [
+    "纳格其恰司山"
+   ],
+   "head": [
+    "惠恕仁"
+   ]
+  },
+  "panama": {
+   "languages": [
+    "西班牙语"
+   ],
+   "money": [
+    "巴拿马巴波亚",
+    "美元"
+   ],
+   "highest": [
+    "奇里基火山"
+   ],
+   "government": [
+    "总统制"
+   ],
+   "head": [
+    "何塞·劳尔·穆利诺"
+   ]
+  },
+  "papua-new-guinea": {
+   "languages": [
+    "英语",
+    "希里摩图语",
+    null,
+    "巴布亚皮钦语"
+   ],
+   "money": [
+    "巴布亚新几内亚基那"
+   ],
+   "highest": [
+    "威廉峰"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "paraguay": {
+   "languages": [
+    "瓜纳尼语",
+    "西班牙语"
+   ],
+   "money": [
+    "巴拉圭瓜拉尼"
+   ],
+   "highest": [
+    "佩龙丘"
+   ],
+   "head": [
+    "佩德罗·阿利亚纳"
+   ]
+  },
+  "people-s-republic-of-china": {
+   "languages": [
+    "普通话"
+   ],
+   "money": [
+    "人民币"
+   ],
+   "highest": [
+    "珠穆朗玛峰"
+   ],
+   "government": [
+    "人民共和国"
+   ],
+   "head": [
+    "习近平"
+   ]
+  },
+  "peru": {
+   "languages": [
+    "艾马拉语",
+    "克丘亚语",
+    "西班牙语"
+   ],
+   "money": [
+    "秘鲁新索尔"
+   ],
+   "highest": [
+    "瓦斯卡兰山"
+   ],
+   "government": [
+    "总统制"
+   ],
+   "head": [
+    "藤森惠子"
+   ]
+  },
+  "philippines": {
+   "languages": [
+    "英语",
+    "菲律宾语",
+    "他加禄式英语"
+   ],
+   "money": [
+    "菲律宾比索"
+   ],
+   "highest": [
+    "阿波火山"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "小费迪南德·马科斯"
+   ]
+  },
+  "pitcairn-islands": {
+   "languages": [
+    "英语",
+    "皮特肯语"
+   ],
+   "money": [
+    "新西兰元",
+    "皮特凯恩群岛元"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "poland": {
+   "languages": [
+    "波兰语"
+   ],
+   "money": [
+    "波兰兹罗提"
+   ],
+   "highest": [
+    "莱希山"
+   ],
+   "government": [
+    "议会制",
+    "半总统制",
+    "单一制"
+   ],
+   "head": [
+    "卡罗尔·纳瓦罗基"
+   ]
+  },
+  "portugal": {
+   "languages": [
+    "葡萄牙语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "皮库山"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "安东尼奥·若泽·塞古罗"
+   ]
+  },
+  "puerto-rico": {
+   "languages": [
+    "英语",
+    "西班牙语"
+   ],
+   "money": [
+    "美元"
+   ]
+  },
+  "qatar": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "卡塔尔里亚尔"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "塔米姆·本·哈马德·阿勒萨尼"
+   ]
+  },
+  "republic-of-the-congo": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "中非非洲金融共同体法郎"
+   ],
+   "highest": [
+    "纳本巴山"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "德尼·萨苏-恩格索"
+   ]
+  },
+  "romania": {
+   "languages": [
+    "罗马尼亚语"
+   ],
+   "money": [
+    "罗马尼亚列伊"
+   ],
+   "highest": [
+    "摩尔多韦亚努峰"
+   ],
+   "government": [
+    "半总统制",
+    "单一制"
+   ],
+   "head": [
+    "尼库绍尔·达恩"
+   ]
+  },
+  "russia": {
+   "languages": [
+    "俄语"
+   ],
+   "money": [
+    "俄罗斯卢布"
+   ],
+   "highest": [
+    "厄尔布鲁士山"
+   ],
+   "government": [
+    "超级总统共和制"
+   ],
+   "head": [
+    "弗拉基米尔·普京"
+   ]
+  },
+  "rwanda": {
+   "languages": [
+    "英语",
+    "法语",
+    "卢旺达语",
+    "斯瓦希里语"
+   ],
+   "money": [
+    "卢旺达法郎"
+   ],
+   "highest": [
+    "卡里辛比火山"
+   ],
+   "government": [
+    "半总统制"
+   ],
+   "head": [
+    "保罗·卡加梅"
+   ]
+  },
+  "saint-barthelemy": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "欧元"
+   ]
+  },
+  "saint-helena": {
+   "languages": [
+    "英语"
+   ],
+   "highest": [
+    "戴安娜峰"
+   ]
+  },
+  "saint-kitts-and-nevis": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "东加勒比元"
+   ],
+   "highest": [
+    "利亚穆伊加山"
+   ],
+   "government": [
+    "君主立宪制",
+    "联邦君主制"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "saint-lucia": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "东加勒比元"
+   ],
+   "highest": [
+    "吉米山"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "saint-martin": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "帕拉迪斯峰"
+   ]
+  },
+  "saint-pierre-and-miquelon": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "government": [
+    "海外集体"
+   ]
+  },
+  "saint-vincent-and-the-grenadines": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "东加勒比元"
+   ],
+   "highest": [
+    "圣文森特苏弗里耶尔火山"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "samoa": {
+   "languages": [
+    "英语",
+    "萨摩亚语"
+   ],
+   "money": [
+    "萨摩亚塔拉"
+   ],
+   "highest": [
+    "西里西里山"
+   ],
+   "head": [
+    "瓦莱托阿·苏阿劳维二世"
+   ]
+  },
+  "san-marino": {
+   "languages": [
+    "意大利语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "蒂塔诺山"
+   ],
+   "government": [
+    "二头政治",
+    "议会共和制"
+   ],
+   "head": [
+    "丹尼斯·布龙泽蒂",
+    null
+   ]
+  },
+  "sao-tome-and-principe": {
+   "languages": [
+    "葡萄牙语"
+   ],
+   "money": [
+    "圣多美和普林西比多布拉"
+   ],
+   "highest": [
+    "圣多美峰"
+   ],
+   "head": [
+    "卡诺佤"
+   ]
+  },
+  "saudi-arabia": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "沙特里亚尔"
+   ],
+   "government": [
+    "绝对君主制",
+    null,
+    "君主制"
+   ],
+   "head": [
+    "萨勒曼·本·阿卜杜勒-阿齐兹·阿勒沙特"
+   ]
+  },
+  "senegal": {
+   "languages": [
+    null,
+    "巴兰塔语",
+    "法语",
+    "沃洛夫语"
+   ],
+   "money": [
+    "西非非洲金融共同体法郎"
+   ],
+   "government": [
+    "总统制"
+   ],
+   "head": [
+    "巴西鲁·迪奥马耶·法耶"
+   ]
+  },
+  "serbia": {
+   "languages": [
+    "塞尔维亚语"
+   ],
+   "money": [
+    "塞尔维亚第纳尔"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "安娜·布尔纳比奇"
+   ]
+  },
+  "seychelles": {
+   "languages": [
+    "英语",
+    "法语",
+    "塞舌尔克里奥尔语"
+   ],
+   "money": [
+    "塞舌尔卢比"
+   ],
+   "highest": [
+    "塞舌尔山"
+   ],
+   "head": [
+    "帕特里克·赫米尼耶"
+   ]
+  },
+  "sierra-leone": {
+   "languages": [
+    "英语",
+    "塞拉利昂克里奥尔语"
+   ],
+   "money": [
+    "塞拉利昂利昂"
+   ],
+   "highest": [
+    "洛马曼萨山"
+   ],
+   "government": [
+    "总统制"
+   ],
+   "head": [
+    "朱利叶斯·马达·比奥"
+   ]
+  },
+  "singapore": {
+   "languages": [
+    "英语",
+    "马来语",
+    "现代标准汉语",
+    "泰米尔语"
+   ],
+   "money": [
+    "新加坡元"
+   ],
+   "highest": [
+    "武吉知马"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "尚达曼"
+   ]
+  },
+  "sint-maarten": {
+   "languages": [
+    "荷兰语",
+    "英语"
+   ],
+   "money": [
+    "加勒比盾"
+   ],
+   "head": [
+    "尤金·霍利迪",
+    "威廉-亚历山大"
+   ]
+  },
+  "slovakia": {
+   "languages": [
+    "斯洛伐克语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "格尔拉赫峰"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "彼得·佩列格里尼"
+   ]
+  },
+  "slovenia": {
+   "languages": [
+    "斯洛文尼亚语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "特里格拉夫峰"
+   ],
+   "government": [
+    "民主共和国"
+   ],
+   "head": [
+    "娜塔莎·皮尔茨·穆萨尔"
+   ]
+  },
+  "solomon-islands": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "所罗门群岛元"
+   ],
+   "highest": [
+    "波波马纳休山"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "somalia": {
+   "languages": [
+    "阿拉伯语",
+    "索马里语"
+   ],
+   "money": [
+    "索马里先令"
+   ],
+   "highest": [
+    "欣比里斯山"
+   ],
+   "government": [
+    "联邦共和国"
+   ],
+   "head": [
+    "哈桑·谢赫·马哈茂德"
+   ]
+  },
+  "somaliland": {
+   "languages": [
+    "阿拉伯语",
+    "英语",
+    "索马里语"
+   ],
+   "money": [
+    "索马里兰先令"
+   ],
+   "highest": [
+    "欣比里斯山"
+   ],
+   "head": [
+    "阿巴迪拉曼·穆罕默德·阿卜杜拉希"
+   ]
+  },
+  "south-africa": {
+   "languages": [
+    "阿非利卡语",
+    "英语",
+    "北索托语",
+    "索托语",
+    "南非手语",
+    "南恩德贝莱语",
+    "斯瓦蒂语",
+    "聪加语",
+    "茨瓦纳语",
+    "文达语",
+    "科萨语",
+    "祖鲁语"
+   ],
+   "money": [
+    "南非兰特"
+   ],
+   "highest": [
+    "马法迪"
+   ],
+   "government": [
+    "议会共和制",
+    "代议民主制"
+   ],
+   "head": [
+    "西里尔·拉马福萨"
+   ]
+  },
+  "south-georgia-and-the-south-sandwich-islands": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "英镑"
+   ],
+   "highest": [
+    "帕吉特山"
+   ]
+  },
+  "south-korea": {
+   "languages": [
+    "朝鲜语",
+    "韩文手语"
+   ],
+   "money": [
+    "韩圆"
+   ],
+   "highest": [
+    "汉拏山"
+   ],
+   "government": [
+    "总统制",
+    "共和制"
+   ],
+   "head": [
+    "李在明"
+   ]
+  },
+  "south-sudan": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "南苏丹镑"
+   ],
+   "highest": [
+    "基涅提峰"
+   ],
+   "government": [
+    "联邦共和国"
+   ],
+   "head": [
+    "萨尔瓦·基尔·马亚尔迪特"
+   ]
+  },
+  "spain": {
+   "languages": [
+    "西班牙语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "泰德峰"
+   ],
+   "government": [
+    "议会制君主立宪制"
+   ],
+   "head": [
+    "费利佩六世"
+   ]
+  },
+  "sri-lanka": {
+   "languages": [
+    "僧伽罗语",
+    "泰米尔语"
+   ],
+   "money": [
+    "斯里兰卡卢比"
+   ],
+   "highest": [
+    "皮杜鲁塔拉格勒山"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "阿努拉·库马拉·迪萨纳亚克"
+   ]
+  },
+  "sudan": {
+   "languages": [
+    "阿拉伯语",
+    "英语"
+   ],
+   "money": [
+    "苏丹镑"
+   ],
+   "government": [
+    "联邦共和国"
+   ],
+   "head": [
+    "阿卜杜勒·法塔赫·阿卜杜勒拉赫曼·布尔汉"
+   ]
+  },
+  "suriname": {
+   "languages": [
+    "荷兰语"
+   ],
+   "money": [
+    "苏里南元"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "珍妮弗·西蒙斯"
+   ]
+  },
+  "sweden": {
+   "languages": [
+    "瑞典语"
+   ],
+   "money": [
+    "瑞典克朗"
+   ],
+   "highest": [
+    "凯布讷山"
+   ],
+   "government": [
+    "君主立宪制",
+    "代议民主制"
+   ],
+   "head": [
+    "卡尔十六世·古斯塔夫"
+   ]
+  },
+  "switzerland": {
+   "languages": [
+    "法语",
+    "德语",
+    "意大利语",
+    "罗曼什语"
+   ],
+   "money": [
+    "瑞士法郎"
+   ],
+   "highest": [
+    "杜富尔峰"
+   ],
+   "government": [
+    "委员会制",
+    "联邦共和国"
+   ],
+   "head": [
+    "瑞士联邦委员会"
+   ]
+  },
+  "syria": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "叙利亚镑"
+   ],
+   "highest": [
+    "黑门山"
+   ],
+   "government": [
+    "临时政府"
+   ],
+   "head": [
+    "艾哈迈德·沙拉"
+   ]
+  },
+  "taiwan": {
+   "languages": [
+    "阿美语",
+    "泰雅语",
+    "布农语",
+    "卡那卡那富语",
+    "噶玛兰语",
+    "金门话",
+    "马祖话",
+    "排湾语",
+    "卑南语",
+    "鲁凯语",
+    "拉阿鲁哇语",
+    "赛夏语",
+    "撒奇莱雅语",
+    "赛德克语",
+    "台湾华语",
+    "台湾客家话",
+    "台湾话",
+    "台湾手语",
+    "太鲁阁语",
+    "邹语",
+    "乌坵话",
+    "达悟语"
+   ],
+   "highest": [
+    "玉山"
+   ],
+   "government": [
+    "共和立宪制",
+    "民主",
+    "民主共和国",
+    "半总统制"
+   ],
+   "head": [
+    "赖清德"
+   ]
+  },
+  "tajikistan": {
+   "languages": [
+    "塔吉克语"
+   ],
+   "money": [
+    "塔吉克斯坦索莫尼"
+   ],
+   "highest": [
+    "伊斯梅尔·索莫尼峰"
+   ],
+   "government": [
+    "总统制"
+   ],
+   "head": [
+    "埃莫马利·拉赫蒙"
+   ]
+  },
+  "tanzania": {
+   "languages": [
+    "英语",
+    "斯瓦希里语"
+   ],
+   "money": [
+    "坦桑尼亚先令"
+   ],
+   "head": [
+    "萨米娅·苏卢胡"
+   ]
+  },
+  "thailand": {
+   "languages": [
+    "泰语"
+   ],
+   "money": [
+    "泰铢"
+   ],
+   "highest": [
+    "因他暖山"
+   ],
+   "government": [
+    "君主立宪制",
+    "议会制君主立宪制"
+   ],
+   "head": [
+    "玛哈·哇集拉隆功"
+   ]
+  },
+  "the-bahamas": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "巴哈马元"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "the-gambia": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "冈比亚达拉西"
+   ],
+   "government": [
+    "共和制"
+   ],
+   "head": [
+    "阿达马·巴罗"
+   ]
+  },
+  "togo": {
+   "languages": [
+    "法语"
+   ],
+   "money": [
+    "西非非洲金融共同体法郎"
+   ],
+   "highest": [
+    "阿古山"
+   ],
+   "head": [
+    "让-吕西安·萨维·德托夫"
+   ]
+  },
+  "tonga": {
+   "languages": [
+    "英语",
+    "汤加语"
+   ],
+   "money": [
+    "汤加潘加"
+   ],
+   "highest": [
+    "卡奥岛"
+   ],
+   "head": [
+    "图普六世"
+   ]
+  },
+  "trinidad-and-tobago": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "特立尼达和多巴哥元"
+   ],
+   "government": [
+    "议会共和制"
+   ],
+   "head": [
+    "克里斯蒂娜·坎加卢"
+   ]
+  },
+  "tunisia": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "突尼斯第纳尔"
+   ],
+   "highest": [
+    "舍阿奈比山"
+   ],
+   "government": [
+    "议会共和制",
+    "总统制",
+    "半总统制"
+   ],
+   "head": [
+    "凯斯·赛义德"
+   ]
+  },
+  "turkey": {
+   "languages": [
+    "土耳其语"
+   ],
+   "money": [
+    "土耳其里拉"
+   ],
+   "highest": [
+    "阿勒山"
+   ],
+   "government": [
+    "总统制",
+    "单一制"
+   ],
+   "head": [
+    "雷杰普·塔伊普·埃尔多安"
+   ]
+  },
+  "turkish-republic-of-northern-cyprus": {
+   "languages": [
+    "土耳其语"
+   ],
+   "money": [
+    "土耳其里拉"
+   ],
+   "government": [
+    "半总统制",
+    "单一制"
+   ],
+   "head": [
+    "图凡·埃尔许曼"
+   ]
+  },
+  "turkmenistan": {
+   "languages": [
+    "土库曼语"
+   ],
+   "money": [
+    "土库曼斯坦马纳特"
+   ],
+   "government": [
+    "总统制",
+    "共和制"
+   ],
+   "head": [
+    "谢尔达尔·别尔德穆哈梅多夫"
+   ]
+  },
+  "turks-and-caicos-islands": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "美元"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "tuvalu": {
+   "languages": [
+    "英语",
+    "图瓦卢语"
+   ],
+   "money": [
+    "澳大利亚元",
+    "图瓦卢元"
+   ],
+   "highest": [
+    "纽拉基塔岛"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "uganda": {
+   "languages": [
+    "英语",
+    "斯瓦希里语"
+   ],
+   "money": [
+    "乌干达先令"
+   ],
+   "highest": [
+    "斯坦利山"
+   ],
+   "government": [
+    "总统制"
+   ],
+   "head": [
+    "约韦里·穆塞韦尼"
+   ]
+  },
+  "ukraine": {
+   "languages": [
+    "乌克兰语"
+   ],
+   "money": [
+    "乌克兰格里夫纳"
+   ],
+   "highest": [
+    "霍韦尔拉山"
+   ],
+   "government": [
+    "半总统制"
+   ],
+   "head": [
+    "弗拉基米尔·泽连斯基"
+   ]
+  },
+  "united-arab-emirates": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "阿联酋迪拉姆"
+   ],
+   "government": [
+    "绝对君主制",
+    "君主立宪制",
+    "联邦君主制"
+   ],
+   "head": [
+    "穆罕默德·本·扎耶德·阿勒纳哈扬"
+   ]
+  },
+  "united-kingdom": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "英镑"
+   ],
+   "highest": [
+    "本尼维斯山"
+   ],
+   "government": [
+    "君主立宪制"
+   ],
+   "head": [
+    "查尔斯三世"
+   ]
+  },
+  "united-states-minor-outlying-islands": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "美元"
+   ]
+  },
+  "united-states-of-america": {
+   "money": [
+    "美元"
+   ],
+   "government": [
+    "共和立宪制",
+    "民主共和国"
+   ],
+   "head": [
+    "唐纳德·特朗普"
+   ]
+  },
+  "united-states-virgin-islands": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "美元"
+   ]
+  },
+  "uruguay": {
+   "money": [
+    "乌拉圭比索"
+   ],
+   "highest": [
+    "卡特德拉尔山"
+   ],
+   "government": [
+    "参与民主制",
+    "总统制",
+    "共和制"
+   ],
+   "head": [
+    "亚曼杜·奥尔西"
+   ]
+  },
+  "uzbekistan": {
+   "languages": [
+    "乌孜别克语"
+   ],
+   "money": [
+    "乌兹别克斯坦索姆"
+   ],
+   "highest": [
+    "阿迪隆加托吉峰"
+   ],
+   "government": [
+    "总统制"
+   ],
+   "head": [
+    "沙夫卡特·米尔济约耶夫"
+   ]
+  },
+  "vanuatu": {
+   "languages": [
+    "比斯拉马语",
+    "英语",
+    "法语"
+   ],
+   "money": [
+    "瓦努阿图瓦图"
+   ],
+   "highest": [
+    "塔伯威马萨纳山"
+   ],
+   "head": [
+    "尼克尼克·武罗巴拉武"
+   ]
+  },
+  "vatican-city": {
+   "languages": [
+    "意大利语",
+    "拉丁语"
+   ],
+   "money": [
+    "欧元"
+   ],
+   "highest": [
+    "梵蒂冈山"
+   ],
+   "government": [
+    "君主立宪制",
+    null,
+    "神权政治"
+   ],
+   "head": [
+    "利奥十四世"
+   ]
+  },
+  "venezuela": {
+   "languages": [
+    "西班牙语",
+    "委内瑞拉手语"
+   ],
+   "money": [
+    "主权玻利瓦尔"
+   ],
+   "highest": [
+    "玻利瓦尔峰"
+   ],
+   "government": [
+    "联邦共和国",
+    "总统制"
+   ],
+   "head": [
+    "德尔西·罗德里格斯"
+   ]
+  },
+  "vietnam": {
+   "languages": [
+    "越南语"
+   ],
+   "money": [
+    "越南盾"
+   ],
+   "highest": [
+    "番西邦峰"
+   ],
+   "government": [
+    "一党制",
+    "共和制",
+    "单一制"
+   ],
+   "head": [
+    "苏林"
+   ]
+  },
+  "wallis-and-futuna": {
+   "languages": [
+    "法语",
+    "富图纳语",
+    "瓦利斯语"
+   ],
+   "money": [
+    "太平洋法郎"
+   ],
+   "government": [
+    "共和制"
+   ]
+  },
+  "western-sahara": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "摩洛哥迪尔汗",
+    "撒拉威比塞塔"
+   ]
+  },
+  "yemen": {
+   "languages": [
+    "阿拉伯语"
+   ],
+   "money": [
+    "也门里亚尔"
+   ],
+   "highest": [
+    "纳比沙伊卜山"
+   ],
+   "government": [
+    "总统制",
+    "共和制"
+   ],
+   "head": [
+    "拉沙德·穆罕默德·阿里米"
+   ]
+  },
+  "zambia": {
+   "languages": [
+    "英语"
+   ],
+   "money": [
+    "赞比亚克瓦查"
+   ],
+   "highest": [
+    "中马芬加"
+   ],
+   "government": [
+    "总统制",
+    "代议民主制"
+   ],
+   "head": [
+    "哈凯恩德·希奇莱马"
+   ]
+  },
+  "zimbabwe": {
+   "languages": [
+    null,
+    "切瓦语",
+    "英语",
+    "卡兰加语",
+    "科伊桑语系",
+    "南比亚语",
+    "恩道方言",
+    "北恩德贝莱语",
+    "索托语",
+    "修纳语",
+    "汤加语",
+    "聪加语",
+    "茨瓦纳语",
+    "文达语",
+    "科萨语",
+    null
+   ],
+   "money": [
+    "澳大利亚元",
+    "欧元",
+    "印度卢比",
+    "英镑",
+    "南非兰特",
+    "人民币",
+    "美元",
+    "日圆",
+    "津巴布韦金",
+    "津巴布韦元"
+   ],
+   "highest": [
+    "伊尼扬加尼山"
+   ],
+   "head": [
+    "埃默森·姆南加古瓦"
+   ]
+  }
+ }
+}

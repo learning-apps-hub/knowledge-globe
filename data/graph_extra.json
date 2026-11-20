@@ -1,0 +1,89 @@
+{
+  "note": "Hand-written words and starting topics for the Explore preview. Each is a plain, checkable fact. Real geography only: no dummy subject data (Owner, 2026-11-13). 'Who found it?' (continents, oceans; Owner's yes 2026-11-13): the first people to reach or cross it, not a later arrival from far away, with dates hedged to what is widely agreed. A who-answer must belong to that one topic: an answer shared by several (early humans for Africa, Asia and Europe) says nothing, so the topic gets no 'Who found it?' at all (Owner, 2026-11-13).",
+  "starts": [
+    "singapore",
+    "asia",
+    "equator",
+    "north-pole",
+    "pacific-ocean",
+    "date-line",
+    "northern-hemisphere",
+    "tokyo"
+  ],
+  "points": [
+    {
+      "id": "singapore",
+      "name": "Singapore",
+      "line": "An island city and country at the southern tip of the Malay Peninsula.",
+      "visual_query": "Singapore skyline Marina Bay"
+    },
+    {
+      "id": "first-peoples-of-australia",
+      "name": "First Peoples of Australia",
+      "line": "Aboriginal and Torres Strait Islander peoples, whose ancestors reached Australia at least 50,000 years ago."
+    },
+    {
+      "id": "norse-sailors",
+      "name": "Norse sailors",
+      "line": "Seafarers from Scandinavia, sometimes called Vikings. About 1,000 years ago they sailed to Iceland, Greenland and North America."
+    },
+    {
+      "id": "arctic-peoples",
+      "name": "Arctic peoples",
+      "line": "The Inuit and the peoples before them, who have lived on the coasts and sea ice of the far north for thousands of years."
+    },
+    {
+      "id": "james-cook",
+      "name": "James Cook",
+      "line": "A British sea captain and map-maker of the 1700s who sailed the Pacific and the far south."
+    },
+    {
+      "id": "fabian-von-bellingshausen",
+      "name": "Fabian von Bellingshausen",
+      "line": "A sea captain who led a Russian voyage round Antarctica in 1819 to 1821."
+    },
+    {
+      "id": "edward-bransfield",
+      "name": "Edward Bransfield",
+      "line": "A British naval officer who charted part of the Antarctic Peninsula in 1820."
+    }
+  ],
+  "links": [
+    {
+      "kind": "who",
+      "from": "oceania",
+      "to": "first-peoples-of-australia",
+      "why": "Their ancestors reached Australia at least 50,000 years ago."
+    },
+    {
+      "kind": "who",
+      "from": "antarctica",
+      "to": "fabian-von-bellingshausen",
+      "why": "His ships came within sight of Antarctica's ice on 27 January 1820, the first known sighting. No people had ever lived there."
+    },
+    {
+      "kind": "who",
+      "from": "antarctica",
+      "to": "edward-bransfield",
+      "why": "He sighted the Antarctic mainland on 30 January 1820, three days later. Which of them saw Antarctica first is still argued about."
+    },
+    {
+      "kind": "who",
+      "from": "atlantic-ocean",
+      "to": "norse-sailors",
+      "why": "The first people known to cross it, reaching North America about 1,000 years ago, nearly 500 years before Columbus."
+    },
+    {
+      "kind": "who",
+      "from": "southern-ocean",
+      "to": "james-cook",
+      "why": "In 1773 his ships were the first known to cross the Antarctic Circle."
+    },
+    {
+      "kind": "who",
+      "from": "arctic-ocean",
+      "to": "arctic-peoples",
+      "why": "They have lived on its coasts and its sea ice for thousands of years."
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+# Knowledge Globe runs on the Python standard library only (PROJECT_KICKOFF.md §5).
+# No runtime dependencies. Dev/CI tooling is installed by .github/workflows/ci.yml.

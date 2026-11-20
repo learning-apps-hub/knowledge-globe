@@ -1,0 +1,4237 @@
+{
+ "what": "Sea ice, month by month",
+ "credit": "NOAA/NSIDC Sea Ice Index v4 (Fetterer et al.; satellites); before 1979 in the Arctic, NOAA/NSIDC Gridded Monthly Sea Ice Extent and Concentration, 1850 Onward (Walsh et al.; old ice charts)",
+ "licence": "Free to use, cite the data (NOAA@NSIDC)",
+ "made": "Before 1979 the Arctic ice comes from old ice charts, ship and aircraft reports; the Antarctic has no record, so its ice is made: the same month's average over 1979 to 1988.",
+ "first_real": 1979,
+ "edge": 26.0,
+ "months": [
+  {
+   "year": 1960,
+   "month": 1,
+   "file": "ice/ice-196001.v1.png",
+   "made": true
+  },
+  {
+   "year": 1960,
+   "month": 2,
+   "file": "ice/ice-196002.v1.png",
+   "made": true
+  },
+  {
+   "year": 1960,
+   "month": 3,
+   "file": "ice/ice-196003.v1.png",
+   "made": true
+  },
+  {
+   "year": 1960,
+   "month": 4,
+   "file": "ice/ice-196004.v1.png",
+   "made": true
+  },
+  {
+   "year": 1960,
+   "month": 5,
+   "file": "ice/ice-196005.v1.png",
+   "made": true
+  },
+  {
+   "year": 1960,
+   "month": 6,
+   "file": "ice/ice-196006.v1.png",
+   "made": true
+  },
+  {
+   "year": 1960,
+   "month": 7,
+   "file": "ice/ice-196007.v1.png",
+   "made": true
+  },
+  {
+   "year": 1960,
+   "month": 8,
+   "file": "ice/ice-196008.v1.png",
+   "made": true
+  },
+  {
+   "year": 1960,
+   "month": 9,
+   "file": "ice/ice-196009.v1.png",
+   "made": true
+  },
+  {
+   "year": 1960,
+   "month": 10,
+   "file": "ice/ice-196010.v1.png",
+   "made": true
+  },
+  {
+   "year": 1960,
+   "month": 11,
+   "file": "ice/ice-196011.v1.png",
+   "made": true
+  },
+  {
+   "year": 1960,
+   "month": 12,
+   "file": "ice/ice-196012.v1.png",
+   "made": true
+  },
+  {
+   "year": 1961,
+   "month": 1,
+   "file": "ice/ice-196101.v1.png",
+   "made": true
+  },
+  {
+   "year": 1961,
+   "month": 2,
+   "file": "ice/ice-196102.v1.png",
+   "made": true
+  },
+  {
+   "year": 1961,
+   "month": 3,
+   "file": "ice/ice-196103.v1.png",
+   "made": true
+  },
+  {
+   "year": 1961,
+   "month": 4,
+   "file": "ice/ice-196104.v1.png",
+   "made": true
+  },
+  {
+   "year": 1961,
+   "month": 5,
+   "file": "ice/ice-196105.v1.png",
+   "made": true
+  },
+  {
+   "year": 1961,
+   "month": 6,
+   "file": "ice/ice-196106.v1.png",
+   "made": true
+  },
+  {
+   "year": 1961,
+   "month": 7,
+   "file": "ice/ice-196107.v1.png",
+   "made": true
+  },
+  {
+   "year": 1961,
+   "month": 8,
+   "file": "ice/ice-196108.v1.png",
+   "made": true
+  },
+  {
+   "year": 1961,
+   "month": 9,
+   "file": "ice/ice-196109.v1.png",
+   "made": true
+  },
+  {
+   "year": 1961,
+   "month": 10,
+   "file": "ice/ice-196110.v1.png",
+   "made": true
+  },
+  {
+   "year": 1961,
+   "month": 11,
+   "file": "ice/ice-196111.v1.png",
+   "made": true
+  },
+  {
+   "year": 1961,
+   "month": 12,
+   "file": "ice/ice-196112.v1.png",
+   "made": true
+  },
+  {
+   "year": 1962,
+   "month": 1,
+   "file": "ice/ice-196201.v1.png",
+   "made": true
+  },
+  {
+   "year": 1962,
+   "month": 2,
+   "file": "ice/ice-196202.v1.png",
+   "made": true
+  },
+  {
+   "year": 1962,
+   "month": 3,
+   "file": "ice/ice-196203.v1.png",
+   "made": true
+  },
+  {
+   "year": 1962,
+   "month": 4,
+   "file": "ice/ice-196204.v1.png",
+   "made": true
+  },
+  {
+   "year": 1962,
+   "month": 5,
+   "file": "ice/ice-196205.v1.png",
+   "made": true
+  },
+  {
+   "year": 1962,
+   "month": 6,
+   "file": "ice/ice-196206.v1.png",
+   "made": true
+  },
+  {
+   "year": 1962,
+   "month": 7,
+   "file": "ice/ice-196207.v1.png",
+   "made": true
+  },
+  {
+   "year": 1962,
+   "month": 8,
+   "file": "ice/ice-196208.v1.png",
+   "made": true
+  },
+  {
+   "year": 1962,
+   "month": 9,
+   "file": "ice/ice-196209.v1.png",
+   "made": true
+  },
+  {
+   "year": 1962,
+   "month": 10,
+   "file": "ice/ice-196210.v1.png",
+   "made": true
+  },
+  {
+   "year": 1962,
+   "month": 11,
+   "file": "ice/ice-196211.v1.png",
+   "made": true
+  },
+  {
+   "year": 1962,
+   "month": 12,
+   "file": "ice/ice-196212.v1.png",
+   "made": true
+  },
+  {
+   "year": 1963,
+   "month": 1,
+   "file": "ice/ice-196301.v1.png",
+   "made": true
+  },
+  {
+   "year": 1963,
+   "month": 2,
+   "file": "ice/ice-196302.v1.png",
+   "made": true
+  },
+  {
+   "year": 1963,
+   "month": 3,
+   "file": "ice/ice-196303.v1.png",
+   "made": true
+  },
+  {
+   "year": 1963,
+   "month": 4,
+   "file": "ice/ice-196304.v1.png",
+   "made": true
+  },
+  {
+   "year": 1963,
+   "month": 5,
+   "file": "ice/ice-196305.v1.png",
+   "made": true
+  },
+  {
+   "year": 1963,
+   "month": 6,
+   "file": "ice/ice-196306.v1.png",
+   "made": true
+  },
+  {
+   "year": 1963,
+   "month": 7,
+   "file": "ice/ice-196307.v1.png",
+   "made": true
+  },
+  {
+   "year": 1963,
+   "month": 8,
+   "file": "ice/ice-196308.v1.png",
+   "made": true
+  },
+  {
+   "year": 1963,
+   "month": 9,
+   "file": "ice/ice-196309.v1.png",
+   "made": true
+  },
+  {
+   "year": 1963,
+   "month": 10,
+   "file": "ice/ice-196310.v1.png",
+   "made": true
+  },
+  {
+   "year": 1963,
+   "month": 11,
+   "file": "ice/ice-196311.v1.png",
+   "made": true
+  },
+  {
+   "year": 1963,
+   "month": 12,
+   "file": "ice/ice-196312.v1.png",
+   "made": true
+  },
+  {
+   "year": 1964,
+   "month": 1,
+   "file": "ice/ice-196401.v1.png",
+   "made": true
+  },
+  {
+   "year": 1964,
+   "month": 2,
+   "file": "ice/ice-196402.v1.png",
+   "made": true
+  },
+  {
+   "year": 1964,
+   "month": 3,
+   "file": "ice/ice-196403.v1.png",
+   "made": true
+  },
+  {
+   "year": 1964,
+   "month": 4,
+   "file": "ice/ice-196404.v1.png",
+   "made": true
+  },
+  {
+   "year": 1964,
+   "month": 5,
+   "file": "ice/ice-196405.v1.png",
+   "made": true
+  },
+  {
+   "year": 1964,
+   "month": 6,
+   "file": "ice/ice-196406.v1.png",
+   "made": true
+  },
+  {
+   "year": 1964,
+   "month": 7,
+   "file": "ice/ice-196407.v1.png",
+   "made": true
+  },
+  {
+   "year": 1964,
+   "month": 8,
+   "file": "ice/ice-196408.v1.png",
+   "made": true
+  },
+  {
+   "year": 1964,
+   "month": 9,
+   "file": "ice/ice-196409.v1.png",
+   "made": true
+  },
+  {
+   "year": 1964,
+   "month": 10,
+   "file": "ice/ice-196410.v1.png",
+   "made": true
+  },
+  {
+   "year": 1964,
+   "month": 11,
+   "file": "ice/ice-196411.v1.png",
+   "made": true
+  },
+  {
+   "year": 1964,
+   "month": 12,
+   "file": "ice/ice-196412.v1.png",
+   "made": true
+  },
+  {
+   "year": 1965,
+   "month": 1,
+   "file": "ice/ice-196501.v1.png",
+   "made": true
+  },
+  {
+   "year": 1965,
+   "month": 2,
+   "file": "ice/ice-196502.v1.png",
+   "made": true
+  },
+  {
+   "year": 1965,
+   "month": 3,
+   "file": "ice/ice-196503.v1.png",
+   "made": true
+  },
+  {
+   "year": 1965,
+   "month": 4,
+   "file": "ice/ice-196504.v1.png",
+   "made": true
+  },
+  {
+   "year": 1965,
+   "month": 5,
+   "file": "ice/ice-196505.v1.png",
+   "made": true
+  },
+  {
+   "year": 1965,
+   "month": 6,
+   "file": "ice/ice-196506.v1.png",
+   "made": true
+  },
+  {
+   "year": 1965,
+   "month": 7,
+   "file": "ice/ice-196507.v1.png",
+   "made": true
+  },
+  {
+   "year": 1965,
+   "month": 8,
+   "file": "ice/ice-196508.v1.png",
+   "made": true
+  },
+  {
+   "year": 1965,
+   "month": 9,
+   "file": "ice/ice-196509.v1.png",
+   "made": true
+  },
+  {
+   "year": 1965,
+   "month": 10,
+   "file": "ice/ice-196510.v1.png",
+   "made": true
+  },
+  {
+   "year": 1965,
+   "month": 11,
+   "file": "ice/ice-196511.v1.png",
+   "made": true
+  },
+  {
+   "year": 1965,
+   "month": 12,
+   "file": "ice/ice-196512.v1.png",
+   "made": true
+  },
+  {
+   "year": 1966,
+   "month": 1,
+   "file": "ice/ice-196601.v1.png",
+   "made": true
+  },
+  {
+   "year": 1966,
+   "month": 2,
+   "file": "ice/ice-196602.v1.png",
+   "made": true
+  },
+  {
+   "year": 1966,
+   "month": 3,
+   "file": "ice/ice-196603.v1.png",
+   "made": true
+  },
+  {
+   "year": 1966,
+   "month": 4,
+   "file": "ice/ice-196604.v1.png",
+   "made": true
+  },
+  {
+   "year": 1966,
+   "month": 5,
+   "file": "ice/ice-196605.v1.png",
+   "made": true
+  },
+  {
+   "year": 1966,
+   "month": 6,
+   "file": "ice/ice-196606.v1.png",
+   "made": true
+  },
+  {
+   "year": 1966,
+   "month": 7,
+   "file": "ice/ice-196607.v1.png",
+   "made": true
+  },
+  {
+   "year": 1966,
+   "month": 8,
+   "file": "ice/ice-196608.v1.png",
+   "made": true
+  },
+  {
+   "year": 1966,
+   "month": 9,
+   "file": "ice/ice-196609.v1.png",
+   "made": true
+  },
+  {
+   "year": 1966,
+   "month": 10,
+   "file": "ice/ice-196610.v1.png",
+   "made": true
+  },
+  {
+   "year": 1966,
+   "month": 11,
+   "file": "ice/ice-196611.v1.png",
+   "made": true
+  },
+  {
+   "year": 1966,
+   "month": 12,
+   "file": "ice/ice-196612.v1.png",
+   "made": true
+  },
+  {
+   "year": 1967,
+   "month": 1,
+   "file": "ice/ice-196701.v1.png",
+   "made": true
+  },
+  {
+   "year": 1967,
+   "month": 2,
+   "file": "ice/ice-196702.v1.png",
+   "made": true
+  },
+  {
+   "year": 1967,
+   "month": 3,
+   "file": "ice/ice-196703.v1.png",
+   "made": true
+  },
+  {
+   "year": 1967,
+   "month": 4,
+   "file": "ice/ice-196704.v1.png",
+   "made": true
+  },
+  {
+   "year": 1967,
+   "month": 5,
+   "file": "ice/ice-196705.v1.png",
+   "made": true
+  },
+  {
+   "year": 1967,
+   "month": 6,
+   "file": "ice/ice-196706.v1.png",
+   "made": true
+  },
+  {
+   "year": 1967,
+   "month": 7,
+   "file": "ice/ice-196707.v1.png",
+   "made": true
+  },
+  {
+   "year": 1967,
+   "month": 8,
+   "file": "ice/ice-196708.v1.png",
+   "made": true
+  },
+  {
+   "year": 1967,
+   "month": 9,
+   "file": "ice/ice-196709.v1.png",
+   "made": true
+  },
+  {
+   "year": 1967,
+   "month": 10,
+   "file": "ice/ice-196710.v1.png",
+   "made": true
+  },
+  {
+   "year": 1967,
+   "month": 11,
+   "file": "ice/ice-196711.v1.png",
+   "made": true
+  },
+  {
+   "year": 1967,
+   "month": 12,
+   "file": "ice/ice-196712.v1.png",
+   "made": true
+  },
+  {
+   "year": 1968,
+   "month": 1,
+   "file": "ice/ice-196801.v1.png",
+   "made": true
+  },
+  {
+   "year": 1968,
+   "month": 2,
+   "file": "ice/ice-196802.v1.png",
+   "made": true
+  },
+  {
+   "year": 1968,
+   "month": 3,
+   "file": "ice/ice-196803.v1.png",
+   "made": true
+  },
+  {
+   "year": 1968,
+   "month": 4,
+   "file": "ice/ice-196804.v1.png",
+   "made": true
+  },
+  {
+   "year": 1968,
+   "month": 5,
+   "file": "ice/ice-196805.v1.png",
+   "made": true
+  },
+  {
+   "year": 1968,
+   "month": 6,
+   "file": "ice/ice-196806.v1.png",
+   "made": true
+  },
+  {
+   "year": 1968,
+   "month": 7,
+   "file": "ice/ice-196807.v1.png",
+   "made": true
+  },
+  {
+   "year": 1968,
+   "month": 8,
+   "file": "ice/ice-196808.v1.png",
+   "made": true
+  },
+  {
+   "year": 1968,
+   "month": 9,
+   "file": "ice/ice-196809.v1.png",
+   "made": true
+  },
+  {
+   "year": 1968,
+   "month": 10,
+   "file": "ice/ice-196810.v1.png",
+   "made": true
+  },
+  {
+   "year": 1968,
+   "month": 11,
+   "file": "ice/ice-196811.v1.png",
+   "made": true
+  },
+  {
+   "year": 1968,
+   "month": 12,
+   "file": "ice/ice-196812.v1.png",
+   "made": true
+  },
+  {
+   "year": 1969,
+   "month": 1,
+   "file": "ice/ice-196901.v1.png",
+   "made": true
+  },
+  {
+   "year": 1969,
+   "month": 2,
+   "file": "ice/ice-196902.v1.png",
+   "made": true
+  },
+  {
+   "year": 1969,
+   "month": 3,
+   "file": "ice/ice-196903.v1.png",
+   "made": true
+  },
+  {
+   "year": 1969,
+   "month": 4,
+   "file": "ice/ice-196904.v1.png",
+   "made": true
+  },
+  {
+   "year": 1969,
+   "month": 5,
+   "file": "ice/ice-196905.v1.png",
+   "made": true
+  },
+  {
+   "year": 1969,
+   "month": 6,
+   "file": "ice/ice-196906.v1.png",
+   "made": true
+  },
+  {
+   "year": 1969,
+   "month": 7,
+   "file": "ice/ice-196907.v1.png",
+   "made": true
+  },
+  {
+   "year": 1969,
+   "month": 8,
+   "file": "ice/ice-196908.v1.png",
+   "made": true
+  },
+  {
+   "year": 1969,
+   "month": 9,
+   "file": "ice/ice-196909.v1.png",
+   "made": true
+  },
+  {
+   "year": 1969,
+   "month": 10,
+   "file": "ice/ice-196910.v1.png",
+   "made": true
+  },
+  {
+   "year": 1969,
+   "month": 11,
+   "file": "ice/ice-196911.v1.png",
+   "made": true
+  },
+  {
+   "year": 1969,
+   "month": 12,
+   "file": "ice/ice-196912.v1.png",
+   "made": true
+  },
+  {
+   "year": 1970,
+   "month": 1,
+   "file": "ice/ice-197001.v1.png",
+   "made": true
+  },
+  {
+   "year": 1970,
+   "month": 2,
+   "file": "ice/ice-197002.v1.png",
+   "made": true
+  },
+  {
+   "year": 1970,
+   "month": 3,
+   "file": "ice/ice-197003.v1.png",
+   "made": true
+  },
+  {
+   "year": 1970,
+   "month": 4,
+   "file": "ice/ice-197004.v1.png",
+   "made": true
+  },
+  {
+   "year": 1970,
+   "month": 5,
+   "file": "ice/ice-197005.v1.png",
+   "made": true
+  },
+  {
+   "year": 1970,
+   "month": 6,
+   "file": "ice/ice-197006.v1.png",
+   "made": true
+  },
+  {
+   "year": 1970,
+   "month": 7,
+   "file": "ice/ice-197007.v1.png",
+   "made": true
+  },
+  {
+   "year": 1970,
+   "month": 8,
+   "file": "ice/ice-197008.v1.png",
+   "made": true
+  },
+  {
+   "year": 1970,
+   "month": 9,
+   "file": "ice/ice-197009.v1.png",
+   "made": true
+  },
+  {
+   "year": 1970,
+   "month": 10,
+   "file": "ice/ice-197010.v1.png",
+   "made": true
+  },
+  {
+   "year": 1970,
+   "month": 11,
+   "file": "ice/ice-197011.v1.png",
+   "made": true
+  },
+  {
+   "year": 1970,
+   "month": 12,
+   "file": "ice/ice-197012.v1.png",
+   "made": true
+  },
+  {
+   "year": 1971,
+   "month": 1,
+   "file": "ice/ice-197101.v1.png",
+   "made": true
+  },
+  {
+   "year": 1971,
+   "month": 2,
+   "file": "ice/ice-197102.v1.png",
+   "made": true
+  },
+  {
+   "year": 1971,
+   "month": 3,
+   "file": "ice/ice-197103.v1.png",
+   "made": true
+  },
+  {
+   "year": 1971,
+   "month": 4,
+   "file": "ice/ice-197104.v1.png",
+   "made": true
+  },
+  {
+   "year": 1971,
+   "month": 5,
+   "file": "ice/ice-197105.v1.png",
+   "made": true
+  },
+  {
+   "year": 1971,
+   "month": 6,
+   "file": "ice/ice-197106.v1.png",
+   "made": true
+  },
+  {
+   "year": 1971,
+   "month": 7,
+   "file": "ice/ice-197107.v1.png",
+   "made": true
+  },
+  {
+   "year": 1971,
+   "month": 8,
+   "file": "ice/ice-197108.v1.png",
+   "made": true
+  },
+  {
+   "year": 1971,
+   "month": 9,
+   "file": "ice/ice-197109.v1.png",
+   "made": true
+  },
+  {
+   "year": 1971,
+   "month": 10,
+   "file": "ice/ice-197110.v1.png",
+   "made": true
+  },
+  {
+   "year": 1971,
+   "month": 11,
+   "file": "ice/ice-197111.v1.png",
+   "made": true
+  },
+  {
+   "year": 1971,
+   "month": 12,
+   "file": "ice/ice-197112.v1.png",
+   "made": true
+  },
+  {
+   "year": 1972,
+   "month": 1,
+   "file": "ice/ice-197201.v1.png",
+   "made": true
+  },
+  {
+   "year": 1972,
+   "month": 2,
+   "file": "ice/ice-197202.v1.png",
+   "made": true
+  },
+  {
+   "year": 1972,
+   "month": 3,
+   "file": "ice/ice-197203.v1.png",
+   "made": true
+  },
+  {
+   "year": 1972,
+   "month": 4,
+   "file": "ice/ice-197204.v1.png",
+   "made": true
+  },
+  {
+   "year": 1972,
+   "month": 5,
+   "file": "ice/ice-197205.v1.png",
+   "made": true
+  },
+  {
+   "year": 1972,
+   "month": 6,
+   "file": "ice/ice-197206.v1.png",
+   "made": true
+  },
+  {
+   "year": 1972,
+   "month": 7,
+   "file": "ice/ice-197207.v1.png",
+   "made": true
+  },
+  {
+   "year": 1972,
+   "month": 8,
+   "file": "ice/ice-197208.v1.png",
+   "made": true
+  },
+  {
+   "year": 1972,
+   "month": 9,
+   "file": "ice/ice-197209.v1.png",
+   "made": true
+  },
+  {
+   "year": 1972,
+   "month": 10,
+   "file": "ice/ice-197210.v1.png",
+   "made": true
+  },
+  {
+   "year": 1972,
+   "month": 11,
+   "file": "ice/ice-197211.v1.png",
+   "made": true
+  },
+  {
+   "year": 1972,
+   "month": 12,
+   "file": "ice/ice-197212.v1.png",
+   "made": true
+  },
+  {
+   "year": 1973,
+   "month": 1,
+   "file": "ice/ice-197301.v1.png",
+   "made": true
+  },
+  {
+   "year": 1973,
+   "month": 2,
+   "file": "ice/ice-197302.v1.png",
+   "made": true
+  },
+  {
+   "year": 1973,
+   "month": 3,
+   "file": "ice/ice-197303.v1.png",
+   "made": true
+  },
+  {
+   "year": 1973,
+   "month": 4,
+   "file": "ice/ice-197304.v1.png",
+   "made": true
+  },
+  {
+   "year": 1973,
+   "month": 5,
+   "file": "ice/ice-197305.v1.png",
+   "made": true
+  },
+  {
+   "year": 1973,
+   "month": 6,
+   "file": "ice/ice-197306.v1.png",
+   "made": true
+  },
+  {
+   "year": 1973,
+   "month": 7,
+   "file": "ice/ice-197307.v1.png",
+   "made": true
+  },
+  {
+   "year": 1973,
+   "month": 8,
+   "file": "ice/ice-197308.v1.png",
+   "made": true
+  },
+  {
+   "year": 1973,
+   "month": 9,
+   "file": "ice/ice-197309.v1.png",
+   "made": true
+  },
+  {
+   "year": 1973,
+   "month": 10,
+   "file": "ice/ice-197310.v1.png",
+   "made": true
+  },
+  {
+   "year": 1973,
+   "month": 11,
+   "file": "ice/ice-197311.v1.png",
+   "made": true
+  },
+  {
+   "year": 1973,
+   "month": 12,
+   "file": "ice/ice-197312.v1.png",
+   "made": true
+  },
+  {
+   "year": 1974,
+   "month": 1,
+   "file": "ice/ice-197401.v1.png",
+   "made": true
+  },
+  {
+   "year": 1974,
+   "month": 2,
+   "file": "ice/ice-197402.v1.png",
+   "made": true
+  },
+  {
+   "year": 1974,
+   "month": 3,
+   "file": "ice/ice-197403.v1.png",
+   "made": true
+  },
+  {
+   "year": 1974,
+   "month": 4,
+   "file": "ice/ice-197404.v1.png",
+   "made": true
+  },
+  {
+   "year": 1974,
+   "month": 5,
+   "file": "ice/ice-197405.v1.png",
+   "made": true
+  },
+  {
+   "year": 1974,
+   "month": 6,
+   "file": "ice/ice-197406.v1.png",
+   "made": true
+  },
+  {
+   "year": 1974,
+   "month": 7,
+   "file": "ice/ice-197407.v1.png",
+   "made": true
+  },
+  {
+   "year": 1974,
+   "month": 8,
+   "file": "ice/ice-197408.v1.png",
+   "made": true
+  },
+  {
+   "year": 1974,
+   "month": 9,
+   "file": "ice/ice-197409.v1.png",
+   "made": true
+  },
+  {
+   "year": 1974,
+   "month": 10,
+   "file": "ice/ice-197410.v1.png",
+   "made": true
+  },
+  {
+   "year": 1974,
+   "month": 11,
+   "file": "ice/ice-197411.v1.png",
+   "made": true
+  },
+  {
+   "year": 1974,
+   "month": 12,
+   "file": "ice/ice-197412.v1.png",
+   "made": true
+  },
+  {
+   "year": 1975,
+   "month": 1,
+   "file": "ice/ice-197501.v1.png",
+   "made": true
+  },
+  {
+   "year": 1975,
+   "month": 2,
+   "file": "ice/ice-197502.v1.png",
+   "made": true
+  },
+  {
+   "year": 1975,
+   "month": 3,
+   "file": "ice/ice-197503.v1.png",
+   "made": true
+  },
+  {
+   "year": 1975,
+   "month": 4,
+   "file": "ice/ice-197504.v1.png",
+   "made": true
+  },
+  {
+   "year": 1975,
+   "month": 5,
+   "file": "ice/ice-197505.v1.png",
+   "made": true
+  },
+  {
+   "year": 1975,
+   "month": 6,
+   "file": "ice/ice-197506.v1.png",
+   "made": true
+  },
+  {
+   "year": 1975,
+   "month": 7,
+   "file": "ice/ice-197507.v1.png",
+   "made": true
+  },
+  {
+   "year": 1975,
+   "month": 8,
+   "file": "ice/ice-197508.v1.png",
+   "made": true
+  },
+  {
+   "year": 1975,
+   "month": 9,
+   "file": "ice/ice-197509.v1.png",
+   "made": true
+  },
+  {
+   "year": 1975,
+   "month": 10,
+   "file": "ice/ice-197510.v1.png",
+   "made": true
+  },
+  {
+   "year": 1975,
+   "month": 11,
+   "file": "ice/ice-197511.v1.png",
+   "made": true
+  },
+  {
+   "year": 1975,
+   "month": 12,
+   "file": "ice/ice-197512.v1.png",
+   "made": true
+  },
+  {
+   "year": 1976,
+   "month": 1,
+   "file": "ice/ice-197601.v1.png",
+   "made": true
+  },
+  {
+   "year": 1976,
+   "month": 2,
+   "file": "ice/ice-197602.v1.png",
+   "made": true
+  },
+  {
+   "year": 1976,
+   "month": 3,
+   "file": "ice/ice-197603.v1.png",
+   "made": true
+  },
+  {
+   "year": 1976,
+   "month": 4,
+   "file": "ice/ice-197604.v1.png",
+   "made": true
+  },
+  {
+   "year": 1976,
+   "month": 5,
+   "file": "ice/ice-197605.v1.png",
+   "made": true
+  },
+  {
+   "year": 1976,
+   "month": 6,
+   "file": "ice/ice-197606.v1.png",
+   "made": true
+  },
+  {
+   "year": 1976,
+   "month": 7,
+   "file": "ice/ice-197607.v1.png",
+   "made": true
+  },
+  {
+   "year": 1976,
+   "month": 8,
+   "file": "ice/ice-197608.v1.png",
+   "made": true
+  },
+  {
+   "year": 1976,
+   "month": 9,
+   "file": "ice/ice-197609.v1.png",
+   "made": true
+  },
+  {
+   "year": 1976,
+   "month": 10,
+   "file": "ice/ice-197610.v1.png",
+   "made": true
+  },
+  {
+   "year": 1976,
+   "month": 11,
+   "file": "ice/ice-197611.v1.png",
+   "made": true
+  },
+  {
+   "year": 1976,
+   "month": 12,
+   "file": "ice/ice-197612.v1.png",
+   "made": true
+  },
+  {
+   "year": 1977,
+   "month": 1,
+   "file": "ice/ice-197701.v1.png",
+   "made": true
+  },
+  {
+   "year": 1977,
+   "month": 2,
+   "file": "ice/ice-197702.v1.png",
+   "made": true
+  },
+  {
+   "year": 1977,
+   "month": 3,
+   "file": "ice/ice-197703.v1.png",
+   "made": true
+  },
+  {
+   "year": 1977,
+   "month": 4,
+   "file": "ice/ice-197704.v1.png",
+   "made": true
+  },
+  {
+   "year": 1977,
+   "month": 5,
+   "file": "ice/ice-197705.v1.png",
+   "made": true
+  },
+  {
+   "year": 1977,
+   "month": 6,
+   "file": "ice/ice-197706.v1.png",
+   "made": true
+  },
+  {
+   "year": 1977,
+   "month": 7,
+   "file": "ice/ice-197707.v1.png",
+   "made": true
+  },
+  {
+   "year": 1977,
+   "month": 8,
+   "file": "ice/ice-197708.v1.png",
+   "made": true
+  },
+  {
+   "year": 1977,
+   "month": 9,
+   "file": "ice/ice-197709.v1.png",
+   "made": true
+  },
+  {
+   "year": 1977,
+   "month": 10,
+   "file": "ice/ice-197710.v1.png",
+   "made": true
+  },
+  {
+   "year": 1977,
+   "month": 11,
+   "file": "ice/ice-197711.v1.png",
+   "made": true
+  },
+  {
+   "year": 1977,
+   "month": 12,
+   "file": "ice/ice-197712.v1.png",
+   "made": true
+  },
+  {
+   "year": 1978,
+   "month": 1,
+   "file": "ice/ice-197801.v1.png",
+   "made": true
+  },
+  {
+   "year": 1978,
+   "month": 2,
+   "file": "ice/ice-197802.v1.png",
+   "made": true
+  },
+  {
+   "year": 1978,
+   "month": 3,
+   "file": "ice/ice-197803.v1.png",
+   "made": true
+  },
+  {
+   "year": 1978,
+   "month": 4,
+   "file": "ice/ice-197804.v1.png",
+   "made": true
+  },
+  {
+   "year": 1978,
+   "month": 5,
+   "file": "ice/ice-197805.v1.png",
+   "made": true
+  },
+  {
+   "year": 1978,
+   "month": 6,
+   "file": "ice/ice-197806.v1.png",
+   "made": true
+  },
+  {
+   "year": 1978,
+   "month": 7,
+   "file": "ice/ice-197807.v1.png",
+   "made": true
+  },
+  {
+   "year": 1978,
+   "month": 8,
+   "file": "ice/ice-197808.v1.png",
+   "made": true
+  },
+  {
+   "year": 1978,
+   "month": 9,
+   "file": "ice/ice-197809.v1.png",
+   "made": true
+  },
+  {
+   "year": 1978,
+   "month": 10,
+   "file": "ice/ice-197810.v1.png",
+   "made": true
+  },
+  {
+   "year": 1978,
+   "month": 11,
+   "file": "ice/ice-197811.v1.png",
+   "made": true
+  },
+  {
+   "year": 1978,
+   "month": 12,
+   "file": "ice/ice-197812.v1.png",
+   "made": true
+  },
+  {
+   "year": 1979,
+   "month": 1,
+   "file": "ice/ice-197901.v1.png"
+  },
+  {
+   "year": 1979,
+   "month": 2,
+   "file": "ice/ice-197902.v1.png"
+  },
+  {
+   "year": 1979,
+   "month": 3,
+   "file": "ice/ice-197903.v1.png"
+  },
+  {
+   "year": 1979,
+   "month": 4,
+   "file": "ice/ice-197904.v1.png"
+  },
+  {
+   "year": 1979,
+   "month": 5,
+   "file": "ice/ice-197905.v1.png"
+  },
+  {
+   "year": 1979,
+   "month": 6,
+   "file": "ice/ice-197906.v1.png"
+  },
+  {
+   "year": 1979,
+   "month": 7,
+   "file": "ice/ice-197907.v1.png"
+  },
+  {
+   "year": 1979,
+   "month": 8,
+   "file": "ice/ice-197908.v1.png"
+  },
+  {
+   "year": 1979,
+   "month": 9,
+   "file": "ice/ice-197909.v1.png"
+  },
+  {
+   "year": 1979,
+   "month": 10,
+   "file": "ice/ice-197910.v1.png"
+  },
+  {
+   "year": 1979,
+   "month": 11,
+   "file": "ice/ice-197911.v1.png"
+  },
+  {
+   "year": 1979,
+   "month": 12,
+   "file": "ice/ice-197912.v1.png"
+  },
+  {
+   "year": 1980,
+   "month": 1,
+   "file": "ice/ice-198001.v1.png"
+  },
+  {
+   "year": 1980,
+   "month": 2,
+   "file": "ice/ice-198002.v1.png"
+  },
+  {
+   "year": 1980,
+   "month": 3,
+   "file": "ice/ice-198003.v1.png"
+  },
+  {
+   "year": 1980,
+   "month": 4,
+   "file": "ice/ice-198004.v1.png"
+  },
+  {
+   "year": 1980,
+   "month": 5,
+   "file": "ice/ice-198005.v1.png"
+  },
+  {
+   "year": 1980,
+   "month": 6,
+   "file": "ice/ice-198006.v1.png"
+  },
+  {
+   "year": 1980,
+   "month": 7,
+   "file": "ice/ice-198007.v1.png"
+  },
+  {
+   "year": 1980,
+   "month": 8,
+   "file": "ice/ice-198008.v1.png"
+  },
+  {
+   "year": 1980,
+   "month": 9,
+   "file": "ice/ice-198009.v1.png"
+  },
+  {
+   "year": 1980,
+   "month": 10,
+   "file": "ice/ice-198010.v1.png"
+  },
+  {
+   "year": 1980,
+   "month": 11,
+   "file": "ice/ice-198011.v1.png"
+  },
+  {
+   "year": 1980,
+   "month": 12,
+   "file": "ice/ice-198012.v1.png"
+  },
+  {
+   "year": 1981,
+   "month": 1,
+   "file": "ice/ice-198101.v1.png"
+  },
+  {
+   "year": 1981,
+   "month": 2,
+   "file": "ice/ice-198102.v1.png"
+  },
+  {
+   "year": 1981,
+   "month": 3,
+   "file": "ice/ice-198103.v1.png"
+  },
+  {
+   "year": 1981,
+   "month": 4,
+   "file": "ice/ice-198104.v1.png"
+  },
+  {
+   "year": 1981,
+   "month": 5,
+   "file": "ice/ice-198105.v1.png"
+  },
+  {
+   "year": 1981,
+   "month": 6,
+   "file": "ice/ice-198106.v1.png"
+  },
+  {
+   "year": 1981,
+   "month": 7,
+   "file": "ice/ice-198107.v1.png"
+  },
+  {
+   "year": 1981,
+   "month": 8,
+   "file": "ice/ice-198108.v1.png"
+  },
+  {
+   "year": 1981,
+   "month": 9,
+   "file": "ice/ice-198109.v1.png"
+  },
+  {
+   "year": 1981,
+   "month": 10,
+   "file": "ice/ice-198110.v1.png"
+  },
+  {
+   "year": 1981,
+   "month": 11,
+   "file": "ice/ice-198111.v1.png"
+  },
+  {
+   "year": 1981,
+   "month": 12,
+   "file": "ice/ice-198112.v1.png"
+  },
+  {
+   "year": 1982,
+   "month": 1,
+   "file": "ice/ice-198201.v1.png"
+  },
+  {
+   "year": 1982,
+   "month": 2,
+   "file": "ice/ice-198202.v1.png"
+  },
+  {
+   "year": 1982,
+   "month": 3,
+   "file": "ice/ice-198203.v1.png"
+  },
+  {
+   "year": 1982,
+   "month": 4,
+   "file": "ice/ice-198204.v1.png"
+  },
+  {
+   "year": 1982,
+   "month": 5,
+   "file": "ice/ice-198205.v1.png"
+  },
+  {
+   "year": 1982,
+   "month": 6,
+   "file": "ice/ice-198206.v1.png"
+  },
+  {
+   "year": 1982,
+   "month": 7,
+   "file": "ice/ice-198207.v1.png"
+  },
+  {
+   "year": 1982,
+   "month": 8,
+   "file": "ice/ice-198208.v1.png"
+  },
+  {
+   "year": 1982,
+   "month": 9,
+   "file": "ice/ice-198209.v1.png"
+  },
+  {
+   "year": 1982,
+   "month": 10,
+   "file": "ice/ice-198210.v1.png"
+  },
+  {
+   "year": 1982,
+   "month": 11,
+   "file": "ice/ice-198211.v1.png"
+  },
+  {
+   "year": 1982,
+   "month": 12,
+   "file": "ice/ice-198212.v1.png"
+  },
+  {
+   "year": 1983,
+   "month": 1,
+   "file": "ice/ice-198301.v1.png"
+  },
+  {
+   "year": 1983,
+   "month": 2,
+   "file": "ice/ice-198302.v1.png"
+  },
+  {
+   "year": 1983,
+   "month": 3,
+   "file": "ice/ice-198303.v1.png"
+  },
+  {
+   "year": 1983,
+   "month": 4,
+   "file": "ice/ice-198304.v1.png"
+  },
+  {
+   "year": 1983,
+   "month": 5,
+   "file": "ice/ice-198305.v1.png"
+  },
+  {
+   "year": 1983,
+   "month": 6,
+   "file": "ice/ice-198306.v1.png"
+  },
+  {
+   "year": 1983,
+   "month": 7,
+   "file": "ice/ice-198307.v1.png"
+  },
+  {
+   "year": 1983,
+   "month": 8,
+   "file": "ice/ice-198308.v1.png"
+  },
+  {
+   "year": 1983,
+   "month": 9,
+   "file": "ice/ice-198309.v1.png"
+  },
+  {
+   "year": 1983,
+   "month": 10,
+   "file": "ice/ice-198310.v1.png"
+  },
+  {
+   "year": 1983,
+   "month": 11,
+   "file": "ice/ice-198311.v1.png"
+  },
+  {
+   "year": 1983,
+   "month": 12,
+   "file": "ice/ice-198312.v1.png"
+  },
+  {
+   "year": 1984,
+   "month": 1,
+   "file": "ice/ice-198401.v1.png"
+  },
+  {
+   "year": 1984,
+   "month": 2,
+   "file": "ice/ice-198402.v1.png"
+  },
+  {
+   "year": 1984,
+   "month": 3,
+   "file": "ice/ice-198403.v1.png"
+  },
+  {
+   "year": 1984,
+   "month": 4,
+   "file": "ice/ice-198404.v1.png"
+  },
+  {
+   "year": 1984,
+   "month": 5,
+   "file": "ice/ice-198405.v1.png"
+  },
+  {
+   "year": 1984,
+   "month": 6,
+   "file": "ice/ice-198406.v1.png"
+  },
+  {
+   "year": 1984,
+   "month": 7,
+   "file": "ice/ice-198407.v1.png"
+  },
+  {
+   "year": 1984,
+   "month": 8,
+   "file": "ice/ice-198408.v1.png"
+  },
+  {
+   "year": 1984,
+   "month": 9,
+   "file": "ice/ice-198409.v1.png"
+  },
+  {
+   "year": 1984,
+   "month": 10,
+   "file": "ice/ice-198410.v1.png"
+  },
+  {
+   "year": 1984,
+   "month": 11,
+   "file": "ice/ice-198411.v1.png"
+  },
+  {
+   "year": 1984,
+   "month": 12,
+   "file": "ice/ice-198412.v1.png"
+  },
+  {
+   "year": 1985,
+   "month": 1,
+   "file": "ice/ice-198501.v1.png"
+  },
+  {
+   "year": 1985,
+   "month": 2,
+   "file": "ice/ice-198502.v1.png"
+  },
+  {
+   "year": 1985,
+   "month": 3,
+   "file": "ice/ice-198503.v1.png"
+  },
+  {
+   "year": 1985,
+   "month": 4,
+   "file": "ice/ice-198504.v1.png"
+  },
+  {
+   "year": 1985,
+   "month": 5,
+   "file": "ice/ice-198505.v1.png"
+  },
+  {
+   "year": 1985,
+   "month": 6,
+   "file": "ice/ice-198506.v1.png"
+  },
+  {
+   "year": 1985,
+   "month": 7,
+   "file": "ice/ice-198507.v1.png"
+  },
+  {
+   "year": 1985,
+   "month": 8,
+   "file": "ice/ice-198508.v1.png"
+  },
+  {
+   "year": 1985,
+   "month": 9,
+   "file": "ice/ice-198509.v1.png"
+  },
+  {
+   "year": 1985,
+   "month": 10,
+   "file": "ice/ice-198510.v1.png"
+  },
+  {
+   "year": 1985,
+   "month": 11,
+   "file": "ice/ice-198511.v1.png"
+  },
+  {
+   "year": 1985,
+   "month": 12,
+   "file": "ice/ice-198512.v1.png"
+  },
+  {
+   "year": 1986,
+   "month": 1,
+   "file": "ice/ice-198601.v1.png"
+  },
+  {
+   "year": 1986,
+   "month": 2,
+   "file": "ice/ice-198602.v1.png"
+  },
+  {
+   "year": 1986,
+   "month": 3,
+   "file": "ice/ice-198603.v1.png"
+  },
+  {
+   "year": 1986,
+   "month": 4,
+   "file": "ice/ice-198604.v1.png"
+  },
+  {
+   "year": 1986,
+   "month": 5,
+   "file": "ice/ice-198605.v1.png"
+  },
+  {
+   "year": 1986,
+   "month": 6,
+   "file": "ice/ice-198606.v1.png"
+  },
+  {
+   "year": 1986,
+   "month": 7,
+   "file": "ice/ice-198607.v1.png"
+  },
+  {
+   "year": 1986,
+   "month": 8,
+   "file": "ice/ice-198608.v1.png"
+  },
+  {
+   "year": 1986,
+   "month": 9,
+   "file": "ice/ice-198609.v1.png"
+  },
+  {
+   "year": 1986,
+   "month": 10,
+   "file": "ice/ice-198610.v1.png"
+  },
+  {
+   "year": 1986,
+   "month": 11,
+   "file": "ice/ice-198611.v1.png"
+  },
+  {
+   "year": 1986,
+   "month": 12,
+   "file": "ice/ice-198612.v1.png"
+  },
+  {
+   "year": 1987,
+   "month": 1,
+   "file": "ice/ice-198701.v1.png"
+  },
+  {
+   "year": 1987,
+   "month": 2,
+   "file": "ice/ice-198702.v1.png"
+  },
+  {
+   "year": 1987,
+   "month": 3,
+   "file": "ice/ice-198703.v1.png"
+  },
+  {
+   "year": 1987,
+   "month": 4,
+   "file": "ice/ice-198704.v1.png"
+  },
+  {
+   "year": 1987,
+   "month": 5,
+   "file": "ice/ice-198705.v1.png"
+  },
+  {
+   "year": 1987,
+   "month": 6,
+   "file": "ice/ice-198706.v1.png"
+  },
+  {
+   "year": 1987,
+   "month": 7,
+   "file": "ice/ice-198707.v1.png"
+  },
+  {
+   "year": 1987,
+   "month": 9,
+   "file": "ice/ice-198709.v1.png"
+  },
+  {
+   "year": 1987,
+   "month": 10,
+   "file": "ice/ice-198710.v1.png"
+  },
+  {
+   "year": 1987,
+   "month": 11,
+   "file": "ice/ice-198711.v1.png"
+  },
+  {
+   "year": 1988,
+   "month": 2,
+   "file": "ice/ice-198802.v1.png"
+  },
+  {
+   "year": 1988,
+   "month": 3,
+   "file": "ice/ice-198803.v1.png"
+  },
+  {
+   "year": 1988,
+   "month": 4,
+   "file": "ice/ice-198804.v1.png"
+  },
+  {
+   "year": 1988,
+   "month": 5,
+   "file": "ice/ice-198805.v1.png"
+  },
+  {
+   "year": 1988,
+   "month": 6,
+   "file": "ice/ice-198806.v1.png"
+  },
+  {
+   "year": 1988,
+   "month": 7,
+   "file": "ice/ice-198807.v1.png"
+  },
+  {
+   "year": 1988,
+   "month": 8,
+   "file": "ice/ice-198808.v1.png"
+  },
+  {
+   "year": 1988,
+   "month": 9,
+   "file": "ice/ice-198809.v1.png"
+  },
+  {
+   "year": 1988,
+   "month": 10,
+   "file": "ice/ice-198810.v1.png"
+  },
+  {
+   "year": 1988,
+   "month": 11,
+   "file": "ice/ice-198811.v1.png"
+  },
+  {
+   "year": 1988,
+   "month": 12,
+   "file": "ice/ice-198812.v1.png"
+  },
+  {
+   "year": 1989,
+   "month": 1,
+   "file": "ice/ice-198901.v1.png"
+  },
+  {
+   "year": 1989,
+   "month": 2,
+   "file": "ice/ice-198902.v1.png"
+  },
+  {
+   "year": 1989,
+   "month": 3,
+   "file": "ice/ice-198903.v1.png"
+  },
+  {
+   "year": 1989,
+   "month": 4,
+   "file": "ice/ice-198904.v1.png"
+  },
+  {
+   "year": 1989,
+   "month": 5,
+   "file": "ice/ice-198905.v1.png"
+  },
+  {
+   "year": 1989,
+   "month": 6,
+   "file": "ice/ice-198906.v1.png"
+  },
+  {
+   "year": 1989,
+   "month": 7,
+   "file": "ice/ice-198907.v1.png"
+  },
+  {
+   "year": 1989,
+   "month": 8,
+   "file": "ice/ice-198908.v1.png"
+  },
+  {
+   "year": 1989,
+   "month": 9,
+   "file": "ice/ice-198909.v1.png"
+  },
+  {
+   "year": 1989,
+   "month": 10,
+   "file": "ice/ice-198910.v1.png"
+  },
+  {
+   "year": 1989,
+   "month": 11,
+   "file": "ice/ice-198911.v1.png"
+  },
+  {
+   "year": 1989,
+   "month": 12,
+   "file": "ice/ice-198912.v1.png"
+  },
+  {
+   "year": 1990,
+   "month": 1,
+   "file": "ice/ice-199001.v1.png"
+  },
+  {
+   "year": 1990,
+   "month": 2,
+   "file": "ice/ice-199002.v1.png"
+  },
+  {
+   "year": 1990,
+   "month": 3,
+   "file": "ice/ice-199003.v1.png"
+  },
+  {
+   "year": 1990,
+   "month": 4,
+   "file": "ice/ice-199004.v1.png"
+  },
+  {
+   "year": 1990,
+   "month": 5,
+   "file": "ice/ice-199005.v1.png"
+  },
+  {
+   "year": 1990,
+   "month": 6,
+   "file": "ice/ice-199006.v1.png"
+  },
+  {
+   "year": 1990,
+   "month": 7,
+   "file": "ice/ice-199007.v1.png"
+  },
+  {
+   "year": 1990,
+   "month": 8,
+   "file": "ice/ice-199008.v1.png"
+  },
+  {
+   "year": 1990,
+   "month": 9,
+   "file": "ice/ice-199009.v1.png"
+  },
+  {
+   "year": 1990,
+   "month": 10,
+   "file": "ice/ice-199010.v1.png"
+  },
+  {
+   "year": 1990,
+   "month": 11,
+   "file": "ice/ice-199011.v1.png"
+  },
+  {
+   "year": 1990,
+   "month": 12,
+   "file": "ice/ice-199012.v1.png"
+  },
+  {
+   "year": 1991,
+   "month": 1,
+   "file": "ice/ice-199101.v1.png"
+  },
+  {
+   "year": 1991,
+   "month": 2,
+   "file": "ice/ice-199102.v1.png"
+  },
+  {
+   "year": 1991,
+   "month": 3,
+   "file": "ice/ice-199103.v1.png"
+  },
+  {
+   "year": 1991,
+   "month": 4,
+   "file": "ice/ice-199104.v1.png"
+  },
+  {
+   "year": 1991,
+   "month": 5,
+   "file": "ice/ice-199105.v1.png"
+  },
+  {
+   "year": 1991,
+   "month": 6,
+   "file": "ice/ice-199106.v1.png"
+  },
+  {
+   "year": 1991,
+   "month": 7,
+   "file": "ice/ice-199107.v1.png"
+  },
+  {
+   "year": 1991,
+   "month": 8,
+   "file": "ice/ice-199108.v1.png"
+  },
+  {
+   "year": 1991,
+   "month": 9,
+   "file": "ice/ice-199109.v1.png"
+  },
+  {
+   "year": 1991,
+   "month": 10,
+   "file": "ice/ice-199110.v1.png"
+  },
+  {
+   "year": 1991,
+   "month": 11,
+   "file": "ice/ice-199111.v1.png"
+  },
+  {
+   "year": 1991,
+   "month": 12,
+   "file": "ice/ice-199112.v1.png"
+  },
+  {
+   "year": 1992,
+   "month": 1,
+   "file": "ice/ice-199201.v1.png"
+  },
+  {
+   "year": 1992,
+   "month": 2,
+   "file": "ice/ice-199202.v1.png"
+  },
+  {
+   "year": 1992,
+   "month": 3,
+   "file": "ice/ice-199203.v1.png"
+  },
+  {
+   "year": 1992,
+   "month": 4,
+   "file": "ice/ice-199204.v1.png"
+  },
+  {
+   "year": 1992,
+   "month": 5,
+   "file": "ice/ice-199205.v1.png"
+  },
+  {
+   "year": 1992,
+   "month": 6,
+   "file": "ice/ice-199206.v1.png"
+  },
+  {
+   "year": 1992,
+   "month": 7,
+   "file": "ice/ice-199207.v1.png"
+  },
+  {
+   "year": 1992,
+   "month": 8,
+   "file": "ice/ice-199208.v1.png"
+  },
+  {
+   "year": 1992,
+   "month": 9,
+   "file": "ice/ice-199209.v1.png"
+  },
+  {
+   "year": 1992,
+   "month": 10,
+   "file": "ice/ice-199210.v1.png"
+  },
+  {
+   "year": 1992,
+   "month": 11,
+   "file": "ice/ice-199211.v1.png"
+  },
+  {
+   "year": 1992,
+   "month": 12,
+   "file": "ice/ice-199212.v1.png"
+  },
+  {
+   "year": 1993,
+   "month": 1,
+   "file": "ice/ice-199301.v1.png"
+  },
+  {
+   "year": 1993,
+   "month": 2,
+   "file": "ice/ice-199302.v1.png"
+  },
+  {
+   "year": 1993,
+   "month": 3,
+   "file": "ice/ice-199303.v1.png"
+  },
+  {
+   "year": 1993,
+   "month": 4,
+   "file": "ice/ice-199304.v1.png"
+  },
+  {
+   "year": 1993,
+   "month": 5,
+   "file": "ice/ice-199305.v1.png"
+  },
+  {
+   "year": 1993,
+   "month": 6,
+   "file": "ice/ice-199306.v1.png"
+  },
+  {
+   "year": 1993,
+   "month": 7,
+   "file": "ice/ice-199307.v1.png"
+  },
+  {
+   "year": 1993,
+   "month": 8,
+   "file": "ice/ice-199308.v1.png"
+  },
+  {
+   "year": 1993,
+   "month": 9,
+   "file": "ice/ice-199309.v1.png"
+  },
+  {
+   "year": 1993,
+   "month": 10,
+   "file": "ice/ice-199310.v1.png"
+  },
+  {
+   "year": 1993,
+   "month": 11,
+   "file": "ice/ice-199311.v1.png"
+  },
+  {
+   "year": 1993,
+   "month": 12,
+   "file": "ice/ice-199312.v1.png"
+  },
+  {
+   "year": 1994,
+   "month": 1,
+   "file": "ice/ice-199401.v1.png"
+  },
+  {
+   "year": 1994,
+   "month": 2,
+   "file": "ice/ice-199402.v1.png"
+  },
+  {
+   "year": 1994,
+   "month": 3,
+   "file": "ice/ice-199403.v1.png"
+  },
+  {
+   "year": 1994,
+   "month": 4,
+   "file": "ice/ice-199404.v1.png"
+  },
+  {
+   "year": 1994,
+   "month": 5,
+   "file": "ice/ice-199405.v1.png"
+  },
+  {
+   "year": 1994,
+   "month": 6,
+   "file": "ice/ice-199406.v1.png"
+  },
+  {
+   "year": 1994,
+   "month": 7,
+   "file": "ice/ice-199407.v1.png"
+  },
+  {
+   "year": 1994,
+   "month": 8,
+   "file": "ice/ice-199408.v1.png"
+  },
+  {
+   "year": 1994,
+   "month": 9,
+   "file": "ice/ice-199409.v1.png"
+  },
+  {
+   "year": 1994,
+   "month": 10,
+   "file": "ice/ice-199410.v1.png"
+  },
+  {
+   "year": 1994,
+   "month": 11,
+   "file": "ice/ice-199411.v1.png"
+  },
+  {
+   "year": 1994,
+   "month": 12,
+   "file": "ice/ice-199412.v1.png"
+  },
+  {
+   "year": 1995,
+   "month": 1,
+   "file": "ice/ice-199501.v1.png"
+  },
+  {
+   "year": 1995,
+   "month": 2,
+   "file": "ice/ice-199502.v1.png"
+  },
+  {
+   "year": 1995,
+   "month": 3,
+   "file": "ice/ice-199503.v1.png"
+  },
+  {
+   "year": 1995,
+   "month": 4,
+   "file": "ice/ice-199504.v1.png"
+  },
+  {
+   "year": 1995,
+   "month": 5,
+   "file": "ice/ice-199505.v1.png"
+  },
+  {
+   "year": 1995,
+   "month": 6,
+   "file": "ice/ice-199506.v1.png"
+  },
+  {
+   "year": 1995,
+   "month": 7,
+   "file": "ice/ice-199507.v1.png"
+  },
+  {
+   "year": 1995,
+   "month": 8,
+   "file": "ice/ice-199508.v1.png"
+  },
+  {
+   "year": 1995,
+   "month": 9,
+   "file": "ice/ice-199509.v1.png"
+  },
+  {
+   "year": 1995,
+   "month": 10,
+   "file": "ice/ice-199510.v1.png"
+  },
+  {
+   "year": 1995,
+   "month": 11,
+   "file": "ice/ice-199511.v1.png"
+  },
+  {
+   "year": 1995,
+   "month": 12,
+   "file": "ice/ice-199512.v1.png"
+  },
+  {
+   "year": 1996,
+   "month": 1,
+   "file": "ice/ice-199601.v1.png"
+  },
+  {
+   "year": 1996,
+   "month": 2,
+   "file": "ice/ice-199602.v1.png"
+  },
+  {
+   "year": 1996,
+   "month": 3,
+   "file": "ice/ice-199603.v1.png"
+  },
+  {
+   "year": 1996,
+   "month": 4,
+   "file": "ice/ice-199604.v1.png"
+  },
+  {
+   "year": 1996,
+   "month": 5,
+   "file": "ice/ice-199605.v1.png"
+  },
+  {
+   "year": 1996,
+   "month": 6,
+   "file": "ice/ice-199606.v1.png"
+  },
+  {
+   "year": 1996,
+   "month": 7,
+   "file": "ice/ice-199607.v1.png"
+  },
+  {
+   "year": 1996,
+   "month": 8,
+   "file": "ice/ice-199608.v1.png"
+  },
+  {
+   "year": 1996,
+   "month": 9,
+   "file": "ice/ice-199609.v1.png"
+  },
+  {
+   "year": 1996,
+   "month": 10,
+   "file": "ice/ice-199610.v1.png"
+  },
+  {
+   "year": 1996,
+   "month": 11,
+   "file": "ice/ice-199611.v1.png"
+  },
+  {
+   "year": 1996,
+   "month": 12,
+   "file": "ice/ice-199612.v1.png"
+  },
+  {
+   "year": 1997,
+   "month": 1,
+   "file": "ice/ice-199701.v1.png"
+  },
+  {
+   "year": 1997,
+   "month": 2,
+   "file": "ice/ice-199702.v1.png"
+  },
+  {
+   "year": 1997,
+   "month": 3,
+   "file": "ice/ice-199703.v1.png"
+  },
+  {
+   "year": 1997,
+   "month": 4,
+   "file": "ice/ice-199704.v1.png"
+  },
+  {
+   "year": 1997,
+   "month": 5,
+   "file": "ice/ice-199705.v1.png"
+  },
+  {
+   "year": 1997,
+   "month": 6,
+   "file": "ice/ice-199706.v1.png"
+  },
+  {
+   "year": 1997,
+   "month": 7,
+   "file": "ice/ice-199707.v1.png"
+  },
+  {
+   "year": 1997,
+   "month": 8,
+   "file": "ice/ice-199708.v1.png"
+  },
+  {
+   "year": 1997,
+   "month": 9,
+   "file": "ice/ice-199709.v1.png"
+  },
+  {
+   "year": 1997,
+   "month": 10,
+   "file": "ice/ice-199710.v1.png"
+  },
+  {
+   "year": 1997,
+   "month": 11,
+   "file": "ice/ice-199711.v1.png"
+  },
+  {
+   "year": 1997,
+   "month": 12,
+   "file": "ice/ice-199712.v1.png"
+  },
+  {
+   "year": 1998,
+   "month": 1,
+   "file": "ice/ice-199801.v1.png"
+  },
+  {
+   "year": 1998,
+   "month": 2,
+   "file": "ice/ice-199802.v1.png"
+  },
+  {
+   "year": 1998,
+   "month": 3,
+   "file": "ice/ice-199803.v1.png"
+  },
+  {
+   "year": 1998,
+   "month": 4,
+   "file": "ice/ice-199804.v1.png"
+  },
+  {
+   "year": 1998,
+   "month": 5,
+   "file": "ice/ice-199805.v1.png"
+  },
+  {
+   "year": 1998,
+   "month": 6,
+   "file": "ice/ice-199806.v1.png"
+  },
+  {
+   "year": 1998,
+   "month": 7,
+   "file": "ice/ice-199807.v1.png"
+  },
+  {
+   "year": 1998,
+   "month": 8,
+   "file": "ice/ice-199808.v1.png"
+  },
+  {
+   "year": 1998,
+   "month": 9,
+   "file": "ice/ice-199809.v1.png"
+  },
+  {
+   "year": 1998,
+   "month": 10,
+   "file": "ice/ice-199810.v1.png"
+  },
+  {
+   "year": 1998,
+   "month": 11,
+   "file": "ice/ice-199811.v1.png"
+  },
+  {
+   "year": 1998,
+   "month": 12,
+   "file": "ice/ice-199812.v1.png"
+  },
+  {
+   "year": 1999,
+   "month": 1,
+   "file": "ice/ice-199901.v1.png"
+  },
+  {
+   "year": 1999,
+   "month": 2,
+   "file": "ice/ice-199902.v1.png"
+  },
+  {
+   "year": 1999,
+   "month": 3,
+   "file": "ice/ice-199903.v1.png"
+  },
+  {
+   "year": 1999,
+   "month": 4,
+   "file": "ice/ice-199904.v1.png"
+  },
+  {
+   "year": 1999,
+   "month": 5,
+   "file": "ice/ice-199905.v1.png"
+  },
+  {
+   "year": 1999,
+   "month": 6,
+   "file": "ice/ice-199906.v1.png"
+  },
+  {
+   "year": 1999,
+   "month": 7,
+   "file": "ice/ice-199907.v1.png"
+  },
+  {
+   "year": 1999,
+   "month": 8,
+   "file": "ice/ice-199908.v1.png"
+  },
+  {
+   "year": 1999,
+   "month": 9,
+   "file": "ice/ice-199909.v1.png"
+  },
+  {
+   "year": 1999,
+   "month": 10,
+   "file": "ice/ice-199910.v1.png"
+  },
+  {
+   "year": 1999,
+   "month": 11,
+   "file": "ice/ice-199911.v1.png"
+  },
+  {
+   "year": 1999,
+   "month": 12,
+   "file": "ice/ice-199912.v1.png"
+  },
+  {
+   "year": 2000,
+   "month": 1,
+   "file": "ice/ice-200001.v1.png"
+  },
+  {
+   "year": 2000,
+   "month": 2,
+   "file": "ice/ice-200002.v1.png"
+  },
+  {
+   "year": 2000,
+   "month": 3,
+   "file": "ice/ice-200003.v1.png"
+  },
+  {
+   "year": 2000,
+   "month": 4,
+   "file": "ice/ice-200004.v1.png"
+  },
+  {
+   "year": 2000,
+   "month": 5,
+   "file": "ice/ice-200005.v1.png"
+  },
+  {
+   "year": 2000,
+   "month": 6,
+   "file": "ice/ice-200006.v1.png"
+  },
+  {
+   "year": 2000,
+   "month": 7,
+   "file": "ice/ice-200007.v1.png"
+  },
+  {
+   "year": 2000,
+   "month": 8,
+   "file": "ice/ice-200008.v1.png"
+  },
+  {
+   "year": 2000,
+   "month": 9,
+   "file": "ice/ice-200009.v1.png"
+  },
+  {
+   "year": 2000,
+   "month": 10,
+   "file": "ice/ice-200010.v1.png"
+  },
+  {
+   "year": 2000,
+   "month": 11,
+   "file": "ice/ice-200011.v1.png"
+  },
+  {
+   "year": 2000,
+   "month": 12,
+   "file": "ice/ice-200012.v1.png"
+  },
+  {
+   "year": 2001,
+   "month": 1,
+   "file": "ice/ice-200101.v1.png"
+  },
+  {
+   "year": 2001,
+   "month": 2,
+   "file": "ice/ice-200102.v1.png"
+  },
+  {
+   "year": 2001,
+   "month": 3,
+   "file": "ice/ice-200103.v1.png"
+  },
+  {
+   "year": 2001,
+   "month": 4,
+   "file": "ice/ice-200104.v1.png"
+  },
+  {
+   "year": 2001,
+   "month": 5,
+   "file": "ice/ice-200105.v1.png"
+  },
+  {
+   "year": 2001,
+   "month": 6,
+   "file": "ice/ice-200106.v1.png"
+  },
+  {
+   "year": 2001,
+   "month": 7,
+   "file": "ice/ice-200107.v1.png"
+  },
+  {
+   "year": 2001,
+   "month": 8,
+   "file": "ice/ice-200108.v1.png"
+  },
+  {
+   "year": 2001,
+   "month": 9,
+   "file": "ice/ice-200109.v1.png"
+  },
+  {
+   "year": 2001,
+   "month": 10,
+   "file": "ice/ice-200110.v1.png"
+  },
+  {
+   "year": 2001,
+   "month": 11,
+   "file": "ice/ice-200111.v1.png"
+  },
+  {
+   "year": 2001,
+   "month": 12,
+   "file": "ice/ice-200112.v1.png"
+  },
+  {
+   "year": 2002,
+   "month": 1,
+   "file": "ice/ice-200201.v1.png"
+  },
+  {
+   "year": 2002,
+   "month": 2,
+   "file": "ice/ice-200202.v1.png"
+  },
+  {
+   "year": 2002,
+   "month": 3,
+   "file": "ice/ice-200203.v1.png"
+  },
+  {
+   "year": 2002,
+   "month": 4,
+   "file": "ice/ice-200204.v1.png"
+  },
+  {
+   "year": 2002,
+   "month": 5,
+   "file": "ice/ice-200205.v1.png"
+  },
+  {
+   "year": 2002,
+   "month": 6,
+   "file": "ice/ice-200206.v1.png"
+  },
+  {
+   "year": 2002,
+   "month": 7,
+   "file": "ice/ice-200207.v1.png"
+  },
+  {
+   "year": 2002,
+   "month": 8,
+   "file": "ice/ice-200208.v1.png"
+  },
+  {
+   "year": 2002,
+   "month": 9,
+   "file": "ice/ice-200209.v1.png"
+  },
+  {
+   "year": 2002,
+   "month": 10,
+   "file": "ice/ice-200210.v1.png"
+  },
+  {
+   "year": 2002,
+   "month": 11,
+   "file": "ice/ice-200211.v1.png"
+  },
+  {
+   "year": 2002,
+   "month": 12,
+   "file": "ice/ice-200212.v1.png"
+  },
+  {
+   "year": 2003,
+   "month": 1,
+   "file": "ice/ice-200301.v1.png"
+  },
+  {
+   "year": 2003,
+   "month": 2,
+   "file": "ice/ice-200302.v1.png"
+  },
+  {
+   "year": 2003,
+   "month": 3,
+   "file": "ice/ice-200303.v1.png"
+  },
+  {
+   "year": 2003,
+   "month": 4,
+   "file": "ice/ice-200304.v1.png"
+  },
+  {
+   "year": 2003,
+   "month": 5,
+   "file": "ice/ice-200305.v1.png"
+  },
+  {
+   "year": 2003,
+   "month": 6,
+   "file": "ice/ice-200306.v1.png"
+  },
+  {
+   "year": 2003,
+   "month": 7,
+   "file": "ice/ice-200307.v1.png"
+  },
+  {
+   "year": 2003,
+   "month": 8,
+   "file": "ice/ice-200308.v1.png"
+  },
+  {
+   "year": 2003,
+   "month": 9,
+   "file": "ice/ice-200309.v1.png"
+  },
+  {
+   "year": 2003,
+   "month": 10,
+   "file": "ice/ice-200310.v1.png"
+  },
+  {
+   "year": 2003,
+   "month": 11,
+   "file": "ice/ice-200311.v1.png"
+  },
+  {
+   "year": 2003,
+   "month": 12,
+   "file": "ice/ice-200312.v1.png"
+  },
+  {
+   "year": 2004,
+   "month": 1,
+   "file": "ice/ice-200401.v1.png"
+  },
+  {
+   "year": 2004,
+   "month": 2,
+   "file": "ice/ice-200402.v1.png"
+  },
+  {
+   "year": 2004,
+   "month": 3,
+   "file": "ice/ice-200403.v1.png"
+  },
+  {
+   "year": 2004,
+   "month": 4,
+   "file": "ice/ice-200404.v1.png"
+  },
+  {
+   "year": 2004,
+   "month": 5,
+   "file": "ice/ice-200405.v1.png"
+  },
+  {
+   "year": 2004,
+   "month": 6,
+   "file": "ice/ice-200406.v1.png"
+  },
+  {
+   "year": 2004,
+   "month": 7,
+   "file": "ice/ice-200407.v1.png"
+  },
+  {
+   "year": 2004,
+   "month": 8,
+   "file": "ice/ice-200408.v1.png"
+  },
+  {
+   "year": 2004,
+   "month": 9,
+   "file": "ice/ice-200409.v1.png"
+  },
+  {
+   "year": 2004,
+   "month": 10,
+   "file": "ice/ice-200410.v1.png"
+  },
+  {
+   "year": 2004,
+   "month": 11,
+   "file": "ice/ice-200411.v1.png"
+  },
+  {
+   "year": 2004,
+   "month": 12,
+   "file": "ice/ice-200412.v1.png"
+  },
+  {
+   "year": 2005,
+   "month": 1,
+   "file": "ice/ice-200501.v1.png"
+  },
+  {
+   "year": 2005,
+   "month": 2,
+   "file": "ice/ice-200502.v1.png"
+  },
+  {
+   "year": 2005,
+   "month": 3,
+   "file": "ice/ice-200503.v1.png"
+  },
+  {
+   "year": 2005,
+   "month": 4,
+   "file": "ice/ice-200504.v1.png"
+  },
+  {
+   "year": 2005,
+   "month": 5,
+   "file": "ice/ice-200505.v1.png"
+  },
+  {
+   "year": 2005,
+   "month": 6,
+   "file": "ice/ice-200506.v1.png"
+  },
+  {
+   "year": 2005,
+   "month": 7,
+   "file": "ice/ice-200507.v1.png"
+  },
+  {
+   "year": 2005,
+   "month": 8,
+   "file": "ice/ice-200508.v1.png"
+  },
+  {
+   "year": 2005,
+   "month": 9,
+   "file": "ice/ice-200509.v1.png"
+  },
+  {
+   "year": 2005,
+   "month": 10,
+   "file": "ice/ice-200510.v1.png"
+  },
+  {
+   "year": 2005,
+   "month": 11,
+   "file": "ice/ice-200511.v1.png"
+  },
+  {
+   "year": 2005,
+   "month": 12,
+   "file": "ice/ice-200512.v1.png"
+  },
+  {
+   "year": 2006,
+   "month": 1,
+   "file": "ice/ice-200601.v1.png"
+  },
+  {
+   "year": 2006,
+   "month": 2,
+   "file": "ice/ice-200602.v1.png"
+  },
+  {
+   "year": 2006,
+   "month": 3,
+   "file": "ice/ice-200603.v1.png"
+  },
+  {
+   "year": 2006,
+   "month": 4,
+   "file": "ice/ice-200604.v1.png"
+  },
+  {
+   "year": 2006,
+   "month": 5,
+   "file": "ice/ice-200605.v1.png"
+  },
+  {
+   "year": 2006,
+   "month": 6,
+   "file": "ice/ice-200606.v1.png"
+  },
+  {
+   "year": 2006,
+   "month": 7,
+   "file": "ice/ice-200607.v1.png"
+  },
+  {
+   "year": 2006,
+   "month": 8,
+   "file": "ice/ice-200608.v1.png"
+  },
+  {
+   "year": 2006,
+   "month": 9,
+   "file": "ice/ice-200609.v1.png"
+  },
+  {
+   "year": 2006,
+   "month": 10,
+   "file": "ice/ice-200610.v1.png"
+  },
+  {
+   "year": 2006,
+   "month": 11,
+   "file": "ice/ice-200611.v1.png"
+  },
+  {
+   "year": 2006,
+   "month": 12,
+   "file": "ice/ice-200612.v1.png"
+  },
+  {
+   "year": 2007,
+   "month": 1,
+   "file": "ice/ice-200701.v1.png"
+  },
+  {
+   "year": 2007,
+   "month": 2,
+   "file": "ice/ice-200702.v1.png"
+  },
+  {
+   "year": 2007,
+   "month": 3,
+   "file": "ice/ice-200703.v1.png"
+  },
+  {
+   "year": 2007,
+   "month": 4,
+   "file": "ice/ice-200704.v1.png"
+  },
+  {
+   "year": 2007,
+   "month": 5,
+   "file": "ice/ice-200705.v1.png"
+  },
+  {
+   "year": 2007,
+   "month": 6,
+   "file": "ice/ice-200706.v1.png"
+  },
+  {
+   "year": 2007,
+   "month": 7,
+   "file": "ice/ice-200707.v1.png"
+  },
+  {
+   "year": 2007,
+   "month": 8,
+   "file": "ice/ice-200708.v1.png"
+  },
+  {
+   "year": 2007,
+   "month": 9,
+   "file": "ice/ice-200709.v1.png"
+  },
+  {
+   "year": 2007,
+   "month": 10,
+   "file": "ice/ice-200710.v1.png"
+  },
+  {
+   "year": 2007,
+   "month": 11,
+   "file": "ice/ice-200711.v1.png"
+  },
+  {
+   "year": 2007,
+   "month": 12,
+   "file": "ice/ice-200712.v1.png"
+  },
+  {
+   "year": 2008,
+   "month": 1,
+   "file": "ice/ice-200801.v1.png"
+  },
+  {
+   "year": 2008,
+   "month": 2,
+   "file": "ice/ice-200802.v1.png"
+  },
+  {
+   "year": 2008,
+   "month": 3,
+   "file": "ice/ice-200803.v1.png"
+  },
+  {
+   "year": 2008,
+   "month": 4,
+   "file": "ice/ice-200804.v1.png"
+  },
+  {
+   "year": 2008,
+   "month": 5,
+   "file": "ice/ice-200805.v1.png"
+  },
+  {
+   "year": 2008,
+   "month": 6,
+   "file": "ice/ice-200806.v1.png"
+  },
+  {
+   "year": 2008,
+   "month": 7,
+   "file": "ice/ice-200807.v1.png"
+  },
+  {
+   "year": 2008,
+   "month": 8,
+   "file": "ice/ice-200808.v1.png"
+  },
+  {
+   "year": 2008,
+   "month": 9,
+   "file": "ice/ice-200809.v1.png"
+  },
+  {
+   "year": 2008,
+   "month": 10,
+   "file": "ice/ice-200810.v1.png"
+  },
+  {
+   "year": 2008,
+   "month": 11,
+   "file": "ice/ice-200811.v1.png"
+  },
+  {
+   "year": 2008,
+   "month": 12,
+   "file": "ice/ice-200812.v1.png"
+  },
+  {
+   "year": 2009,
+   "month": 1,
+   "file": "ice/ice-200901.v1.png"
+  },
+  {
+   "year": 2009,
+   "month": 2,
+   "file": "ice/ice-200902.v1.png"
+  },
+  {
+   "year": 2009,
+   "month": 3,
+   "file": "ice/ice-200903.v1.png"
+  },
+  {
+   "year": 2009,
+   "month": 4,
+   "file": "ice/ice-200904.v1.png"
+  },
+  {
+   "year": 2009,
+   "month": 5,
+   "file": "ice/ice-200905.v1.png"
+  },
+  {
+   "year": 2009,
+   "month": 6,
+   "file": "ice/ice-200906.v1.png"
+  },
+  {
+   "year": 2009,
+   "month": 7,
+   "file": "ice/ice-200907.v1.png"
+  },
+  {
+   "year": 2009,
+   "month": 8,
+   "file": "ice/ice-200908.v1.png"
+  },
+  {
+   "year": 2009,
+   "month": 9,
+   "file": "ice/ice-200909.v1.png"
+  },
+  {
+   "year": 2009,
+   "month": 10,
+   "file": "ice/ice-200910.v1.png"
+  },
+  {
+   "year": 2009,
+   "month": 11,
+   "file": "ice/ice-200911.v1.png"
+  },
+  {
+   "year": 2009,
+   "month": 12,
+   "file": "ice/ice-200912.v1.png"
+  },
+  {
+   "year": 2010,
+   "month": 1,
+   "file": "ice/ice-201001.v1.png"
+  },
+  {
+   "year": 2010,
+   "month": 2,
+   "file": "ice/ice-201002.v1.png"
+  },
+  {
+   "year": 2010,
+   "month": 3,
+   "file": "ice/ice-201003.v1.png"
+  },
+  {
+   "year": 2010,
+   "month": 4,
+   "file": "ice/ice-201004.v1.png"
+  },
+  {
+   "year": 2010,
+   "month": 5,
+   "file": "ice/ice-201005.v1.png"
+  },
+  {
+   "year": 2010,
+   "month": 6,
+   "file": "ice/ice-201006.v1.png"
+  },
+  {
+   "year": 2010,
+   "month": 7,
+   "file": "ice/ice-201007.v1.png"
+  },
+  {
+   "year": 2010,
+   "month": 8,
+   "file": "ice/ice-201008.v1.png"
+  },
+  {
+   "year": 2010,
+   "month": 9,
+   "file": "ice/ice-201009.v1.png"
+  },
+  {
+   "year": 2010,
+   "month": 10,
+   "file": "ice/ice-201010.v1.png"
+  },
+  {
+   "year": 2010,
+   "month": 11,
+   "file": "ice/ice-201011.v1.png"
+  },
+  {
+   "year": 2010,
+   "month": 12,
+   "file": "ice/ice-201012.v1.png"
+  },
+  {
+   "year": 2011,
+   "month": 1,
+   "file": "ice/ice-201101.v1.png"
+  },
+  {
+   "year": 2011,
+   "month": 2,
+   "file": "ice/ice-201102.v1.png"
+  },
+  {
+   "year": 2011,
+   "month": 3,
+   "file": "ice/ice-201103.v1.png"
+  },
+  {
+   "year": 2011,
+   "month": 4,
+   "file": "ice/ice-201104.v1.png"
+  },
+  {
+   "year": 2011,
+   "month": 5,
+   "file": "ice/ice-201105.v1.png"
+  },
+  {
+   "year": 2011,
+   "month": 6,
+   "file": "ice/ice-201106.v1.png"
+  },
+  {
+   "year": 2011,
+   "month": 7,
+   "file": "ice/ice-201107.v1.png"
+  },
+  {
+   "year": 2011,
+   "month": 8,
+   "file": "ice/ice-201108.v1.png"
+  },
+  {
+   "year": 2011,
+   "month": 9,
+   "file": "ice/ice-201109.v1.png"
+  },
+  {
+   "year": 2011,
+   "month": 10,
+   "file": "ice/ice-201110.v1.png"
+  },
+  {
+   "year": 2011,
+   "month": 11,
+   "file": "ice/ice-201111.v1.png"
+  },
+  {
+   "year": 2011,
+   "month": 12,
+   "file": "ice/ice-201112.v1.png"
+  },
+  {
+   "year": 2012,
+   "month": 1,
+   "file": "ice/ice-201201.v1.png"
+  },
+  {
+   "year": 2012,
+   "month": 2,
+   "file": "ice/ice-201202.v1.png"
+  },
+  {
+   "year": 2012,
+   "month": 3,
+   "file": "ice/ice-201203.v1.png"
+  },
+  {
+   "year": 2012,
+   "month": 4,
+   "file": "ice/ice-201204.v1.png"
+  },
+  {
+   "year": 2012,
+   "month": 5,
+   "file": "ice/ice-201205.v1.png"
+  },
+  {
+   "year": 2012,
+   "month": 6,
+   "file": "ice/ice-201206.v1.png"
+  },
+  {
+   "year": 2012,
+   "month": 7,
+   "file": "ice/ice-201207.v1.png"
+  },
+  {
+   "year": 2012,
+   "month": 8,
+   "file": "ice/ice-201208.v1.png"
+  },
+  {
+   "year": 2012,
+   "month": 9,
+   "file": "ice/ice-201209.v1.png"
+  },
+  {
+   "year": 2012,
+   "month": 10,
+   "file": "ice/ice-201210.v1.png"
+  },
+  {
+   "year": 2012,
+   "month": 11,
+   "file": "ice/ice-201211.v1.png"
+  },
+  {
+   "year": 2012,
+   "month": 12,
+   "file": "ice/ice-201212.v1.png"
+  },
+  {
+   "year": 2013,
+   "month": 1,
+   "file": "ice/ice-201301.v1.png"
+  },
+  {
+   "year": 2013,
+   "month": 2,
+   "file": "ice/ice-201302.v1.png"
+  },
+  {
+   "year": 2013,
+   "month": 3,
+   "file": "ice/ice-201303.v1.png"
+  },
+  {
+   "year": 2013,
+   "month": 4,
+   "file": "ice/ice-201304.v1.png"
+  },
+  {
+   "year": 2013,
+   "month": 5,
+   "file": "ice/ice-201305.v1.png"
+  },
+  {
+   "year": 2013,
+   "month": 6,
+   "file": "ice/ice-201306.v1.png"
+  },
+  {
+   "year": 2013,
+   "month": 7,
+   "file": "ice/ice-201307.v1.png"
+  },
+  {
+   "year": 2013,
+   "month": 8,
+   "file": "ice/ice-201308.v1.png"
+  },
+  {
+   "year": 2013,
+   "month": 9,
+   "file": "ice/ice-201309.v1.png"
+  },
+  {
+   "year": 2013,
+   "month": 10,
+   "file": "ice/ice-201310.v1.png"
+  },
+  {
+   "year": 2013,
+   "month": 11,
+   "file": "ice/ice-201311.v1.png"
+  },
+  {
+   "year": 2013,
+   "month": 12,
+   "file": "ice/ice-201312.v1.png"
+  },
+  {
+   "year": 2014,
+   "month": 1,
+   "file": "ice/ice-201401.v1.png"
+  },
+  {
+   "year": 2014,
+   "month": 2,
+   "file": "ice/ice-201402.v1.png"
+  },
+  {
+   "year": 2014,
+   "month": 3,
+   "file": "ice/ice-201403.v1.png"
+  },
+  {
+   "year": 2014,
+   "month": 4,
+   "file": "ice/ice-201404.v1.png"
+  },
+  {
+   "year": 2014,
+   "month": 5,
+   "file": "ice/ice-201405.v1.png"
+  },
+  {
+   "year": 2014,
+   "month": 6,
+   "file": "ice/ice-201406.v1.png"
+  },
+  {
+   "year": 2014,
+   "month": 7,
+   "file": "ice/ice-201407.v1.png"
+  },
+  {
+   "year": 2014,
+   "month": 8,
+   "file": "ice/ice-201408.v1.png"
+  },
+  {
+   "year": 2014,
+   "month": 9,
+   "file": "ice/ice-201409.v1.png"
+  },
+  {
+   "year": 2014,
+   "month": 10,
+   "file": "ice/ice-201410.v1.png"
+  },
+  {
+   "year": 2014,
+   "month": 11,
+   "file": "ice/ice-201411.v1.png"
+  },
+  {
+   "year": 2014,
+   "month": 12,
+   "file": "ice/ice-201412.v1.png"
+  },
+  {
+   "year": 2015,
+   "month": 1,
+   "file": "ice/ice-201501.v1.png"
+  },
+  {
+   "year": 2015,
+   "month": 2,
+   "file": "ice/ice-201502.v1.png"
+  },
+  {
+   "year": 2015,
+   "month": 3,
+   "file": "ice/ice-201503.v1.png"
+  },
+  {
+   "year": 2015,
+   "month": 4,
+   "file": "ice/ice-201504.v1.png"
+  },
+  {
+   "year": 2015,
+   "month": 5,
+   "file": "ice/ice-201505.v1.png"
+  },
+  {
+   "year": 2015,
+   "month": 6,
+   "file": "ice/ice-201506.v1.png"
+  },
+  {
+   "year": 2015,
+   "month": 7,
+   "file": "ice/ice-201507.v1.png"
+  },
+  {
+   "year": 2015,
+   "month": 8,
+   "file": "ice/ice-201508.v1.png"
+  },
+  {
+   "year": 2015,
+   "month": 9,
+   "file": "ice/ice-201509.v1.png"
+  },
+  {
+   "year": 2015,
+   "month": 10,
+   "file": "ice/ice-201510.v1.png"
+  },
+  {
+   "year": 2015,
+   "month": 11,
+   "file": "ice/ice-201511.v1.png"
+  },
+  {
+   "year": 2015,
+   "month": 12,
+   "file": "ice/ice-201512.v1.png"
+  },
+  {
+   "year": 2016,
+   "month": 1,
+   "file": "ice/ice-201601.v1.png"
+  },
+  {
+   "year": 2016,
+   "month": 2,
+   "file": "ice/ice-201602.v1.png"
+  },
+  {
+   "year": 2016,
+   "month": 3,
+   "file": "ice/ice-201603.v1.png"
+  },
+  {
+   "year": 2016,
+   "month": 4,
+   "file": "ice/ice-201604.v1.png"
+  },
+  {
+   "year": 2016,
+   "month": 5,
+   "file": "ice/ice-201605.v1.png"
+  },
+  {
+   "year": 2016,
+   "month": 6,
+   "file": "ice/ice-201606.v1.png"
+  },
+  {
+   "year": 2016,
+   "month": 7,
+   "file": "ice/ice-201607.v1.png"
+  },
+  {
+   "year": 2016,
+   "month": 8,
+   "file": "ice/ice-201608.v1.png"
+  },
+  {
+   "year": 2016,
+   "month": 9,
+   "file": "ice/ice-201609.v1.png"
+  },
+  {
+   "year": 2016,
+   "month": 10,
+   "file": "ice/ice-201610.v1.png"
+  },
+  {
+   "year": 2016,
+   "month": 11,
+   "file": "ice/ice-201611.v1.png"
+  },
+  {
+   "year": 2016,
+   "month": 12,
+   "file": "ice/ice-201612.v1.png"
+  },
+  {
+   "year": 2017,
+   "month": 1,
+   "file": "ice/ice-201701.v1.png"
+  },
+  {
+   "year": 2017,
+   "month": 2,
+   "file": "ice/ice-201702.v1.png"
+  },
+  {
+   "year": 2017,
+   "month": 3,
+   "file": "ice/ice-201703.v1.png"
+  },
+  {
+   "year": 2017,
+   "month": 4,
+   "file": "ice/ice-201704.v1.png"
+  },
+  {
+   "year": 2017,
+   "month": 5,
+   "file": "ice/ice-201705.v1.png"
+  },
+  {
+   "year": 2017,
+   "month": 6,
+   "file": "ice/ice-201706.v1.png"
+  },
+  {
+   "year": 2017,
+   "month": 7,
+   "file": "ice/ice-201707.v1.png"
+  },
+  {
+   "year": 2017,
+   "month": 8,
+   "file": "ice/ice-201708.v1.png"
+  },
+  {
+   "year": 2017,
+   "month": 9,
+   "file": "ice/ice-201709.v1.png"
+  },
+  {
+   "year": 2017,
+   "month": 10,
+   "file": "ice/ice-201710.v1.png"
+  },
+  {
+   "year": 2017,
+   "month": 11,
+   "file": "ice/ice-201711.v1.png"
+  },
+  {
+   "year": 2017,
+   "month": 12,
+   "file": "ice/ice-201712.v1.png"
+  },
+  {
+   "year": 2018,
+   "month": 1,
+   "file": "ice/ice-201801.v1.png"
+  },
+  {
+   "year": 2018,
+   "month": 2,
+   "file": "ice/ice-201802.v1.png"
+  },
+  {
+   "year": 2018,
+   "month": 3,
+   "file": "ice/ice-201803.v1.png"
+  },
+  {
+   "year": 2018,
+   "month": 4,
+   "file": "ice/ice-201804.v1.png"
+  },
+  {
+   "year": 2018,
+   "month": 5,
+   "file": "ice/ice-201805.v1.png"
+  },
+  {
+   "year": 2018,
+   "month": 6,
+   "file": "ice/ice-201806.v1.png"
+  },
+  {
+   "year": 2018,
+   "month": 7,
+   "file": "ice/ice-201807.v1.png"
+  },
+  {
+   "year": 2018,
+   "month": 8,
+   "file": "ice/ice-201808.v1.png"
+  },
+  {
+   "year": 2018,
+   "month": 9,
+   "file": "ice/ice-201809.v1.png"
+  },
+  {
+   "year": 2018,
+   "month": 10,
+   "file": "ice/ice-201810.v1.png"
+  },
+  {
+   "year": 2018,
+   "month": 11,
+   "file": "ice/ice-201811.v1.png"
+  },
+  {
+   "year": 2018,
+   "month": 12,
+   "file": "ice/ice-201812.v1.png"
+  },
+  {
+   "year": 2019,
+   "month": 1,
+   "file": "ice/ice-201901.v1.png"
+  },
+  {
+   "year": 2019,
+   "month": 2,
+   "file": "ice/ice-201902.v1.png"
+  },
+  {
+   "year": 2019,
+   "month": 3,
+   "file": "ice/ice-201903.v1.png"
+  },
+  {
+   "year": 2019,
+   "month": 4,
+   "file": "ice/ice-201904.v1.png"
+  },
+  {
+   "year": 2019,
+   "month": 5,
+   "file": "ice/ice-201905.v1.png"
+  },
+  {
+   "year": 2019,
+   "month": 6,
+   "file": "ice/ice-201906.v1.png"
+  },
+  {
+   "year": 2019,
+   "month": 7,
+   "file": "ice/ice-201907.v1.png"
+  },
+  {
+   "year": 2019,
+   "month": 8,
+   "file": "ice/ice-201908.v1.png"
+  },
+  {
+   "year": 2019,
+   "month": 9,
+   "file": "ice/ice-201909.v1.png"
+  },
+  {
+   "year": 2019,
+   "month": 10,
+   "file": "ice/ice-201910.v1.png"
+  },
+  {
+   "year": 2019,
+   "month": 11,
+   "file": "ice/ice-201911.v1.png"
+  },
+  {
+   "year": 2019,
+   "month": 12,
+   "file": "ice/ice-201912.v1.png"
+  },
+  {
+   "year": 2020,
+   "month": 1,
+   "file": "ice/ice-202001.v1.png"
+  },
+  {
+   "year": 2020,
+   "month": 2,
+   "file": "ice/ice-202002.v1.png"
+  },
+  {
+   "year": 2020,
+   "month": 3,
+   "file": "ice/ice-202003.v1.png"
+  },
+  {
+   "year": 2020,
+   "month": 4,
+   "file": "ice/ice-202004.v1.png"
+  },
+  {
+   "year": 2020,
+   "month": 5,
+   "file": "ice/ice-202005.v1.png"
+  },
+  {
+   "year": 2020,
+   "month": 6,
+   "file": "ice/ice-202006.v1.png"
+  },
+  {
+   "year": 2020,
+   "month": 7,
+   "file": "ice/ice-202007.v1.png"
+  },
+  {
+   "year": 2020,
+   "month": 8,
+   "file": "ice/ice-202008.v1.png"
+  },
+  {
+   "year": 2020,
+   "month": 9,
+   "file": "ice/ice-202009.v1.png"
+  },
+  {
+   "year": 2020,
+   "month": 10,
+   "file": "ice/ice-202010.v1.png"
+  },
+  {
+   "year": 2020,
+   "month": 11,
+   "file": "ice/ice-202011.v1.png"
+  },
+  {
+   "year": 2020,
+   "month": 12,
+   "file": "ice/ice-202012.v1.png"
+  },
+  {
+   "year": 2021,
+   "month": 1,
+   "file": "ice/ice-202101.v1.png"
+  },
+  {
+   "year": 2021,
+   "month": 2,
+   "file": "ice/ice-202102.v1.png"
+  },
+  {
+   "year": 2021,
+   "month": 3,
+   "file": "ice/ice-202103.v1.png"
+  },
+  {
+   "year": 2021,
+   "month": 4,
+   "file": "ice/ice-202104.v1.png"
+  },
+  {
+   "year": 2021,
+   "month": 5,
+   "file": "ice/ice-202105.v1.png"
+  },
+  {
+   "year": 2021,
+   "month": 6,
+   "file": "ice/ice-202106.v1.png"
+  },
+  {
+   "year": 2021,
+   "month": 7,
+   "file": "ice/ice-202107.v1.png"
+  },
+  {
+   "year": 2021,
+   "month": 8,
+   "file": "ice/ice-202108.v1.png"
+  },
+  {
+   "year": 2021,
+   "month": 9,
+   "file": "ice/ice-202109.v1.png"
+  },
+  {
+   "year": 2021,
+   "month": 10,
+   "file": "ice/ice-202110.v1.png"
+  },
+  {
+   "year": 2021,
+   "month": 11,
+   "file": "ice/ice-202111.v1.png"
+  },
+  {
+   "year": 2021,
+   "month": 12,
+   "file": "ice/ice-202112.v1.png"
+  },
+  {
+   "year": 2022,
+   "month": 1,
+   "file": "ice/ice-202201.v1.png"
+  },
+  {
+   "year": 2022,
+   "month": 2,
+   "file": "ice/ice-202202.v1.png"
+  },
+  {
+   "year": 2022,
+   "month": 3,
+   "file": "ice/ice-202203.v1.png"
+  },
+  {
+   "year": 2022,
+   "month": 4,
+   "file": "ice/ice-202204.v1.png"
+  },
+  {
+   "year": 2022,
+   "month": 5,
+   "file": "ice/ice-202205.v1.png"
+  },
+  {
+   "year": 2022,
+   "month": 6,
+   "file": "ice/ice-202206.v1.png"
+  },
+  {
+   "year": 2022,
+   "month": 7,
+   "file": "ice/ice-202207.v1.png"
+  },
+  {
+   "year": 2022,
+   "month": 8,
+   "file": "ice/ice-202208.v1.png"
+  },
+  {
+   "year": 2022,
+   "month": 9,
+   "file": "ice/ice-202209.v1.png"
+  },
+  {
+   "year": 2022,
+   "month": 10,
+   "file": "ice/ice-202210.v1.png"
+  },
+  {
+   "year": 2022,
+   "month": 11,
+   "file": "ice/ice-202211.v1.png"
+  },
+  {
+   "year": 2022,
+   "month": 12,
+   "file": "ice/ice-202212.v1.png"
+  },
+  {
+   "year": 2023,
+   "month": 1,
+   "file": "ice/ice-202301.v1.png"
+  },
+  {
+   "year": 2023,
+   "month": 2,
+   "file": "ice/ice-202302.v1.png"
+  },
+  {
+   "year": 2023,
+   "month": 3,
+   "file": "ice/ice-202303.v1.png"
+  },
+  {
+   "year": 2023,
+   "month": 4,
+   "file": "ice/ice-202304.v1.png"
+  },
+  {
+   "year": 2023,
+   "month": 5,
+   "file": "ice/ice-202305.v1.png"
+  },
+  {
+   "year": 2023,
+   "month": 6,
+   "file": "ice/ice-202306.v1.png"
+  },
+  {
+   "year": 2023,
+   "month": 7,
+   "file": "ice/ice-202307.v1.png"
+  },
+  {
+   "year": 2023,
+   "month": 8,
+   "file": "ice/ice-202308.v1.png"
+  },
+  {
+   "year": 2023,
+   "month": 9,
+   "file": "ice/ice-202309.v1.png"
+  },
+  {
+   "year": 2023,
+   "month": 10,
+   "file": "ice/ice-202310.v1.png"
+  },
+  {
+   "year": 2023,
+   "month": 11,
+   "file": "ice/ice-202311.v1.png"
+  },
+  {
+   "year": 2023,
+   "month": 12,
+   "file": "ice/ice-202312.v1.png"
+  },
+  {
+   "year": 2024,
+   "month": 1,
+   "file": "ice/ice-202401.v1.png"
+  },
+  {
+   "year": 2024,
+   "month": 2,
+   "file": "ice/ice-202402.v1.png"
+  },
+  {
+   "year": 2024,
+   "month": 3,
+   "file": "ice/ice-202403.v1.png"
+  },
+  {
+   "year": 2024,
+   "month": 4,
+   "file": "ice/ice-202404.v1.png"
+  },
+  {
+   "year": 2024,
+   "month": 5,
+   "file": "ice/ice-202405.v1.png"
+  },
+  {
+   "year": 2024,
+   "month": 6,
+   "file": "ice/ice-202406.v1.png"
+  },
+  {
+   "year": 2024,
+   "month": 7,
+   "file": "ice/ice-202407.v1.png"
+  },
+  {
+   "year": 2024,
+   "month": 8,
+   "file": "ice/ice-202408.v1.png"
+  },
+  {
+   "year": 2024,
+   "month": 9,
+   "file": "ice/ice-202409.v1.png"
+  },
+  {
+   "year": 2024,
+   "month": 10,
+   "file": "ice/ice-202410.v1.png"
+  },
+  {
+   "year": 2024,
+   "month": 11,
+   "file": "ice/ice-202411.v1.png"
+  },
+  {
+   "year": 2024,
+   "month": 12,
+   "file": "ice/ice-202412.v1.png"
+  },
+  {
+   "year": 2025,
+   "month": 1,
+   "file": "ice/ice-202501.v1.png"
+  },
+  {
+   "year": 2025,
+   "month": 2,
+   "file": "ice/ice-202502.v1.png"
+  },
+  {
+   "year": 2025,
+   "month": 3,
+   "file": "ice/ice-202503.v1.png"
+  },
+  {
+   "year": 2025,
+   "month": 4,
+   "file": "ice/ice-202504.v1.png"
+  },
+  {
+   "year": 2025,
+   "month": 5,
+   "file": "ice/ice-202505.v1.png"
+  },
+  {
+   "year": 2025,
+   "month": 6,
+   "file": "ice/ice-202506.v1.png"
+  },
+  {
+   "year": 2025,
+   "month": 7,
+   "file": "ice/ice-202507.v1.png"
+  },
+  {
+   "year": 2025,
+   "month": 8,
+   "file": "ice/ice-202508.v1.png"
+  },
+  {
+   "year": 2025,
+   "month": 9,
+   "file": "ice/ice-202509.v1.png"
+  },
+  {
+   "year": 2025,
+   "month": 10,
+   "file": "ice/ice-202510.v1.png"
+  },
+  {
+   "year": 2025,
+   "month": 11,
+   "file": "ice/ice-202511.v1.png"
+  },
+  {
+   "year": 2025,
+   "month": 12,
+   "file": "ice/ice-202512.v1.png"
+  },
+  {
+   "year": 2026,
+   "month": 1,
+   "file": "ice/ice-202601.v1.png"
+  },
+  {
+   "year": 2026,
+   "month": 2,
+   "file": "ice/ice-202602.v1.png"
+  },
+  {
+   "year": 2026,
+   "month": 3,
+   "file": "ice/ice-202603.v1.png"
+  },
+  {
+   "year": 2026,
+   "month": 4,
+   "file": "ice/ice-202604.v1.png"
+  },
+  {
+   "year": 2026,
+   "month": 5,
+   "file": "ice/ice-202605.v1.png"
+  },
+  {
+   "year": 2026,
+   "month": 6,
+   "file": "ice/ice-202606.v1.png"
+  },
+  {
+   "year": 2026,
+   "month": 7,
+   "file": "ice/ice-202607.v1.png"
+  },
+  {
+   "year": 2026,
+   "month": 8,
+   "file": "ice/ice-202608.v1.png"
+  },
+  {
+   "year": 2026,
+   "month": 9,
+   "file": "ice/ice-202609.v1.png"
+  },
+  {
+   "year": 2026,
+   "month": 10,
+   "file": "ice/ice-202610.v1.png"
+  }
+ ],
+ "now": {
+  "day": "2026-11-18",
+  "file": "ice/ice-now-20261118.png"
+ }
+}
